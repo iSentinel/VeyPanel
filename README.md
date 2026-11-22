@@ -4,7 +4,7 @@ Extend. Monitor. Control.
 
 Windows-to-Android display streaming and independent system telemetry over a local network.
 
-**Status: 0.1.0-alpha.8 development source, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, native Android, and installers are not yet implemented. An initial WPF display diagnostic UI and a local Apollo inventory CLI are implemented; actual upstream runtime compatibility remains unverified. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
+**Status: 0.1.0-alpha.9 development source, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, native Android, and installers are not yet implemented. An initial WPF display diagnostic UI and a local Apollo inventory CLI are implemented; actual upstream runtime compatibility remains unverified. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
 
 ## Build and run locally (Windows 11)
 
@@ -138,3 +138,7 @@ Only the loopback owner link can administer devices using the owner token as Bea
 ## Two-step reader invitation (alpha.8)
 
 With LAN HTTPS enabled on standalone Host, open its local owner dashboard. Enter a device name, create a two-minute invitation, and scan the locally rendered QR on the intended tablet or share its link privately. On the tablet, open the trusted HTTPS link, accept, and compare the shown code with the PC operator; the operator types that code after Refresh invitations and Compare and approve. On the tablet select Check approval. This issues a reader-only token once. No browser persistence, certificate installation or automatic firewall changes. QR rendering is fully local; see third-party/Codecrete-QrCodeGenerator-LICENSE.txt. Camera scanning is not yet verified. Both invitation and final token expire; restarting Host invalidates them. Interactive acceptance pending.
+
+## Optional protected grant persistence (alpha.9)
+
+Windows standalone Host only: `$env:VEYPANEL_PERSIST_GRANTS = '1'; .\\VeyPanel.Host.exe`. The fixed current-user store is `%LOCALAPPDATA%\\VeyPanel-GrantStore-v1`; only encrypted hashes and minimal reader metadata are stored, not owner tokens or invitations. Reader expiry remains 24 hours. With persistence enabled, no automatic initial LAN grant is generated; enroll using the local owner dashboard. Restart keeps unexpired grants. Revoke-all removes all issued readers (outstanding invitations must be cancelled separately). The browser still keeps credentials only in memory; reopening requires a private link or native client. A corrupt/interrupted store prevents Host startup; runtime save failure disables readers and rejects the mutation. Do not restore old store backups. Failed revocation is not acknowledged and if the marker could not be written, previous state may remain on disk; stop using that store until explicitly reset offline. No guarantees against privileged or same-account rollback or sudden power-loss metadata loss. Physical crash/power-loss testing pending.

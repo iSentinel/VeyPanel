@@ -6,7 +6,7 @@ using System.Text;
 
 namespace VeyPanel.Host;
 
-internal interface IGrantStore
+internal interface IGrantStore : IDisposable
 {
     StoredGrant[] Load(DateTimeOffset now);
     void Save(StoredGrant[] grants, DateTimeOffset now);

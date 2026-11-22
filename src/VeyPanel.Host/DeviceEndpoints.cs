@@ -6,6 +6,8 @@ internal static class DeviceEndpoints
 {
     internal static void Map(WebApplication app, DeviceRegistry registry, string? lan)
     {
+        app.MapGet("/api/v1/devices/status", () => Results.Json(new { Storage = registry.StorageStatus }));
+        app.MapDelete("/api/v1/devices", () => { registry.RevokeAll(); return Results.NoContent(); });
         app.MapGet("/api/v1/devices", () => Results.Json(registry.List(DateTimeOffset.UtcNow)));
         // Force the route-handler overload; a RequestDelegate could discard the returned IResult.
         Func<HttpContext, Task<IResult>> issue = context => IssueAsync(context, registry, lan);

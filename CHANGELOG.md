@@ -2,7 +2,7 @@
 
 ## 0.1.0-alpha.9 (development; CI pending)
 
-- Added opt-in persistence groundwork: Windows DPAPI CurrentUser, restrictive directory ACL, exclusive lock, bounded atomic replacement and interrupted transaction refusal. Live registry remains RAM-only in this increment.
+- Added opt-in persistence groundwork: Windows DPAPI CurrentUser, restrictive directory ACL, exclusive lock, bounded atomic replacement and interrupted transaction refusal. Added opt-in standalone live registry integration, explicit storage status and revoke-all, with registry reopen/failure fixtures. Managed mode remains ephemeral.
 - Alpha.8 strict grant codec CI passed.
 
 ## 0.1.0-alpha.8 (QR CI verified; grant codec CI in progress; hardware acceptance pending)

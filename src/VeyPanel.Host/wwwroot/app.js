@@ -218,8 +218,13 @@ function clearIssued() {
 async function initializeOwner() {
   if (!token || location.origin !== 'http://127.0.0.1:47860') return;
   try {
-    renderDevices(await ownerRequest('GET'));
+    const state = await ownerRequest('GET', '/status');
+    $('device-persistence').textContent = state.storage === 'protected'
+      ? 'Protected Windows store · reader grants survive Host restart until expiration.'
+      : state.storage === 'unavailable' ? 'Protected store unavailable · reader access disabled.'
+      : 'Ephemeral reader grants · Host restart invalidates all grants.';
     $('device-owner').hidden = false;
+    renderDevices(await ownerRequest('GET'));
     await initializeInvitations();
   } catch { return; }
   $('device-refresh').addEventListener('click', () => ownerAction(async () => {
@@ -228,6 +233,12 @@ async function initializeOwner() {
     $('device-status').textContent = 'Updated';
   }));
   $('device-clear').addEventListener('click', clearIssued);
+  $('device-revoke-all').addEventListener('click', () => ownerAction(async () => {
+    if (!window.confirm('Revoke every currently issued reader token? Outstanding invitations are separate.')) return;
+    await ownerRequest('DELETE');
+    clearIssued(); renderDevices(await ownerRequest('GET'));
+    $('device-status').textContent = 'All reader grants revoked';
+  }));
   $('device-create').addEventListener('click', () => ownerAction(async () => {
     const name = $('device-name').value.trim();
     if (!name || Array.from(name).some(c => c.charCodeAt(0) < 32 || c.charCodeAt(0) === 127)) {

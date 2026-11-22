@@ -57,6 +57,7 @@ if (args.Contains("--help") || args.Contains("-h"))
     Console.WriteLine("VeyPanel Host: local dashboard http://127.0.0.1:47860.\n" +
         "Optional LAN: set VEYPANEL_LAN_IP, VEYPANEL_PFX and VEYPANEL_PFX_PASSWORD.\n" +
         "LAN requires a certificate trusted by the client. Access token is generated on startup.\n" +
+        "Standalone opt-in Windows grant persistence: VEYPANEL_PERSIST_GRANTS=1.\n" +
         "Apollo inventory: --apollo-inspect <verified-certificate-sha256>\n" +
         "Apollo pairing: --apollo-pair <verified-certificate-sha256>\n" +
         "Desktop source inventory: --display-inventory\n" +
@@ -70,7 +71,27 @@ var lan = managed ? null : Environment.GetEnvironmentVariable("VEYPANEL_LAN_IP")
 var pfx = Environment.GetEnvironmentVariable("VEYPANEL_PFX");
 var password = Environment.GetEnvironmentVariable("VEYPANEL_PFX_PASSWORD");
 var token = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
-var registry = new DeviceRegistry(token);
+IGrantStore? persisted = null;
+DeviceRegistry registry;
+try
+{
+    // Managed Desktop remains ephemeral; standalone persistence is an explicit operator opt-in.
+    if (!managed && Environment.GetEnvironmentVariable("VEYPANEL_PERSIST_GRANTS") == "1")
+    {
+        if (!OperatingSystem.IsWindows()) throw new PlatformNotSupportedException();
+        persisted = ProtectedGrantStore.OpenDefault();
+    }
+    registry = new DeviceRegistry(token, persisted);
+}
+catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or CryptographicException
+    or InvalidOperationException or PlatformNotSupportedException or System.ComponentModel.Win32Exception)
+{
+    persisted?.Dispose();
+    Console.Error.WriteLine("Protected reader store cannot be opened. Host not started; inspect the local store. No automatic recovery.");
+    Environment.ExitCode = 1;
+    return;
+}
+using var storeLifetime = persisted;
 var json = new JsonSerializerOptions(JsonSerializerDefaults.Web);
 
 builder.WebHost.ConfigureKestrel(kestrel =>
@@ -125,7 +146,12 @@ app.Use(async (context, next) =>
         else if (context.Request.Path != "/api/v1/telemetry" || !HttpMethods.IsGet(context.Request.Method))
         { context.Response.StatusCode = 403; return; }
     }
-    await next();
+    try { await next(); }
+    catch (GrantStoreUnavailableException)
+    {
+        if (!context.Response.HasStarted) { context.Response.StatusCode = 503; }
+        else context.Abort();
+    }
 });
 app.UseDefaultFiles();
 app.UseStaticFiles();
@@ -135,7 +161,9 @@ app.MapGet("/api/v1/telemetry/ws", (HttpContext context, Telemetry telemetry, IH
 DeviceEndpoints.Map(app, registry, lan);
 enroll.Map(app);
 Console.WriteLine($"Local dashboard: http://127.0.0.1:47860/#token={token}");
-if (!string.IsNullOrWhiteSpace(lan))
+if (!string.IsNullOrWhiteSpace(lan) && persisted is not null)
+    Console.WriteLine("LAN reader enrollment: use the local owner dashboard (protected grants enabled).");
+else if (!string.IsNullOrWhiteSpace(lan))
 {
     var initial = registry.Issue("Initial LAN access", DateTimeOffset.UtcNow)!;
     Console.WriteLine($"LAN dashboard: https://{lan}:47861/#token={initial.Token}");

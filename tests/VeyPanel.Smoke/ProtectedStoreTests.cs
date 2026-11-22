@@ -35,6 +35,8 @@ internal static class ProtectedStoreTests
             }
             using (var store = new ProtectedGrantStore(dir))
                 Check(store.Load(now).Length == 0, "Empty replacement survives reopen");
+            RegistryRestart(dir, now);
+            FailureClosesReaders(now);
             File.WriteAllBytes(Path.Combine(dir, "grants.dpapi"), [1, 2, 3]);
             using (var store = new ProtectedGrantStore(dir))
                 Check(Reject(() => store.Load(now)), "Corrupted protected data rejected");
@@ -44,6 +46,58 @@ internal static class ProtectedStoreTests
         }
         catch (Exception ex) { Console.Error.WriteLine($"FAIL: protected grant store ({ex.GetType().Name})"); return 1; }
         finally { if (Directory.Exists(dir)) Directory.Delete(dir, true); }
+    }
+
+    [SupportedOSPlatform("windows")]
+    private static void RegistryRestart(string dir, DateTimeOffset now)
+    {
+        IssuedDevice issued;
+        using (var store = new ProtectedGrantStore(dir))
+        {
+            var registry = new DeviceRegistry(new string('B', 64), store);
+            issued = registry.Issue("Tablet", now)!;
+        }
+        var token = Encoding.ASCII.GetBytes(issued.Token);
+        using (var store = new ProtectedGrantStore(dir))
+        {
+            var registry = new DeviceRegistry(new string('C', 64), store);
+            Check(registry.Authenticate(token, false, now) is { Owner: false }, "Reader survives registry reopen");
+            Check(registry.Authenticate(Encoding.ASCII.GetBytes(new string('B', 64)), true, now) is null, "Old owner not persisted");
+            Check(registry.Revoke(issued.Device.Id), "Protected revocation committed");
+        }
+        using (var store = new ProtectedGrantStore(dir))
+        {
+            var registry = new DeviceRegistry(new string('D', 64), store);
+            Check(registry.Authenticate(token, false, now) is null && registry.List(now).Length == 0, "Revocation survives reopen");
+            registry.Issue("One", now);
+            registry.Issue("Two", now);
+            registry.RevokeAll();
+        }
+        using (var store = new ProtectedGrantStore(dir))
+            Check(store.Load(now).Length == 0, "Revoke-all survives reopen");
+    }
+
+    private static void FailureClosesReaders(DateTimeOffset now)
+    {
+        using var store = new FailingStore();
+        var registry = new DeviceRegistry(new string('B', 64), store);
+        var issued = registry.Issue("Fixture", now)!;
+        var token = Encoding.ASCII.GetBytes(issued.Token);
+        var grant = registry.Authenticate(token, false, now)!;
+        store.Fail = true;
+        bool rejected = false;
+        try { registry.Revoke(issued.Device.Id); } catch (GrantStoreUnavailableException) { rejected = true; }
+        Check(rejected && registry.StorageStatus == "unavailable" && !registry.Active(grant, now)
+            && registry.Authenticate(token, false, now) is null, "Write failure disables active reader grants");
+    }
+
+    private sealed class FailingStore : IGrantStore
+    {
+        public bool Fail;
+        public StoredGrant[] Load(DateTimeOffset now) => [];
+        public void Save(StoredGrant[] grants, DateTimeOffset now)
+        { if (Fail) throw new IOException("Fixture write failure"); }
+        public void Dispose() { }
     }
 
     private static bool Reject(Action action)
