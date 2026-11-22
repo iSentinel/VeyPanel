@@ -22,6 +22,10 @@ final class ReaderSession {
         return new ReaderSession(URI.create("https://" + m.group(1) + ":47861/api/v1/telemetry"), m.group(2));
     }
 
+    boolean sameAccess(ReaderSession other) {
+        return other != null && endpoint.equals(other.endpoint) && token.equals(other.token);
+    }
+
     String websocketUrl() {
         return "wss://" + endpoint.getHost() + ":47861/api/v1/telemetry/ws";
     }

@@ -35,6 +35,8 @@ jobs:
             echo 'software=true' >> "$GITHUB_OUTPUT"
             echo 'KVM unavailable; run software emulator (no test skipped)'
           fi
+      - name: Validate runtime script syntax
+        run: bash -n android/tests/run-runtime-smoke.sh
       - name: Build isolated test packages
         working-directory: android
         run: gradle --no-daemon :app:assembleDebug :app:assembleDebugAndroidTest

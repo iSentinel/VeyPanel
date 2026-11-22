@@ -93,7 +93,7 @@ public final class MainActivity extends Activity {
         remember.setOnCheckedChangeListener((v, checked) -> {
             if (changingRemember) return;
             if (!checked) { savePending = false; deleteCredential(); }
-            else if (session != null && savedReader == null) savePending = true;
+            else if (session != null && !session.sameAccess(savedReader == null ? null : savedReader.session)) savePending = true;
         });
         Button connect = new Button(this); connect.setText("Connect");
         connect.setOnClickListener(v -> connect()); controls.addView(connect);
@@ -142,17 +142,24 @@ public final class MainActivity extends Activity {
 
     private void connect() {
         if (storageBusy || storageFault) { credentialStatus.setText("Complete credential operation or Forget before connecting."); return; }
-        stopPoll(); session = null; clearClaim(); savePending = false;
-        hideOnSample = true;
-        deleteCredential();
         String link = input.getText().toString();
         input.setText("");
-        try {
-            session = ReaderSession.parse(link); savePending = remember.isChecked();
-            offline("Connecting…"); main.post(poll); return;
-        } catch (IllegalArgumentException ignored) { }
-        try { startEnrollment(InvitationLink.parse(link)); }
-        catch (IllegalArgumentException ex) { offline("Use a private IPv4 HTTPS reader or invitation link on port 47861."); }
+        ReaderSession reader = null;
+        InvitationLink invitation = null;
+        try { reader = ReaderSession.parse(link); }
+        catch (IllegalArgumentException ignored) {
+            try { invitation = InvitationLink.parse(link); }
+            catch (IllegalArgumentException ex) {
+                credentialStatus.setText("Invalid link. Existing session and saved access unchanged.");
+                return;
+            }
+        }
+        stopPoll(); session = null; clearClaim(); savePending = false;
+        hideOnSample = true;
+        if (reader != null) {
+            session = reader; savePending = remember.isChecked() && !reader.sameAccess(savedReader == null ? null : savedReader.session);
+            offline("Connecting…"); main.post(poll);
+        } else startEnrollment(invitation);
     }
 
     private void clearClaim() {
@@ -267,7 +274,8 @@ public final class MainActivity extends Activity {
             if (savePending && remember.isChecked() && !storageBusy && !storageFault) persistCurrent();
         }
         if (terminal) {
-            if ("Access expired or revoked".equals(error)) deleteCredential();
+            if ("Access expired or revoked".equals(error) && session != null
+                && savedReader != null && session.sameAccess(savedReader.session)) deleteCredential();
             session = null; savePending = false; return;
         }
         main.postDelayed(poll, 1000);

@@ -1,5 +1,9 @@
 # Changelog
 
+## Android 0.1.0-alpha.13 (development; CI pending)
+
+- Fixed destructive invalid-link handling, scoped saved access invalidation to matching reader, and corrected runtime shell result gate.
+
 ## Android 0.1.0-alpha.12 (WSS build CI PASS; responsive UI APK/lint PASS; full CI pending; runtime in progress)
 
 - Added WSS-first foreground telemetry, REST fallback and bounded retry.
