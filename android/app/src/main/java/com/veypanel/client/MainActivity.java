@@ -17,6 +17,9 @@ public final class MainActivity extends Activity {
     private final Handler main = new Handler(Looper.getMainLooper());
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
     private ReaderSession session;
+    private EnrollmentClient.Claim claim;
+    private Button approve;
+    private boolean enrollmentBusy;
     private EditText input;
     private TextView status, values;
     private Future<?> request;
@@ -47,7 +50,7 @@ public final class MainActivity extends Activity {
         title.setText("VeyPanel · Monitor"); title.setTextSize(28);
         column.addView(title);
         input = new EditText(this);
-        input.setHint("Paste private HTTPS reader link");
+        input.setHint("Paste private reader or invitation link");
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
             | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         input.setSingleLine(true); input.setSaveEnabled(false);
@@ -55,8 +58,11 @@ public final class MainActivity extends Activity {
         column.addView(input);
         Button connect = new Button(this); connect.setText("Connect");
         connect.setOnClickListener(v -> connect()); column.addView(connect);
+        approve = new Button(this); approve.setText("Check owner approval");
+        approve.setVisibility(android.view.View.GONE);
+        approve.setOnClickListener(v -> finishEnrollment()); column.addView(approve);
         Button disconnect = new Button(this); disconnect.setText("Disconnect");
-        disconnect.setOnClickListener(v -> { stopPoll(); session = null; input.setText(""); offline("Disconnected"); });
+        disconnect.setOnClickListener(v -> { stopPoll(); session = null; clearClaim(); input.setText(""); offline("Disconnected"); });
         column.addView(disconnect);
         status = new TextView(this); status.setTextSize(16); column.addView(status);
         values = new TextView(this); values.setTextSize(22); values.setPadding(0,pad,0,0);
@@ -65,11 +71,68 @@ public final class MainActivity extends Activity {
     }
 
     private void connect() {
-        stopPoll(); session = null;
-        try { session = ReaderSession.parse(input.getText().toString()); }
-        catch (IllegalArgumentException ex) { offline("Use a private IPv4 HTTPS reader link on port 47861."); }
-        finally { input.setText(""); }
-        if (session != null) { offline("Connecting…"); main.post(poll); }
+        stopPoll(); session = null; clearClaim();
+        String link = input.getText().toString();
+        input.setText("");
+        try {
+            session = ReaderSession.parse(link);
+            offline("Connecting…"); main.post(poll); return;
+        } catch (IllegalArgumentException ignored) { }
+        try { startEnrollment(InvitationLink.parse(link)); }
+        catch (IllegalArgumentException ex) { offline("Use a private IPv4 HTTPS reader or invitation link on port 47861."); }
+    }
+
+    private void clearClaim() {
+        claim = null; enrollmentBusy = false;
+        approve.setVisibility(android.view.View.GONE); approve.setEnabled(true);
+    }
+
+    private void startEnrollment(InvitationLink link) {
+        int current = generation;
+        enrollmentBusy = true;
+        offline("Claiming invitation…");
+        request = worker.submit(() -> {
+            try {
+                EnrollmentClient.Claim result = EnrollmentClient.claim(link);
+                main.post(() -> {
+                    if (!resumed || current != generation) return;
+                    claim = result; enrollmentBusy = false; showClaim();
+                });
+            } catch (Exception ex) { main.post(() -> enrollmentError(current)); }
+        });
+    }
+
+    private void showClaim() {
+        if (claim == null || !claim.expires.isAfter(java.time.Instant.now())) {
+            clearClaim(); offline("Invitation expired. Request a new link."); return;
+        }
+        offline("Compare code " + claim.code + " with the PC owner. Then check approval.");
+        approve.setVisibility(android.view.View.VISIBLE);
+        approve.setEnabled(!enrollmentBusy);
+    }
+
+    private void finishEnrollment() {
+        if (!resumed || enrollmentBusy || claim == null) return;
+        if (!claim.expires.isAfter(java.time.Instant.now())) { showClaim(); return; }
+        int current = generation;
+        EnrollmentClient.Claim chosen = claim;
+        enrollmentBusy = true; approve.setEnabled(false);
+        request = worker.submit(() -> {
+            try {
+                ReaderSession result = EnrollmentClient.finish(chosen);
+                main.post(() -> {
+                    if (!resumed || current != generation) return;
+                    enrollmentBusy = false;
+                    if (result == null) { showClaim(); return; }
+                    clearClaim(); session = result; offline("Enrolled. Connecting…"); main.post(poll);
+                });
+            } catch (Exception ex) { main.post(() -> enrollmentError(current)); }
+        });
+    }
+
+    private void enrollmentError(int current) {
+        if (!resumed || current != generation) return;
+        clearClaim(); offline("Enrollment failed. Verify HTTPS trust and request a new invitation.");
     }
 
     private void pollOnce() {
@@ -119,11 +182,13 @@ public final class MainActivity extends Activity {
 
     private void stopPoll() {
         generation++;
+        // A claim/finish interrupted during an in-flight exchange is ambiguous; do not replay it.
+        if (enrollmentBusy) clearClaim();
         main.removeCallbacks(poll);
         main.removeCallbacks(expire);
         if (request != null) request.cancel(true);
     }
-    @Override protected void onResume() { super.onResume(); resumed = true; if (session != null) main.post(poll); }
+    @Override protected void onResume() { super.onResume(); resumed = true; if (session != null) main.post(poll); else if (claim != null) showClaim(); }
     @Override protected void onPause() { resumed = false; stopPoll(); offline("Paused"); super.onPause(); }
-    @Override protected void onDestroy() { stopPoll(); session = null; worker.shutdownNow(); super.onDestroy(); }
+    @Override protected void onDestroy() { stopPoll(); session = null; clearClaim(); worker.shutdownNow(); super.onDestroy(); }
 }

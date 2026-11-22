@@ -5,6 +5,7 @@
 - Added history range selector, codec/disk charts and authenticated CSV export.
 - Added initial native Android Monitor-only app with strict private HTTPS link validation, REST polling and debug APK CI.
 - Fixed CI SDK provisioning after initial runner lacked sdkmanager; native JVM fixtures passed, APK build pending.
+- Added native pasted invitation flow with explicit code comparison and reader-only handoff; camera scanning and protected storage pending.
 - Alpha.9 final ACL and reparse fixtures and full CI passed.
 
 ## 0.1.0-alpha.9 (protected restart CI PASS; history CI PASS; ACL fixtures PASS; remaining CI in progress; physical acceptance pending)

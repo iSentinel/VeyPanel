@@ -45,7 +45,8 @@
 - [x] Extend history charts with codec/disk and time range, authenticated CSV export ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45067318280); browser acceptance pending).
 - [ ] 0.4: physical crash/power-loss acceptance.
 - [x] Add initial native Android Monitor-only Java app, strict LAN/TLS policy, REST polling, JVM fixtures and APK CI (fixtures PASS; initial SDK setup failed; corrected CI pending; real device acceptance pending).
-- [ ] 0.5: Android QR enrollment, protected credentials, WSS and native video.
+- [x] Add native pasted two-step invitation flow and strict enrollment-origin JVM fixtures (CI pending; live native protocol/device test pending).
+- [ ] 0.5: Android QR camera scanning, protected credentials, WSS and native video.
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.
 - [ ] 0.7: overlay, alerts, history and diagnostics.
 - [ ] 0.8: reconnection, sleep/wake and USB network transport.

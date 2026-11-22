@@ -21,6 +21,17 @@ public final class ClientPolicySmoke {
         check(SampleRules.percent(0) == 0 && SampleRules.percent(100) == 100 && SampleRules.percent(null) == null
             && SampleRules.percent("0") == null && SampleRules.percent(Double.NaN) == null && SampleRules.percent(101) == null
             && SampleRules.nonnegative(-1) == null && SampleRules.nonnegative(1024) == 1024, "Null and numeric validation");
+        String invite = "https://192.168.1.10:47861/enroll.html#id=11111111-2222-3333-4444-555555555555&secret=" + token;
+        InvitationLink link = InvitationLink.parse(invite);
+        check(link.endpoint(false).toString().equals("https://192.168.1.10:47861/api/v1/enroll/claim")
+            && link.endpoint(true).toString().endsWith("/api/v1/enroll/finish")
+            && link.reader(token).endpoint.equals(session.endpoint), "Invitation origin and fixed endpoints");
+        for (String unsafe : new String[] {invite.replace("https:", "http:"), invite.replace("192.168.1.10", "8.8.8.8"),
+            invite.replace("enroll.html", "other.html"), invite.replace("#id=", "?id="), invite + "&x=1"}) {
+            boolean rejected = false;
+            try { InvitationLink.parse(unsafe); } catch (IllegalArgumentException ex) { rejected = true; }
+            check(rejected, "Unsafe invitation rejected");
+        }
         System.out.println("PASS: native client policy fixtures");
     }
     private static void reject(String link) {

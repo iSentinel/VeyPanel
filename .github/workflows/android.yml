@@ -20,7 +20,7 @@ jobs:
       - name: Native client policy fixtures
         run: |
           mkdir -p /tmp/veypanel-client-tests
-          javac -d /tmp/veypanel-client-tests android/app/src/main/java/com/veypanel/client/{ReaderSession,SampleRules}.java android/tests/ClientPolicySmoke.java
+          javac -d /tmp/veypanel-client-tests android/app/src/main/java/com/veypanel/client/{ReaderSession,SampleRules,InvitationLink}.java android/tests/ClientPolicySmoke.java
           java -cp /tmp/veypanel-client-tests com.veypanel.client.ClientPolicySmoke
       - uses: gradle/actions/setup-gradle@v4
         with:
