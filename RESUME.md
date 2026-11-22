@@ -18,3 +18,5 @@
 4. Full dependency license/security and original project license decisions, release signing, real storage power loss/thermal acceptance pending.
 
 Alpha.13: full alpha.12 Android and Windows builds 45082029020/45082029025 PASS; software-fallback emulator run 45082028995 emitted all three PASS markers and INSTRUMENTATION_CODE -1, then shell syntax error. Rewrote script, added bash -n preflight. Invalid pasted link no longer stops or deletes previous access; valid new access replaces saved grant only after fresh authorized sample and opt-in; unrelated 401/403 does not delete previous saved grant. JVM identity fixture; UI lifecycle acceptance pending. New CI pending.
+
+Alpha.13 Android local history: bounded foreground observation ring, 900 samples/15 minutes, duplicate and clock-reset handling, N/A gaps, CPU/RAM/GPU, codec and disk charts with 1/5/15-minute range. Clear on stop/pause/switch/terminal denial. No disk or server history fetch. Added instrumented duplicate/null/expiry/capacity/reset/clear fixture. CI pending; visual acceptance pending.

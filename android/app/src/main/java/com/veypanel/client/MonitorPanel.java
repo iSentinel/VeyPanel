@@ -16,6 +16,10 @@ final class MonitorPanel extends LinearLayout {
     private final TextView details;
     private int columns = 1;
     private TelemetrySample latest;
+    private final MonitorHistory history = new MonitorHistory();
+    private final MonitorChart utilization, codecs, io;
+    private final TextView historyStatus;
+    private int range = 900;
 
     MonitorPanel(Context context) {
         super(context);
@@ -23,7 +27,17 @@ final class MonitorPanel extends LinearLayout {
         grid = new LinearLayout(context); grid.setOrientation(VERTICAL); addView(grid);
         details = new TextView(context);
         details.setTextSize(16); details.setPadding(dp(8),dp(12),dp(8),dp(12)); addView(details);
-        rebuild();
+        historyStatus = new TextView(context); historyStatus.setTextSize(14); addView(historyStatus);
+        android.widget.RadioGroup ranges = new android.widget.RadioGroup(context); ranges.setOrientation(HORIZONTAL);
+        for (int seconds : new int[]{60,300,900}) {
+            android.widget.RadioButton b = new android.widget.RadioButton(context); b.setId(seconds); b.setText(seconds/60 + " min"); ranges.addView(b);
+        }
+        ranges.check(900); addView(ranges);
+        utilization = chart("CPU (blue) · RAM (purple) · GPU (green)",0,3);
+        codecs = chart("Encode (orange) · Decode (cyan)",3,2);
+        io = chart("Disk read (blue) · Disk write (purple) · MiB/s",5,2);
+        ranges.setOnCheckedChangeListener((group,id) -> { range=id; refreshHistory(); });
+        rebuild(); refreshHistory();
     }
 
     @Override protected void onSizeChanged(int w, int h, int ow, int oh) {
@@ -60,10 +74,24 @@ final class MonitorPanel extends LinearLayout {
         render(latest);
     }
 
+    private MonitorChart chart(String title,int first,int count) {
+        TextView label = new TextView(getContext()); label.setText(title); label.setTextSize(14); addView(label);
+        MonitorChart view = new MonitorChart(getContext(),first,count,title);
+        addView(view,new LayoutParams(LayoutParams.MATCH_PARENT,dp(140))); return view;
+    }
+    void observe(TelemetrySample sample) { history.add(sample); refreshHistory(); }
+    void clearHistory() { history.clear(); refreshHistory(); }
+    private void refreshHistory() {
+        java.time.Instant now = java.time.Instant.now();
+        MonitorHistory.Point[] data = history.read(now);
+        utilization.update(data,now,range); codecs.update(data,now,range); io.update(data,now,range);
+        historyStatus.setText("Foreground history · " + data.length + " observed samples · RAM only");
+    }
     void render(TelemetrySample sample) {
         latest = sample;
         if (sample == null) {
             for (int i=0;i<fields.length;i++) metric(i,"N/A");
+            refreshHistory();
             details.setText("Network interfaces · N/A\nVolumes · N/A\nCPU / GPU sensors · N/A\nStorage health · N/A");
             return;
         }

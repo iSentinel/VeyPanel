@@ -2,6 +2,7 @@
 
 ## Android 0.1.0-alpha.13 (development; CI pending)
 
+- Added Android foreground history and three responsive graphs.
 - Fixed destructive invalid-link handling, scoped saved access invalidation to matching reader, and corrected runtime shell result gate.
 
 ## Android 0.1.0-alpha.12 (WSS build CI PASS; responsive UI APK/lint PASS; full CI pending; runtime in progress)

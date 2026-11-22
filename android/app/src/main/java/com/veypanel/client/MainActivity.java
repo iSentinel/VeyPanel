@@ -276,7 +276,7 @@ public final class MainActivity extends Activity {
         if (terminal) {
             if ("Access expired or revoked".equals(error) && session != null
                 && savedReader != null && session.sameAccess(savedReader.session)) deleteCredential();
-            session = null; savePending = false; return;
+            session = null; savePending = false; monitor.clearHistory(); return;
         }
         main.postDelayed(poll, 1000);
     }
@@ -358,7 +358,7 @@ public final class MainActivity extends Activity {
 
     private void showSample(TelemetrySample s) {
         status.setText("Connected · " + (stream == null ? "HTTPS REST" : "WSS") + " · " + s.stamp);
-        monitor.render(s);
+        monitor.render(s); monitor.observe(s);
         if (hideOnSample) { controls.setVisibility(android.view.View.GONE); hideOnSample = false; }
         main.removeCallbacks(expire);
         main.postDelayed(expire, 5000);
@@ -374,6 +374,7 @@ public final class MainActivity extends Activity {
 
     private void stopPoll() {
         generation++;
+        monitor.clearHistory();
         if (stream != null) { stream.close(); stream = null; }
         nextStreamAttempt = 0;
         // A claim/finish interrupted during an in-flight exchange is ambiguous; do not replay it.

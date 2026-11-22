@@ -8,6 +8,7 @@ adb -s "$serial" shell am instrument -w -r -e isolated true com.veypanel.client.
 grep -Fq 'PASS: AndroidKeyStore actual encryption' runtime-smoke.log
 grep -Fq 'PASS: synthetic offline QR decode' runtime-smoke.log
 grep -Fq 'PASS: Android extended telemetry fixture' runtime-smoke.log
+grep -Fq 'PASS: Android bounded history fixture' runtime-smoke.log
 grep -Eq '^INSTRUMENTATION_CODE: -1[[:space:]]*$' runtime-smoke.log
 if grep -Fq 'FAIL:' runtime-smoke.log; then exit 1; fi
 echo 'PASS: runtime result gate'

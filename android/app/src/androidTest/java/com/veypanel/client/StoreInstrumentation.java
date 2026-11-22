@@ -23,7 +23,8 @@ public final class StoreInstrumentation extends Instrumentation {
             runStore();
             runQr();
             runMetrics();
-            report.putString("stream", "\nPASS: AndroidKeyStore actual encryption, reopen, fresh ciphertext, corruption, key removal and Forget\nPASS: synthetic offline QR decode\nPASS: Android extended telemetry fixture\n");
+            runHistory();
+            report.putString("stream", "\nPASS: AndroidKeyStore actual encryption, reopen, fresh ciphertext, corruption, key removal and Forget\nPASS: synthetic offline QR decode\nPASS: Android extended telemetry fixture\nPASS: Android bounded history fixture\n");
             finish(Activity.RESULT_OK, report);
         } catch (Exception ex) {
             report.putString("stream", "\nFAIL: AndroidKeyStore smoke (" + ex.getClass().getSimpleName() + ")\n");
@@ -85,6 +86,21 @@ public final class StoreInstrumentation extends Instrumentation {
             && sample.writeIops == null && !sample.details.contains("STALE_TEST"), "Extended resource data");
         root.put("memoryAvailableBytes",2048);
         check(TelemetrySample.parse(root.toString()).used == null, "Invalid capacity rejected");
+    }
+    private static void runHistory() throws Exception {
+        MonitorHistory history = new MonitorHistory();
+        Instant now = Instant.now();
+        TelemetrySample first = TelemetrySample.parse(new org.json.JSONObject().put("timestampUtc",now.toString()).put("cpuPercent",0).toString());
+        history.add(first); history.add(first);
+        check(history.read(now).length==1 && history.read(now)[0].series(0)==0 && history.read(now)[0].series(1)==null,"History duplicate and null");
+        check(history.read(now.plusSeconds(901)).length==0,"History expiry");
+        for(int i=0;i<1000;i++) {
+            TelemetrySample sample=TelemetrySample.parse(new org.json.JSONObject().put("timestampUtc",now.plusNanos(i*1000L).toString()).toString());
+            history.add(sample);
+        }
+        check(history.read(now).length==900,"History capacity");
+        history.add(first); check(history.read(now).length==1,"Clock reset");
+        history.clear(); check(history.read(now).length==0,"History clear");
     }
     private static boolean reject(CredentialStore store) {
         try { store.load(); return false; } catch (Exception ex) { return true; }
