@@ -17,3 +17,5 @@ Next: full DisplayConfig read-only active-path capture and recovery design; vali
 Alpha.3 source: added CCD active-path/mode capture and recovery design, no SetDisplayConfig calls. Eight new tests cover ABI, index decoding, validation, JSON and live query. CI pending. Next: verify tests, implement stable target identity and explicit local pairing. Latest verified artifact remains alpha.2 until CI confirms.
 
 Alpha.3 identity increment: added read-only DisplayConfigGetDeviceInfo source and monitor identifiers, EDID availability, connector metadata and conservative same-session matching policy. Identity failures remain visible, not fabricated. Added ABI and recovery-policy tests. No restore commands or writes. CI pending. Next: verify CI and implement local PIN pairing with explicit operator approval; no topology mutation until real hardware recovery acceptance.
+
+Alpha.3 PIN increment: added explicit local operator-confirmed pairing, validated ASCII PIN/device name, no permission edits or automatic retry; five more Apollo mock tests. Live device acceptance pending. Next: verify all CI, prepare WPF UI and safe topology validation.

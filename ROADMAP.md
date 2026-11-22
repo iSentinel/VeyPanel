@@ -12,7 +12,8 @@
 - [x] Implement read-only Windows desktop-source inventory and JSON diagnostic baseline ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45046953751); physical validation pending).
 - [x] Implement read-only CCD active-path/mode capture with virtual-mode indices, structural validation and recovery design (CI pending).
 - [x] Add CCD target names/device paths and conservative same-session identity eligibility checks (CI pending).
-- [ ] 0.2: WPF tray host, safe topology validation/rollback, PIN pairing.
+- [x] Implement explicit local PIN pairing CLI and five additional mock tests (CI pending; live pairing pending).
+- [ ] 0.2: WPF tray host, safe topology validation/rollback and live PIN acceptance.
 - [ ] 0.3: GPU/encoder, SSD, network; sensor capability discovery and N/A semantics; WebSocket.
 - [ ] 0.4: secure device enrollment, per-device revocation, QR, history.
 - [ ] 0.5: Android client, native video and telemetry.

@@ -32,7 +32,7 @@ if (args.Contains("--display-inventory"))
     return;
 }
 
-if (args.Contains("--apollo-inspect"))
+if (args.Contains("--apollo-inspect") || args.Contains("--apollo-pair"))
 {
     Environment.ExitCode = await ApolloInspectCommand.RunAsync(args);
     return;
@@ -44,6 +44,7 @@ if (args.Contains("--help") || args.Contains("-h"))
         "Optional LAN: set VEYPANEL_LAN_IP, VEYPANEL_PFX and VEYPANEL_PFX_PASSWORD.\n" +
         "LAN requires a certificate trusted by the client. Access token is generated on startup.\n" +
         "Apollo inventory: --apollo-inspect <verified-certificate-sha256>\n" +
+        "Apollo pairing: --apollo-pair <verified-certificate-sha256>\n" +
         "Desktop source inventory: --display-inventory\n" +
         "Active display topology: --display-topology");
     return;

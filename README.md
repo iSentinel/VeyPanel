@@ -68,3 +68,13 @@ This is a diagnostic baseline, not a full DisplayConfig topology backup or an au
 ```
 
 Captures active paths and mode tables with Windows 11 virtual-mode and virtual-refresh awareness. Supports split mode indices and clone groups. Reports source geometry, target timing, desktop-image region and path flags. Nonzero exit indicates the snapshot is not complete. Adapter LUIDs are session-local, not persistent monitor identities. Source names, monitor paths and connector metadata are included when available; redact hardware identifiers before sharing JSON. Missing identity blocks the internal candidate eligibility policy. No SetDisplayConfig or rollback writes are implemented. See [recovery design](docs/display-recovery.md).
+
+## Explicit local Apollo pairing (experimental)
+
+Start the pairing flow on Moonlight or Artemis on a device you physically control. Verify the host certificate fingerprint independently, then run:
+
+```powershell
+.\VeyPanel.Host.exe --apollo-pair YOUR_VERIFIED_64_HEX_SHA256
+```
+
+Type PAIR, enter Apollo credentials, the device name and the four-digit PIN shown on the tablet. The password and PIN are hidden and not saved; the command makes one pairing request, without automatic retry or permission changes. A successful API response means Apollo accepted the PIN, not that the complete device pairing or streaming works. Verify the device in Apollo and review its permissions (especially the first device). Do not pair untrusted devices. Live acceptance pending; CI uses mock endpoints only.

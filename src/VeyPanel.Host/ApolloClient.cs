@@ -81,6 +81,30 @@ internal sealed class ApolloClient : IDisposable
         return new ApolloInventory(ReadString(root, "host_name"), names, paired.GetArrayLength());
     }
 
+    internal static bool ValidPairingInput(string pin, string name) =>
+        pin.Length == 4 && pin.All(char.IsAsciiDigit)
+        && name.Length is >= 1 and <= 64 && name == name.Trim()
+        && !name.Any(char.IsControl);
+
+    internal async Task<bool> PairAsync(string pin, string name, CancellationToken ct = default)
+    {
+        if (!_authenticated) throw new InvalidOperationException("Login required.");
+        if (!ValidPairingInput(pin, name)) throw new FormatException("Invalid pairing input.");
+        using var response = await _http.PostAsJsonAsync("api/pin", new { pin, name }, ct);
+        if (response.StatusCode != HttpStatusCode.OK)
+        {
+            if (response.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden)
+                _authenticated = false;
+            throw new HttpRequestException("Apollo pairing request failed.", null, response.StatusCode);
+        }
+        using var json = JsonDocument.Parse(await response.Content.ReadAsByteArrayAsync(ct));
+        if (json.RootElement.ValueKind != JsonValueKind.Object
+            || !json.RootElement.TryGetProperty("status", out var status)
+            || status.ValueKind is not (JsonValueKind.True or JsonValueKind.False))
+            throw new InvalidDataException("Unexpected pairing response.");
+        return status.GetBoolean();
+    }
+
     private async Task<JsonDocument> GetJsonAsync(string path, CancellationToken ct)
     {
         using var response = await _http.GetAsync(path, ct);

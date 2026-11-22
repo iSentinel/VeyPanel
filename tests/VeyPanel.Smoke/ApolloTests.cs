@@ -18,7 +18,12 @@ internal static class ApolloTests
             ("Apollo missing cookie rejected", MissingCookie),
             ("Apollo redirect rejected", RedirectRejected),
             ("Apollo malformed inventory rejected", MalformedInventory),
-            ("Apollo expired session rejected", ExpiredSession)
+            ("Apollo expired session rejected", ExpiredSession),
+            ("Apollo PIN accepted and payload verified", PairAccepted),
+            ("Apollo PIN rejected", PairRejected),
+            ("Apollo invalid PIN/name blocked", PairInvalid),
+            ("Apollo pairing requires login", PairUnauthenticated),
+            ("Apollo malformed pairing status rejected", PairMalformed)
         })
         {
             bool pass;
@@ -26,7 +31,7 @@ internal static class ApolloTests
             Console.WriteLine($"{(pass ? "PASS" : "FAIL")} {name}");
             if (!pass) failed++;
         }
-        Console.WriteLine($"{9 - failed}/9 Apollo tests passed");
+        Console.WriteLine($"{14 - failed}/14 Apollo tests passed");
         return failed;
     }
 
@@ -101,6 +106,50 @@ internal static class ApolloTests
             && await Reject<InvalidOperationException>(() => client.InspectAsync());
     }
 
+    private static async Task<bool> PairAccepted()
+    {
+        using var handler = new FakeHandler(Login(), Json(new { status = true }));
+        using var client = ApolloClient.ForTest(handler);
+        await client.LoginAsync("test", "example");
+        return await client.PairAsync("0123", "Test Tablet")
+            && handler.Paths.SequenceEqual(new[] { "POST /api/login", "POST /api/pin" })
+            && handler.PairPayloadVerified;
+    }
+
+    private static async Task<bool> PairRejected()
+    {
+        using var client = ApolloClient.ForTest(new FakeHandler(Login(), Json(new { status = false })));
+        await client.LoginAsync("test", "example");
+        return !await client.PairAsync("0123", "Test Tablet");
+    }
+
+    private static async Task<bool> PairInvalid()
+    {
+        using var handler = new FakeHandler(Login());
+        using var client = ApolloClient.ForTest(handler);
+        await client.LoginAsync("test", "example");
+        return await Reject<FormatException>(() => client.PairAsync("٠١٢٣", "Tablet"))
+            && await Reject<FormatException>(() => client.PairAsync("0123", ""))
+            && await Reject<FormatException>(() => client.PairAsync("0123", "x\n"))
+            && !ApolloClient.ValidPairingInput("12345", "Tablet")
+            && handler.Paths.Count == 1;
+    }
+
+    private static async Task<bool> PairUnauthenticated()
+    {
+        using var handler = new FakeHandler();
+        using var client = ApolloClient.ForTest(handler);
+        return await Reject<InvalidOperationException>(() => client.PairAsync("0123", "Tablet"))
+            && handler.Paths.Count == 0;
+    }
+
+    private static async Task<bool> PairMalformed()
+    {
+        using var client = ApolloClient.ForTest(new FakeHandler(Login(), Json(new { status = "true" })));
+        await client.LoginAsync("test", "example");
+        return await Reject<InvalidDataException>(() => client.PairAsync("0123", "Test Tablet"));
+    }
+
     private static async Task<bool> Reject<T>(Func<Task> command) where T : Exception
     {
         try { await command(); return false; } catch (T) { return true; }
@@ -121,12 +170,19 @@ internal static class ApolloTests
     {
         private readonly Queue<HttpResponseMessage> _responses = new(responses);
         public List<string> Paths { get; } = [];
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
+        public bool PairPayloadVerified { get; private set; }
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
         {
             if (request.RequestUri?.Host != "127.0.0.1" || request.RequestUri.Scheme != "https")
                 throw new InvalidOperationException("Unexpected target");
             Paths.Add($"{request.Method} {request.RequestUri.AbsolutePath}");
-            return Task.FromResult(_responses.Dequeue());
+            if (request.RequestUri.AbsolutePath == "/api/pin" && request.Content is not null)
+            {
+                using var json = System.Text.Json.JsonDocument.Parse(await request.Content.ReadAsByteArrayAsync(ct));
+                PairPayloadVerified = json.RootElement.GetProperty("pin").GetString() == "0123"
+                    && json.RootElement.GetProperty("name").GetString() == "Test Tablet";
+            }
+            return _responses.Dequeue();
         }
     }
 }
