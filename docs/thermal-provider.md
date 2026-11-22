@@ -14,4 +14,4 @@ The v0.9.6 data.json tree contains SensorId, Type and formatted RawValue (string
 - Collect independently with bounded time, output and memory, explicit status and timestamps. Do not expose raw provider identifiers, process details or arbitrary provider commands to clients.
 - Test fixtures for numeric/string schema difference, malformed and missing readings, stale data, and bounded failure. Require physical Intel Core Ultra 5 125H/Intel Arc validation against a known independent reference before declaring sensor accuracy.
 
-This is source-contract research only. No thermal adapter has been implemented or run. ACPI zone temperature must not be relabeled as CPU package temperature.
+Initial adapter implemented for the v0.9.6-shaped tree: explicitly enabled, fixed 127.0.0.1:8085 GET only, no proxy/redirect, rejects non-Celsius and non-string RawValue. Hardware IDs used internally for classification only. No version handshake in tagged data.json; real compatibility and sample freshness remain unverified. Do not disable authentication or expose a LAN listener. No bundled LHM binary or driver. ACPI zone temperature must not be relabeled as CPU package temperature.

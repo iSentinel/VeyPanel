@@ -83,6 +83,7 @@ try {
     Assert-Check (Test-Path (Join-Path $root 'diagnostics/Get-StorageHealth.ps1')) 'Storage script packaged'
     Assert-Check (Test-Path (Join-Path $root 'diagnostics/StorageHealth.psm1')) 'Storage module packaged'
     Assert-Check ($null -ne $sample.storageHealth -and $sample.storageHealth.status -in @('warming-up','ok','partial','unavailable','timeout','stale')) 'Storage worker schema'
+    Assert-Check ($null -ne $sample.thermal -and $sample.thermal.status -in @('disabled','unavailable','partial','provider-reported','invalid-schema','stale')) 'Thermal capability schema'
     $time = [DateTimeOffset]::Parse($sample.timestampUtc.ToString())
     Assert-Check ([Math]::Abs(([DateTimeOffset]::UtcNow - $time).TotalSeconds) -lt 5) 'Fresh timestamp'
     Start-Sleep -Seconds 2

@@ -86,4 +86,5 @@ var healthPass = health.Status == "partial" && health.Disks.Length == 1
     && StorageHealthWorker.Parse("invalid", healthNow).Disks.Length == 0;
 Console.WriteLine($"{(healthPass ? "PASS" : "FAIL")} Storage worker schema, nulls, bounds and freshness");
 if (!healthPass) failed++;
+failed += await ThermalTests.RunAsync();
 return failed == 0 ? 0 : 1;

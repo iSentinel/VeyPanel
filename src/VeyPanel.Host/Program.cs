@@ -84,6 +84,8 @@ builder.WebHost.ConfigureKestrel(kestrel =>
 });
 builder.Services.AddSingleton<StorageHealthWorker>();
 builder.Services.AddHostedService<StorageHealthWorker>(services => services.GetRequiredService<StorageHealthWorker>());
+builder.Services.AddSingleton<ThermalWorker>();
+builder.Services.AddHostedService<ThermalWorker>(services => services.GetRequiredService<ThermalWorker>());
 builder.Services.AddSingleton<Telemetry>();
 builder.Services.AddHostedService<Telemetry>(services => services.GetRequiredService<Telemetry>());
 var app = builder.Build();

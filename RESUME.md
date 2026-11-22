@@ -17,3 +17,5 @@
 4. Physical acceptance: Lenovo TB-J607Z WSS, Intel Arc/Quick Sync, actual storage/thermal sensors, Apollo v0.4.6 pairing and Mirror/Extend at 2000x1200 60 Hz. Keep display writes disabled until recovery watchdog is ready and hardware-tested.
 
 No actual target hardware access, driver installation, display topology changes, live pairing or streaming performed. Browser behavior remains unverified on target. Original source license remains an owner decision.
+
+Alpha.7: Alpha.6 full hardening CI 45063263774 passed; actual provider partial, 2 rows, freshness PASS. Optional LHM loopback-only GET adapter and dashboard implemented; default disabled, no service exposure, script/driver install or auth bypass. Reads v0.9.6-shaped Celsius strings only; receipt time is not provider sensor sampling time. CI pending. Real Intel temperatures remain unverified.

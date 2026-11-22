@@ -4,7 +4,7 @@ Extend. Monitor. Control.
 
 Windows-to-Android display streaming and independent system telemetry over a local network.
 
-**Status: 0.1.0-alpha.6 development source, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, native Android, GPU temperature sensors, and installers are not yet implemented. An initial WPF display diagnostic UI and a local Apollo inventory CLI are implemented; actual upstream runtime compatibility remains unverified. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
+**Status: 0.1.0-alpha.7 development source, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, native Android, and installers are not yet implemented. An initial WPF display diagnostic UI and a local Apollo inventory CLI are implemented; actual upstream runtime compatibility remains unverified. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
 
 ## Build and run locally (Windows 11)
 
@@ -126,3 +126,7 @@ The additional panel reports Windows PhysicalDisk wildcard instances (excluding 
 ## Storage health dashboard
 
 The Host invokes the bundled Windows PowerShell diagnostic without elevation or execution-policy bypass, separately from one-second sampling. Each invocation is limited to 20 seconds with bounded output and is repeated 60 seconds after completion. A timestamp older than 150 seconds is stale. Driver/provider or permission failures may leave data unavailable. No serial/unique identifiers or raw command output are included in the API. The health rows are not automatically joined to PDH disk instances.
+
+## Optional CPU/GPU temperatures (experimental)
+
+The default is disabled. If you already run a separately installed, trusted LibreHardwareMonitor v0.9.6-compatible provider, with an existing loopback-only HTTP listener on port 8085 and read access permitted, set `VEYPANEL_LHM_LOCAL=1` before launching Host. The adapter uses only GET http://127.0.0.1:8085/data.json, no redirects/proxy, no credential guessing or configuration changes. Do not enable a LAN listener or disable existing provider authentication to use this alpha; authenticated providers are not supported yet. No provider version handshake is available. The adapter accepts the reviewed v0.9.6 Celsius string shape only, rejects other units and numeric schema, and keeps sensor labels separate. Receipt age is checked, but upstream sample age cannot be verified. No driver or LHM binary bundled. Real sensor acceptance pending.

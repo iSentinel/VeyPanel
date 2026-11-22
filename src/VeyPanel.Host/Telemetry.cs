@@ -11,6 +11,7 @@ public sealed record Snapshot(DateTimeOffset TimestampUtc, double? CpuPercent,
     public PhysicalDiskSnapshot? PhysicalDisks { get; init; }
     public StorageHealthSnapshot? StorageHealth { get; init; }
     public GpuMetric? Gpu { get; init; }
+    public ThermalSnapshot? Thermal { get; init; }
 }
 
 public static class CpuMath
@@ -25,7 +26,7 @@ public static class CpuMath
     }
 }
 
-public sealed class Telemetry(StorageHealthWorker storageHealth) : BackgroundService
+public sealed class Telemetry(StorageHealthWorker storageHealth, ThermalWorker thermal) : BackgroundService
 {
     private Snapshot _latest = new(DateTimeOffset.UtcNow, null, null, null, null, "warming-up");
     private (ulong Idle, ulong Kernel, ulong User)? _previous;
@@ -69,7 +70,7 @@ public sealed class Telemetry(StorageHealthWorker storageHealth) : BackgroundSer
         return new(now, cpu, valid ? memory.TotalPhysical : null,
             valid ? memory.AvailablePhysical : null,
             valid ? 100.0 * (memory.TotalPhysical - memory.AvailablePhysical) / memory.TotalPhysical : null,
-            cpu.HasValue && valid ? "ok" : "partial") { Resources = resources.Capture(), DiskIo = diskIo.Capture(), PhysicalDisks = physicalDisks.Capture(), StorageHealth = storageHealth.Latest, Gpu = gpuInventory.Attach(gpu.Capture()) };
+            cpu.HasValue && valid ? "ok" : "partial") { Resources = resources.Capture(), DiskIo = diskIo.Capture(), PhysicalDisks = physicalDisks.Capture(), StorageHealth = storageHealth.Latest, Thermal = thermal.Latest, Gpu = gpuInventory.Attach(gpu.Capture()) };
     }
 
     [StructLayout(LayoutKind.Sequential)]

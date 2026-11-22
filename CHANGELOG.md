@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.0-alpha.7 (development; CI pending)
+
+- Optional local LibreHardwareMonitor read-only thermal adapter with explicit Celsius schema, bounded polling and dashboard.
+- Alpha.6 storage worker CI passed (provider partial, two rows).
+
 ## 0.1.0-alpha.6 (per-disk and worker CI verified; hardening runtime smoke passed; hardware acceptance pending)
 
 - Added per-instance PhysicalDisk PDH throughput and IOPS, bounded merge and dashboard UI.

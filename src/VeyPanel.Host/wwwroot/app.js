@@ -80,6 +80,14 @@ function storageHealth(data) {
     ' · R/W errors ' + number(d.readErrorsTotal, '') + ' / ' + number(d.writeErrorsTotal, '') +
     ' · ' + d.counterStatus, 'N/A');
 }
+function thermal(data) {
+  const age = Date.now() - Date.parse(data?.receivedUtc);
+  const fresh = Number.isFinite(age) && age >= -5000 && age <= 20000;
+  $('thermal-status').textContent = data?.status || 'N/A';
+  rows('thermal-list', fresh ? data?.sensors : null, t =>
+    t.category + ' · ' + t.hardware + ' · ' + t.sensor + ' · ' +
+    (Number.isFinite(t.celsius) ? t.celsius.toFixed(1) + ' °C' : 'N/A'), 'N/A');
+}
 function gpu(data) {
   $('gpu-status').textContent = data?.status || 'N/A';
   $('gpu-total').textContent = pct(data?.busiestEnginePercent);
@@ -90,7 +98,7 @@ function gpu(data) {
 }
 function offline(message) {
   $('status').textContent = message; metric('cpu', null);metric('ram',null);
-  resources(null);diskIo(null);physicalDisks(null);storageHealth(null);gpu(null);
+  resources(null);diskIo(null);physicalDisks(null);storageHealth(null);thermal(null);gpu(null);
   $('capacity').textContent='N/A';$('timestamp').textContent='No current sample';
   samples.push({});if(samples.length>60)samples.shift();draw();
 }
@@ -98,7 +106,7 @@ let socket = null, socketFresh = 0, nextConnect = 0, lastTimestamp = 0;
 function render(s, transport) {
   const stamp = Date.parse(s.timestampUtc), age = Date.now() - stamp;
   if (!Number.isFinite(age) || age > 5000 || age < -5000) throw Error('Stale sample');
-  resources(s.resources);diskIo(s.diskIo);physicalDisks(s.physicalDisks);storageHealth(s.storageHealth);gpu(s.gpu);
+  resources(s.resources);diskIo(s.diskIo);physicalDisks(s.physicalDisks);storageHealth(s.storageHealth);thermal(s.thermal);gpu(s.gpu);
   $('status').textContent=s.status + ' · ' + transport;
   metric('cpu',s.cpuPercent);metric('ram',s.memoryUsedPercent);
   $('capacity').textContent=Number.isFinite(s.memoryTotalBytes)&&Number.isFinite(s.memoryAvailableBytes)?`${gib(s.memoryTotalBytes-s.memoryAvailableBytes)} / ${gib(s.memoryTotalBytes)} GiB`:'N/A';
