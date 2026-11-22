@@ -20,4 +20,14 @@ foreach (var check in checks)
 }
 Console.WriteLine($"{checks.Length - failed}/{checks.Length} passed");
 failed += await ApolloTests.RunAsync();
+var layoutPass = DisplayInventory.LayoutIsValid();
+Console.WriteLine($"{(layoutPass ? "PASS" : "FAIL")} Win32 display structure layouts");
+if (!layoutPass) failed++;
+if (OperatingSystem.IsWindows() && layoutPass)
+{
+    var inventory = DisplayInventory.Capture();
+    var valid = inventory.Status is "ok" or "partial" or "no-desktop-sources";
+    Console.WriteLine($"{(valid ? "PASS" : "FAIL")} Win32 source inventory ({inventory.Status}; {inventory.Sources.Length} sources)");
+    if (!valid) failed++;
+}
 return failed == 0 ? 0 : 1;

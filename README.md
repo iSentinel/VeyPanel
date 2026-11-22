@@ -48,3 +48,14 @@ Use a separately installed Apollo v0.4.6 and confirm its TLS certificate SHA-256
 ```
 
 The CLI prompts for credentials without echoing the password; they are not persisted. It connects only to HTTPS loopback port 47990, rejects redirects, pins the entire certificate and checks validity dates. Exact pinning is the trust model for Apollo's self-signed certificate; a changed certificate fails closed. Login replaces the active upstream Web UI session. The only subsequent actions are GET inventory calls, with client count and application names printed locally rather than exposing sensitive upstream config through the LAN dashboard. No pairing or topology changes. Physical validation pending.
+
+## Desktop display inventory (read only)
+
+```powershell
+.\VeyPanel.Host.exe --display-inventory
+.\VeyPanel.Host.exe --display-inventory | Set-Content -Encoding utf8 display-before.json
+```
+
+Reports active GDI desktop sources with primary flag, current resolution, coordinates, orientation and refresh when supplied by Windows. Missing fields are null. No active desktop sources returns an explicit non-success status, which is possible in non-interactive sessions.
+
+This is a diagnostic baseline, not a full DisplayConfig topology backup or an automatic rollback file. Cloned outputs may share a source. Do not infer physical monitor count or virtual identity from adapter names. No display settings are changed.

@@ -4,6 +4,20 @@ using System.Text;
 using System.Text.Json;
 using VeyPanel.Host;
 
+if (args.Contains("--display-inventory"))
+{
+    if (args.Length != 1)
+    {
+        Console.Error.WriteLine("Usage: VeyPanel.Host --display-inventory");
+        Environment.ExitCode = 2;
+        return;
+    }
+    var snapshot = DisplayInventory.Capture();
+    Console.WriteLine(JsonSerializer.Serialize(snapshot, new JsonSerializerOptions(JsonSerializerDefaults.Web) { WriteIndented = true }));
+    Environment.ExitCode = snapshot.Status == "ok" ? 0 : 1;
+    return;
+}
+
 if (args.Contains("--apollo-inspect"))
 {
     Environment.ExitCode = await ApolloInspectCommand.RunAsync(args);
@@ -15,7 +29,8 @@ if (args.Contains("--help") || args.Contains("-h"))
     Console.WriteLine("VeyPanel Host: local dashboard http://127.0.0.1:47860.\n" +
         "Optional LAN: set VEYPANEL_LAN_IP, VEYPANEL_PFX and VEYPANEL_PFX_PASSWORD.\n" +
         "LAN requires a certificate trusted by the client. Access token is generated on startup.\n" +
-        "Apollo inventory: --apollo-inspect <verified-certificate-sha256>");
+        "Apollo inventory: --apollo-inspect <verified-certificate-sha256>\n" +
+        "Desktop source inventory: --display-inventory");
     return;
 }
 var builder = WebApplication.CreateBuilder(args);

@@ -8,7 +8,8 @@
 - [x] Apollo source baseline review (v0.4.6), API contract, official asset digest and read-only preflight source ([PoC plan](docs/apollo-poc.md)); preflight not executed on target.
 - [x] Implement local-only Apollo inventory CLI and certificate pinning; mock tests written, CI and live compatibility pending.
 - [ ] Apollo PoC: verify actual installer/publisher/driver catalog, TLS and API on host, Quick Sync; test mirror and extended desktop.
-- [ ] 0.2: WPF tray host, display enumeration, safe topology capture/restore, PIN pairing.
+- [x] Implement read-only Windows desktop-source inventory and JSON diagnostic baseline (CI/physical validation pending).
+- [ ] 0.2: WPF tray host, full DisplayConfig active-path topology capture/restore, PIN pairing.
 - [ ] 0.3: GPU/encoder, SSD, network; sensor capability discovery and N/A semantics; WebSocket.
 - [ ] 0.4: secure device enrollment, per-device revocation, QR, history.
 - [ ] 0.5: Android client, native video and telemetry.
