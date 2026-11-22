@@ -1,6 +1,8 @@
 package com.veypanel.client;
 
 import android.app.Activity;
+import android.content.Intent;
+import com.google.zxing.integration.android.IntentIntegrator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,6 +16,7 @@ import java.util.concurrent.Future;
 import javax.net.ssl.SSLException;
 
 public final class MainActivity extends Activity {
+    private static final int SCAN_REQUEST = 4091;
     private final Handler main = new Handler(Looper.getMainLooper());
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
     private ReaderSession session;
@@ -69,6 +72,8 @@ public final class MainActivity extends Activity {
         input.setSingleLine(true); input.setSaveEnabled(false);
         input.setImportantForAutofill(android.view.View.IMPORTANT_FOR_AUTOFILL_NO);
         column.addView(input);
+        Button scan = new Button(this); scan.setText("Scan invitation QR");
+        scan.setOnClickListener(v -> scanInvitation()); column.addView(scan);
         remember = new CheckBox(this); remember.setText("Remember access on this tablet");
         remember.setSaveEnabled(false); column.addView(remember);
         credentialStatus = new TextView(this); column.addView(credentialStatus);
@@ -93,6 +98,39 @@ public final class MainActivity extends Activity {
         values = new TextView(this); values.setTextSize(22); values.setPadding(0,pad,0,0);
         column.addView(values);
         setContentView(scroll);
+    }
+
+    private void scanInvitation() {
+        if (storageBusy || enrollmentBusy || storageFault) {
+            credentialStatus.setText("Finish credential or enrollment operation first."); return;
+        }
+        input.setText("");
+        IntentIntegrator scanner = new IntentIntegrator(this);
+        scanner.setCaptureActivity(PrivateScanActivity.class);
+        scanner.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+        scanner.setOrientationLocked(false);
+        scanner.setBeepEnabled(false);
+        scanner.setBarcodeImageEnabled(false);
+        scanner.setPrompt("Scan this PC's VeyPanel invitation QR");
+        try { startActivityForResult(scanner.createScanIntent(), SCAN_REQUEST); }
+        catch (android.content.ActivityNotFoundException ex) { credentialStatus.setText("QR scanner unavailable."); }
+    }
+
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != SCAN_REQUEST) return;
+        input.setText("");
+        if (resultCode != RESULT_OK || data == null) {
+            credentialStatus.setText("Scan canceled or camera unavailable."); return;
+        }
+        String value = IntentIntegrator.parseActivityResult(resultCode, data).getContents();
+        try {
+            InvitationLink.parse(value);
+            input.setText(value);
+            credentialStatus.setText("Valid invitation format. Press Connect to claim over HTTPS.");
+        } catch (IllegalArgumentException ex) {
+            credentialStatus.setText("QR is not a VeyPanel invitation.");
+        }
     }
 
     private void connect() {

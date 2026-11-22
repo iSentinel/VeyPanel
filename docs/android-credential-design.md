@@ -1,6 +1,6 @@
 # Android protected credentials / QR design
 
-Status: alpha.11 credential store and explicit reconnect/forget implemented, CI and instrumentation pending; camera scanner remains design only.
+Status: alpha.11 credential store and explicit reconnect/forget implemented, CI and instrumentation pending; local QR scanner source implemented, CI and physical camera acceptance pending.
 
 The default client holds a reader token in Activity memory, uses fixed private IPv4 HTTPS endpoints, verifies Android system/user CA trust and hostname, and only persists an encrypted reader record after opt-in. A user-added CA is an explicit trust choice, not certificate pinning. The owner must independently verify the intended CA and IP SAN. Debug APK is not production-signed.
 
@@ -15,3 +15,5 @@ Review and pin scanner dependency/license first, prefer offline scanning and cam
 
 ## Gates
 Actual tablet API level, Android Network Security Config behavior with intended CA, lifecycle/rotation, expiration and reconnect need emulator/physical acceptance. No video decoder or touchscreen forwarding yet. Native WSS should use this same validated private origin and revocable reader model. 
+
+Implemented experimental camera integration using pinned ZXing Android Embedded 4.3.0 and Core 3.5.3. Explicit private scanner Activity, QR-only, no barcode image output, strict InvitationLink parsing, separate Connect action. License and notice bundled. Neither actual sensor permissions nor camera decoding are verified; review transitive dependencies before production redistribution.
