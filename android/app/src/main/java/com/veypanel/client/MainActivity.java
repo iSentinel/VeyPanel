@@ -9,7 +9,6 @@ import android.os.Looper;
 import android.text.InputType;
 import android.view.WindowManager;
 import android.widget.*;
-import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -37,7 +36,10 @@ public final class MainActivity extends Activity {
     private Button approve;
     private boolean enrollmentBusy;
     private EditText input;
-    private TextView status, values;
+    private TextView status;
+    private MonitorPanel monitor;
+    private LinearLayout controls;
+    private boolean hideOnSample = true;
     private Future<?> request;
     private boolean resumed;
     private int generation;
@@ -67,38 +69,41 @@ public final class MainActivity extends Activity {
         TextView title = new TextView(this);
         title.setText("VeyPanel · Monitor"); title.setTextSize(28);
         column.addView(title);
+        status = new TextView(this); status.setTextSize(16); column.addView(status);
+        Button toggle = new Button(this); toggle.setText("Show / hide connection controls");
+        column.addView(toggle);
+        controls = new LinearLayout(this); controls.setOrientation(LinearLayout.VERTICAL); column.addView(controls);
+        toggle.setOnClickListener(v -> controls.setVisibility(controls.getVisibility() == android.view.View.VISIBLE ? android.view.View.GONE : android.view.View.VISIBLE));
         input = new EditText(this);
         input.setHint("Paste private reader or invitation link");
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
             | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         input.setSingleLine(true); input.setSaveEnabled(false);
         input.setImportantForAutofill(android.view.View.IMPORTANT_FOR_AUTOFILL_NO);
-        column.addView(input);
+        controls.addView(input);
         Button scan = new Button(this); scan.setText("Scan invitation QR");
-        scan.setOnClickListener(v -> scanInvitation()); column.addView(scan);
+        scan.setOnClickListener(v -> scanInvitation()); controls.addView(scan);
         remember = new CheckBox(this); remember.setText("Remember access on this tablet");
-        remember.setSaveEnabled(false); column.addView(remember);
-        credentialStatus = new TextView(this); column.addView(credentialStatus);
+        remember.setSaveEnabled(false); controls.addView(remember);
+        credentialStatus = new TextView(this); controls.addView(credentialStatus);
         reconnect = new Button(this); reconnect.setText("Connect saved access"); reconnect.setEnabled(false);
-        reconnect.setOnClickListener(v -> reconnectSaved()); column.addView(reconnect);
+        reconnect.setOnClickListener(v -> reconnectSaved()); controls.addView(reconnect);
         Button forget = new Button(this); forget.setText("Forget saved access on tablet");
-        forget.setOnClickListener(v -> forgetAccess()); column.addView(forget);
+        forget.setOnClickListener(v -> forgetAccess()); controls.addView(forget);
         remember.setOnCheckedChangeListener((v, checked) -> {
             if (changingRemember) return;
             if (!checked) { savePending = false; deleteCredential(); }
             else if (session != null && savedReader == null) savePending = true;
         });
         Button connect = new Button(this); connect.setText("Connect");
-        connect.setOnClickListener(v -> connect()); column.addView(connect);
+        connect.setOnClickListener(v -> connect()); controls.addView(connect);
         approve = new Button(this); approve.setText("Check owner approval");
         approve.setVisibility(android.view.View.GONE);
-        approve.setOnClickListener(v -> finishEnrollment()); column.addView(approve);
+        approve.setOnClickListener(v -> finishEnrollment()); controls.addView(approve);
         Button disconnect = new Button(this); disconnect.setText("Disconnect");
         disconnect.setOnClickListener(v -> { stopPoll(); session = null; clearClaim(); savePending = false; input.setText(""); offline("Disconnected"); });
-        column.addView(disconnect);
-        status = new TextView(this); status.setTextSize(16); column.addView(status);
-        values = new TextView(this); values.setTextSize(22); values.setPadding(0,pad,0,0);
-        column.addView(values);
+        controls.addView(disconnect);
+        monitor = new MonitorPanel(this); column.addView(monitor);
         setContentView(scroll);
     }
 
@@ -138,6 +143,7 @@ public final class MainActivity extends Activity {
     private void connect() {
         if (storageBusy || storageFault) { credentialStatus.setText("Complete credential operation or Forget before connecting."); return; }
         stopPoll(); session = null; clearClaim(); savePending = false;
+        hideOnSample = true;
         deleteCredential();
         String link = input.getText().toString();
         input.setText("");
@@ -295,7 +301,7 @@ public final class MainActivity extends Activity {
         if (!savedReader.validAt(java.time.Instant.now())) {
             deleteCredential(); offline("Saved access expired"); return;
         }
-        session = savedReader.session;
+        session = savedReader.session; hideOnSample = true;
         offline("Connecting saved access…"); main.post(poll);
     }
 
@@ -344,9 +350,8 @@ public final class MainActivity extends Activity {
 
     private void showSample(TelemetrySample s) {
         status.setText("Connected · " + (stream == null ? "HTTPS REST" : "WSS") + " · " + s.stamp);
-        values.setText("CPU  " + pct(s.cpu) + "\nRAM  " + pct(s.ram) + "\nGPU  " + pct(s.gpu)
-            + "\nVideo Encode  " + pct(s.encode) + "\nVideo Decode  " + pct(s.decode)
-            + "\nDisk Read  " + rate(s.read) + "\nDisk Write  " + rate(s.write));
+        monitor.render(s);
+        if (hideOnSample) { controls.setVisibility(android.view.View.GONE); hideOnSample = false; }
         main.removeCallbacks(expire);
         main.postDelayed(expire, 5000);
     }
@@ -355,10 +360,9 @@ public final class MainActivity extends Activity {
     private void offline(String message) {
         main.removeCallbacks(expire);
         status.setText(message);
-        values.setText("CPU  N/A\nRAM  N/A\nGPU  N/A\nVideo Encode  N/A\nVideo Decode  N/A\nDisk Read  N/A\nDisk Write  N/A");
+        monitor.render(null);
+        controls.setVisibility(android.view.View.VISIBLE);
     }
-    private static String pct(Double n) { return n == null ? "N/A" : String.format(Locale.getDefault(), "%.1f%%", n); }
-    private static String rate(Double n) { return n == null ? "N/A" : String.format(Locale.getDefault(), "%.2f MiB/s", n / 1048576); }
 
     private void stopPoll() {
         generation++;

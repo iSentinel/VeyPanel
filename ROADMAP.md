@@ -53,6 +53,7 @@
 - [x] Add isolated emulator runtime CI for AndroidKeyStore and synthetic offline QR decode ([instrumentation PASS, shell result gate FAIL](https://github.com/iSentinel/VeyPanel/actions/runs/45078273557); raw-output fix pending; no camera test).
 - [x] Implement native WSS-first monitor, one latest-sample slot, HTTPS REST fallback and bounded retry; fixed URI fixture (CI pending; live transport pending).
 - [ ] 0.5: credential instrumentation execution, Android QR camera acceptance, native WSS transport acceptance and native video.
+- [x] Implement adaptive 1/2/3-column native monitor, collapsible controls, memory/IOPS, network/volumes and age-gated thermal/storage health details (CI pending; visual tablet acceptance pending).
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.
 - [ ] 0.7: overlay, alerts, history and diagnostics.
 - [ ] 0.8: reconnection, sleep/wake and USB network transport.

@@ -5,7 +5,8 @@ import java.time.Instant;
 
 final class TelemetrySample {
     final Instant stamp;
-    final Double cpu, ram, gpu, encode, decode, read, write;
+    final Double cpu, ram, gpu, encode, decode, read, write, total, used, readIops, writeIops;
+    final String details;
 
     private TelemetrySample(JSONObject root) throws Exception {
         stamp = Instant.parse(root.getString("timestampUtc"));
@@ -19,6 +20,12 @@ final class TelemetrySample {
         JSONObject io = root.optJSONObject("diskIo");
         read = rate(io, "readBytesPerSecond");
         write = rate(io, "writeBytesPerSecond");
+        readIops = rate(io, "readsPerSecond"); writeIops = rate(io,"writesPerSecond");
+        Double capacity = SampleRules.nonnegative(root.opt("memoryTotalBytes"));
+        Double available = SampleRules.nonnegative(root.opt("memoryAvailableBytes"));
+        total = capacity != null && capacity > 0 && available != null && available <= capacity ? capacity : null;
+        used = total == null ? null : total - available;
+        details = ResourceDetails.render(root, Instant.now());
     }
 
     static TelemetrySample parse(String body) throws Exception {

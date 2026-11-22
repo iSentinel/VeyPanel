@@ -22,7 +22,8 @@ public final class StoreInstrumentation extends Instrumentation {
             if (!isolated) throw new IllegalStateException("Explicit isolated test required");
             runStore();
             runQr();
-            report.putString("stream", "\nPASS: AndroidKeyStore actual encryption, reopen, fresh ciphertext, corruption, key removal and Forget\nPASS: synthetic offline QR decode\n");
+            runMetrics();
+            report.putString("stream", "\nPASS: AndroidKeyStore actual encryption, reopen, fresh ciphertext, corruption, key removal and Forget\nPASS: synthetic offline QR decode\nPASS: Android extended telemetry fixture\n");
             finish(Activity.RESULT_OK, report);
         } catch (Exception ex) {
             report.putString("stream", "\nFAIL: AndroidKeyStore smoke (" + ex.getClass().getSimpleName() + ")\n");
@@ -71,6 +72,19 @@ public final class StoreInstrumentation extends Instrumentation {
         com.google.zxing.BinaryBitmap bitmap = new com.google.zxing.BinaryBitmap(new com.google.zxing.common.HybridBinarizer(source));
         String decoded = new com.google.zxing.qrcode.QRCodeReader().decode(bitmap).getText();
         check(text.equals(decoded) && InvitationLink.parse(decoded).origin.getHost().equals("192.168.1.10"), "Offline QR");
+    }
+    private static void runMetrics() throws Exception {
+        Instant now = Instant.now();
+        org.json.JSONObject root = new org.json.JSONObject().put("timestampUtc",now.toString())
+            .put("cpuPercent",0).put("memoryTotalBytes",1024).put("memoryAvailableBytes",512)
+            .put("diskIo",new org.json.JSONObject().put("readsPerSecond",5));
+        root.put("thermal",new org.json.JSONObject().put("receivedUtc",now.minusSeconds(30).toString())
+            .put("sensors",new org.json.JSONArray().put(new org.json.JSONObject().put("sensor","STALE_TEST").put("celsius",99))));
+        TelemetrySample sample = TelemetrySample.parse(root.toString());
+        check(sample.cpu == 0 && sample.ram == null && sample.used == 512 && sample.readIops == 5
+            && sample.writeIops == null && !sample.details.contains("STALE_TEST"), "Extended resource data");
+        root.put("memoryAvailableBytes",2048);
+        check(TelemetrySample.parse(root.toString()).used == null, "Invalid capacity rejected");
     }
     private static boolean reject(CredentialStore store) {
         try { store.load(); return false; } catch (Exception ex) { return true; }
