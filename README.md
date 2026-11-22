@@ -20,7 +20,7 @@ Open the local dashboard URL printed by Host, including the fragment token. The 
 
 ## Experimental LAN mode for Lenovo
 
-Optional: obtain a TLS certificate with the actual host IPv4 address in its SAN, trusted by Android. Do not bypass certificate warnings. Certificate provisioning and QR pairing are not implemented. Set the actual address, existing PFX path, and PFX password in the launching PowerShell session; keep the password out of scripts and history.
+Optional: obtain a TLS certificate with the actual host IPv4 address in its SAN, trusted by Android. Do not bypass certificate warnings. Certificate provisioning and QR pairing are not implemented. This alpha accepts only explicitly configured RFC1918 IPv4 addresses (10/8, 172.16/12, 192.168/16). Set the actual address, existing PFX path, and PFX password in the launching PowerShell session; keep the password out of scripts and history.
 
 ```powershell
 $env:VEYPANEL_LAN_IP = '192.168.1.123' # replace with actual host IP

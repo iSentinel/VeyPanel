@@ -4,6 +4,7 @@
 - [x] Write alpha CPU/RAM sampler and local browser dashboard.
 - [x] Add source-level CPU arithmetic tests and Windows CI definition.
 - [x] Compile on Windows CI; execute tests; validate real counters and unauthorized API responses ([run 45045388584](https://github.com/iSentinel/VeyPanel/actions/runs/45045388584)).
+- [x] Implement automated HTTPS LAN integration smoke, RFC1918 listener policy and invalid TLS/token rejection (CI pending).
 - [ ] Validate HTTPS LAN dashboard on Lenovo (certificate trust, stale samples, reconnect).
 - [x] Apollo source baseline review (v0.4.6), API contract, official asset digest and read-only preflight source ([PoC plan](docs/apollo-poc.md)); preflight not executed on target.
 - [x] Implement local-only Apollo inventory CLI and certificate pinning; mock tests written, CI and live compatibility pending.

@@ -6,6 +6,7 @@
 - No redirects, proxy, credential persistence, upstream config writes or LAN admin API.
 - Added nine mock protocol and certificate checks; real upstream compatibility remains pending.
 - Added read-only desktop source inventory CLI and Windows interop layout/runtime smoke checks.
+- Restricted LAN bind to private RFC1918 IPv4 and added automated HTTPS LAN integration and negative TLS tests.
 
 ## 0.1.0-alpha.1 (source checkpoint; unreleased)
 

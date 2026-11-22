@@ -16,6 +16,8 @@ jobs:
       - name: Run published Windows host integration smoke
         shell: pwsh
         run: ./scripts/Test-Host.ps1
+      - name: Run HTTPS LAN integration smoke
+        run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --lan-smoke publish
       - uses: actions/upload-artifact@v4
         with:
           name: veypanel-host-win-x64-alpha

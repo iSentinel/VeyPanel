@@ -45,10 +45,9 @@ builder.WebHost.ConfigureKestrel(kestrel =>
 {
     kestrel.Listen(IPAddress.Loopback, 47860);
     if (string.IsNullOrWhiteSpace(lan)) return;
-    if (!IPAddress.TryParse(lan, out var address) || address.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork
-        || IPAddress.IsLoopback(address) || address.Equals(IPAddress.Any)
+    if (!IPAddress.TryParse(lan, out var address) || !LanAddressPolicy.IsPrivateIpv4(address)
         || string.IsNullOrWhiteSpace(pfx) || !File.Exists(pfx))
-        throw new InvalidOperationException("LAN requires a specific IPv4 address and an existing TLS PFX.");
+        throw new InvalidOperationException("LAN requires a specific RFC1918 private IPv4 address and an existing TLS PFX.");
     kestrel.Listen(address, 47861, options => options.UseHttps(pfx, password));
 });
 builder.Services.AddSingleton<Telemetry>();

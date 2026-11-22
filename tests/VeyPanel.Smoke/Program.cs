@@ -1,4 +1,8 @@
 using VeyPanel.Host;
+using System.Net;
+
+if (args.Length == 2 && args[0] == "--lan-smoke")
+    return await LanSmoke.RunAsync(args[1]);
 
 var checks = new (string Name, double? Actual, double? Expected)[]
 {
@@ -30,4 +34,10 @@ if (OperatingSystem.IsWindows() && layoutPass)
     Console.WriteLine($"{(valid ? "PASS" : "FAIL")} Win32 source inventory ({inventory.Status}; {inventory.Sources.Length} sources)");
     if (!valid) failed++;
 }
+var privatePass = new[] { "10.1.2.3", "172.16.0.2", "172.31.1.2", "192.168.1.2" }
+    .All(ip => LanAddressPolicy.IsPrivateIpv4(IPAddress.Parse(ip)))
+    && new[] { "0.0.0.0", "127.0.0.1", "8.8.8.8", "172.32.1.2", "100.64.1.2", "::1", "224.0.0.1" }
+    .All(ip => !LanAddressPolicy.IsPrivateIpv4(IPAddress.Parse(ip)));
+Console.WriteLine($"{(privatePass ? "PASS" : "FAIL")} RFC1918 LAN address policy");
+if (!privatePass) failed++;
 return failed == 0 ? 0 : 1;
