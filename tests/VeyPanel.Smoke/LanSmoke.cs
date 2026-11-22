@@ -59,7 +59,7 @@ internal static class LanSmoke
     }
 
     private static Process StartHost(string directory, IPAddress ip, string pfx, string password,
-        TaskCompletionSource<string> token)
+        TaskCompletionSource<string> token, TaskCompletionSource<string> owner)
     {
         var start = new ProcessStartInfo(Path.Combine(directory, "VeyPanel.Host.exe")) {
             WorkingDirectory = directory, UseShellExecute = false,
@@ -73,6 +73,8 @@ internal static class LanSmoke
         {
             var match = Regex.Match(e.Data ?? "", @"^LAN dashboard: https://[^/]+/#token=([A-F0-9]{64})$");
             if (match.Success) token.TrySetResult(match.Groups[1].Value);
+            var local = Regex.Match(e.Data ?? "", @"^Local dashboard: http://127\.0\.0\.1:47860/#token=([A-F0-9]{64})$");
+            if (local.Success) owner.TrySetResult(local.Groups[1].Value);
         };
         process.ErrorDataReceived += (_, _) => { };
         process.BeginOutputReadLine();
@@ -83,7 +85,8 @@ internal static class LanSmoke
     private static async Task VerifyAsync(string directory, IPAddress ip, string pfx, string password, byte[] pin)
     {
         var tokenSource = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
-        using var process = StartHost(directory, ip, pfx, password, tokenSource);
+        var ownerSource = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
+        using var process = StartHost(directory, ip, pfx, password, tokenSource, ownerSource);
         try
         {
             var root = new Uri($"https://{ip}:47861/");
@@ -92,6 +95,7 @@ internal static class LanSmoke
             await WaitReadyAsync(client, process);
             await VerifyApiAsync(client, accessToken);
             await VerifyWssAsync(ip, accessToken, pin);
+            await EnrollmentSmoke.RunAsync(client, await ownerSource.Task.WaitAsync(TimeSpan.FromSeconds(5)), root);
             using var wrongPin = CreateClient(root, new byte[32]);
             await RequireRejectedTlsAsync(wrongPin, "Wrong certificate pin");
             using var defaultTrust = new HttpClient(new HttpClientHandler { UseProxy = false, AllowAutoRedirect = false })

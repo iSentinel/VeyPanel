@@ -34,7 +34,8 @@
 - [x] Implement local owner dashboard issuance/list/revoke UI ([fixed device runtime smoke PASS; full CI pending](https://github.com/iSentinel/VeyPanel/actions/runs/45063875045); interactive browser acceptance pending).
 - [x] Document one-time QR invitation and durable grant trust model ([design](docs/device-enrollment.md)); no implementation yet.
 - [x] Implement two-minute invitation claim, explicit owner verification and atomic one-time reader redemption (CI pending; client UI not yet implemented).
-- [ ] 0.4: invitation browser UI, QR, durable device enrollment, history.
+- [x] Add local invitation owner UI, tablet claim/finish page and real HTTPS enrollment integration test (CI pending; browser acceptance pending).
+- [ ] 0.4: QR rendering, durable device enrollment, history.
 - [ ] 0.5: Android client, native video and telemetry.
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.
 - [ ] 0.7: overlay, alerts, history and diagnostics.

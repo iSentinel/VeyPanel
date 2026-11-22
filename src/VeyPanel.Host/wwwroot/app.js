@@ -162,12 +162,12 @@ async function update() {
 window.addEventListener('pagehide',()=>{if(socket)socket.close();});
 window.addEventListener('resize',draw);update();
 
-async function ownerRequest(method, path = '', name) {
+async function ownerRequest(method, path = '', name, body) {
   const headers = {Authorization: 'Bearer ' + token};
   const options = {method, headers, cache: 'no-store', signal: AbortSignal.timeout(5000)};
-  if (name !== undefined) {
+  if (name !== undefined || body !== undefined) {
     headers['Content-Type'] = 'application/json';
-    options.body = JSON.stringify({name});
+    options.body = JSON.stringify(body ?? {name});
   }
   const response = await fetch('/api/v1/devices' + path, options);
   if (!response.ok) throw Error('HTTP ' + response.status);
@@ -220,6 +220,7 @@ async function initializeOwner() {
   try {
     renderDevices(await ownerRequest('GET'));
     $('device-owner').hidden = false;
+    await initializeInvitations();
   } catch { return; }
   $('device-refresh').addEventListener('click', () => ownerAction(async () => {
     clearIssued();
@@ -247,3 +248,69 @@ async function initializeOwner() {
 }
 window.addEventListener('pagehide', clearIssued);
 initializeOwner();
+
+let invitationBusy = false, invitationTimer = null;
+function clearInvitation() {
+  $('invitation-link').value = '';
+  $('invitation-link').hidden = true;
+}
+async function invitationAction(action) {
+  if (invitationBusy) return;
+  invitationBusy = true;
+  $('invitation-create').disabled = $('invitation-refresh').disabled = true;
+  try { await action(); }
+  catch { $('invitation-status').textContent = 'Request failed; LAN HTTPS must be enabled.'; }
+  finally { invitationBusy = false; $('invitation-create').disabled = $('invitation-refresh').disabled = false; }
+}
+async function refreshInvitations() {
+  const items = await ownerRequest('GET', '/invitations');
+  const list = $('invitation-list');
+  list.replaceChildren();
+  for (const item of items) {
+    const row = document.createElement('div');
+    row.className = 'device-row resource-row';
+    const label = document.createElement('span');
+    label.textContent = item.name + ' · ' + item.state + ' · ' + new Date(item.expiresUtc).toLocaleTimeString();
+    row.append(label);
+    if (item.state === 'pending') {
+      const approve = document.createElement('button');
+      approve.textContent = 'Compare and approve';
+      approve.addEventListener('click', () => invitationAction(async () => {
+        const code = prompt('Enter the six-digit code shown on the intended tablet:');
+        if (!/^[0-9]{6}$/.test(code || '')) return;
+        await ownerRequest('POST', '/invitations/' + item.id + '/approve', undefined, {code});
+        clearInvitation();
+        await refreshInvitations();
+        $('invitation-status').textContent = 'Approved; tablet must finish enrollment.';
+      }));
+      row.append(approve);
+    }
+    const cancel = document.createElement('button');
+    cancel.textContent = 'Cancel';
+    cancel.addEventListener('click', () => invitationAction(async () => {
+      await ownerRequest('DELETE', '/invitations/' + item.id);
+      clearInvitation(); await refreshInvitations();
+    }));
+    row.append(cancel);list.append(row);
+  }
+  if (!items.length) list.textContent = 'No active invitations';
+}
+async function initializeInvitations() {
+  $('invitation-owner').hidden = false;
+  $('invitation-create').addEventListener('click', () => invitationAction(async () => {
+    clearInvitation();
+    const name = $('device-name').value.trim();
+    if (!name) { $('invitation-status').textContent = 'Enter the intended device name above.'; return; }
+    const issued = await ownerRequest('POST', '/invitations', name);
+    $('invitation-link').value = issued.url;
+    $('invitation-link').hidden = false;
+    $('invitation-status').textContent = 'Private invitation; expires in two minutes.';
+    clearTimeout(invitationTimer);
+    invitationTimer = setTimeout(clearInvitation, 120000);
+    await refreshInvitations();
+  }));
+  $('invitation-refresh').addEventListener('click', () => invitationAction(refreshInvitations));
+  $('invitation-clear').addEventListener('click', clearInvitation);
+  await invitationAction(refreshInvitations);
+}
+window.addEventListener('pagehide', clearInvitation);
