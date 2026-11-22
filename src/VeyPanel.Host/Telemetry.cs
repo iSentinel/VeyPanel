@@ -7,6 +7,7 @@ public sealed record Snapshot(DateTimeOffset TimestampUtc, double? CpuPercent,
     double? MemoryUsedPercent, string Status)
 {
     public ResourceSnapshot? Resources { get; init; }
+    public DiskIoMetric? DiskIo { get; init; }
 }
 
 public static class CpuMath
@@ -26,10 +27,12 @@ public sealed class Telemetry : BackgroundService
     private Snapshot _latest = new(DateTimeOffset.UtcNow, null, null, null, null, "warming-up");
     private (ulong Idle, ulong Kernel, ulong User)? _previous;
     private readonly ResourceInventory resources = new();
+    private readonly DiskIoSampler diskIo = new();
     public Snapshot Latest => Volatile.Read(ref _latest);
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        using var sampler = diskIo;
         using var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
         do
         {
@@ -58,7 +61,7 @@ public sealed class Telemetry : BackgroundService
         return new(now, cpu, valid ? memory.TotalPhysical : null,
             valid ? memory.AvailablePhysical : null,
             valid ? 100.0 * (memory.TotalPhysical - memory.AvailablePhysical) / memory.TotalPhysical : null,
-            cpu.HasValue && valid ? "ok" : "partial") { Resources = resources.Capture() };
+            cpu.HasValue && valid ? "ok" : "partial") { Resources = resources.Capture(), DiskIo = diskIo.Capture() };
     }
 
     [StructLayout(LayoutKind.Sequential)]

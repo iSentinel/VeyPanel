@@ -54,9 +54,16 @@ function resources(data) {
     (Number.isFinite(v.freeBytes) && Number.isFinite(v.totalBytes)
       ? gib(v.freeBytes) + ' / ' + gib(v.totalBytes) + ' GiB free' : 'N/A'), 'N/A');
 }
+function diskIo(data) {
+  $('disk-status').textContent = data?.status || 'N/A';
+  $('disk-read').textContent = rate(data?.readBytesPerSecond);
+  $('disk-write').textContent = rate(data?.writeBytesPerSecond);
+  const iops = value => Number.isFinite(value) ? value.toFixed(1) : 'N/A';
+  $('disk-iops').textContent = 'Read ' + iops(data?.readsPerSecond) + ' / Write ' + iops(data?.writesPerSecond) + ' IOPS';
+}
 function offline(message) {
   $('status').textContent = message; metric('cpu', null);metric('ram',null);
-  resources(null);
+  resources(null);diskIo(null);
   $('capacity').textContent='N/A';$('timestamp').textContent='No current sample';
   samples.push({});if(samples.length>60)samples.shift();draw();
 }
@@ -67,7 +74,7 @@ async function update() {
     if (!response.ok) throw Error(`HTTP ${response.status}`);
     const s=await response.json(); const age=Date.now()-Date.parse(s.timestampUtc);
     if (!Number.isFinite(age)||age>5000||age< -5000) throw Error('Stale sample / clock mismatch');
-    resources(s.resources);
+    resources(s.resources);diskIo(s.diskIo);
     $('status').textContent=s.status;metric('cpu',s.cpuPercent);metric('ram',s.memoryUsedPercent);
     $('capacity').textContent=Number.isFinite(s.memoryTotalBytes)&&Number.isFinite(s.memoryAvailableBytes)?`${gib(s.memoryTotalBytes-s.memoryAvailableBytes)} / ${gib(s.memoryTotalBytes)} GiB`:'N/A';
     $('timestamp').textContent=`Updated ${new Date(s.timestampUtc).toLocaleTimeString()}`;

@@ -58,6 +58,11 @@ try {
     foreach ($nic in $sample.resources.network) {
         Assert-Check (($null -eq $nic.receiveBytesPerSecond -or $nic.receiveBytesPerSecond -ge 0) -and ($null -eq $nic.transmitBytesPerSecond -or $nic.transmitBytesPerSecond -ge 0)) 'Network rate valid or unavailable'
     }
+    Assert-Check ($null -ne $sample.diskIo -and $sample.diskIo.status -in @('ok','partial','warming-up','unavailable')) 'PDH disk status'
+    foreach ($metric in @($sample.diskIo.readBytesPerSecond, $sample.diskIo.writeBytesPerSecond, $sample.diskIo.readsPerSecond, $sample.diskIo.writesPerSecond)) {
+        Assert-Check ($null -eq $metric -or $metric -ge 0) 'Disk I/O nonnegative or unavailable'
+    }
+    Write-Host "Disk I/O capability: $($sample.diskIo.status)"
     $time = [DateTimeOffset]::Parse($sample.timestampUtc.ToString())
     Assert-Check ([Math]::Abs(([DateTimeOffset]::UtcNow - $time).TotalSeconds) -lt 5) 'Fresh timestamp'
     Start-Sleep -Seconds 2

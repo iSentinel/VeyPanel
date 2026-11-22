@@ -19,7 +19,8 @@
 - [x] Add local Apollo inventory and operator-confirmed PIN pairing in WPF (CI pending; physical acceptance pending).
 - [ ] 0.2: integrate streaming controls in WPF; hardware-tested rollback and live PIN acceptance.
 - [x] Add per-interface network throughput and fixed-volume capacity telemetry/UI (CI pending).
-- [ ] 0.3: GPU/encoder, SSD I/O/SMART, network acceptance; sensor capability discovery and N/A semantics; WebSocket.
+- [x] Implement system-total Windows PDH disk throughput and IOPS with status validation (CI pending).
+- [ ] 0.3: GPU/encoder, per-disk I/O/SMART, network acceptance; sensor capability discovery and N/A semantics; WebSocket.
 - [ ] 0.4: secure device enrollment, per-device revocation, QR, history.
 - [ ] 0.5: Android client, native video and telemetry.
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.

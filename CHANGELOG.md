@@ -7,6 +7,7 @@
 - No external Host termination, automatic driver installation or display changes.
 - Added Apollo WPF inventory and explicit PIN pairing controls using the shared certificate-pinned adapter.
 - Added per-interface network throughput and fixed-volume capacity monitoring with explicit unavailable values and dashboard cards.
+- Added native PDH system-total disk read/write throughput and IOPS; unavailable counters remain N/A.
 
 ## 0.1.0-alpha.3 (Host CI verified; desktop CI in progress)
 

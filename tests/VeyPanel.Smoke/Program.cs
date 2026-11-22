@@ -51,4 +51,9 @@ var ratePass = RateMath.Calculate(100, 300, 2) == 100
     && RateMath.Calculate(100, 100, 1) == 0;
 Console.WriteLine($"{(ratePass ? "PASS" : "FAIL")} Network rate math and reset");
 if (!ratePass) failed++;
+var pdhPass = DiskIoSampler.LayoutValid() && DiskIoSampler.Normalize(0, 123) == 123
+    && DiskIoSampler.Normalize(1, 0) == 0 && DiskIoSampler.Normalize(2, 100) is null
+    && DiskIoSampler.Normalize(0, double.NaN) is null && DiskIoSampler.Normalize(0, -1) is null;
+Console.WriteLine($"{(pdhPass ? "PASS" : "FAIL")} PDH ABI and status normalization");
+if (!pdhPass) failed++;
 return failed == 0 ? 0 : 1;
