@@ -68,6 +68,10 @@ try {
         Assert-Check ($null -eq $metric -or ($metric -ge 0 -and $metric -le 100)) 'GPU percentage valid or unavailable'
     }
     Write-Host "GPU capability: $($sample.gpu.status)"
+    Assert-Check ($null -ne $sample.gpu.inventoryStatus) 'DXGI inventory schema'
+    foreach ($adapter in $sample.gpu.adapters) {
+        Assert-Check (-not [string]::IsNullOrWhiteSpace($adapter.name)) 'GPU adapter name available or explicitly unmatched'
+    }
     $time = [DateTimeOffset]::Parse($sample.timestampUtc.ToString())
     Assert-Check ([Math]::Abs(([DateTimeOffset]::UtcNow - $time).TotalSeconds) -lt 5) 'Fresh timestamp'
     Start-Sleep -Seconds 2

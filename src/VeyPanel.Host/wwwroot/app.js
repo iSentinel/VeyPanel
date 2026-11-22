@@ -66,6 +66,8 @@ function gpu(data) {
   $('gpu-total').textContent = pct(data?.busiestEnginePercent);
   $('gpu-encode').textContent = pct(data?.videoEncodePercent);
   $('gpu-decode').textContent = pct(data?.videoDecodePercent);
+  $('gpu-inventory').textContent = data?.inventoryStatus || 'N/A';
+  rows('gpu-adapters', data?.adapters, a => a.name + (a.software ? ' (software)' : '') + ' · GPU ' + pct(a.busiestEnginePercent) + ' · Encode ' + pct(a.videoEncodePercent) + ' · Decode ' + pct(a.videoDecodePercent) + ' · Dedicated capacity ' + (Number.isFinite(a.dedicatedVideoBytes) ? gib(a.dedicatedVideoBytes) + ' GiB' : 'N/A'), 'N/A');
 }
 function offline(message) {
   $('status').textContent = message; metric('cpu', null);metric('ram',null);

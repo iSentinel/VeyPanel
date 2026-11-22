@@ -110,3 +110,7 @@ The dashboard also shows per-active-interface RX/TX byte rates (no IP/MAC or ada
 Connect to `/api/v1/telemetry/ws` on the same listener (ws loopback, wss for LAN). Send the 64-character uppercase token as the first complete text message within five seconds. No query-string tokens. Subsequent messages are read-only server snapshots in the same JSON schema as REST; extra client messages close the connection. Browser origins must match the explicit listener; native clients may omit Origin. Eight total concurrent sockets including pending authentication; excess connections return 503. Browser reconnects with REST fallback. This is still a per-host ephemeral token, not per-device enrollment.
 
 CI covers loopback WS and private-interface WSS with a temporary pinned certificate, negative trust tests, origin and query rejection and connection capacity. Browser trust on Android must use a valid trusted certificate; the CI pinning callback is test-only.
+
+## Named graphics adapters
+
+DXGI 1.1 inventory is refreshed every ten seconds, including adapter description, PCI vendor/device IDs, reported dedicated/shared capacity and software flag. PDH observations are grouped by normalized session LUID and matched to DXGI adapters; unmatched observations remain unnamed, idle/unobserved engines are N/A, not fake zero. Capacity is not current memory usage. LUID format and matching on Intel Arc require physical validation. API reference: https://learn.microsoft.com/en-us/windows/win32/api/dxgi/ns-dxgi-dxgi_adapter_desc1 .

@@ -30,6 +30,7 @@ public sealed class Telemetry : BackgroundService
     private readonly ResourceInventory resources = new();
     private readonly DiskIoSampler diskIo = new();
     private readonly GpuEngineSampler gpu = new();
+    private readonly GpuAdapterInventory gpuInventory = new();
     public Snapshot Latest => Volatile.Read(ref _latest);
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -64,7 +65,7 @@ public sealed class Telemetry : BackgroundService
         return new(now, cpu, valid ? memory.TotalPhysical : null,
             valid ? memory.AvailablePhysical : null,
             valid ? 100.0 * (memory.TotalPhysical - memory.AvailablePhysical) / memory.TotalPhysical : null,
-            cpu.HasValue && valid ? "ok" : "partial") { Resources = resources.Capture(), DiskIo = diskIo.Capture(), Gpu = gpu.Capture() };
+            cpu.HasValue && valid ? "ok" : "partial") { Resources = resources.Capture(), DiskIo = diskIo.Capture(), Gpu = gpuInventory.Attach(gpu.Capture()) };
     }
 
     [StructLayout(LayoutKind.Sequential)]

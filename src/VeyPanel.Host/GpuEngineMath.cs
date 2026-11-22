@@ -1,9 +1,18 @@
 using System.Text.RegularExpressions;
+using System.Globalization;
+using System.Text.Json.Serialization;
 
 namespace VeyPanel.Host;
 
 public sealed record GpuMetric(string Status, int AdapterCount, double? BusiestEnginePercent,
-    double? VideoEncodePercent, double? VideoDecodePercent);
+    double? VideoEncodePercent, double? VideoDecodePercent)
+{
+    public string InventoryStatus { get; init; } = "unavailable";
+    public GpuAdapterMetric[] Adapters { get; init; } = [];
+    [JsonIgnore] internal ObservedGpu[] Observed { get; init; } = [];
+}
+
+internal sealed record ObservedGpu(string Luid, double Busiest, double? Encode, double? Decode);
 
 internal static partial class GpuEngineMath
 {
@@ -20,7 +29,10 @@ internal static partial class GpuEngineMath
             var match = InstancePattern().Match(name);
             if (!match.Success || percent is not double value || !double.IsFinite(value) || value < 0 || value > 100)
             { partial = true; continue; }
-            var adapter = $"{match.Groups["high"].Value}:{match.Groups["low"].Value}:{match.Groups["phys"].Value}";
+            if (!uint.TryParse(match.Groups["high"].Value.AsSpan(2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var high)
+                || !uint.TryParse(match.Groups["low"].Value.AsSpan(2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var low))
+            { partial = true; continue; }
+            var adapter = $"{DxgiInventory.Key(unchecked((int)high), low)}:{match.Groups["phys"].Value}";
             var type = match.Groups["type"].Value;
             var engine = $"{adapter}:{match.Groups["eng"].Value}:{type}";
             if (!seen.Add($"{engine}:{match.Groups["pid"].Value}"))
@@ -35,7 +47,13 @@ internal static partial class GpuEngineMath
         double? Peak(string type) => valid.Where(e => e.Type.Equals(type, StringComparison.OrdinalIgnoreCase))
             .Select(e => (double?)e.Percent).Max();
         return new(partial ? "partial" : "ok", valid.Select(e => e.Adapter).Distinct(StringComparer.OrdinalIgnoreCase).Count(),
-            valid.Max(e => e.Percent), Peak("VideoEncode"), Peak("VideoDecode"));
+            valid.Max(e => e.Percent), Peak("VideoEncode"), Peak("VideoDecode"))
+        {
+            Observed = valid.GroupBy(e => e.Adapter[..17], StringComparer.Ordinal)
+                .Select(g => new ObservedGpu(g.Key, g.Max(e => e.Percent),
+                    g.Where(e => e.Type.Equals("VideoEncode", StringComparison.OrdinalIgnoreCase)).Select(e => (double?)e.Percent).Max(),
+                    g.Where(e => e.Type.Equals("VideoDecode", StringComparison.OrdinalIgnoreCase)).Select(e => (double?)e.Percent).Max())).ToArray()
+        };
     }
 
     internal static GpuMetric Empty(string status) => new(status, 0, null, null, null);

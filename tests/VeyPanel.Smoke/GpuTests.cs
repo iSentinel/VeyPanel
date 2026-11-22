@@ -11,6 +11,8 @@ internal static class GpuTests
             ("GPU explicit zero is valid", Zero),
             ("GPU malformed/duplicate samples", Malformed),
             ("GPU impossible group rejected", Impossible),
+            ("DXGI native layout and LUID mapping", Mapping),
+            ("DXGI live adapter inventory", LiveInventory),
         };
         var failures = 0;
         foreach (var test in tests)
@@ -40,6 +42,27 @@ internal static class GpuTests
         var g = GpuEngineMath.Aggregate([(Name(1, 0, "3D"), 30), (Name(1, 0, "3D") + "#1", 30), ("unknown", 99)]);
         return g.Status == "partial" && g.BusiestEnginePercent == 30;
     }
+    private static bool Mapping()
+    {
+        var metric = GpuEngineMath.Aggregate([(Name(1, 0, "3D"), 20), (Name(2, 1, "VideoEncode"), 35),
+            (Name(3, 0, "3D", 2), 50)]);
+        var mapped = GpuAdapterInventory.Map(metric, "ok", [
+            new AdapterDescription(DxgiInventory.Key(0, 1), "Intel test", 0x8086, 1, 1024, 2048, false),
+            new AdapterDescription(DxgiInventory.Key(0, 3), "Idle test", 0x8086, 3, 0, 4096, false)]);
+        return DxgiInventory.LayoutValid() && mapped.Adapters.Length == 3
+            && mapped.Adapters[0].Name == "Intel test" && mapped.Adapters[0].VideoEncodePercent == 35
+            && mapped.Adapters[1].BusiestEnginePercent is null && mapped.Adapters[2].VendorId is null
+            && mapped.Adapters[2].BusiestEnginePercent == 50;
+    }
+
+    private static bool LiveInventory()
+    {
+        var result = DxgiInventory.Capture();
+        Console.WriteLine($"DXGI inventory: {result.Status}; {result.Adapters.Length} adapters");
+        return result.Status is "ok" or "partial" or "unavailable" or "unsupported-platform"
+            && result.Adapters.All(a => a.Luid.Length == 17 && !string.IsNullOrWhiteSpace(a.Name));
+    }
+
     private static bool Impossible()
     {
         var g = GpuEngineMath.Aggregate([(Name(1, 1, "VideoEncode"), 80), (Name(2, 1, "VideoEncode"), 80)]);
