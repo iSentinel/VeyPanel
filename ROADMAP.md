@@ -50,6 +50,7 @@
 - [x] Implement opt-in AndroidKeyStore AES-GCM credential store, reconnect saved access and forget UI (CI pending; actual AndroidKeyStore instrumentation pending).
 - [x] Add ordered credential operation callbacks and isolated AndroidKeyStore instrumentation APK (build CI pending; execution pending).
 - [x] Add native offline QR invitation scanner, strict parsing with explicit Connect, pinned ZXing dependencies and notices (CI pending; camera/device acceptance pending).
+- [x] Add isolated emulator runtime CI for AndroidKeyStore and synthetic offline QR decode (execution pending; no camera test).
 - [ ] 0.5: credential instrumentation execution, Android QR camera acceptance, WSS and native video.
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.
 - [ ] 0.7: overlay, alerts, history and diagnostics.

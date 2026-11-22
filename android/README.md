@@ -22,3 +22,5 @@ The instrumentation APK is built by `gradle -p android :app:assembleDebugAndroid
 ## Local QR camera preview
 
 Press Scan invitation QR and grant camera access if desired. Only a syntactically valid private HTTPS VeyPanel invitation is inserted into the password-style input; press Connect explicitly to claim it. No general URL opening, automatic redemption, frame upload or image capture result. Uses pinned ZXing Android Embedded 4.3.0 and ZXing Core 3.5.3 (Apache-2.0, embedded license/NOTICE assets). Camera and permission handling need actual Lenovo acceptance; transitive dependency/license/security review remains open. Pasting a link is an alternative.
+
+Separate Android runtime smoke CI boots an isolated API 33 emulator and executes actual Keystore checks and a synthetic QR encoder/decoder test. The test script refuses non-emulator devices. Camera scanning itself is not covered. Build CI and runtime CI are distinct.
