@@ -1,12 +1,13 @@
 # Changelog
 
-## 0.1.0-alpha.2 (development; CI pending)
+## 0.1.0-alpha.2 (Windows CI verified; hardware acceptance pending)
 
 - Added local Apollo v0.4.6 cookie-authenticated inventory CLI, strict SHA-256 certificate pinning and date validation.
 - No redirects, proxy, credential persistence, upstream config writes or LAN admin API.
 - Added nine mock protocol and certificate checks; real upstream compatibility remains pending.
 - Added read-only desktop source inventory CLI and Windows interop layout/runtime smoke checks.
 - Restricted LAN bind to private RFC1918 IPv4 and added automated HTTPS LAN integration and negative TLS tests.
+- CI: build and publish PASS; CPU 8/8, Apollo 9/9, Win32 inventory, local host and private-interface HTTPS integration PASS ([run 45047071449](https://github.com/iSentinel/VeyPanel/actions/runs/45047071449)).
 
 ## 0.1.0-alpha.1 (source checkpoint; unreleased)
 
