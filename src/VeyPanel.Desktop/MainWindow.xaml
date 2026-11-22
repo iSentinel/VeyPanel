@@ -26,6 +26,30 @@
          <TextBlock x:Name="HostStatus" Text="Stopped" TextWrapping="Wrap"/>
        </StackPanel>
      </TabItem>
+     <TabItem Header="Apollo">
+       <ScrollViewer VerticalScrollBarVisibility="Auto">
+         <StackPanel Margin="18" MaxWidth="660" HorizontalAlignment="Left">
+           <TextBlock Text="Local Apollo management" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,8"/>
+           <TextBlock Text="Requires separately installed Apollo v0.4.6. Verify the certificate fingerprint independently from the actual local certificate file. Login may replace an existing Apollo Web UI session." TextWrapping="Wrap"/>
+           <TextBlock Text="Verified certificate SHA-256" Margin="0,12,0,3"/>
+           <TextBox x:Name="ApolloPinHash" MaxLength="95"/>
+           <TextBlock Text="Username" Margin="0,8,0,3"/>
+           <TextBox x:Name="ApolloUsername" MaxLength="128"/>
+           <TextBlock Text="Password (not saved)" Margin="0,8,0,3"/>
+           <PasswordBox x:Name="ApolloPassword" MaxLength="1024"/>
+           <Button x:Name="ApolloInspectButton" Content="Inspect Apollo" Click="ApolloInspect_Click" HorizontalAlignment="Left" Padding="14,7" Margin="0,12,0,8"/>
+           <Separator Margin="0,8"/>
+           <TextBlock Text="Pair a tablet you physically control. The first paired client may receive broad permissions; verify them in Apollo." TextWrapping="Wrap"/>
+           <TextBlock Text="Device name" Margin="0,8,0,3"/>
+           <TextBox x:Name="ApolloDeviceName" MaxLength="64"/>
+           <TextBlock Text="Four-digit PIN shown on the tablet" Margin="0,8,0,3"/>
+           <PasswordBox x:Name="ApolloDevicePin" MaxLength="4"/>
+           <Button x:Name="ApolloPairButton" Click="ApolloPair_Click" Content="Pair device…" HorizontalAlignment="Left" Padding="14,7" Margin="0,12,0,8"/>
+           <TextBlock x:Name="ApolloStatus" Text="Not connected" TextWrapping="Wrap" Margin="0,6"/>
+           <ListBox x:Name="ApolloApps" Height="100"/>
+         </StackPanel>
+       </ScrollViewer>
+     </TabItem>
      <TabItem Header="Desktop sources">
        <DataGrid x:Name="SourcesGrid" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" HeadersVisibility="Column">
          <DataGrid.Columns>

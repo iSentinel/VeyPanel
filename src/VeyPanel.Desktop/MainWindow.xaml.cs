@@ -15,7 +15,8 @@ public partial class MainWindow : Window
 {
     private readonly Forms.NotifyIcon tray;
     private bool busy;
-    private bool hostBusy, closing, mayClose;
+    private bool hostBusy, closing, mayClose, apolloBusy;
+    private Task? apolloOperation;
     private readonly HostController host = new(Path.Combine(AppContext.BaseDirectory, "host"));
     private readonly DispatcherTimer hostTimer = new() { Interval = TimeSpan.FromSeconds(2) };
 
@@ -87,7 +88,11 @@ public partial class MainWindow : Window
         if (closing) return;
         closing = true;
         hostTimer.Stop();
-        try { await host.DisposeAsync(); }
+        try
+        {
+            if (apolloOperation is not null) await apolloOperation;
+            await host.DisposeAsync();
+        }
         catch (Exception ex)
         {
             closing = false;
@@ -97,6 +102,79 @@ public partial class MainWindow : Window
         }
         mayClose = true;
         Close();
+    }
+
+    private async void ApolloInspect_Click(object sender, RoutedEventArgs e) =>
+        await BeginApolloAsync(false);
+
+    private async void ApolloPair_Click(object sender, RoutedEventArgs e) =>
+        await BeginApolloAsync(true);
+
+    private async Task BeginApolloAsync(bool pair)
+    {
+        if (apolloBusy || closing) return;
+        var pin = ApolloDevicePin.Password;
+        var name = ApolloDeviceName.Text.Trim();
+        if (pair && !ApolloClient.ValidPairingInput(pin, name))
+        {
+            ApolloStatus.Text = "Enter a valid device name and four ASCII digits.";
+            ApolloDevicePin.Clear();
+            return;
+        }
+        var message = pair
+            ? "Send one pairing request to local Apollo? First-time clients may receive broad permissions. Review permissions after pairing."
+            : "Inspect local Apollo? Login may replace an existing Web UI session.";
+        if (System.Windows.MessageBox.Show(this, message, "VeyPanel Apollo",
+            MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) != MessageBoxResult.Yes)
+        {
+            ApolloPassword.Clear();
+            ApolloDevicePin.Clear();
+            return;
+        }
+        var fingerprint = ApolloPinHash.Text.Trim();
+        var username = ApolloUsername.Text.Trim();
+        var password = ApolloPassword.Password;
+        ApolloPassword.Clear();
+        ApolloDevicePin.Clear();
+        ApolloApps.ItemsSource = null;
+        apolloBusy = true;
+        ApolloInspectButton.IsEnabled = ApolloPairButton.IsEnabled = false;
+        ApolloStatus.Text = "Connecting…";
+        apolloOperation = ExecuteApolloAsync(pair, fingerprint, username, password, pin, name);
+        try { await apolloOperation; }
+        finally
+        {
+            apolloOperation = null;
+            apolloBusy = false;
+            ApolloInspectButton.IsEnabled = ApolloPairButton.IsEnabled = true;
+        }
+    }
+
+    private async Task ExecuteApolloAsync(bool pair, string fingerprint, string username,
+        string password, string pin, string name)
+    {
+        try
+        {
+            if (username.Length == 0 || password.Length == 0)
+                throw new FormatException("Credentials required.");
+            using var client = ApolloClient.Create(fingerprint);
+            await client.LoginAsync(username, password);
+            if (pair)
+            {
+                var accepted = await client.PairAsync(pin, name);
+                ApolloStatus.Text = accepted
+                    ? "PIN accepted. Verify completed pairing and permissions on both devices."
+                    : "PIN rejected. Check the current tablet request.";
+                return;
+            }
+            var info = await client.InspectAsync();
+            ApolloApps.ItemsSource = info.Apps;
+            ApolloStatus.Text = $"{info.HostName ?? "Unknown host"} • {info.PairedClients} paired client(s)";
+        }
+        catch (Exception ex)
+        {
+            ApolloStatus.Text = $"Apollo operation failed ({ex.GetType().Name}). Check service, certificate, credentials and device before retrying.";
+        }
     }
 
     private void ShowWindow()

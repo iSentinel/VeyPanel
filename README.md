@@ -96,3 +96,7 @@ dotnet run --project src/VeyPanel.Desktop -c Release
 ```
 
 The alpha GUI lists desktop sources and active display paths, calls the same guarded validate-only diagnostic, and supports minimize-to-tray. The bundled Desktop package starts/stops its own loopback-only telemetry Host and opens the local browser dashboard. Keep the host subfolder alongside the Desktop executable. It does not install drivers, change displays or provide streaming control yet. Closing Desktop stops its owned Host; an unmanaged existing Host is never terminated. LAN mode remains explicit via standalone Host. It links the same diagnostic source files rather than duplicating the implementation. Compilation/publish and interactive GUI acceptance are separate gates.
+
+## Apollo in Desktop
+
+The Apollo tab provides local inventory and explicit PIN pairing with the same certificate-pinned adapter as the CLI. Credentials/PIN are cleared from inputs and are not persisted. A separate confirmation is required before either login or pairing. Verify device permissions after pairing. No stream start/stop, automatic driver installation or real device acceptance yet.

@@ -19,3 +19,5 @@
 No production driver install, device pairing, monitor setting changes or real streaming performed. Real Lenovo/Intel Arc acceptance remains pending. Source license remains an owner decision; no upstream binaries redistributed.
 
 Alpha.4: previous WPF CI 45049892455 PASS, GUI physical acceptance pending. Added bundled Host process management, fixed loopback managed mode, stdin-owned shutdown, readiness verification, start/stop/open controls and lifecycle tests. New CI pending. No topology mutation or live pairing. Next: verify alpha.4 CI, add GUI Apollo controls and diagnostics; actual hardware acceptance remains pending.
+
+Alpha.4 Apollo GUI: added certificate-pinned local inspection and single operator-confirmed PIN pairing. No password/PIN persistence, no automatic permission or stream changes. UI compile and actual GUI/device acceptance pending. Next: check CI and add read-only extended telemetry; hardware gates remain open.

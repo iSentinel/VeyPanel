@@ -17,5 +17,6 @@
     <Using Include="System.Collections.Generic" />
     <Using Include="System.Linq" />
     <Compile Include="../Shared/HostController.cs" Link="HostController.cs" />
+    <Compile Include="../VeyPanel.Host/ApolloClient.cs" Link="ApolloClient.cs" />
   </ItemGroup>
 </Project>
