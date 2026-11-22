@@ -1,0 +1,10 @@
+# VeyPanel native Android monitor (alpha.10)
+
+Early Monitor-only Java Activity, Android 8+ (API 26), compile/target SDK 35, AGP 8.7.3 and Gradle 8.9, JDK 17. Pinned initial toolchain, not a claim of current Play Store compliance. Build with `gradle -p android :app:assembleDebug :app:lintDebug`. Debug-signed APK is for isolated development testing only.
+
+1. Configure standalone Windows Host LAN HTTPS using the specific RFC1918 address and a certificate with that exact IP SAN.
+2. Independently verify the intended PC certificate/CA. Android must trust its issuer. The app explicitly accepts Android system and user-installed trust anchors for this app only; ordinary TLS hostname and chain verification remain enabled. Do not install unknown CAs or bypass trust errors.
+3. Create a reader link in the local owner dashboard, privately transfer it, paste into the native client and Connect. No HTTP, redirect, public IP, arbitrary path, proxy or token query parameter. No owner API.
+4. CPU/RAM/GPU/video codec and disk throughput are polled with HTTPS REST approximately once a second after each completed request. Missing/stale metrics show N/A. Polling is suspended when the Activity pauses. Auth/TLS errors terminate the session. Credentials remain in Activity memory; no backup or saved view state for link. No background service or telemetry upload.
+
+QR scanning, Android Keystore, persistent reconnect, native WSS, video, touchscreen forwarding and tablet layout acceptance are future milestones. The first app is not a replacement for Apollo/Moonlight yet. No emulator or real tablet results until tests actually run. Android trust model reference: https://developer.android.com/privacy-and-security/security-config ; toolchain: https://developer.android.com/build/releases/agp-8-7-0-release-notes .

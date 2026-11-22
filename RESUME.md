@@ -16,3 +16,5 @@
 3. Physical acceptance: Lenovo TB-J607Z, Intel Arc, CPU/GPU thermal sensors, actual SSD reliability metrics, Apollo v0.4.6 Quick Sync, Mirror/Extend 2000x1200 @60 Hz. Keep topology mutation disabled until rollback watchdog and hardware acceptance. No driver installation, display mutation, actual pairing or streaming performed. Original project license decision remains open.
 
 Alpha.10: full ACL CI 45066313328 PASS including actual reparse path rejection. Added bounded numeric-only CSV export, reader revocation checks, codec/disk history charts and 1/5/15-minute visual window. Full CSV remains 15 minutes max. CI pending. Next: native Android read-only monitor.
+
+Alpha.10 Android increment: initial native Java Monitor Activity and strict private HTTPS reader link parser, Android system/user CA trust with hostname verification, no redirects/proxy or cleartext, bounded REST polling and null/freshness rules. Session memory only; no native QR or Keystore yet. JVM fixtures and separate debug APK/lint CI added, pending execution. No physical Lenovo test.

@@ -3,6 +3,7 @@
 ## 0.1.0-alpha.10 (development; CI pending)
 
 - Added history range selector, codec/disk charts and authenticated CSV export.
+- Added initial native Android Monitor-only app with strict private HTTPS link validation, REST polling and debug APK CI.
 - Alpha.9 final ACL and reparse fixtures and full CI passed.
 
 ## 0.1.0-alpha.9 (protected restart CI PASS; history CI PASS; ACL fixtures PASS; remaining CI in progress; physical acceptance pending)

@@ -6,3 +6,7 @@
 *.key
 .env
 publish/
+
+/android/.gradle/
+/android/**/build/
+/android/local.properties
