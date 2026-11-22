@@ -253,6 +253,8 @@ let invitationBusy = false, invitationTimer = null;
 function clearInvitation() {
   $('invitation-link').value = '';
   $('invitation-link').hidden = true;
+  $('invitation-qr').removeAttribute('src');
+  $('invitation-qr').hidden = true;
 }
 async function invitationAction(action) {
   if (invitationBusy) return;
@@ -302,9 +304,12 @@ async function initializeInvitations() {
     const name = $('device-name').value.trim();
     if (!name) { $('invitation-status').textContent = 'Enter the intended device name above.'; return; }
     const issued = await ownerRequest('POST', '/invitations', name);
+    if (typeof issued.qrPng !== 'string' || !/^[A-Za-z0-9+/=]+$/.test(issued.qrPng) || issued.qrPng.length > 350000) throw Error('Invalid QR');
+    $('invitation-qr').src = 'data:image/png;base64,' + issued.qrPng;
+    $('invitation-qr').hidden = false;
     $('invitation-link').value = issued.url;
     $('invitation-link').hidden = false;
-    $('invitation-status').textContent = 'Private invitation; expires in two minutes.';
+    $('invitation-status').textContent = 'Private QR / link; expires in two minutes. Scan only on the intended tablet.';
     clearTimeout(invitationTimer);
     invitationTimer = setTimeout(clearInvitation, 120000);
     await refreshInvitations();

@@ -12,4 +12,13 @@
     <Content Include="../../scripts/Get-StorageHealth.ps1" Link="diagnostics/Get-StorageHealth.ps1" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
     <Content Include="../../scripts/StorageHealth.psm1" Link="diagnostics/StorageHealth.psm1" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
+  <PropertyGroup>
+    <NuGetAudit>true</NuGetAudit>
+    <NuGetAuditMode>all</NuGetAuditMode>
+    <WarningsAsErrors>$(WarningsAsErrors);NU1903;NU1904</WarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Net.Codecrete.QrCodeGenerator" Version="[3.2.1]" />
+    <Content Include="../../third-party/Codecrete-QrCodeGenerator-LICENSE.txt" Link="third-party/Codecrete-QrCodeGenerator-LICENSE.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>

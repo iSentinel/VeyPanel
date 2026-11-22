@@ -40,7 +40,16 @@ internal sealed class InvitationEndpoints(InvitationRegistry registry, string? l
         var issued = registry.Create(name!, DateTimeOffset.UtcNow);
         if (issued is null) return Results.Conflict();
         var url = $"https://{lan}:47861/enroll.html#id={issued.Invitation.Id}&secret={issued.Secret}";
-        return Results.Json(new { issued.Invitation, Url = url }, statusCode: 201);
+        try
+        {
+            var qrPng = InvitationQr.Render(url);
+            return Results.Json(new { issued.Invitation, Url = url, QrPng = qrPng }, statusCode: 201);
+        }
+        catch (Exception)
+        {
+            registry.Cancel(issued.Invitation.Id);
+            return Results.StatusCode(500);
+        }
     });
 
     private Task<IResult> ApproveAsync(HttpContext context, Guid id) => ReadAsync(context, root =>

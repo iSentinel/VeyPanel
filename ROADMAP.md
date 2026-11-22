@@ -35,7 +35,8 @@
 - [x] Document one-time QR invitation and durable grant trust model ([design](docs/device-enrollment.md)); no implementation yet.
 - [x] Implement two-minute invitation claim, explicit owner verification and atomic one-time reader redemption (CI pending; client UI not yet implemented).
 - [x] Add local invitation owner UI, tablet claim/finish page and real HTTPS enrollment integration test (CI pending; browser acceptance pending).
-- [ ] 0.4: QR rendering, durable device enrollment, history.
+- [x] Implement local QR PNG rendering using pinned MIT encoder and package license (CI pending; independent scan acceptance pending).
+- [ ] 0.4: durable device enrollment, history.
 - [ ] 0.5: Android client, native video and telemetry.
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.
 - [ ] 0.7: overlay, alerts, history and diagnostics.

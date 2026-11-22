@@ -17,6 +17,10 @@ internal static class EnrollmentSmoke
         var url = new Uri(issue.RootElement.GetProperty("url").GetString()!);
         Check(url.GetLeftPart(UriPartial.Authority) == root.GetLeftPart(UriPartial.Authority)
             && url.AbsolutePath == "/enroll.html", "Invitation bound to LAN origin");
+        var png = Convert.FromBase64String(issue.RootElement.GetProperty("qrPng").GetString()!);
+        Check(png.Length > 32 && png.Take(8).SequenceEqual(new byte[] { 137, 80, 78, 71, 13, 10, 26, 10 })
+            && System.Buffers.Binary.BinaryPrimitives.ReadInt32BigEndian(png.AsSpan(16, 4))
+                == System.Buffers.Binary.BinaryPrimitives.ReadInt32BigEndian(png.AsSpan(20, 4)), "Local QR PNG generated");
         var id = issue.RootElement.GetProperty("invitation").GetProperty("id").GetGuid();
         var secret = url.Fragment.Split("&secret=")[1];
         using var page = await lan.GetAsync("enroll.html");
