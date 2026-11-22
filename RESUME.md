@@ -1,25 +1,17 @@
 # Resume checkpoint
 
-2026-11-22 — VeyPanel 0.1.0-alpha.6.
+2026-11-22 — VeyPanel 0.1.0-alpha.7.
 
-## Verified
-- Alpha.5 complete storage diagnostic CI 45062430196 passed. WS/WSS, DXGI and previous test evidence remains valid.
-- Per-instance disk IO commit acbdc6c777fb5610eaa4bb5d68d227ca4ead8b38 passed CI 45063074951: zero Host warnings/errors, bounded merge, duplicate/missing values and runtime schema. Hosted capability was warming-up; physical per-instance rates not established.
-- Asynchronous storage worker commit 7020a3d4431fe31535bf49ca8b144e3d09c6e95b passed full CI 45063224882. Storage scripts packaged, validation and stale handling tested, dashboard integrated. Provider reports are not independent SMART/NVMe verdicts.
-- Hardening commit 81c2b97253c98df9497507443969ce4bd98e6c75: UTF-8 output, max 128 rows, runtime bounded attempt and telemetry freshness check. Published-host integration smoke passed; remaining CI in progress in run 45063263774. Complete log not yet available at initial check; do not infer actual counter values.
-- Verified package run 45063224882: Desktop + Host https://github.com/iSentinel/VeyPanel/actions/runs/45063224882/artifacts/14770501184; standalone https://github.com/iSentinel/VeyPanel/actions/runs/45063224882/artifacts/14770421339. Unsigned alpha.
-- Reviewed thermal provider v0.9.6 vs master contract; see docs/thermal-provider.md. No thermal adapter implemented.
+## Verified evidence
+- Alpha.6 final storage hardening CI 45063263774 passed. Bounded worker attempt and telemetry freshness PASS; Storage Provider capability partial with two runner rows. PhysicalDisk instance status warming-up; real target per-disk rates/health not established.
+- Alpha.7 thermal adapter commit 01a2f44c85fcb59d68fe5575d88c31149dd75b79, CI 45063709265 completed successfully: zero warnings/errors, seven thermal tests and runtime capability schema. Optional, fixed loopback GET to v0.9.6-shaped LHM provider, disabled default, no external code/driver bundled. String Celsius schema only, receipt time not actual sensor sampling age, no version handshake. Live Intel temperatures not verified.
+- Device registry/API commit 5fd6cf8807647c01f6a8506ef3d9e76daded1e58, run 45063802814: build and fixtures passed, LAN/WS smoke passed, device lifecycle not yet confirmed, full CI in progress at checkpoint. Owner token restricted to local loopback; separate LAN reader grants, hashed in RAM, 24h expiry, 32 active grants, local owner create/list/revoke. WS checks access each send.
+- Local owner UI and negative admin Origin/Host tests commit 9955376d504cd1b9a46f6f1e9af9711e32b7af58, run 45063875045: JS syntax passed; full CI in progress; device lifecycle not yet confirmed. Interactive browser acceptance pending.
+- Last verified package run 45063709265: Desktop + Host https://github.com/iSentinel/VeyPanel/actions/runs/45063709265/artifacts/14770776736; standalone https://github.com/iSentinel/VeyPanel/actions/runs/45063709265/artifacts/14769899651. Unsigned alpha.
 
 ## Next
-1. Confirm full hardening CI/logs and actual provider status on runner; add tests that observe a second valid PhysicalDisk sample when available. Keep unavailable and warm-up explicit.
-2. Implement CPU/GPU thermal provider after dependency/security review, no automatic driver install or service exposure. Test sensor types and units, timeouts and stale readings.
-3. Implement secure device enrollment, scoped revocable tokens, QR, history and Android telemetry client.
-4. Physical acceptance: Lenovo TB-J607Z WSS, Intel Arc/Quick Sync, actual storage/thermal sensors, Apollo v0.4.6 pairing and Mirror/Extend at 2000x1200 60 Hz. Keep display writes disabled until recovery watchdog is ready and hardware-tested.
+1. Confirm latest device CI and inspect actual revocation/Origin/Host logs; fix any failures. Test local owner dashboard in real browser and LAN reader on Lenovo.
+2. Implement one-time short-lived QR enrollment with local generation and explicit owner approval; see docs/device-enrollment.md. Review encoder provenance/licensing and TLS trust design before bundling. Durable per-device grants and Android secure storage are separate.
+3. Continue history, Android telemetry and physical Apollo/Lenovo Mirror/Extend 2000x1200 at 60 Hz; actual Intel Quick Sync and CPU/GPU sensors, SSD counters and rollback are not physically validated.
+4. Keep topology mutation disabled until watchdog and hardware acceptance. No driver installation, live pairing, real streaming or monitor changes performed. Original source license still undecided.
 
-No actual target hardware access, driver installation, display topology changes, live pairing or streaming performed. Browser behavior remains unverified on target. Original source license remains an owner decision.
-
-Alpha.7: Alpha.6 full hardening CI 45063263774 passed; actual provider partial, 2 rows, freshness PASS. Optional LHM loopback-only GET adapter and dashboard implemented; default disabled, no service exposure, script/driver install or auth bypass. Reads v0.9.6-shaped Celsius strings only; receipt time is not provider sensor sampling time. CI pending. Real Intel temperatures remain unverified.
-
-Alpha.7 device authorization: in-memory hashed per-device tokens, 24h expiry, 32 entries, owner token restricted to loopback; initial LAN link receives separate revocable token. Local owner endpoints issue/list/revoke, list excludes secrets, LAN/reader administration denied. WebSocket checks grant each send; in-flight frames may complete. New mock and integration tests pending CI. No persistent identity, QR or UI yet.
-
-Alpha.7 owner UI increment: local dashboard only, authorized by owner API probe; create/list/revoke reader grants, show issuance secret once until cleared, no persistent storage, no remote admin UI. JS syntax CI step added; browser interaction unverified. Next: confirm CI then QR and durable enrollment design.

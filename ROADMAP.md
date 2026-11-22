@@ -28,10 +28,11 @@
 - [x] Integrate independent bounded Storage Provider worker and health dashboard ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45063224882); actual physical counters pending).
 - [x] Harden storage provider encoding and bounded completion test ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45063263774)).
 - [x] Review LibreHardwareMonitor v0.9.6 thermal sensor contract and security boundaries ([design](docs/thermal-provider.md)); version-specific adapter now implemented below.
-- [x] Implement opt-in loopback-only LHM v0.9.6-shaped read adapter, explicit Celsius parsing and thermal dashboard (CI pending; real provider validation pending).
+- [x] Implement opt-in loopback-only LHM v0.9.6-shaped read adapter, explicit Celsius parsing and thermal dashboard ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45063709265); real provider validation pending).
 - [ ] 0.3: validate real GPU/encoder, physical-disk I/O/SMART, network acceptance; CPU/GPU temperature sensors, physical WSS acceptance.
-- [x] Implement ephemeral individually revocable read-only device tokens, local owner API and active WS revalidation (CI pending).
-- [x] Implement local owner dashboard issuance/list/revoke UI (CI pending; interactive browser acceptance pending).
+- [x] Implement ephemeral individually revocable read-only device tokens, local owner API and active WS revalidation ([build and fixtures PASS; runtime CI in progress](https://github.com/iSentinel/VeyPanel/actions/runs/45063802814)).
+- [x] Implement local owner dashboard issuance/list/revoke UI ([CI in progress; JavaScript syntax PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45063875045); interactive browser acceptance pending).
+- [x] Document one-time QR invitation and durable grant trust model ([design](docs/device-enrollment.md)); no implementation yet.
 - [ ] 0.4: QR, durable device enrollment, history.
 - [ ] 0.5: Android client, native video and telemetry.
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.
