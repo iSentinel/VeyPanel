@@ -19,6 +19,8 @@ internal static class WebSocketSmoke
             await RejectedToken(ct);
             await ValidSession(token, ct);
             await ValidSession(token, ct);
+            await RejectQuery(ct);
+            await TestCapacityAsync(token, ct);
             await host.StopAsync();
             Console.WriteLine("PASS: WebSocket authorization, samples, reconnect and shutdown");
             return 0;
@@ -69,7 +71,37 @@ internal static class WebSocketSmoke
         Console.WriteLine("PASS: authorized advancing telemetry");
     }
 
-    private static async Task<DateTimeOffset> ReadSample(ClientWebSocket socket, CancellationToken ct)
+    private static async Task RejectQuery(CancellationToken ct)
+    {
+        using var socket = Client("http://127.0.0.1:47860");
+        try { await socket.ConnectAsync(new Uri(Endpoint + "?unexpected=1"), ct); }
+        catch (WebSocketException) { Console.WriteLine("PASS: query-string upgrade rejected"); return; }
+        throw new InvalidOperationException("Unexpected query accepted.");
+    }
+
+    private static async Task TestCapacityAsync(string token, CancellationToken ct)
+    {
+        // Hold authenticated sessions to avoid depending on authentication timeout timing.
+        var sockets = new List<ClientWebSocket>();
+        try
+        {
+            for (var i = 0; i < 8; i++)
+            {
+                var socket = Client("http://127.0.0.1:47860");
+                sockets.Add(socket);
+                await socket.ConnectAsync(Endpoint, ct);
+                await socket.SendAsync(Encoding.ASCII.GetBytes(token).AsMemory(), WebSocketMessageType.Text, true, ct);
+                await ReadSample(socket, ct);
+            }
+            using var extra = Client("http://127.0.0.1:47860");
+            try { await extra.ConnectAsync(Endpoint, ct); }
+            catch (WebSocketException) { Console.WriteLine("PASS: concurrent connection limit"); return; }
+            throw new InvalidOperationException("Connection limit not enforced.");
+        }
+        finally { foreach (var socket in sockets) socket.Dispose(); }
+    }
+
+    internal static async Task<DateTimeOffset> ReadSample(ClientWebSocket socket, CancellationToken ct)
     {
         var buffer = new byte[16384];
         using var stream = new MemoryStream();

@@ -108,3 +108,5 @@ The dashboard also shows per-active-interface RX/TX byte rates (no IP/MAC or ada
 ## Telemetry WebSocket
 
 Connect to `/api/v1/telemetry/ws` on the same listener (ws loopback, wss for LAN). Send the 64-character uppercase token as the first complete text message within five seconds. No query-string tokens. Subsequent messages are read-only server snapshots in the same JSON schema as REST; extra client messages close the connection. Browser origins must match the explicit listener; native clients may omit Origin. Eight total concurrent sockets including pending authentication; excess connections return 503. Browser reconnects with REST fallback. This is still a per-host ephemeral token, not per-device enrollment.
+
+CI covers loopback WS and private-interface WSS with a temporary pinned certificate, negative trust tests, origin and query rejection and connection capacity. Browser trust on Android must use a valid trusted certificate; the CI pinning callback is test-only.

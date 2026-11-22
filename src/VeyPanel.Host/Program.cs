@@ -91,7 +91,8 @@ app.Use(async (context, next) =>
 {
     context.Response.Headers.CacheControl = "no-store";
     context.Response.Headers["X-Content-Type-Options"] = "nosniff";
-    context.Response.Headers["Content-Security-Policy"] = "default-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'";
+    var connect = context.Request.IsHttps && lan is not null ? $"wss://{lan}:47861" : "ws://127.0.0.1:47860";
+    context.Response.Headers["Content-Security-Policy"] = $"default-src 'self'; connect-src 'self' {connect}; frame-ancestors 'none'; base-uri 'none'; form-action 'none'";
     context.Response.Headers["Referrer-Policy"] = "no-referrer";
     if (!context.Request.IsHttps && !IPAddress.IsLoopback(context.Connection.RemoteIpAddress ?? IPAddress.None))
     { context.Response.StatusCode = 403; return; }

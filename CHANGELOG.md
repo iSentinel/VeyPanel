@@ -3,6 +3,7 @@
 ## 0.1.0-alpha.5 (development; CI pending)
 
 - Added authenticated local WebSocket telemetry with bounded sessions and browser REST fallback.
+- Added loopback and private-NIC WSS integration tests, origin/query rejection, connection capacity and test certificate trust checks.
 - GPU alpha.4 CI passed; real Intel Arc monitoring remains unverified.
 
 ## 0.1.0-alpha.4 (desktop, Host and disk CI verified; GPU CI in progress)

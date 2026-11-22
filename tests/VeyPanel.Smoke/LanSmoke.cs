@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using System.Net.WebSockets;
+using System.Text;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.NetworkInformation;
@@ -89,6 +91,7 @@ internal static class LanSmoke
             using var client = CreateClient(root, pin);
             await WaitReadyAsync(client, process);
             await VerifyApiAsync(client, accessToken);
+            await VerifyWssAsync(ip, accessToken, pin);
             using var wrongPin = CreateClient(root, new byte[32]);
             await RequireRejectedTlsAsync(wrongPin, "Wrong certificate pin");
             using var defaultTrust = new HttpClient(new HttpClientHandler { UseProxy = false, AllowAutoRedirect = false })
@@ -100,6 +103,30 @@ internal static class LanSmoke
             if (!process.HasExited) process.Kill(entireProcessTree: true);
             await process.WaitForExitAsync().WaitAsync(TimeSpan.FromSeconds(10));
         }
+    }
+
+    private static async Task VerifyWssAsync(IPAddress ip, string token, byte[] pin)
+    {
+        var uri = new Uri($"wss://{ip}:47861/api/v1/telemetry/ws");
+        using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(15));
+        using var socket = new ClientWebSocket();
+        socket.Options.SetRequestHeader("Origin", $"https://{ip}:47861");
+        socket.Options.RemoteCertificateValidationCallback = (_, certificate, _, errors) =>
+        {
+            if (certificate is null || (errors & (SslPolicyErrors.RemoteCertificateNameMismatch |
+                SslPolicyErrors.RemoteCertificateNotAvailable)) != 0) return false;
+            return CryptographicOperations.FixedTimeEquals(SHA256.HashData(certificate.GetRawCertData()), pin);
+        };
+        await socket.ConnectAsync(uri, deadline.Token);
+        await socket.SendAsync(Encoding.ASCII.GetBytes(token).AsMemory(), WebSocketMessageType.Text, true, deadline.Token);
+        var stamp = await WebSocketSmoke.ReadSample(socket, deadline.Token);
+        Check(Math.Abs((DateTimeOffset.UtcNow - stamp).TotalSeconds) < 5, "WSS fresh authenticated telemetry");
+        await socket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "", deadline.Token);
+
+        using var untrusted = new ClientWebSocket();
+        try { await untrusted.ConnectAsync(uri, deadline.Token); }
+        catch (WebSocketException) { Console.WriteLine("PASS: WSS untrusted certificate rejected"); return; }
+        throw new InvalidOperationException("Unexpected WSS trust.");
     }
 
     private static HttpClient CreateClient(Uri root, byte[] expected) =>
