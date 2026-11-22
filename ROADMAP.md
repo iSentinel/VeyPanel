@@ -42,9 +42,9 @@
 - [x] Add isolated published Host process-restart/revocation/dirty-marker startup integration smoke ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45066141473)).
 - [x] Implement bounded 15-minute in-memory history endpoint and historical CPU/RAM/GPU chart ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45066230888); UI acceptance pending).
 - [x] Reject unexpected file ACLs and test directory/file ACL tampering and reparse path refusal ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45066313328); symlink fixture capability-dependent).
-- [x] Extend history charts with codec/disk and time range, authenticated CSV export (CI pending; browser acceptance pending).
+- [x] Extend history charts with codec/disk and time range, authenticated CSV export ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45067318280); browser acceptance pending).
 - [ ] 0.4: physical crash/power-loss acceptance.
-- [x] Add initial native Android Monitor-only Java app, strict LAN/TLS policy, REST polling, JVM fixtures and APK CI (CI pending; real device acceptance pending).
+- [x] Add initial native Android Monitor-only Java app, strict LAN/TLS policy, REST polling, JVM fixtures and APK CI (fixtures PASS; initial SDK setup failed; corrected CI pending; real device acceptance pending).
 - [ ] 0.5: Android QR enrollment, protected credentials, WSS and native video.
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.
 - [ ] 0.7: overlay, alerts, history and diagnostics.

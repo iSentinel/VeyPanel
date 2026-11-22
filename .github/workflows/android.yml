@@ -25,8 +25,15 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
-      - name: Android SDK
-        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - name: Prepare Android SDK
+        uses: android-actions/setup-android@7731365548f3f81c15d4c49c8f1d29101e02cdcf # v4.0.2
+        with:
+          cmdline-tools-version: '14742923'
+          packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
+      - name: Verify Android SDK
+        run: |
+          test -f "$ANDROID_HOME/platforms/android-35/android.jar"
+          test -x "$ANDROID_HOME/build-tools/35.0.0/aapt2"
       - name: Build debug APK and lint
         working-directory: android
         run: gradle --no-daemon :app:assembleDebug :app:lintDebug

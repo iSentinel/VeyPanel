@@ -18,3 +18,5 @@
 Alpha.10: full ACL CI 45066313328 PASS including actual reparse path rejection. Added bounded numeric-only CSV export, reader revocation checks, codec/disk history charts and 1/5/15-minute visual window. Full CSV remains 15 minutes max. CI pending. Next: native Android read-only monitor.
 
 Alpha.10 Android increment: initial native Java Monitor Activity and strict private HTTPS reader link parser, Android system/user CA trust with hostname verification, no redirects/proxy or cleartext, bounded REST polling and null/freshness rules. Session memory only; no native QR or Keystore yet. JVM fixtures and separate debug APK/lint CI added, pending execution. No physical Lenovo test.
+
+Alpha.10 Windows history/CSV full CI 45067318280 passed. Native Android policy fixtures passed in run 45067435606, but APK build was skipped because sdkmanager was not on runner PATH. Added pinned android-actions/setup-android v4.0.2 and explicit API 35/build-tools checks. Corrected APK CI pending. No APK produced by initial run.
