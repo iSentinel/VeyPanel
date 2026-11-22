@@ -13,3 +13,5 @@ Alpha.2:
 - CI evidence: https://github.com/iSentinel/VeyPanel/actions/runs/45047071449
 
 Next: full DisplayConfig read-only active-path capture and recovery design; validate actual Apollo v0.4.6 installer, certificate provenance and API on target, then pair/stream test on Lenovo. Real Lenovo HTTPS trust, Intel Quick Sync, Mirror/Extend, Android client, WPF and topology restore remain pending. No driver or display settings changed. Apollo login can replace existing upstream Web UI session. Original source license remains an owner decision. No third-party binaries redistributed.
+
+Alpha.3 source: added CCD active-path/mode capture and recovery design, no SetDisplayConfig calls. Eight new tests cover ABI, index decoding, validation, JSON and live query. CI pending. Next: verify tests, implement stable target identity and explicit local pairing. Latest verified artifact remains alpha.2 until CI confirms.

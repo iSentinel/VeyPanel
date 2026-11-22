@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.0-alpha.3 (development; CI pending)
+
+- Added read-only Windows 11 CCD topology capture with virtual mode/refresh awareness.
+- Added structural validation, JSON export, eight tests and staged recovery design. No topology changes.
+
 ## 0.1.0-alpha.2 (Windows CI verified; hardware acceptance pending)
 
 - Added local Apollo v0.4.6 cookie-authenticated inventory CLI, strict SHA-256 certificate pinning and date validation.

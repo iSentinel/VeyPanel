@@ -10,7 +10,8 @@
 - [x] Implement local-only Apollo inventory CLI and certificate pinning; mock tests [CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45046872073), live compatibility pending.
 - [ ] Apollo PoC: verify actual installer/publisher/driver catalog, TLS and API on host, Quick Sync; test mirror and extended desktop.
 - [x] Implement read-only Windows desktop-source inventory and JSON diagnostic baseline ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45046953751); physical validation pending).
-- [ ] 0.2: WPF tray host, full DisplayConfig active-path topology capture/restore, PIN pairing.
+- [x] Implement read-only CCD active-path/mode capture with virtual-mode indices, structural validation and recovery design (CI pending).
+- [ ] 0.2: WPF tray host, persistent display identity, safe topology validation/rollback, PIN pairing.
 - [ ] 0.3: GPU/encoder, SSD, network; sensor capability discovery and N/A semantics; WebSocket.
 - [ ] 0.4: secure device enrollment, per-device revocation, QR, history.
 - [ ] 0.5: Android client, native video and telemetry.

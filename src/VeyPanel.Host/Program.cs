@@ -4,6 +4,20 @@ using System.Text;
 using System.Text.Json;
 using VeyPanel.Host;
 
+if (args.Contains("--display-topology"))
+{
+    if (args.Length != 1)
+    {
+        Console.Error.WriteLine("Usage: VeyPanel.Host --display-topology");
+        Environment.ExitCode = 2;
+        return;
+    }
+    var topology = DisplayTopology.Capture();
+    Console.WriteLine(JsonSerializer.Serialize(topology, new JsonSerializerOptions(JsonSerializerDefaults.Web) { WriteIndented = true }));
+    Environment.ExitCode = topology.Status == "ok" ? 0 : 1;
+    return;
+}
+
 if (args.Contains("--display-inventory"))
 {
     if (args.Length != 1)
@@ -30,7 +44,8 @@ if (args.Contains("--help") || args.Contains("-h"))
         "Optional LAN: set VEYPANEL_LAN_IP, VEYPANEL_PFX and VEYPANEL_PFX_PASSWORD.\n" +
         "LAN requires a certificate trusted by the client. Access token is generated on startup.\n" +
         "Apollo inventory: --apollo-inspect <verified-certificate-sha256>\n" +
-        "Desktop source inventory: --display-inventory");
+        "Desktop source inventory: --display-inventory\n" +
+        "Active display topology: --display-topology");
     return;
 }
 var builder = WebApplication.CreateBuilder(args);

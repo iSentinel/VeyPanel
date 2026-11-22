@@ -4,7 +4,7 @@ Extend. Monitor. Control.
 
 Windows-to-Android display streaming and independent system telemetry over a local network.
 
-**Status: 0.1.0-alpha.2 development source, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, WPF, native Android, WebSocket, GPU sensors, and installers are not yet implemented. A local Apollo inventory CLI is implemented; actual upstream runtime compatibility remains unverified. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
+**Status: 0.1.0-alpha.3 development source, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, WPF, native Android, WebSocket, GPU sensors, and installers are not yet implemented. A local Apollo inventory CLI is implemented; actual upstream runtime compatibility remains unverified. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
 
 ## Build and run locally (Windows 11)
 
@@ -59,3 +59,12 @@ The CLI prompts for credentials without echoing the password; they are not persi
 Reports active GDI desktop sources with primary flag, current resolution, coordinates, orientation and refresh when supplied by Windows. Missing fields are null. No active desktop sources returns an explicit non-success status, which is possible in non-interactive sessions.
 
 This is a diagnostic baseline, not a full DisplayConfig topology backup or an automatic rollback file. Cloned outputs may share a source. Do not infer physical monitor count or virtual identity from adapter names. No display settings are changed.
+
+## Active DisplayConfig topology (read only)
+
+```powershell
+.\VeyPanel.Host.exe --display-topology
+.\VeyPanel.Host.exe --display-topology | Set-Content -Encoding utf8 topology-before.json
+```
+
+Captures active paths and mode tables with Windows 11 virtual-mode and virtual-refresh awareness. Supports split mode indices and clone groups. Reports source geometry, target timing, desktop-image region and path flags. Nonzero exit indicates the snapshot is not complete. Adapter LUIDs are session-local, not persistent monitor identities. No SetDisplayConfig or rollback writes are implemented. See [recovery design](docs/display-recovery.md).
