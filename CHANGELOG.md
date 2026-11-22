@@ -3,6 +3,7 @@
 ## 0.1.0-alpha.6 (development; CI pending)
 
 - Added per-instance PhysicalDisk PDH throughput and IOPS, bounded merge and dashboard UI.
+- Added independent periodic Storage Provider worker, bounded subprocess and schema validation, freshness and health dashboard.
 - Alpha.5 storage diagnostic fixture CI completed successfully.
 
 ## 0.1.0-alpha.5 (WS/WSS and DXGI CI verified; storage fixtures passed; hardware acceptance pending)

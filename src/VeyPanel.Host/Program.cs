@@ -82,6 +82,8 @@ builder.WebHost.ConfigureKestrel(kestrel =>
         throw new InvalidOperationException("LAN requires a specific RFC1918 private IPv4 address and an existing TLS PFX.");
     kestrel.Listen(address, 47861, options => options.UseHttps(pfx, password));
 });
+builder.Services.AddSingleton<StorageHealthWorker>();
+builder.Services.AddHostedService<StorageHealthWorker>(services => services.GetRequiredService<StorageHealthWorker>());
 builder.Services.AddSingleton<Telemetry>();
 builder.Services.AddHostedService<Telemetry>(services => services.GetRequiredService<Telemetry>());
 var app = builder.Build();

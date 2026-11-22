@@ -8,4 +8,8 @@
   <ItemGroup>
     <InternalsVisibleTo Include="VeyPanel.Smoke" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="../../scripts/Get-StorageHealth.ps1" Link="diagnostics/Get-StorageHealth.ps1" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="../../scripts/StorageHealth.psm1" Link="diagnostics/StorageHealth.psm1" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>

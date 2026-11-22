@@ -72,4 +72,18 @@ var diskMerge = disks.Status == "partial" && disks.Disks.Length == 2
     && PhysicalDiskSampler.Merge([[], [], [], [("_Total", 5)]]).Status == "unavailable";
 Console.WriteLine($"{(diskMerge ? "PASS" : "FAIL")} Physical disk instance merge and missing values");
 if (!diskMerge) failed++;
+var healthNow = DateTimeOffset.UtcNow;
+var healthJson = System.Text.Json.JsonSerializer.Serialize(new {
+    schemaVersion = 1, timestampUtc = healthNow, source = "Windows Storage Provider", status = "partial",
+    disks = new[] { new { name = "Fixture", counterStatus = "partial", temperatureC = 37, wearPercent = 0 } }
+});
+var health = StorageHealthWorker.Parse(healthJson, healthNow);
+var healthPass = health.Status == "partial" && health.Disks.Length == 1
+    && health.Disks[0].TemperatureC == 37 && health.Disks[0].WearPercent == 0
+    && health.Disks[0].PowerOnHours is null
+    && StorageHealthWorker.Fresh(health, healthNow.AddMinutes(3)).Status == "stale"
+    && StorageHealthWorker.Parse(healthJson.Replace("37", "255"), healthNow).Status == "unavailable"
+    && StorageHealthWorker.Parse("invalid", healthNow).Disks.Length == 0;
+Console.WriteLine($"{(healthPass ? "PASS" : "FAIL")} Storage worker schema, nulls, bounds and freshness");
+if (!healthPass) failed++;
 return failed == 0 ? 0 : 1;
