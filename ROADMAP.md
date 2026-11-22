@@ -41,7 +41,8 @@
 - [x] Wire opt-in standalone DPAPI registry, persistent revoke/revoke-all and failure disabling; reopen and failure fixtures (CI pending).
 - [x] Add isolated published Host process-restart/revocation/dirty-marker startup integration smoke (CI pending).
 - [x] Implement bounded 15-minute in-memory history endpoint and historical CPU/RAM/GPU chart (CI pending; UI acceptance pending).
-- [ ] 0.4: physical crash/power-loss and storage ACL/reparse acceptance, extended history/export.
+- [x] Reject unexpected file ACLs and test directory/file ACL tampering and reparse path refusal (CI pending; symlink fixture capability-dependent).
+- [ ] 0.4: physical crash/power-loss acceptance, extended history/export.
 - [ ] 0.5: Android client, native video and telemetry.
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.
 - [ ] 0.7: overlay, alerts, history and diagnostics.

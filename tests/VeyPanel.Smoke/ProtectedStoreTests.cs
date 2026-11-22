@@ -1,4 +1,6 @@
 using System.Runtime.Versioning;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Security.Cryptography;
 using System.Text;
 using VeyPanel.Host;
@@ -42,6 +44,10 @@ internal static class ProtectedStoreTests
                 Check(Reject(() => store.Load(now)), "Corrupted protected data rejected");
             File.WriteAllBytes(Path.Combine(dir, "transaction.pending"), [1]);
             Check(Reject(() => { using var store = new ProtectedGrantStore(dir); }), "Interrupted transaction rejected");
+            File.Delete(Path.Combine(dir, "transaction.pending"));
+            UnsafeFileAcl(dir);
+            UnsafeDirectoryAcl(dir);
+            ReparseDirectory(dir);
             return 0;
         }
         catch (Exception ex) { Console.Error.WriteLine($"FAIL: protected grant store ({ex.GetType().Name})"); return 1; }
@@ -98,6 +104,43 @@ internal static class ProtectedStoreTests
         public void Save(StoredGrant[] grants, DateTimeOffset now)
         { if (Fail) throw new IOException("Fixture write failure"); }
         public void Dispose() { }
+    }
+
+    [SupportedOSPlatform("windows")]
+    private static void UnsafeFileAcl(string dir)
+    {
+        var file = new FileInfo(Path.Combine(dir, "grants.dpapi"));
+        var security = file.GetAccessControl();
+        var world = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
+        var rule = new FileSystemAccessRule(world, FileSystemRights.ReadData, AccessControlType.Allow);
+        security.AddAccessRule(rule);
+        file.SetAccessControl(security);
+        try { Check(Reject(() => { using var store = new ProtectedGrantStore(dir); }), "Unexpected file ACL rejected"); }
+        finally { security.RemoveAccessRuleSpecific(rule); file.SetAccessControl(security); }
+    }
+
+    [SupportedOSPlatform("windows")]
+    private static void UnsafeDirectoryAcl(string dir)
+    {
+        var info = new DirectoryInfo(dir);
+        var security = info.GetAccessControl();
+        var world = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
+        var rule = new FileSystemAccessRule(world, FileSystemRights.ListDirectory, AccessControlType.Allow);
+        security.AddAccessRule(rule);
+        info.SetAccessControl(security);
+        try { Check(Reject(() => { using var store = new ProtectedGrantStore(dir); }), "Unexpected directory ACL rejected"); }
+        finally { security.RemoveAccessRuleSpecific(rule); info.SetAccessControl(security); }
+    }
+
+    [SupportedOSPlatform("windows")]
+    private static void ReparseDirectory(string dir)
+    {
+        var link = dir + "-link";
+        try { Directory.CreateSymbolicLink(link, dir); }
+        catch (Exception ex) when (ex is UnauthorizedAccessException or IOException or PlatformNotSupportedException)
+        { Console.WriteLine("SKIP: symlink creation unavailable"); return; }
+        try { Check(Reject(() => { using var store = new ProtectedGrantStore(link); }), "Reparse store directory rejected"); }
+        finally { Directory.Delete(link); }
     }
 
     private static bool Reject(Action action)

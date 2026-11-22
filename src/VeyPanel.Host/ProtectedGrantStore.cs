@@ -125,8 +125,17 @@ internal sealed class ProtectedGrantStore : IGrantStore, IDisposable
 
     private static void CheckFile(string path)
     {
-        if (Exists(path) && (File.GetAttributes(path) & (FileAttributes.ReparsePoint | FileAttributes.Directory)) != 0)
+        if (!Exists(path)) return;
+        if ((File.GetAttributes(path) & (FileAttributes.ReparsePoint | FileAttributes.Directory)) != 0)
             throw new IOException("Unsafe grant store file");
+        using var identity = WindowsIdentity.GetCurrent();
+        var user = identity.User ?? throw new UnauthorizedAccessException("Windows identity unavailable");
+        var acl = new FileInfo(path).GetAccessControl(AccessControlSections.Access);
+        var rules = acl.GetAccessRules(true, true, typeof(SecurityIdentifier)).Cast<FileSystemAccessRule>().ToArray();
+        if (rules.Length == 0 || rules.Any(rule => !user.Equals(rule.IdentityReference)
+            || rule.AccessControlType != AccessControlType.Allow)
+            || !rules.Any(rule => (rule.FileSystemRights & FileSystemRights.FullControl) == FileSystemRights.FullControl))
+            throw new UnauthorizedAccessException("Grant file ACL");
     }
 
     private static bool Exists(string path)
