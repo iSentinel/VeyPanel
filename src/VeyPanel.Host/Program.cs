@@ -90,6 +90,7 @@ builder.Services.AddSingleton<Telemetry>();
 builder.Services.AddHostedService<Telemetry>(services => services.GetRequiredService<Telemetry>());
 var app = builder.Build();
 var telemetrySocket = new TelemetrySocket(registry, lan, json);
+var enroll = new InvitationEndpoints(new InvitationRegistry(registry), lan);
 app.UseWebSockets(new WebSocketOptions { KeepAliveInterval = TimeSpan.FromSeconds(15) });
 app.Use(async (context, next) =>
 {
@@ -100,7 +101,11 @@ app.Use(async (context, next) =>
     context.Response.Headers["Referrer-Policy"] = "no-referrer";
     if (!context.Request.IsHttps && !IPAddress.IsLoopback(context.Connection.RemoteIpAddress ?? IPAddress.None))
     { context.Response.StatusCode = 403; return; }
-    if (context.Request.Path.StartsWithSegments("/api") && context.Request.Path != "/api/v1/telemetry/ws")
+    if (InvitationEndpoints.IsPublic(context))
+    {
+        if (!enroll.Allowed(context)) { context.Response.StatusCode = 403; return; }
+    }
+    else if (context.Request.Path.StartsWithSegments("/api") && context.Request.Path != "/api/v1/telemetry/ws")
     {
         var authorization = context.Request.Headers.Authorization.ToString();
         var supplied = authorization.StartsWith("Bearer ", StringComparison.Ordinal)
@@ -128,6 +133,7 @@ app.MapGet("/api/v1/telemetry", (Telemetry telemetry) => Results.Json(telemetry.
 app.MapGet("/api/v1/telemetry/ws", (HttpContext context, Telemetry telemetry, IHostApplicationLifetime lifetime) =>
     telemetrySocket.HandleAsync(context, telemetry, lifetime));
 DeviceEndpoints.Map(app, registry, lan);
+enroll.Map(app);
 Console.WriteLine($"Local dashboard: http://127.0.0.1:47860/#token={token}");
 if (!string.IsNullOrWhiteSpace(lan))
 {

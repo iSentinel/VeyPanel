@@ -91,4 +91,5 @@ Console.WriteLine($"{(healthPass ? "PASS" : "FAIL")} Storage worker schema, null
 if (!healthPass) failed++;
 failed += await ThermalTests.RunAsync();
 failed += DeviceTests.Run();
+failed += InvitationTests.Run();
 return failed == 0 ? 0 : 1;

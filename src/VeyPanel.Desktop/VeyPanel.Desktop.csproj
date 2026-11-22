@@ -5,7 +5,7 @@
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <Nullable>enable</Nullable>
-    <Version>0.1.0-alpha.7</Version>
+    <Version>0.1.0-alpha.8</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="../VeyPanel.Host/DisplayInventory.cs" Link="Diagnostics/DisplayInventory.cs" />
