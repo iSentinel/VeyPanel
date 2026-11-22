@@ -23,8 +23,12 @@ internal sealed record TopologySnapshot(int SchemaVersion, DateTimeOffset Timest
 
 internal static class DisplayTopology
 {
-    internal static TopologySnapshot Capture()
+    internal static TopologySnapshot Capture() => Capture(out _, out _);
+
+    internal static TopologySnapshot Capture(out N.Path[] nativePaths, out N.Mode[] nativeModes)
     {
+        nativePaths = [];
+        nativeModes = [];
         const uint flags = N.ActivePaths | N.VirtualModeAware | N.VirtualRefreshAware;
         if (!OperatingSystem.IsWindows()) return Failure(flags, "unsupported-platform");
         if (!N.LayoutValid()) return Failure(flags, "invalid-interop-layout");
@@ -42,9 +46,11 @@ internal static class DisplayTopology
             if (result == N.InsufficientBuffer) continue;
             if (result != 0) return Failure(flags, "native-error", result);
             if (pathCount > paths.Length || modeCount > modes.Length) return Failure(flags, "invalid-native-counts");
+            nativePaths = paths.Take((int)pathCount).ToArray();
+            nativeModes = modes.Take((int)modeCount).ToArray();
             var snapshot = new TopologySnapshot(1, DateTimeOffset.UtcNow, flags, "ok", null,
-                paths.Take((int)pathCount).Select(path => ConvertPath(path) with { Identity = DisplayIdentityReader.Read(path) }).ToArray(),
-                modes.Take((int)modeCount).Select(ConvertMode).ToArray(), []);
+                nativePaths.Select(path => ConvertPath(path) with { Identity = DisplayIdentityReader.Read(path) }).ToArray(),
+                nativeModes.Select(ConvertMode).ToArray(), []);
             var issues = Validate(snapshot);
             return snapshot with { Status = issues.Length == 0 ? "ok" : "partial", Issues = issues };
         }

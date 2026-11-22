@@ -17,6 +17,8 @@ internal static class TopologyTests
             ("CCD snapshot JSON round trip", RoundTrip),
             ("CCD identity ABI", DisplayIdentityReader.LayoutValid),
             ("CCD recovery identity policy", Recovery),
+            ("CCD validate-only flags", ValidationFlags),
+            ("CCD snapshot stability policy", Stability),
             ("CCD live capture", Live)
         };
         foreach (var test in tests)
@@ -108,6 +110,19 @@ internal static class TopologyTests
             && DisplayRecoveryPolicy.Check(baseline, missing).Contains("target-identity-unavailable")
             && DisplayRecoveryPolicy.Check(baseline, changed).Contains("target-missing")
             && DisplayRecoveryPolicy.Check(baseline, baseline with { Status = "partial" }).Contains("incomplete-topology");
+    }
+
+    private static bool ValidationFlags() =>
+        N.ValidationFlags == 0x28060 && (N.ValidationFlags & (0x80 | 0x200 | 0x400)) == 0;
+
+    private static bool Stability()
+    {
+        var s = Fixture();
+        return DisplayValidation.Equivalent(s, s with { TimestampUtc = s.TimestampUtc.AddSeconds(1) })
+            && !DisplayValidation.Equivalent(s, s with { Status = "partial" })
+            && !DisplayValidation.Equivalent(s, s with {
+                Paths = [s.Paths[0] with { Rotation = 2 }]
+            });
     }
 
     private static bool Live()

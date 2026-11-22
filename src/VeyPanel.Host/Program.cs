@@ -4,6 +4,20 @@ using System.Text;
 using System.Text.Json;
 using VeyPanel.Host;
 
+if (args.Contains("--display-validate"))
+{
+    if (args.Length != 1)
+    {
+        Console.Error.WriteLine("Usage: VeyPanel.Host --display-validate");
+        Environment.ExitCode = 2;
+        return;
+    }
+    var validation = DisplayValidation.ValidateCurrent();
+    Console.WriteLine(JsonSerializer.Serialize(validation, new JsonSerializerOptions(JsonSerializerDefaults.Web) { WriteIndented = true }));
+    Environment.ExitCode = validation.Status == "validated" ? 0 : 1;
+    return;
+}
+
 if (args.Contains("--display-topology"))
 {
     if (args.Length != 1)
@@ -46,7 +60,8 @@ if (args.Contains("--help") || args.Contains("-h"))
         "Apollo inventory: --apollo-inspect <verified-certificate-sha256>\n" +
         "Apollo pairing: --apollo-pair <verified-certificate-sha256>\n" +
         "Desktop source inventory: --display-inventory\n" +
-        "Active display topology: --display-topology");
+        "Active display topology: --display-topology\n" +
+        "Validate current topology without applying: --display-validate");
     return;
 }
 var builder = WebApplication.CreateBuilder(args);

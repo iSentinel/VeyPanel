@@ -3,9 +3,10 @@
 ## 0.1.0-alpha.3 (development; CI pending)
 
 - Added read-only Windows 11 CCD topology capture with virtual mode/refresh awareness.
-- Added structural validation, JSON export, ten CCD tests and staged recovery design. No topology changes.
+- Added structural validation, JSON export, twelve CCD tests and staged recovery design. No topology changes.
 - Added monitor/source identity queries and conservative same-session eligibility policy; no restore writes.
 - Added explicit local PIN pairing CLI and five additional Apollo tests; live device validation pending.
+- Added fixed-flag SDC_VALIDATE-only CLI and pre/post stability checks; no topology apply or persistence.
 
 ## 0.1.0-alpha.2 (Windows CI verified; hardware acceptance pending)
 

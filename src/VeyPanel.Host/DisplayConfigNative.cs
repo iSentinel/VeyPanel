@@ -77,6 +77,16 @@ internal static class DisplayConfigNative
     internal static extern int QueryDisplayConfig(uint flags, ref uint pathCount, [Out] Path[] paths,
         ref uint modeCount, [Out] Mode[] modes, IntPtr topology);
 
+    // This wrapper deliberately has no caller-controlled flags or apply operation.
+    internal const uint ValidationFlags = 0x20 | 0x40 | 0x8000 | 0x20000;
+
+    [DllImport("user32.dll", ExactSpelling = true)]
+    private static extern int SetDisplayConfig(uint pathCount, [In] Path[] paths,
+        uint modeCount, [In] Mode[] modes, uint flags);
+
+    internal static int ValidateOnly(Path[] paths, Mode[] modes) =>
+        SetDisplayConfig((uint)paths.Length, paths, (uint)modes.Length, modes, ValidationFlags);
+
     internal static bool LayoutValid() => Marshal.SizeOf<Path>() == 72
         && Marshal.SizeOf<Source>() == 20 && Marshal.SizeOf<Target>() == 48
         && Marshal.SizeOf<Mode>() == 64 && Marshal.SizeOf<Signal>() == 48

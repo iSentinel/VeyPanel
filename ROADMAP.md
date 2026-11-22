@@ -13,7 +13,8 @@
 - [x] Implement read-only CCD active-path/mode capture with virtual-mode indices, structural validation and recovery design (CI pending).
 - [x] Add CCD target names/device paths and conservative same-session identity eligibility checks (CI pending).
 - [x] Implement explicit local PIN pairing CLI and five additional mock tests (CI pending; live pairing pending).
-- [ ] 0.2: WPF tray host, safe topology validation/rollback and live PIN acceptance.
+- [x] Implement native validate-only current CCD topology CLI, stable snapshot guard and fixed non-apply flags (CI pending; target validation pending).
+- [ ] 0.2: WPF tray host, hardware-tested rollback and live PIN acceptance.
 - [ ] 0.3: GPU/encoder, SSD, network; sensor capability discovery and N/A semantics; WebSocket.
 - [ ] 0.4: secure device enrollment, per-device revocation, QR, history.
 - [ ] 0.5: Android client, native video and telemetry.
