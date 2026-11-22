@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0-alpha.3 (development; CI pending)
+## 0.1.0-alpha.3 (Host CI verified; desktop CI in progress)
 
 - Added read-only Windows 11 CCD topology capture with virtual mode/refresh awareness.
 - Added structural validation, JSON export, twelve CCD tests and staged recovery design. No topology changes.
@@ -8,6 +8,7 @@
 - Added explicit local PIN pairing CLI and five additional Apollo tests; live device validation pending.
 - Added fixed-flag SDC_VALIDATE-only CLI and pre/post stability checks; no topology apply or persistence.
 - Added initial WPF diagnostic desktop and system tray, with separate self-contained CI publish.
+- Host CI run 45049793209 passed 8/8 CPU math, 14/14 Apollo mock and 12/12 CCD tests, published host and HTTPS LAN smoke. Hosted CCD capture was partial. No physical hardware acceptance.
 
 ## 0.1.0-alpha.2 (Windows CI verified; hardware acceptance pending)
 

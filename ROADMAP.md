@@ -10,11 +10,11 @@
 - [x] Implement local-only Apollo inventory CLI and certificate pinning; mock tests [CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45046872073), live compatibility pending.
 - [ ] Apollo PoC: verify actual installer/publisher/driver catalog, TLS and API on host, Quick Sync; test mirror and extended desktop.
 - [x] Implement read-only Windows desktop-source inventory and JSON diagnostic baseline ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45046953751); physical validation pending).
-- [x] Implement read-only CCD active-path/mode capture with virtual-mode indices, structural validation and recovery design (CI pending).
-- [x] Add CCD target names/device paths and conservative same-session identity eligibility checks (CI pending).
-- [x] Implement explicit local PIN pairing CLI and five additional mock tests (CI pending; live pairing pending).
-- [x] Implement native validate-only current CCD topology CLI, stable snapshot guard and fixed non-apply flags (CI pending; target validation pending).
-- [x] Implement initial WPF display diagnostics and tray shell; separate CI artifact (CI pending; interactive acceptance pending).
+- [x] Implement read-only CCD active-path/mode capture with virtual-mode indices, structural validation and recovery design ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45049611656); hosted capture partial).
+- [x] Add CCD target names/device paths and conservative same-session identity eligibility checks ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45049672009)).
+- [x] Implement explicit local PIN pairing CLI and five additional mock tests ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45049726317); live pairing pending).
+- [x] Implement native validate-only current CCD topology CLI, stable snapshot guard and fixed non-apply flags ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45049793209); native target validation pending).
+- [x] Implement initial WPF display diagnostics and tray shell; separate CI artifact ([CI in progress](https://github.com/iSentinel/VeyPanel/actions/runs/45049892455); interactive acceptance pending).
 - [ ] 0.2: integrate telemetry lifecycle and streaming controls in WPF; hardware-tested rollback and live PIN acceptance.
 - [ ] 0.3: GPU/encoder, SSD, network; sensor capability discovery and N/A semantics; WebSocket.
 - [ ] 0.4: secure device enrollment, per-device revocation, QR, history.
