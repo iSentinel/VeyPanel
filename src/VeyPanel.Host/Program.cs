@@ -64,8 +64,9 @@ if (args.Contains("--help") || args.Contains("-h"))
         "Validate current topology without applying: --display-validate");
     return;
 }
-var builder = WebApplication.CreateBuilder(args);
-var lan = Environment.GetEnvironmentVariable("VEYPANEL_LAN_IP");
+var managed = args.Length == 1 && args[0] == "--managed-local";
+var builder = WebApplication.CreateBuilder(managed ? [] : args);
+var lan = managed ? null : Environment.GetEnvironmentVariable("VEYPANEL_LAN_IP");
 var pfx = Environment.GetEnvironmentVariable("VEYPANEL_PFX");
 var password = Environment.GetEnvironmentVariable("VEYPANEL_PFX_PASSWORD");
 var token = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
@@ -107,4 +108,17 @@ app.UseStaticFiles();
 app.MapGet("/api/v1/telemetry", (Telemetry telemetry) => Results.Json(telemetry.Latest, json));
 Console.WriteLine($"Local dashboard: http://127.0.0.1:47860/#token={token}");
 if (!string.IsNullOrWhiteSpace(lan)) Console.WriteLine($"LAN dashboard: https://{lan}:47861/#token={token}");
-await app.RunAsync();
+if (!managed)
+{
+    await app.RunAsync();
+    return;
+}
+
+// The owning desktop process retains stdin. EOF also stops an orphaned child.
+await app.StartAsync();
+_ = Task.Run(async () =>
+{
+    try { await Console.In.ReadLineAsync(); }
+    finally { app.Lifetime.StopApplication(); }
+});
+await app.WaitForShutdownAsync();

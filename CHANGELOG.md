@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0-alpha.4 (development; CI pending)
+
+- Bundle telemetry Host with the Desktop package; start, stop and open local dashboard.
+- Managed child uses loopback only, ephemeral tokens, authenticated readiness and stdin EOF shutdown; lifecycle smoke tests cover restart and collision.
+- No external Host termination, automatic driver installation or display changes.
+
 ## 0.1.0-alpha.3 (Host CI verified; desktop CI in progress)
 
 - Added read-only Windows 11 CCD topology capture with virtual mode/refresh awareness.

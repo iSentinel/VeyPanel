@@ -14,6 +14,18 @@
    </StackPanel>
    <TextBlock x:Name="StatusText" DockPanel.Dock="Bottom" Text="Ready" TextWrapping="Wrap" Margin="0,12,0,0" />
    <TabControl>
+     <TabItem Header="Telemetry">
+       <StackPanel Margin="18">
+         <TextBlock Text="Local monitoring" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,8"/>
+         <TextBlock Text="Start the bundled Host and open the CPU/RAM dashboard. This mode listens only on loopback." TextWrapping="Wrap"/>
+         <WrapPanel Margin="0,18,0,12">
+           <Button x:Name="StartHostButton" Click="StartHost_Click" Content="Start Host" Padding="14,7" Margin="0,0,8,0"/>
+           <Button x:Name="StopHostButton" Click="StopHost_Click" Content="Stop Host" Padding="14,7" Margin="0,0,8,0" IsEnabled="False"/>
+           <Button x:Name="DashboardButton" Click="Dashboard_Click" Content="Open Dashboard" Padding="14,7" IsEnabled="False"/>
+         </WrapPanel>
+         <TextBlock x:Name="HostStatus" Text="Stopped" TextWrapping="Wrap"/>
+       </StackPanel>
+     </TabItem>
      <TabItem Header="Desktop sources">
        <DataGrid x:Name="SourcesGrid" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" HeadersVisibility="Column">
          <DataGrid.Columns>

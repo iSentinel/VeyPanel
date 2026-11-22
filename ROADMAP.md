@@ -14,8 +14,9 @@
 - [x] Add CCD target names/device paths and conservative same-session identity eligibility checks ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45049672009)).
 - [x] Implement explicit local PIN pairing CLI and five additional mock tests ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45049726317); live pairing pending).
 - [x] Implement native validate-only current CCD topology CLI, stable snapshot guard and fixed non-apply flags ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45049793209); native target validation pending).
-- [x] Implement initial WPF display diagnostics and tray shell; separate CI artifact ([CI in progress](https://github.com/iSentinel/VeyPanel/actions/runs/45049892455); interactive acceptance pending).
-- [ ] 0.2: integrate telemetry lifecycle and streaming controls in WPF; hardware-tested rollback and live PIN acceptance.
+- [x] Implement initial WPF display diagnostics and tray shell; separate CI artifact ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45049892455); interactive acceptance pending).
+- [x] Implement bundled Windows desktop/Host lifecycle, local dashboard controls and managed child tests (CI pending).
+- [ ] 0.2: integrate streaming controls in WPF; hardware-tested rollback and live PIN acceptance.
 - [ ] 0.3: GPU/encoder, SSD, network; sensor capability discovery and N/A semantics; WebSocket.
 - [ ] 0.4: secure device enrollment, per-device revocation, QR, history.
 - [ ] 0.5: Android client, native video and telemetry.

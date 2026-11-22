@@ -4,7 +4,7 @@ Extend. Monitor. Control.
 
 Windows-to-Android display streaming and independent system telemetry over a local network.
 
-**Status: 0.1.0-alpha.3 development source, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, native Android, WebSocket, GPU sensors, and installers are not yet implemented. An initial WPF display diagnostic UI and a local Apollo inventory CLI are implemented; actual upstream runtime compatibility remains unverified. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
+**Status: 0.1.0-alpha.4 development source, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, native Android, WebSocket, GPU sensors, and installers are not yet implemented. An initial WPF display diagnostic UI and a local Apollo inventory CLI are implemented; actual upstream runtime compatibility remains unverified. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
 
 ## Build and run locally (Windows 11)
 
@@ -95,4 +95,4 @@ Open VeyPanel.Desktop.exe from the separate desktop CI artifact, or run:
 dotnet run --project src/VeyPanel.Desktop -c Release
 ```
 
-The alpha GUI lists desktop sources and active display paths, calls the same guarded validate-only diagnostic, and supports minimize-to-tray. It does not start the telemetry host, install drivers, change displays or provide streaming control yet. It links the same diagnostic source files rather than duplicating the implementation. Compilation/publish and interactive GUI acceptance are separate gates.
+The alpha GUI lists desktop sources and active display paths, calls the same guarded validate-only diagnostic, and supports minimize-to-tray. The bundled Desktop package starts/stops its own loopback-only telemetry Host and opens the local browser dashboard. Keep the host subfolder alongside the Desktop executable. It does not install drivers, change displays or provide streaming control yet. Closing Desktop stops its owned Host; an unmanaged existing Host is never terminated. LAN mode remains explicit via standalone Host. It links the same diagnostic source files rather than duplicating the implementation. Compilation/publish and interactive GUI acceptance are separate gates.

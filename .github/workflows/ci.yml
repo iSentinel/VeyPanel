@@ -18,12 +18,17 @@ jobs:
         run: ./scripts/Test-Host.ps1
       - name: Run HTTPS LAN integration smoke
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --lan-smoke publish
+      - name: Test managed Host lifecycle
+        run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --lifecycle-smoke publish
       - uses: actions/upload-artifact@v4
         with:
           name: veypanel-host-win-x64-alpha
           path: publish/
       - name: Publish desktop diagnostic UI
         run: dotnet publish src/VeyPanel.Desktop -c Release -r win-x64 --self-contained true -o publish-desktop
+      - name: Bundle Host with Desktop
+        shell: pwsh
+        run: Copy-Item -Path publish -Destination publish-desktop/host -Recurse
       - uses: actions/upload-artifact@v4
         with:
           name: veypanel-desktop-win-x64-alpha

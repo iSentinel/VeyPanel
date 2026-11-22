@@ -1,4 +1,9 @@
 using System.Threading.Tasks;
+using System.Diagnostics;
+using System.IO;
+using System.ComponentModel;
+using System.Windows.Threading;
+using VeyPanel.Shared;
 using System.Windows;
 using System.Drawing;
 using VeyPanel.Host;
@@ -10,6 +15,9 @@ public partial class MainWindow : Window
 {
     private readonly Forms.NotifyIcon tray;
     private bool busy;
+    private bool hostBusy, closing, mayClose;
+    private readonly HostController host = new(Path.Combine(AppContext.BaseDirectory, "host"));
+    private readonly DispatcherTimer hostTimer = new() { Interval = TimeSpan.FromSeconds(2) };
 
     public MainWindow()
     {
@@ -27,6 +35,68 @@ public partial class MainWindow : Window
         StateChanged += (_, _) => { if (WindowState == WindowState.Minimized) Hide(); };
         Closed += (_, _) => { tray.Visible = false; tray.Dispose(); menu.Dispose(); };
         Loaded += async (_, _) => await RefreshAsync();
+        Closing += CloseAsync;
+        hostTimer.Tick += async (_, _) => await UpdateHostAsync();
+        hostTimer.Start();
+    }
+
+    private async void StartHost_Click(object sender, RoutedEventArgs e) =>
+        await RunHostAsync(host.StartAsync);
+
+    private async void StopHost_Click(object sender, RoutedEventArgs e) =>
+        await RunHostAsync(host.StopAsync);
+
+    private async void Dashboard_Click(object sender, RoutedEventArgs e) =>
+        await RunHostAsync(async () =>
+        {
+            var url = await host.DashboardUrlAsync();
+            Process.Start(new ProcessStartInfo(url) { UseShellExecute = true })?.Dispose();
+        });
+
+    private async Task RunHostAsync(Func<Task> action)
+    {
+        if (hostBusy || closing) return;
+        hostBusy = true;
+        StartHostButton.IsEnabled = StopHostButton.IsEnabled = DashboardButton.IsEnabled = false;
+        HostStatus.Text = "Working…";
+        string? error = null;
+        try { await action(); }
+        catch (Exception ex) { error = $"Host operation failed ({ex.GetType().Name})."; }
+        finally { hostBusy = false; }
+        if (!closing)
+        {
+            await UpdateHostAsync();
+            if (error is not null) HostStatus.Text = error;
+        }
+    }
+
+    private async Task UpdateHostAsync()
+    {
+        if (hostBusy || closing) return;
+        var running = await host.IsRunningAsync();
+        if (hostBusy || closing) return;
+        StartHostButton.IsEnabled = !running;
+        StopHostButton.IsEnabled = DashboardButton.IsEnabled = running;
+        HostStatus.Text = running ? "Running • 127.0.0.1:47860" : "Stopped";
+    }
+
+    private async void CloseAsync(object? sender, CancelEventArgs e)
+    {
+        if (mayClose) return;
+        e.Cancel = true;
+        if (closing) return;
+        closing = true;
+        hostTimer.Stop();
+        try { await host.DisposeAsync(); }
+        catch (Exception ex)
+        {
+            closing = false;
+            HostStatus.Text = $"Shutdown failed ({ex.GetType().Name}); retry Stop Host.";
+            hostTimer.Start();
+            return;
+        }
+        mayClose = true;
+        Close();
     }
 
     private void ShowWindow()
