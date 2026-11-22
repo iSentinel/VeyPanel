@@ -36,3 +36,7 @@ The client first tries wss://<validated private IP>:47861/api/v1/telemetry/ws. S
 Alpha.12 monitor uses one, two or three columns according to the available dp width (not physical pixel count). Connection controls can be collapsed and are shown on offline states. Added RAM capacity, disk IOPS, network, volumes, temperature and storage health details. Provider timestamps are independently age-checked, missing metrics are N/A. Physical landscape appearance and rotation remain pending. No video or control actions.
 
 Runtime runner variability: if /dev/kvm is absent, use software emulation with bounded boot timeout; actual tests and raw result gates remain mandatory. The earlier reruns failed before installing APKs due to absent KVM.
+
+## Alpha.12 build evidence
+
+WSS run 45081890582 PASS (JVM URI fixture, APK, lint); adaptive monitor run 45081976468 APK/lint PASS; full CI pending. Runtime 45078273557 reached instrumentation success but shell gate failed; corrected attempts 45081841189 and 45081890597 failed before test launch because assigned runners lacked KVM. Software fallback run 45082028995 in progress. Verified APK https://github.com/iSentinel/VeyPanel/actions/runs/45081890582/artifacts/14777916143; isolated instrumentation APK https://github.com/iSentinel/VeyPanel/actions/runs/45081890582/artifacts/14778130678. Actual camera, live Android HTTPS/WSS, rotation, lifecycle and sensor accuracy remain pending.

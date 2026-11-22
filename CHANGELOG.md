@@ -1,10 +1,10 @@
 # Changelog
 
-## Android 0.1.0-alpha.12 (development; CI pending)
+## Android 0.1.0-alpha.12 (WSS build CI PASS; responsive UI APK/lint PASS; full CI pending; runtime in progress)
 
 - Added WSS-first foreground telemetry, REST fallback and bounded retry.
 - Added responsive monitor cards, collapsible connection controls and resource details.
-- Corrected raw instrumentation output gate; no physical runtime acceptance implied.
+- Corrected raw instrumentation output gate and added software-emulator fallback when KVM is unavailable; no physical runtime acceptance implied.
 
 ## Android 0.1.0-alpha.11 (Keystore build CI PASS; QR CI PASS; runtime in progress)
 

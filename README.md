@@ -157,3 +157,7 @@ Latest verified debug APK: https://github.com/iSentinel/VeyPanel/actions/runs/45
 ## Android alpha.11
 
 Latest verified Android debug APK: https://github.com/iSentinel/VeyPanel/actions/runs/45078196387/artifacts/14776016903. Opt-in encrypted reader access and explicit reconnect/forget. Also includes offline invitation QR scanner. Actual emulator runtime: https://github.com/iSentinel/VeyPanel/actions/runs/45078273557 (in progress). Windows remains alpha.10. No production signing or physical tablet acceptance.
+
+## Android alpha.12
+
+Verified debug APK: https://github.com/iSentinel/VeyPanel/actions/runs/45081890582/artifacts/14777916143. WSS-first, HTTPS REST fallback; responsive monitor source and extended resources APK/lint PASS; full CI pending. Verified APK contains WSS but not the subsequent responsive layout. Windows remains alpha.10. Runtime smoke in progress; no native live WSS or physical Lenovo acceptance.
