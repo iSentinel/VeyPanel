@@ -143,7 +143,7 @@ app.Use(async (context, next) =>
                 || (origin.Count == 1 && origin[0] != "http://127.0.0.1:47860"))
             { context.Response.StatusCode = 403; return; }
         }
-        else if ((context.Request.Path != "/api/v1/telemetry" && context.Request.Path != "/api/v1/history")
+        else if ((context.Request.Path != "/api/v1/telemetry" && context.Request.Path != "/api/v1/history" && context.Request.Path != "/api/v1/history.csv")
             || !HttpMethods.IsGet(context.Request.Method) || context.Request.QueryString.HasValue)
         { context.Response.StatusCode = 403; return; }
     }
@@ -158,6 +158,9 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 app.MapGet("/api/v1/telemetry", (Telemetry telemetry) => Results.Json(telemetry.Latest, json));
 app.MapGet("/api/v1/history", (Telemetry telemetry) => Results.Json(telemetry.History, json));
+app.MapGet("/api/v1/history.csv", (Telemetry telemetry) =>
+    Results.File(Encoding.UTF8.GetBytes(HistoryCsv.Format(telemetry.History)),
+        "text/csv; charset=utf-8", "veypanel-history.csv"));
 app.MapGet("/api/v1/telemetry/ws", (HttpContext context, Telemetry telemetry, IHostApplicationLifetime lifetime) =>
     telemetrySocket.HandleAsync(context, telemetry, lifetime));
 DeviceEndpoints.Map(app, registry, lan);

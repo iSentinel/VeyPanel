@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.0-alpha.10 (development; CI pending)
+
+- Added history range selector, codec/disk charts and authenticated CSV export.
+- Alpha.9 final ACL and reparse fixtures and full CI passed.
+
 ## 0.1.0-alpha.9 (protected restart CI PASS; history CI PASS; ACL fixtures PASS; remaining CI in progress; physical acceptance pending)
 
 - Added opt-in persistence groundwork: Windows DPAPI CurrentUser, restrictive directory ACL, exclusive lock, bounded atomic replacement and interrupted transaction refusal. Added opt-in standalone live registry integration, explicit storage status and revoke-all, with registry reopen/failure fixtures. Managed mode remains ephemeral.

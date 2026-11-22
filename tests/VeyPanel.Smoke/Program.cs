@@ -98,4 +98,5 @@ failed += InvitationTests.Run();
 failed += GrantStoreTests.Run();
 failed += ProtectedStoreTests.Run();
 failed += HistoryTests.Run();
+failed += HistoryCsvTests.Run();
 return failed == 0 ? 0 : 1;

@@ -111,6 +111,7 @@ function render(s, transport) {
   resources(s.resources);diskIo(s.diskIo);physicalDisks(s.physicalDisks);storageHealth(s.storageHealth);thermal(s.thermal);gpu(s.gpu);
   $('status').textContent=s.status + ' · ' + transport;
   $('history-load').disabled = false;
+  $('history-export').disabled = false;
   metric('cpu',s.cpuPercent);metric('ram',s.memoryUsedPercent);
   $('capacity').textContent=Number.isFinite(s.memoryTotalBytes)&&Number.isFinite(s.memoryAvailableBytes)?`${gib(s.memoryTotalBytes-s.memoryAvailableBytes)} / ${gib(s.memoryTotalBytes)} GiB`:'N/A';
   $('timestamp').textContent=`Updated ${new Date(s.timestampUtc).toLocaleTimeString()}`;
@@ -336,12 +337,27 @@ window.addEventListener('pagehide', clearInvitation);
 
 function clearHistory() {
   $('history-load').disabled = true;
+  $('history-export').disabled = true;
   historyData = null;
   $('history-status').textContent = 'No current history access';
   drawHistory();
 }
 function drawHistory() {
-  const canvas = $('history-chart'), ctx = canvas.getContext('2d');
+  const seconds = Number($('history-window').value);
+  drawHistoryChart('history-chart', seconds, [['cpuPercent','#69baff'],['memoryUsedPercent','#b9a5ff'],['gpuPercent','#66d9aa']], 100);
+  drawHistoryChart('codec-chart', seconds, [['videoEncodePercent','#f3b86e'],['videoDecodePercent','#6ed8d8']], 100);
+  const end = Date.parse(historyData?.timestampUtc), start = end - seconds*1000;
+  let peak = 1048576;
+  for (const s of historyData?.samples || []) {
+    if (Date.parse(s.timestampUtc) <= start) continue;
+    for (const key of ['diskReadBytesPerSecond','diskWriteBytesPerSecond'])
+      if (Number.isFinite(s[key]) && s[key] >= 0) peak = Math.max(peak,s[key]);
+  }
+  $('disk-history-scale').textContent = '0 – ' + rate(peak);
+  drawHistoryChart('disk-chart', seconds, [['diskReadBytesPerSecond','#69baff'],['diskWriteBytesPerSecond','#f3b86e']], peak);
+}
+function drawHistoryChart(id, seconds, series, max) {
+  const canvas = $(id), ctx = canvas.getContext('2d');
   const width = canvas.clientWidth, height = canvas.clientHeight, ratio = window.devicePixelRatio || 1;
   canvas.width = width * ratio; canvas.height = height * ratio;
   ctx.scale(ratio, ratio);
@@ -350,22 +366,41 @@ function drawHistory() {
     ctx.beginPath(); ctx.moveTo(0, i*height/4); ctx.lineTo(width, i*height/4); ctx.stroke();
   }
   if (!historyData) return;
-  const end = Date.parse(historyData.timestampUtc), start = end - 900000;
-  for (const [key, color] of [['cpuPercent','#69baff'],['memoryUsedPercent','#b9a5ff'],['gpuPercent','#66d9aa']]) {
+  const end = Date.parse(historyData.timestampUtc), span = seconds*1000, start = end-span;
+  for (const [key,color] of series) {
     ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2;
     let previous = null;
     for (const s of historyData.samples) {
       const stamp = Date.parse(s.timestampUtc), v = s[key];
-      if (!Number.isFinite(stamp) || stamp <= start || stamp > end || !Number.isFinite(v) || v < 0 || v > 100) {
+      if (!Number.isFinite(stamp) || stamp <= start || stamp > end || !Number.isFinite(v) || v < 0 || v > max) {
         previous = null; continue;
       }
-      const x = (stamp-start)*width/900000, y = (100-v)*height/100;
+      const x = (stamp-start)*width/span, y = (max-v)*height/max;
       if (previous !== null && stamp > previous && stamp-previous <= 2500) ctx.lineTo(x,y);
       else ctx.moveTo(x,y);
       previous = stamp;
     }
     ctx.stroke();
   }
+}
+let exportBusy = false;
+async function exportHistory() {
+  if (exportBusy || !token || $('history-export').disabled) return;
+  exportBusy = true;
+  try {
+    const response = await fetch('/api/v1/history.csv', {headers:{Authorization:'Bearer '+token},
+      cache:'no-store', signal:AbortSignal.timeout(5000)});
+    if (!response.ok || !(response.headers.get('content-type') || '').startsWith('text/csv'))
+      throw Error('Export denied');
+    const blob = await response.blob();
+    if (blob.size > 1024*1024 || $('history-export').disabled) throw Error('Export unavailable');
+    const url = URL.createObjectURL(blob), link = document.createElement('a');
+    link.href = url; link.download = 'veypanel-history.csv';
+    document.body.append(link); link.click(); link.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    $('history-export-status').textContent = 'CSV prepared from the current Host history.';
+  } catch { $('history-export-status').textContent = 'CSV export unavailable'; }
+  finally { exportBusy = false; }
 }
 async function loadHistory() {
   if (historyBusy || !token || $('history-load').disabled) return;
@@ -388,3 +423,5 @@ async function loadHistory() {
 }
 $('history-load').addEventListener('click', loadHistory);
 window.addEventListener('resize', drawHistory);
+$('history-window').addEventListener('change', drawHistory);
+$('history-export').addEventListener('click', exportHistory);

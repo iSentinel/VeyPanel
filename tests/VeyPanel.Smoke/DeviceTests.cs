@@ -68,6 +68,9 @@ internal static class DeviceTests
             Check(sample.IsSuccessStatusCode, "Device telemetry allowed");
             using var history = await http.GetAsync("api/v1/history", ct);
             Check(history.IsSuccessStatusCode, "Device history allowed");
+            using var csv = await http.GetAsync("api/v1/history.csv", ct);
+            Check(csv.IsSuccessStatusCode && csv.Content.Headers.ContentType?.MediaType == "text/csv"
+                && (await csv.Content.ReadAsStringAsync(ct)).StartsWith("timestamp_utc,cpu_percent,"), "Device CSV allowed");
             using var historyBody = JsonDocument.Parse(await history.Content.ReadAsByteArrayAsync(ct));
             Check(historyBody.RootElement.GetProperty("windowSeconds").GetInt32() == 900
                 && historyBody.RootElement.GetProperty("samples").GetArrayLength() <= 900, "Bounded history schema");
@@ -83,6 +86,8 @@ internal static class DeviceTests
             Check(revoked.StatusCode == HttpStatusCode.Unauthorized, "Revoked REST denied");
             using var revokedHistory = await http.GetAsync("api/v1/history", ct);
             Check(revokedHistory.StatusCode == HttpStatusCode.Unauthorized, "Revoked history denied");
+            using var revokedCsv = await http.GetAsync("api/v1/history.csv", ct);
+            Check(revokedCsv.StatusCode == HttpStatusCode.Unauthorized, "Revoked CSV denied");
             await ClosedAsync(ws, ct);
             Console.WriteLine("PASS: device API and active WebSocket revocation");
             return 0;

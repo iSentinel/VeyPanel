@@ -4,7 +4,7 @@ Extend. Monitor. Control.
 
 Windows-to-Android display streaming and independent system telemetry over a local network.
 
-**Status: 0.1.0-alpha.9 development source, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, native Android, and installers are not yet implemented. An initial WPF display diagnostic UI and a local Apollo inventory CLI are implemented; actual upstream runtime compatibility remains unverified. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
+**Status: 0.1.0-alpha.10 development source, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, native Android, and installers are not yet implemented. An initial WPF display diagnostic UI and a local Apollo inventory CLI are implemented; actual upstream runtime compatibility remains unverified. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
 
 ## Build and run locally (Windows 11)
 
@@ -146,3 +146,5 @@ Windows standalone Host only: `$env:VEYPANEL_PERSIST_GRANTS = '1'; .\\VeyPanel.H
 ## Host history
 
 Authenticated GET `/api/v1/history` returns a compact in-memory ring of at most 900 samples from the previous 15 minutes, with CPU/RAM, GPU/codec and aggregate disk rates. No query parameters, no disk persistence, no raw device identifiers. Missing readings remain null. Dashboard Refresh history loads a historical snapshot and plots CPU/RAM/GPU with gaps for missing or delayed samples. Reader revocation applies to this endpoint. History resets on Host restart or detected backward clock jump. Browser interaction remains pending.
+
+History charts support 1/5/15-minute view of the fetched snapshot, including video codecs and disk throughput. Explicit Export full CSV downloads the current bounded Host history, not only the selected chart range. Authenticated GET /api/v1/history.csv, fixed numeric-only schema, UTC, invariant decimals, empty missing readings. No tokens or hardware identifiers exported; export is user initiated and may contain private usage data. CI pending.
