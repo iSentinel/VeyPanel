@@ -1,10 +1,11 @@
 # Changelog
 
-## 0.1.0-alpha.6 (development; CI pending)
+## 0.1.0-alpha.6 (per-disk and worker CI verified; hardening runtime smoke passed; hardware acceptance pending)
 
 - Added per-instance PhysicalDisk PDH throughput and IOPS, bounded merge and dashboard UI.
 - Added independent periodic Storage Provider worker, bounded subprocess and schema validation, freshness and health dashboard.
 - Explicit UTF-8 provider output and bounded runtime completion probe.
+- Reviewed version-specific LibreHardwareMonitor thermal interface; no dependency bundled or thermal adapter implemented.
 - Alpha.5 storage diagnostic fixture CI completed successfully.
 
 ## 0.1.0-alpha.5 (WS/WSS and DXGI CI verified; storage fixtures passed; hardware acceptance pending)

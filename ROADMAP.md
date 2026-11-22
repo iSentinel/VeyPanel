@@ -25,7 +25,9 @@
 - [x] Add DXGI named adapter inventory and LUID-based GPU engine matching with N/A for unmatched metrics ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45062321592)).
 - [x] Add local-only Windows Storage Provider reliability diagnostic and conversion/privacy fixtures ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45062430196); actual counters pending).
 - [x] Add PhysicalDisk wildcard per-instance throughput/IOPS with bounded merge and dashboard ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45063074951)).
-- [x] Integrate independent bounded Storage Provider worker and health dashboard (CI pending; actual counters pending).
+- [x] Integrate independent bounded Storage Provider worker and health dashboard ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45063224882); actual physical counters pending).
+- [x] Harden storage provider encoding and bounded completion test ([runtime smoke PASS; full CI pending](https://github.com/iSentinel/VeyPanel/actions/runs/45063263774)).
+- [x] Review LibreHardwareMonitor v0.9.6 thermal sensor contract and security boundaries ([design](docs/thermal-provider.md)); adapter not implemented.
 - [ ] 0.3: validate real GPU/encoder, physical-disk I/O/SMART, network acceptance; CPU/GPU temperature sensors, physical WSS acceptance.
 - [ ] 0.4: secure device enrollment, per-device revocation, QR, history.
 - [ ] 0.5: Android client, native video and telemetry.
