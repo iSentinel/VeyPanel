@@ -36,11 +36,13 @@ jobs:
             echo 'KVM unavailable; run software emulator (no test skipped)'
           fi
       - name: Validate runtime script syntax
-        run: bash -n android/tests/run-runtime-smoke.sh
+        run: |
+          bash -n android/tests/run-runtime-smoke.sh
+          python3 -m py_compile android/tests/transport_fixture.py
       - name: Build isolated test packages
         working-directory: android
         run: gradle --no-daemon :app:assembleDebug :app:assembleDebugAndroidTest
-      - name: Execute actual AndroidKeyStore and synthetic offline QR smoke
+      - name: Execute AndroidKeyStore, QR, history and local TLS transport smoke
         uses: ReactiveCircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.38.0
         with:
           api-level: 33

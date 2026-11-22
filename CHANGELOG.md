@@ -2,6 +2,7 @@
 
 ## Android 0.1.0-alpha.13 (development; CI pending)
 
+- Added isolated Android TLS/WSS transport instrumentation using CI-only certificates and synthetic reader grants.
 - Added Android foreground history and three responsive graphs.
 - Fixed destructive invalid-link handling, scoped saved access invalidation to matching reader, and corrected runtime shell result gate.
 

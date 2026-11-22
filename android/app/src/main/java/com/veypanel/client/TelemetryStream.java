@@ -27,9 +27,17 @@ final class TelemetryStream implements AutoCloseable {
     private volatile boolean tlsFailed;
     private final WebSocket socket;
 
-    TelemetryStream(ReaderSession session) {
+    TelemetryStream(ReaderSession session) { this(session, CLIENT); }
+
+    // Fixture-specific trust is injected by instrumentation, never by a user setting.
+    static TelemetryStream fixture(ReaderSession session, javax.net.ssl.SSLSocketFactory factory,
+                                   javax.net.ssl.X509TrustManager manager) {
+        return new TelemetryStream(session, CLIENT.newBuilder().sslSocketFactory(factory, manager).build());
+    }
+
+    private TelemetryStream(ReaderSession session, OkHttpClient client) {
         Request request = new Request.Builder().url(session.websocketUrl()).build();
-        socket = CLIENT.newWebSocket(request, new WebSocketListener() {
+        socket = client.newWebSocket(request, new WebSocketListener() {
             @Override public void onOpen(WebSocket ws, Response response) {
                 if (ended.get() || !ws.send(session.token)) { ended.set(true); ws.cancel(); }
             }

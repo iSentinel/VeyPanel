@@ -11,7 +11,13 @@ final class TelemetryClient {
     static final class Denied extends Exception { }
     private static final int LIMIT = 1024 * 1024;
     static TelemetrySample fetch(ReaderSession session) throws Exception {
+        return fetch(session, null);
+    }
+
+    // The explicit factory overload is exercised only by the isolated transport fixture.
+    static TelemetrySample fetch(ReaderSession session, javax.net.ssl.SSLSocketFactory fixtureTrust) throws Exception {
         HttpsURLConnection c = (HttpsURLConnection)session.endpoint.toURL().openConnection(Proxy.NO_PROXY);
+        if (fixtureTrust != null) c.setSSLSocketFactory(fixtureTrust);
         c.setInstanceFollowRedirects(false);
         c.setConnectTimeout(3000);
         c.setReadTimeout(3000);

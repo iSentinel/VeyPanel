@@ -11,9 +11,11 @@ import java.util.Arrays;
 
 public final class StoreInstrumentation extends Instrumentation {
     private boolean isolated;
+    private String fixtureCa;
     @Override public void onCreate(Bundle args) {
         super.onCreate(args);
         isolated = "true".equals(args.getString("isolated"));
+        fixtureCa = args.getString("fixtureCa");
         start();
     }
     @Override public void onStart() {
@@ -24,7 +26,9 @@ public final class StoreInstrumentation extends Instrumentation {
             runQr();
             runMetrics();
             runHistory();
-            report.putString("stream", "\nPASS: AndroidKeyStore actual encryption, reopen, fresh ciphertext, corruption, key removal and Forget\nPASS: synthetic offline QR decode\nPASS: Android extended telemetry fixture\nPASS: Android bounded history fixture\n");
+            boolean transport = fixtureCa != null;
+            if (transport) new TransportSmoke(fixtureCa).run();
+            report.putString("stream", "\nPASS: AndroidKeyStore actual encryption, reopen, fresh ciphertext, corruption, key removal and Forget\nPASS: synthetic offline QR decode\nPASS: Android extended telemetry fixture\nPASS: Android bounded history fixture\n" + (transport ? "PASS: isolated HTTPS/WSS transport, TLS denial, fallback and revocation\n" : "SKIP: transport fixture not configured\n"));
             finish(Activity.RESULT_OK, report);
         } catch (Exception ex) {
             report.putString("stream", "\nFAIL: AndroidKeyStore smoke (" + ex.getClass().getSimpleName() + ")\n");
