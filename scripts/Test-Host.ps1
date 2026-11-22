@@ -63,6 +63,11 @@ try {
         Assert-Check ($null -eq $metric -or $metric -ge 0) 'Disk I/O nonnegative or unavailable'
     }
     Write-Host "Disk I/O capability: $($sample.diskIo.status)"
+    Assert-Check ($null -ne $sample.gpu -and $sample.gpu.status -in @('ok','partial','warming-up','unavailable')) 'GPU capability schema'
+    foreach ($metric in @($sample.gpu.busiestEnginePercent, $sample.gpu.videoEncodePercent, $sample.gpu.videoDecodePercent)) {
+        Assert-Check ($null -eq $metric -or ($metric -ge 0 -and $metric -le 100)) 'GPU percentage valid or unavailable'
+    }
+    Write-Host "GPU capability: $($sample.gpu.status)"
     $time = [DateTimeOffset]::Parse($sample.timestampUtc.ToString())
     Assert-Check ([Math]::Abs(([DateTimeOffset]::UtcNow - $time).TotalSeconds) -lt 5) 'Fresh timestamp'
     Start-Sleep -Seconds 2

@@ -61,9 +61,15 @@ function diskIo(data) {
   const iops = value => Number.isFinite(value) ? value.toFixed(1) : 'N/A';
   $('disk-iops').textContent = 'Read ' + iops(data?.readsPerSecond) + ' / Write ' + iops(data?.writesPerSecond) + ' IOPS';
 }
+function gpu(data) {
+  $('gpu-status').textContent = data?.status || 'N/A';
+  $('gpu-total').textContent = pct(data?.busiestEnginePercent);
+  $('gpu-encode').textContent = pct(data?.videoEncodePercent);
+  $('gpu-decode').textContent = pct(data?.videoDecodePercent);
+}
 function offline(message) {
   $('status').textContent = message; metric('cpu', null);metric('ram',null);
-  resources(null);diskIo(null);
+  resources(null);diskIo(null);gpu(null);
   $('capacity').textContent='N/A';$('timestamp').textContent='No current sample';
   samples.push({});if(samples.length>60)samples.shift();draw();
 }
@@ -74,7 +80,7 @@ async function update() {
     if (!response.ok) throw Error(`HTTP ${response.status}`);
     const s=await response.json(); const age=Date.now()-Date.parse(s.timestampUtc);
     if (!Number.isFinite(age)||age>5000||age< -5000) throw Error('Stale sample / clock mismatch');
-    resources(s.resources);diskIo(s.diskIo);
+    resources(s.resources);diskIo(s.diskIo);gpu(s.gpu);
     $('status').textContent=s.status;metric('cpu',s.cpuPercent);metric('ram',s.memoryUsedPercent);
     $('capacity').textContent=Number.isFinite(s.memoryTotalBytes)&&Number.isFinite(s.memoryAvailableBytes)?`${gib(s.memoryTotalBytes-s.memoryAvailableBytes)} / ${gib(s.memoryTotalBytes)} GiB`:'N/A';
     $('timestamp').textContent=`Updated ${new Date(s.timestampUtc).toLocaleTimeString()}`;

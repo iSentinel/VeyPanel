@@ -65,7 +65,7 @@ internal sealed class DiskIoSampler : IDisposable
 
     private static double? Read(IntPtr counter)
     {
-        if (counter == IntPtr.Zero || PdhGetFormattedCounterValue(counter, 0x200, IntPtr.Zero, out var result) != 0)
+        if (counter == IntPtr.Zero || PdhGetFormattedCounterValue(counter, 0x8200, IntPtr.Zero, out var result) != 0)
             return null;
         return Normalize(result.Status, result.Value);
     }

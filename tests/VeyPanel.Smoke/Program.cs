@@ -56,4 +56,5 @@ var pdhPass = DiskIoSampler.LayoutValid() && DiskIoSampler.Normalize(0, 123) == 
     && DiskIoSampler.Normalize(0, double.NaN) is null && DiskIoSampler.Normalize(0, -1) is null;
 Console.WriteLine($"{(pdhPass ? "PASS" : "FAIL")} PDH ABI and status normalization");
 if (!pdhPass) failed++;
+failed += GpuTests.Run();
 return failed == 0 ? 0 : 1;

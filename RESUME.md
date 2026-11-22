@@ -25,3 +25,5 @@ Alpha.4 Apollo GUI: added certificate-pinned local inspection and single operato
 Alpha.4 resource increment: per-interface byte rates via IP statistics and monotonic deltas, logical fixed-volume capacity refreshed at five seconds, null status handling and web panel, rate arithmetic and runtime schema checks. Actual SSD SMART/I/O and GPU sensors remain pending. Latest CI pending.
 
 Alpha.4 disk increment: native Windows PDH PhysicalDisk(_Total) English counters for read/write throughput and IOPS. Two-sample warm-up, explicit unavailable status, bounded query reopen, ABI/normalization and published runtime schema tests. No per-disk mapping/SMART/temperature. Latest CI pending. Next: verify CI, then implement GPU engine telemetry and WebSocket independently of physical streaming acceptance.
+
+Alpha.4 GPU increment: added Windows x64 PDH GPU Engine wildcard sampling, localized path lookup, bounded buffer parsing, conservative per-engine aggregation and explicit Video Encode/Decode N/A. Six new tests; actual Intel Arc counters and adapter mapping remain unverified. Latest CI pending. Next: confirm CI and implement WebSocket telemetry with REST fallback.
