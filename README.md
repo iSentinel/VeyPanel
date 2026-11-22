@@ -4,7 +4,7 @@ Extend. Monitor. Control.
 
 Windows-to-Android display streaming and independent system telemetry over a local network.
 
-**Status: 0.1.0-alpha.7 development source, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, native Android, and installers are not yet implemented. An initial WPF display diagnostic UI and a local Apollo inventory CLI are implemented; actual upstream runtime compatibility remains unverified. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
+**Status: 0.1.0-alpha.8 development source, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, native Android, and installers are not yet implemented. An initial WPF display diagnostic UI and a local Apollo inventory CLI are implemented; actual upstream runtime compatibility remains unverified. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
 
 ## Build and run locally (Windows 11)
 
@@ -133,7 +133,7 @@ The default is disabled. If you already run a separately installed, trusted Libr
 
 ## Local device enrollment API (experimental)
 
-Only the loopback owner link can administer devices using the owner token as Bearer authorization. On http://127.0.0.1:47860, GET /api/v1/devices lists metadata, POST /api/v1/devices with a JSON body containing name (1–64 characters, Content-Length at most 1024) issues a reader token once, DELETE /api/v1/devices/{id} revokes it. If LAN HTTPS is enabled, issue returns a separate dashboard URL; send it privately to the intended tablet. No secret is returned by list. Up to 32 active grants, fixed 24-hour expiry, all lost on restart. Tokens are stored hashed in memory. Reader tokens cannot administer; owner token cannot authenticate via LAN. Active sockets revalidate before each sample; an in-flight sample can still complete. No QR or persistent enrollment yet. Open the local owner Dashboard for reader creation, list and revocation; the panel is hidden unless the local owner API authorizes it. A newly issued secret is displayed temporarily; copy it privately, then clear it. Reader/remote clients cannot use the panel. Treat both URL and token as secrets.
+Only the loopback owner link can administer devices using the owner token as Bearer authorization. On http://127.0.0.1:47860, GET /api/v1/devices lists metadata, POST /api/v1/devices with a JSON body containing name (1–64 characters, Content-Length at most 1024) issues a reader token once, DELETE /api/v1/devices/{id} revokes it. If LAN HTTPS is enabled, issue returns a separate dashboard URL; send it privately to the intended tablet. No secret is returned by list. Up to 32 active grants, fixed 24-hour expiry, all lost on restart. Tokens are stored hashed in memory. Reader tokens cannot administer; owner token cannot authenticate via LAN. Active sockets revalidate before each sample; an in-flight sample can still complete. Two-step QR enrollment is available when LAN HTTPS is enabled; persistent grants remain pending. Open the local owner Dashboard for reader creation, list and revocation; the panel is hidden unless the local owner API authorizes it. A newly issued secret is displayed temporarily; copy it privately, then clear it. Reader/remote clients cannot use the panel. Treat both URL and token as secrets.
 
 ## Two-step reader invitation (alpha.8)
 

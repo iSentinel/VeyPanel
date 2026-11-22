@@ -1,11 +1,11 @@
 # Changelog
 
-## 0.1.0-alpha.8 (development; CI pending)
+## 0.1.0-alpha.8 (QR CI verified; grant codec CI in progress; hardware acceptance pending)
 
 - Implemented short-lived one-time invitation API with explicit local owner verification and reader-only redemption.
 - Added parallel replay, expiry, cancellation and capacity tests. Added local owner controls, separate tablet enrollment page and HTTPS integration scenario. Added local QR PNG generation with pinned MIT encoder and packaged license. Added strict bounded codec and corruption/expiry/privacy fixtures for the future grant store. Protected disk persistence and live integration not implemented.
 
-## 0.1.0-alpha.7 (thermal CI verified; device API runtime failure under remediation; owner UI CI in progress; hardware acceptance pending)
+## 0.1.0-alpha.7 (thermal CI verified; device API and owner UI CI verified after route fix; hardware acceptance pending)
 
 - Optional local LibreHardwareMonitor read-only thermal adapter with explicit Celsius schema, bounded polling and dashboard.
 - Added scoped ephemeral per-device tokens, local-only owner API, expiry/revocation and active WebSocket checks.
@@ -66,4 +66,5 @@
 - Added token-protected REST endpoint, local responsive dashboard, 60-sample history and optional TLS LAN configuration.
 - Added CPU math smoke test project and Windows build/publish CI definition.
 - Compilation, runtime, security acceptance and physical device tests pending.
+
 

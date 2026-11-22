@@ -30,13 +30,13 @@
 - [x] Review LibreHardwareMonitor v0.9.6 thermal sensor contract and security boundaries ([design](docs/thermal-provider.md)); version-specific adapter now implemented below.
 - [x] Implement opt-in loopback-only LHM v0.9.6-shaped read adapter, explicit Celsius parsing and thermal dashboard ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45063709265); real provider validation pending).
 - [ ] 0.3: validate real GPU/encoder, physical-disk I/O/SMART, network acceptance; CPU/GPU temperature sensors, physical WSS acceptance.
-- [x] Implement ephemeral individually revocable read-only device tokens, local owner API and active WS revalidation ([fixed device runtime smoke PASS; full CI pending](https://github.com/iSentinel/VeyPanel/actions/runs/45063802814)).
-- [x] Implement local owner dashboard issuance/list/revoke UI ([fixed device runtime smoke PASS; full CI pending](https://github.com/iSentinel/VeyPanel/actions/runs/45063875045); interactive browser acceptance pending).
+- [x] Implement ephemeral individually revocable read-only device tokens, local owner API and active WS revalidation ([fixed CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45064059968)).
+- [x] Implement local owner dashboard issuance/list/revoke UI ([fixed CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45064059968); interactive browser acceptance pending).
 - [x] Document one-time QR invitation and durable grant trust model ([design](docs/device-enrollment.md)); no implementation yet.
-- [x] Implement two-minute invitation claim, explicit owner verification and atomic one-time reader redemption (CI pending; client UI not yet implemented).
-- [x] Add local invitation owner UI, tablet claim/finish page and real HTTPS enrollment integration test (CI pending; browser acceptance pending).
-- [x] Implement local QR PNG rendering using pinned MIT encoder and package license (CI pending; independent scan acceptance pending).
-- [x] Add bounded strict future grant-store codec and corruption/expiry/privacy fixtures (CI pending; not wired to runtime).
+- [x] Implement two-minute invitation claim, explicit owner verification and atomic one-time reader redemption ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45064325652)).
+- [x] Add local invitation owner UI, tablet claim/finish page and real HTTPS enrollment integration test ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45064400938); browser acceptance pending).
+- [x] Implement local QR PNG rendering using pinned MIT encoder and package license ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45064630788); independent scan acceptance pending).
+- [x] Add bounded strict future grant-store codec and corruption/expiry/privacy fixtures ([CI in progress](https://github.com/iSentinel/VeyPanel/actions/runs/45064798561); not wired to runtime).
 - [ ] 0.4: protected atomic durable device enrollment, history.
 - [ ] 0.5: Android client, native video and telemetry.
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.
