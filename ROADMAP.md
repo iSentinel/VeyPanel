@@ -47,7 +47,8 @@
 - [x] Add initial native Android Monitor-only Java app, strict LAN/TLS policy, REST polling, JVM fixtures and APK CI ([corrected Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45067558759); real device acceptance pending).
 - [x] Add native pasted two-step invitation flow and strict enrollment-origin JVM fixtures ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45067632914); live native protocol/device test pending).
 - [x] Document Android opt-in credential persistence and QR acceptance gates ([design](docs/android-credential-design.md)).
-- [ ] 0.5: Android QR camera scanning, protected credentials, WSS and native video.
+- [x] Implement opt-in AndroidKeyStore AES-GCM credential store, reconnect saved access and forget UI (CI pending; actual AndroidKeyStore instrumentation pending).
+- [ ] 0.5: Android QR camera scanning, credential instrumentation, WSS and native video.
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.
 - [ ] 0.7: overlay, alerts, history and diagnostics.
 - [ ] 0.8: reconnection, sleep/wake and USB network transport.

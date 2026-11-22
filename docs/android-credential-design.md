@@ -1,8 +1,8 @@
 # Android protected credentials / QR design
 
-Status: design only; no credential store or camera scanner implemented.
+Status: alpha.11 credential store and explicit reconnect/forget implemented, CI and instrumentation pending; camera scanner remains design only.
 
-The current client holds a reader token in Activity memory, uses fixed private IPv4 HTTPS endpoints, verifies Android system/user CA trust and hostname, and never intentionally saves the link or token. A user-added CA is an explicit trust choice, not certificate pinning. The owner must independently verify the intended CA and IP SAN. Debug APK is not production-signed.
+The default client holds a reader token in Activity memory, uses fixed private IPv4 HTTPS endpoints, verifies Android system/user CA trust and hostname, and only persists an encrypted reader record after opt-in. A user-added CA is an explicit trust choice, not certificate pinning. The owner must independently verify the intended CA and IP SAN. Debug APK is not production-signed.
 
 ## Remember access (next)
 - User opt-in only. Store one reader session bound to its original origin under app-private storage, encrypted with a per-install AndroidKeyStore AES-GCM key. Use a fresh random IV, versioned envelope, fixed AAD and bounded fields. Never store raw token, owner token or invitation secret; no backups, export, logs or autofill.

@@ -32,6 +32,13 @@ public final class ClientPolicySmoke {
             try { InvitationLink.parse(unsafe); } catch (IllegalArgumentException ex) { rejected = true; }
             check(rejected, "Unsafe invitation rejected");
         }
+        SavedReader record = new SavedReader(session, now);
+        check(SavedReader.decode(record.encode(), now).session.endpoint.equals(session.endpoint)
+            && !record.validAt(now.minusSeconds(1)) && !record.validAt(now.plusSeconds(86400)), "Saved reader origin and bounded age");
+        boolean expired = false;
+        try { SavedReader.decode(record.encode(), now.plusSeconds(86400)); }
+        catch (IllegalArgumentException ex) { expired = true; }
+        check(expired, "Expired saved reader rejected");
         System.out.println("PASS: native client policy fixtures");
     }
     private static void reject(String link) {

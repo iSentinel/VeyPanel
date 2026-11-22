@@ -12,3 +12,7 @@ Pasted two-step invitation links are supported: Connect claims once, shows the c
 ## Build evidence
 
 Initial Android CI 45067435606 passed JVM fixtures but failed SDK setup (sdkmanager missing). Corrected run 45067558759 successfully compiled the native Monitor APK and passed lint. Native invitation increment 45067632914: CI PASS. Latest verified debug artifact: https://github.com/iSentinel/VeyPanel/actions/runs/45067632914/artifacts/14772126862. No emulator/physical execution verified. See ../docs/android-credential-design.md for future persistence requirements.
+
+## Android alpha.11 saved access
+
+Select Remember access before connecting; after the first fresh authorized sample the app saves an encrypted reader record using AndroidKeyStore AES-GCM. Connect saved access is explicit. Disconnect leaves a previously saved grant intact; Forget deletes the local key and record, not the server grant. Revoke on the PC to invalidate that grant. Local saved access expires at most 24 hours after saving; Host expiry remains authoritative. No backup or owner/invitation persistence. If forget fails, clear app data before reuse. Real Keystore and lifecycle testing is pending.

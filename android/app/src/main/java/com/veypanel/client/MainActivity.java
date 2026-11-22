@@ -17,6 +17,15 @@ public final class MainActivity extends Activity {
     private final Handler main = new Handler(Looper.getMainLooper());
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
     private ReaderSession session;
+    private CredentialStore credentials;
+    private SavedReader savedReader;
+    private CheckBox remember;
+    private Button reconnect;
+    private TextView credentialStatus;
+    private boolean savePending;
+    private boolean changingRemember;
+    private boolean storageBusy;
+    private static final ExecutorService STORAGE = Executors.newSingleThreadExecutor();
     private EnrollmentClient.Claim claim;
     private Button approve;
     private boolean enrollmentBusy;
@@ -30,7 +39,9 @@ public final class MainActivity extends Activity {
     @Override public void onCreate(Bundle saved) {
         super.onCreate(saved);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        credentials = new CredentialStore(getApplicationContext());
         buildUi();
+        restoreCredential();
         offline("Enter a private reader link from the PC owner.");
     }
 
@@ -56,13 +67,25 @@ public final class MainActivity extends Activity {
         input.setSingleLine(true); input.setSaveEnabled(false);
         input.setImportantForAutofill(android.view.View.IMPORTANT_FOR_AUTOFILL_NO);
         column.addView(input);
+        remember = new CheckBox(this); remember.setText("Remember access on this tablet");
+        remember.setSaveEnabled(false); column.addView(remember);
+        credentialStatus = new TextView(this); column.addView(credentialStatus);
+        reconnect = new Button(this); reconnect.setText("Connect saved access"); reconnect.setEnabled(false);
+        reconnect.setOnClickListener(v -> reconnectSaved()); column.addView(reconnect);
+        Button forget = new Button(this); forget.setText("Forget saved access on tablet");
+        forget.setOnClickListener(v -> forgetAccess()); column.addView(forget);
+        remember.setOnCheckedChangeListener((v, checked) -> {
+            if (changingRemember) return;
+            if (!checked) { savePending = false; deleteCredential(); }
+            else if (session != null) savePending = true;
+        });
         Button connect = new Button(this); connect.setText("Connect");
         connect.setOnClickListener(v -> connect()); column.addView(connect);
         approve = new Button(this); approve.setText("Check owner approval");
         approve.setVisibility(android.view.View.GONE);
         approve.setOnClickListener(v -> finishEnrollment()); column.addView(approve);
         Button disconnect = new Button(this); disconnect.setText("Disconnect");
-        disconnect.setOnClickListener(v -> { stopPoll(); session = null; clearClaim(); input.setText(""); offline("Disconnected"); });
+        disconnect.setOnClickListener(v -> { stopPoll(); session = null; clearClaim(); savePending = false; input.setText(""); offline("Disconnected"); });
         column.addView(disconnect);
         status = new TextView(this); status.setTextSize(16); column.addView(status);
         values = new TextView(this); values.setTextSize(22); values.setPadding(0,pad,0,0);
@@ -71,11 +94,13 @@ public final class MainActivity extends Activity {
     }
 
     private void connect() {
-        stopPoll(); session = null; clearClaim();
+        if (storageBusy) { offline("Wait for credential operation to finish."); return; }
+        stopPoll(); session = null; clearClaim(); savePending = false;
+        deleteCredential();
         String link = input.getText().toString();
         input.setText("");
         try {
-            session = ReaderSession.parse(link);
+            session = ReaderSession.parse(link); savePending = remember.isChecked();
             offline("Connecting…"); main.post(poll); return;
         } catch (IllegalArgumentException ignored) { }
         try { startEnrollment(InvitationLink.parse(link)); }
@@ -124,7 +149,7 @@ public final class MainActivity extends Activity {
                     if (!resumed || current != generation) return;
                     enrollmentBusy = false;
                     if (result == null) { showClaim(); return; }
-                    clearClaim(); session = result; offline("Enrolled. Connecting…"); main.post(poll);
+                    clearClaim(); session = result; savePending = remember.isChecked(); offline("Enrolled. Connecting…"); main.post(poll);
                 });
             } catch (Exception ex) { main.post(() -> enrollmentError(current)); }
         });
@@ -157,9 +182,86 @@ public final class MainActivity extends Activity {
         if (!resumed || current != generation) return;
         if (sample == null || !SampleRules.fresh(sample.stamp, java.time.Instant.now()))
             offline(error == null ? "Stale sample" : error);
-        else showSample(sample);
-        if (terminal) { session = null; return; }
+        else {
+            showSample(sample);
+            if (savePending && remember.isChecked() && !storageBusy) persistCurrent();
+        }
+        if (terminal) {
+            if ("Access expired or revoked".equals(error)) deleteCredential();
+            session = null; savePending = false; return;
+        }
         main.postDelayed(poll, 1000);
+    }
+
+    private void restoreCredential() {
+        storageBusy = true;
+        STORAGE.submit(() -> {
+            SavedReader result = null;
+            boolean failed = false;
+            try { result = credentials.load(); } catch (Exception ex) { failed = true; }
+            SavedReader loaded = result;
+            boolean error = failed;
+            main.post(() -> {
+                if (isDestroyed()) return;
+                storageBusy = false; savedReader = loaded;
+                changingRemember = true; remember.setChecked(loaded != null); changingRemember = false;
+                reconnect.setEnabled(loaded != null);
+                credentialStatus.setText(error ? "Saved access unreadable; verify or forget it."
+                    : loaded == null ? "No saved access" : "Saved access available · Connect saved access");
+            });
+        });
+    }
+
+    private void reconnectSaved() {
+        if (storageBusy || savedReader == null) return;
+        stopPoll(); clearClaim(); savePending = false; session = null;
+        if (!savedReader.validAt(java.time.Instant.now())) {
+            deleteCredential(); offline("Saved access expired"); return;
+        }
+        session = savedReader.session;
+        offline("Connecting saved access…"); main.post(poll);
+    }
+
+    private void persistCurrent() {
+        if (session == null) return;
+        savePending = false; storageBusy = true;
+        SavedReader record = new SavedReader(session, java.time.Instant.now());
+        int current = generation;
+        STORAGE.submit(() -> {
+            boolean success = false;
+            try { credentials.save(record); success = true; } catch (Exception ignored) { }
+            boolean ok = success;
+            main.post(() -> {
+                if (isDestroyed()) return;
+                if (current != generation || !remember.isChecked() || !resumed) {
+                    deleteCredential(); return;
+                }
+                storageBusy = false; savedReader = ok ? record : null;
+                reconnect.setEnabled(ok);
+                credentialStatus.setText(ok ? "Encrypted reader access saved" : "Save failed; access is memory-only");
+            });
+        });
+    }
+
+    private void deleteCredential() {
+        savedReader = null; reconnect.setEnabled(false);
+        storageBusy = true;
+        STORAGE.submit(() -> {
+            boolean success = false;
+            try { credentials.forget(); success = true; } catch (Exception ignored) { }
+            boolean ok = success;
+            main.post(() -> {
+                if (isDestroyed()) return;
+                storageBusy = false;
+                credentialStatus.setText(ok ? "No saved access" : "Forget failed; clear app data before reuse.");
+            });
+        });
+    }
+
+    private void forgetAccess() {
+        stopPoll(); session = null; clearClaim(); savePending = false;
+        changingRemember = true; remember.setChecked(false); changingRemember = false;
+        deleteCredential(); offline("Local access forgotten; revoke on PC to invalidate the token there.");
     }
 
     private void showSample(TelemetrySample s) {

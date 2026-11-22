@@ -16,3 +16,5 @@
 4. Physical storage power-loss/rollback, GPU/CPU temperatures and actual SSD reliability remain unverified. No automatic trust bypass, firewall changes, driver installation or real pairing performed. Original source license undecided.
 
 Final Windows run 45067632917 completed successfully on the same source as native Android invitation. Verified Desktop + Host https://github.com/iSentinel/VeyPanel/actions/runs/45067632917/artifacts/14771433377; Host https://github.com/iSentinel/VeyPanel/actions/runs/45067632917/artifacts/14771951910.
+
+Alpha.11 Android: optional app-private no-backup encrypted reader record (AndroidKeyStore AES-256-GCM, per-save key, random IV, fixed AAD, validated origin and local max 24h age). Save after first successful authorized telemetry, explicit reconnect/forget, auth denial deletes saved access, no owner/invitation storage. JVM record policy fixtures. Actual Keystore and lifecycle instrumentation pending. CI pending. Windows remains alpha.10.
