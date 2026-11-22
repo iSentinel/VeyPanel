@@ -83,7 +83,7 @@ try
     }
     registry = new DeviceRegistry(token, persisted);
 }
-catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or CryptographicException
+catch (Exception ex) when (ex is IOException or InvalidDataException or UnauthorizedAccessException or CryptographicException
     or InvalidOperationException or PlatformNotSupportedException or System.ComponentModel.Win32Exception)
 {
     persisted?.Dispose();

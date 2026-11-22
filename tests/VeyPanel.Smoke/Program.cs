@@ -1,6 +1,9 @@
 using VeyPanel.Host;
 using System.Net;
 
+if (args.Length == 2 && args[0] == "--persistent-smoke")
+    return await PersistentHostSmoke.RunAsync(args[1]);
+
 if (args.Length == 2 && args[0] == "--device-smoke")
     return await DeviceTests.SmokeAsync(args[1]);
 

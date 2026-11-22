@@ -103,7 +103,7 @@ internal static class ProtectedStoreTests
     private static bool Reject(Action action)
     {
         try { action(); return false; }
-        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or CryptographicException) { return true; }
+        catch (Exception ex) when (ex is IOException or InvalidDataException or UnauthorizedAccessException or CryptographicException) { return true; }
     }
     private static void Check(bool valid, string name)
     {
