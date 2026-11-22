@@ -161,3 +161,7 @@ Latest verified Android debug APK: https://github.com/iSentinel/VeyPanel/actions
 ## Android alpha.12
 
 Verified debug APK: https://github.com/iSentinel/VeyPanel/actions/runs/45081890582/artifacts/14777916143. WSS-first, HTTPS REST fallback; responsive monitor source and extended resources APK/lint PASS; full CI pending. Verified APK contains WSS but not the subsequent responsive layout. Windows remains alpha.10. Runtime smoke in progress; no native live WSS or physical Lenovo acceptance.
+
+## Android alpha.13
+
+Verified debug package: https://github.com/iSentinel/VeyPanel/actions/runs/45083538812/artifacts/14777663302. Full corrected baseline emulator runtime 45083538875 PASS. Revised native history and TLS transport runtime in progress. Verified package includes credential switching fix, not subsequent charts/transport fixture commits. No physical acceptance or production signing.

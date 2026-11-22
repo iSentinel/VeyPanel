@@ -1,6 +1,6 @@
 # Changelog
 
-## Android 0.1.0-alpha.13 (development; CI pending)
+## Android 0.1.0-alpha.13 (credential and baseline runtime CI PASS; revised charts build in progress; transport runtime in progress)
 
 - Added isolated Android TLS/WSS transport instrumentation using CI-only certificates and synthetic reader grants.
 - Added Android foreground history and three responsive graphs.
