@@ -16,3 +16,5 @@
 2. Native WSS client with same HTTPS trust and origin policy, bounded sessions, revocation/reconnect and REST fallback. Expand native resource metrics and responsive landscape Monitor layout for Lenovo TB-J607Z 2000x1200.
 3. Native video and Display/Hybrid, Apollo/Quick Sync hardware acceptance, signed driver and independent rollback watchdog before actual topology mutation. No display mutation, drivers, physical pairing or streaming performed.
 4. Debug APK only; original source license remains owner decision. Full dependency redistribution audit, signing and physical power-loss/storage/thermal acceptance pending.
+
+2026-11-23: runtime run 45078273557 booted and installed both APKs, reached instrumentation PASS after runStore and runQr. Shell gate failed because adb am instrument lacked -r and did not emit INSTRUMENTATION_CODE. Added raw mode and separate explicit QR success marker, retained status/FAIL checks. Corrected CI pending.

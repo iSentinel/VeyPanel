@@ -26,3 +26,5 @@ Press Scan invitation QR and grant camera access if desired. Only a syntacticall
 Separate Android runtime smoke CI boots an isolated API 33 emulator and executes actual Keystore checks and a synthetic QR encoder/decoder test. The test script refuses non-emulator devices. Camera scanning itself is not covered. Build CI and runtime CI are distinct.
 
 Verified alpha.11 builds: Keystore 45078027152 and ordered storage operations/instrumentation APK 45078101699, both PASS. QR 45078196387: CI PASS. Latest complete Android package https://github.com/iSentinel/VeyPanel/actions/runs/45078196387/artifacts/14776016903; isolated instrumentation APK https://github.com/iSentinel/VeyPanel/actions/runs/45078196387/artifacts/14776310972. Actual Android runtime run 45078273557: in progress. No real camera or Lenovo acceptance.
+
+Runtime 45078273557 reached instrumentation PASS on API 33 but failed the shell gate because non-raw adb output omitted the final result code. The retry uses raw output and requires both PASS markers and result code -1.

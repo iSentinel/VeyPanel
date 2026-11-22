@@ -22,7 +22,7 @@ public final class StoreInstrumentation extends Instrumentation {
             if (!isolated) throw new IllegalStateException("Explicit isolated test required");
             runStore();
             runQr();
-            report.putString("stream", "\nPASS: AndroidKeyStore actual encryption, reopen, fresh ciphertext, corruption, key removal and Forget\n");
+            report.putString("stream", "\nPASS: AndroidKeyStore actual encryption, reopen, fresh ciphertext, corruption, key removal and Forget\nPASS: synthetic offline QR decode\n");
             finish(Activity.RESULT_OK, report);
         } catch (Exception ex) {
             report.putString("stream", "\nFAIL: AndroidKeyStore smoke (" + ex.getClass().getSimpleName() + ")\n");

@@ -50,7 +50,7 @@
 - [x] Implement opt-in AndroidKeyStore AES-GCM credential store, reconnect saved access and forget UI ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45078027152); actual AndroidKeyStore instrumentation pending).
 - [x] Add ordered credential operation callbacks and isolated AndroidKeyStore instrumentation APK ([build CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45078101699); execution pending).
 - [x] Add native offline QR invitation scanner, strict parsing with explicit Connect, pinned ZXing dependencies and notices ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45078196387); camera/device acceptance pending).
-- [x] Add isolated emulator runtime CI for AndroidKeyStore and synthetic offline QR decode ([in progress](https://github.com/iSentinel/VeyPanel/actions/runs/45078273557); no camera test).
+- [x] Add isolated emulator runtime CI for AndroidKeyStore and synthetic offline QR decode ([instrumentation PASS, shell result gate FAIL](https://github.com/iSentinel/VeyPanel/actions/runs/45078273557); raw-output fix pending; no camera test).
 - [ ] 0.5: credential instrumentation execution, Android QR camera acceptance, WSS and native video.
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.
 - [ ] 0.7: overlay, alerts, history and diagnostics.
