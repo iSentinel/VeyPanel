@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <Version>0.1.0-alpha.3</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../VeyPanel.Host/DisplayInventory.cs" Link="Diagnostics/DisplayInventory.cs" />
+    <Compile Include="../VeyPanel.Host/DisplayConfigNative.cs" Link="Diagnostics/DisplayConfigNative.cs" />
+    <Compile Include="../VeyPanel.Host/DisplayTopology.cs" Link="Diagnostics/DisplayTopology.cs" />
+    <Compile Include="../VeyPanel.Host/DisplayIdentity.cs" Link="Diagnostics/DisplayIdentity.cs" />
+    <Compile Include="../VeyPanel.Host/DisplayValidation.cs" Link="Diagnostics/DisplayValidation.cs" />
+    <Using Include="System" />
+    <Using Include="System.Collections.Generic" />
+    <Using Include="System.Linq" />
+  </ItemGroup>
+</Project>

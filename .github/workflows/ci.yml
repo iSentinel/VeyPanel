@@ -22,3 +22,9 @@ jobs:
         with:
           name: veypanel-host-win-x64-alpha
           path: publish/
+      - name: Publish desktop diagnostic UI
+        run: dotnet publish src/VeyPanel.Desktop -c Release -r win-x64 --self-contained true -o publish-desktop
+      - uses: actions/upload-artifact@v4
+        with:
+          name: veypanel-desktop-win-x64-alpha
+          path: publish-desktop/

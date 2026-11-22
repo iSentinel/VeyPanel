@@ -7,6 +7,7 @@
 - Added monitor/source identity queries and conservative same-session eligibility policy; no restore writes.
 - Added explicit local PIN pairing CLI and five additional Apollo tests; live device validation pending.
 - Added fixed-flag SDC_VALIDATE-only CLI and pre/post stability checks; no topology apply or persistence.
+- Added initial WPF diagnostic desktop and system tray, with separate self-contained CI publish.
 
 ## 0.1.0-alpha.2 (Windows CI verified; hardware acceptance pending)
 

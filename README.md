@@ -4,7 +4,7 @@ Extend. Monitor. Control.
 
 Windows-to-Android display streaming and independent system telemetry over a local network.
 
-**Status: 0.1.0-alpha.3 development source, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, WPF, native Android, WebSocket, GPU sensors, and installers are not yet implemented. A local Apollo inventory CLI is implemented; actual upstream runtime compatibility remains unverified. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
+**Status: 0.1.0-alpha.3 development source, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, native Android, WebSocket, GPU sensors, and installers are not yet implemented. An initial WPF display diagnostic UI and a local Apollo inventory CLI are implemented; actual upstream runtime compatibility remains unverified. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
 
 ## Build and run locally (Windows 11)
 
@@ -86,3 +86,13 @@ Type PAIR, enter Apollo credentials, the device name and the four-digit PIN show
 ```
 
 The command captures two live snapshots, rejects incomplete, ambiguous or changing topology, then asks Windows to validate the current native paths/modes with SDC_VALIDATE only. It checks topology again afterwards. It accepts no imported JSON or caller-provided flags. No SDC_APPLY, persistence or permissive mode changes are implemented. A validated result is not a recovery guarantee. Native validation on the target PC remains untested.
+
+## Windows desktop diagnostic UI
+
+Open VeyPanel.Desktop.exe from the separate desktop CI artifact, or run:
+
+```powershell
+dotnet run --project src/VeyPanel.Desktop -c Release
+```
+
+The alpha GUI lists desktop sources and active display paths, calls the same guarded validate-only diagnostic, and supports minimize-to-tray. It does not start the telemetry host, install drivers, change displays or provide streaming control yet. It links the same diagnostic source files rather than duplicating the implementation. Compilation/publish and interactive GUI acceptance are separate gates.
