@@ -11,4 +11,4 @@ Pasted two-step invitation links are supported: Connect claims once, shows the c
 
 ## Build evidence
 
-Initial Android CI 45067435606 passed JVM fixtures but failed SDK setup (sdkmanager missing). Corrected run 45067558759 successfully compiled the native Monitor APK and passed lint. Native invitation increment 45067632914: APK/lint PASS; publishing. Latest verified debug artifact: https://github.com/iSentinel/VeyPanel/actions/runs/45067558759/artifacts/14771743918. No emulator/physical execution verified. See ../docs/android-credential-design.md for future persistence requirements.
+Initial Android CI 45067435606 passed JVM fixtures but failed SDK setup (sdkmanager missing). Corrected run 45067558759 successfully compiled the native Monitor APK and passed lint. Native invitation increment 45067632914: CI PASS. Latest verified debug artifact: https://github.com/iSentinel/VeyPanel/actions/runs/45067632914/artifacts/14772126862. No emulator/physical execution verified. See ../docs/android-credential-design.md for future persistence requirements.
