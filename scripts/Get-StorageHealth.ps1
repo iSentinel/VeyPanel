@@ -9,6 +9,7 @@ powershell.exe -NoProfile -File scripts/Get-StorageHealth.ps1 -AsJson
 [CmdletBinding()]
 param([switch]$AsJson, [Alias('h','Help')][switch]$Usage)
 $ErrorActionPreference = 'Stop'
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)
 if ($Usage) { Write-Output 'Usage: Get-StorageHealth.ps1 [-AsJson] [-Help]'; exit 0 }
 if ($env:OS -ne 'Windows_NT') { Write-Error 'Windows required'; exit 2 }
 Import-Module (Join-Path $PSScriptRoot 'StorageHealth.psm1') -Force
@@ -16,6 +17,7 @@ $rows = @()
 $status = 'ok'
 try {
     $disks = @(Get-PhysicalDisk -ErrorAction Stop)
+    if ($disks.Count -gt 128) { $disks = @($disks | Select-Object -First 128); $status = 'partial' }
     foreach ($disk in $disks) {
         $counters = $null
         $success = $false

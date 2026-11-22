@@ -41,7 +41,8 @@ public sealed class StorageHealthWorker : BackgroundService
         deadline.CancelAfter(TimeSpan.FromSeconds(20));
         using var child = new Process { StartInfo = new ProcessStartInfo(executable) {
             UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true,
-            RedirectStandardError = true, WorkingDirectory = Path.GetDirectoryName(script)!
+            RedirectStandardError = true, StandardOutputEncoding = System.Text.Encoding.UTF8,
+            StandardErrorEncoding = System.Text.Encoding.UTF8, WorkingDirectory = Path.GetDirectoryName(script)!
         }};
         foreach (var argument in new[] { "-NoLogo", "-NoProfile", "-NonInteractive", "-File", script, "-AsJson" })
             child.StartInfo.ArgumentList.Add(argument);
@@ -52,8 +53,7 @@ public sealed class StorageHealthWorker : BackgroundService
             if (!started) return Empty("unavailable");
             var output = ReadBoundedAsync(child.StandardOutput, 256 * 1024, deadline.Token);
             var errors = ReadBoundedAsync(child.StandardError, 32 * 1024, deadline.Token);
-            await child.WaitForExitAsync(deadline.Token);
-            await errors;
+            await Task.WhenAll(child.WaitForExitAsync(deadline.Token), output, errors);
             var report = await output;
             if (child.ExitCode is not (0 or 1)) return Empty("unavailable");
             return Parse(report, DateTimeOffset.UtcNow);

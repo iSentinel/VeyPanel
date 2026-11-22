@@ -88,6 +88,14 @@ try {
     Start-Sleep -Seconds 2
     $next = Invoke-RestMethod $url -Headers $headers -TimeoutSec 5
     Assert-Check ([DateTimeOffset]::Parse($next.timestampUtc.ToString()) -gt $time) 'Sampling continues'
+    $healthDeadline = [DateTimeOffset]::UtcNow.AddSeconds(25)
+    while ($next.storageHealth.status -eq 'warming-up' -and [DateTimeOffset]::UtcNow -lt $healthDeadline) {
+        Start-Sleep -Seconds 1
+        $next = Invoke-RestMethod $url -Headers $headers -TimeoutSec 5
+    }
+    Assert-Check ($next.storageHealth.status -in @('ok','partial','unavailable','timeout')) 'Storage worker completes bounded attempt'
+    Assert-Check ([Math]::Abs(([DateTimeOffset]::UtcNow - [DateTimeOffset]::Parse($next.timestampUtc.ToString())).TotalSeconds) -lt 5) 'Telemetry remains fresh during provider attempt'
+    Write-Host "Storage provider capability: $($next.storageHealth.status); rows: $(@($next.storageHealth.disks).Count)"
     Write-Host 'PASS: Host integration smoke'
 } finally {
     if ($process -and -not $process.HasExited) { Stop-Process -Id $process.Id -Force; $process.WaitForExit() }

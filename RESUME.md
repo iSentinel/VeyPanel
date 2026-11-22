@@ -23,3 +23,5 @@ Browser REST fallback is implemented but actual browser/Android behavior not yet
 Alpha.6: storage fixture CI 45062430196 completed successfully. Implemented per-instance PhysicalDisk PDH wildcard read/write throughput and IOPS using existing bounded native array reader. Instance names are provider labels, not stable hardware IDs; no model correlation inferred. Capture and merge tests pending CI. Next: periodic Storage Provider worker and dashboard.
 
 Alpha.6 storage worker: independent hosted service invokes bundled Windows PowerShell script every 60 seconds after completion, 20-second timeout, bounded output, validated schema and age, stale/missing N/A. No elevation or execution-policy bypass. Runtime provider availability remains hardware/policy-dependent. CI pending.
+
+Alpha.6 worker hardening: explicit UTF-8 stdout, maximum 128 provider rows, bounded completion integration test and deterministic invalid-temperature fixture. First per-disk CI run 45063074951 succeeded. Latest worker CI pending.

@@ -82,7 +82,7 @@ var healthPass = health.Status == "partial" && health.Disks.Length == 1
     && health.Disks[0].TemperatureC == 37 && health.Disks[0].WearPercent == 0
     && health.Disks[0].PowerOnHours is null
     && StorageHealthWorker.Fresh(health, healthNow.AddMinutes(3)).Status == "stale"
-    && StorageHealthWorker.Parse(healthJson.Replace("37", "255"), healthNow).Status == "unavailable"
+    && StorageHealthWorker.Parse(healthJson.Replace("\"temperatureC\":37", "\"temperatureC\":255"), healthNow).Status == "unavailable"
     && StorageHealthWorker.Parse("invalid", healthNow).Disks.Length == 0;
 Console.WriteLine($"{(healthPass ? "PASS" : "FAIL")} Storage worker schema, nulls, bounds and freshness");
 if (!healthPass) failed++;

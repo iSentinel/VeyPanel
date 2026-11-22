@@ -24,7 +24,7 @@
 - [x] Implement authenticated WebSocket telemetry, bounded sessions, origin checks, browser reconnect and REST fallback ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45062225593)); loopback/HTTPS WSS and capacity tests passed.
 - [x] Add DXGI named adapter inventory and LUID-based GPU engine matching with N/A for unmatched metrics ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45062321592)).
 - [x] Add local-only Windows Storage Provider reliability diagnostic and conversion/privacy fixtures ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45062430196); actual counters pending).
-- [x] Add PhysicalDisk wildcard per-instance throughput/IOPS with bounded merge and dashboard (CI pending).
+- [x] Add PhysicalDisk wildcard per-instance throughput/IOPS with bounded merge and dashboard ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45063074951)).
 - [x] Integrate independent bounded Storage Provider worker and health dashboard (CI pending; actual counters pending).
 - [ ] 0.3: validate real GPU/encoder, physical-disk I/O/SMART, network acceptance; CPU/GPU temperature sensors, physical WSS acceptance.
 - [ ] 0.4: secure device enrollment, per-device revocation, QR, history.
