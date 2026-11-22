@@ -49,6 +49,15 @@ try {
     Assert-Check ($null -ne $sample.cpuPercent -and $sample.cpuPercent -ge 0 -and $sample.cpuPercent -le 100) 'CPU in range'
     Assert-Check ($sample.memoryTotalBytes -gt 0 -and $sample.memoryAvailableBytes -le $sample.memoryTotalBytes -and $sample.memoryAvailableBytes -ge 0) 'Physical memory valid'
     Assert-Check ($null -ne $sample.memoryUsedPercent -and $sample.memoryUsedPercent -ge 0 -and $sample.memoryUsedPercent -le 100) 'RAM in range'
+    Assert-Check ($null -ne $sample.resources -and $null -ne $sample.resources.networkStatus -and $null -ne $sample.resources.storageStatus) 'Resource inventory schema'
+    foreach ($volume in $sample.resources.volumes) {
+        if ($null -ne $volume.totalBytes) {
+            Assert-Check ($volume.totalBytes -gt 0 -and $volume.freeBytes -ge 0 -and $volume.freeBytes -le $volume.totalBytes) 'Volume capacity valid'
+        }
+    }
+    foreach ($nic in $sample.resources.network) {
+        Assert-Check (($null -eq $nic.receiveBytesPerSecond -or $nic.receiveBytesPerSecond -ge 0) -and ($null -eq $nic.transmitBytesPerSecond -or $nic.transmitBytesPerSecond -ge 0)) 'Network rate valid or unavailable'
+    }
     $time = [DateTimeOffset]::Parse($sample.timestampUtc.ToString())
     Assert-Check ([Math]::Abs(([DateTimeOffset]::UtcNow - $time).TotalSeconds) -lt 5) 'Fresh timestamp'
     Start-Sleep -Seconds 2

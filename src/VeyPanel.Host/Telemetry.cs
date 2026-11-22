@@ -4,7 +4,10 @@ namespace VeyPanel.Host;
 
 public sealed record Snapshot(DateTimeOffset TimestampUtc, double? CpuPercent,
     ulong? MemoryTotalBytes, ulong? MemoryAvailableBytes,
-    double? MemoryUsedPercent, string Status);
+    double? MemoryUsedPercent, string Status)
+{
+    public ResourceSnapshot? Resources { get; init; }
+}
 
 public static class CpuMath
 {
@@ -22,6 +25,7 @@ public sealed class Telemetry : BackgroundService
 {
     private Snapshot _latest = new(DateTimeOffset.UtcNow, null, null, null, null, "warming-up");
     private (ulong Idle, ulong Kernel, ulong User)? _previous;
+    private readonly ResourceInventory resources = new();
     public Snapshot Latest => Volatile.Read(ref _latest);
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -54,7 +58,7 @@ public sealed class Telemetry : BackgroundService
         return new(now, cpu, valid ? memory.TotalPhysical : null,
             valid ? memory.AvailablePhysical : null,
             valid ? 100.0 * (memory.TotalPhysical - memory.AvailablePhysical) / memory.TotalPhysical : null,
-            cpu.HasValue && valid ? "ok" : "partial");
+            cpu.HasValue && valid ? "ok" : "partial") { Resources = resources.Capture() };
     }
 
     [StructLayout(LayoutKind.Sequential)]

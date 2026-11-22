@@ -18,7 +18,8 @@
 - [x] Implement bundled Windows desktop/Host lifecycle, local dashboard controls and managed child tests (CI pending).
 - [x] Add local Apollo inventory and operator-confirmed PIN pairing in WPF (CI pending; physical acceptance pending).
 - [ ] 0.2: integrate streaming controls in WPF; hardware-tested rollback and live PIN acceptance.
-- [ ] 0.3: GPU/encoder, SSD, network; sensor capability discovery and N/A semantics; WebSocket.
+- [x] Add per-interface network throughput and fixed-volume capacity telemetry/UI (CI pending).
+- [ ] 0.3: GPU/encoder, SSD I/O/SMART, network acceptance; sensor capability discovery and N/A semantics; WebSocket.
 - [ ] 0.4: secure device enrollment, per-device revocation, QR, history.
 - [ ] 0.5: Android client, native video and telemetry.
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.

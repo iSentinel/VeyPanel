@@ -100,3 +100,7 @@ The alpha GUI lists desktop sources and active display paths, calls the same gua
 ## Apollo in Desktop
 
 The Apollo tab provides local inventory and explicit PIN pairing with the same certificate-pinned adapter as the CLI. Credentials/PIN are cleared from inputs and are not persisted. A separate confirmation is required before either login or pairing. Verify device permissions after pairing. No stream start/stop, automatic driver installation or real device acceptance yet.
+
+## Extended monitoring
+
+The dashboard also shows per-active-interface RX/TX byte rates (no IP/MAC or adapter IDs exposed) and fixed local volume capacity/free space. Rates are calculated using monotonic counter deltas; first sample, resets and unavailable counters are N/A. Volume data refreshes every five seconds. These are logical volume capacity metrics, not SSD/NVMe SMART, physical disk I/O or temperatures. GPU, encoder, storage I/O and sensor discovery are pending.
