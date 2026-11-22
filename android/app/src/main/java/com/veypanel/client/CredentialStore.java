@@ -30,7 +30,9 @@ final class CredentialStore {
 
     SavedReader load() throws Exception {
         synchronized (LOCK) {
-            if (!file.getBaseFile().exists() && !new File(file.getBaseFile() + ".bak").exists()) return null;
+            if (!file.getBaseFile().exists() && !new File(file.getBaseFile() + ".bak").exists()) {
+                forgetLocked(); return null;
+            }
             try {
                 byte[] bytes;
                 try (java.io.FileInputStream input = file.openRead()) {

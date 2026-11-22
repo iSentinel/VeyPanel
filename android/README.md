@@ -16,3 +16,5 @@ Initial Android CI 45067435606 passed JVM fixtures but failed SDK setup (sdkmana
 ## Android alpha.11 saved access
 
 Select Remember access before connecting; after the first fresh authorized sample the app saves an encrypted reader record using AndroidKeyStore AES-GCM. Connect saved access is explicit. Disconnect leaves a previously saved grant intact; Forget deletes the local key and record, not the server grant. Revoke on the PC to invalidate that grant. Local saved access expires at most 24 hours after saving; Host expiry remains authoritative. No backup or owner/invitation persistence. If forget fails, clear app data before reuse. Real Keystore and lifecycle testing is pending.
+
+The instrumentation APK is built by `gradle -p android :app:assembleDebugAndroidTest`. Run only on an isolated test installation (refuses existing credentials): `adb shell am instrument -w -e isolated true com.veypanel.client.test/com.veypanel.client.StoreInstrumentation`. Require explicit PASS and successful instrumentation result. No emulator/device execution yet.

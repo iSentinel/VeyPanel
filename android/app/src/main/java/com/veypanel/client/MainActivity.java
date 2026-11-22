@@ -25,6 +25,8 @@ public final class MainActivity extends Activity {
     private boolean savePending;
     private boolean changingRemember;
     private boolean storageBusy;
+    private int storageRevision;
+    private boolean storageFault;
     private static final ExecutorService STORAGE = Executors.newSingleThreadExecutor();
     private EnrollmentClient.Claim claim;
     private Button approve;
@@ -77,7 +79,7 @@ public final class MainActivity extends Activity {
         remember.setOnCheckedChangeListener((v, checked) -> {
             if (changingRemember) return;
             if (!checked) { savePending = false; deleteCredential(); }
-            else if (session != null) savePending = true;
+            else if (session != null && savedReader == null) savePending = true;
         });
         Button connect = new Button(this); connect.setText("Connect");
         connect.setOnClickListener(v -> connect()); column.addView(connect);
@@ -94,7 +96,7 @@ public final class MainActivity extends Activity {
     }
 
     private void connect() {
-        if (storageBusy) { offline("Wait for credential operation to finish."); return; }
+        if (storageBusy || storageFault) { credentialStatus.setText("Complete credential operation or Forget before connecting."); return; }
         stopPoll(); session = null; clearClaim(); savePending = false;
         deleteCredential();
         String link = input.getText().toString();
@@ -184,7 +186,7 @@ public final class MainActivity extends Activity {
             offline(error == null ? "Stale sample" : error);
         else {
             showSample(sample);
-            if (savePending && remember.isChecked() && !storageBusy) persistCurrent();
+            if (savePending && remember.isChecked() && !storageBusy && !storageFault) persistCurrent();
         }
         if (terminal) {
             if ("Access expired or revoked".equals(error)) deleteCredential();
@@ -195,6 +197,8 @@ public final class MainActivity extends Activity {
 
     private void restoreCredential() {
         storageBusy = true;
+        int revision = ++storageRevision;
+        remember.setEnabled(false);
         STORAGE.submit(() -> {
             SavedReader result = null;
             boolean failed = false;
@@ -202,8 +206,9 @@ public final class MainActivity extends Activity {
             SavedReader loaded = result;
             boolean error = failed;
             main.post(() -> {
-                if (isDestroyed()) return;
-                storageBusy = false; savedReader = loaded;
+                if (isDestroyed() || revision != storageRevision) return;
+                storageBusy = false; storageFault = error; savedReader = loaded;
+                remember.setEnabled(true);
                 changingRemember = true; remember.setChecked(loaded != null); changingRemember = false;
                 reconnect.setEnabled(loaded != null);
                 credentialStatus.setText(error ? "Saved access unreadable; verify or forget it."
@@ -213,7 +218,7 @@ public final class MainActivity extends Activity {
     }
 
     private void reconnectSaved() {
-        if (storageBusy || savedReader == null) return;
+        if (storageBusy || storageFault || savedReader == null) return;
         stopPoll(); clearClaim(); savePending = false; session = null;
         if (!savedReader.validAt(java.time.Instant.now())) {
             deleteCredential(); offline("Saved access expired"); return;
@@ -226,17 +231,16 @@ public final class MainActivity extends Activity {
         if (session == null) return;
         savePending = false; storageBusy = true;
         SavedReader record = new SavedReader(session, java.time.Instant.now());
-        int current = generation;
+        int revision = ++storageRevision;
         STORAGE.submit(() -> {
             boolean success = false;
             try { credentials.save(record); success = true; } catch (Exception ignored) { }
             boolean ok = success;
             main.post(() -> {
-                if (isDestroyed()) return;
-                if (current != generation || !remember.isChecked() || !resumed) {
-                    deleteCredential(); return;
-                }
-                storageBusy = false; savedReader = ok ? record : null;
+                // The save was accepted after an authorized sample. Pause/rotation
+                // does not undo it; a later explicit Forget is queued after it.
+                if (isDestroyed() || revision != storageRevision) return;
+                storageBusy = false; storageFault = !ok; savedReader = ok ? record : null;
                 reconnect.setEnabled(ok);
                 credentialStatus.setText(ok ? "Encrypted reader access saved" : "Save failed; access is memory-only");
             });
@@ -246,13 +250,15 @@ public final class MainActivity extends Activity {
     private void deleteCredential() {
         savedReader = null; reconnect.setEnabled(false);
         storageBusy = true;
+        int revision = ++storageRevision;
         STORAGE.submit(() -> {
             boolean success = false;
             try { credentials.forget(); success = true; } catch (Exception ignored) { }
             boolean ok = success;
             main.post(() -> {
-                if (isDestroyed()) return;
-                storageBusy = false;
+                if (isDestroyed() || revision != storageRevision) return;
+                storageBusy = false; storageFault = !ok;
+                remember.setEnabled(true);
                 credentialStatus.setText(ok ? "No saved access" : "Forget failed; clear app data before reuse.");
             });
         });
@@ -261,7 +267,7 @@ public final class MainActivity extends Activity {
     private void forgetAccess() {
         stopPoll(); session = null; clearClaim(); savePending = false;
         changingRemember = true; remember.setChecked(false); changingRemember = false;
-        deleteCredential(); offline("Local access forgotten; revoke on PC to invalidate the token there.");
+        deleteCredential(); offline("Disconnected. Forget requested; revoke on PC to invalidate the token there.");
     }
 
     private void showSample(TelemetrySample s) {
