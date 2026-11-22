@@ -8,6 +8,7 @@ adb install android/app/build/outputs/apk/androidTest/debug/app-debug-androidTes
 adb shell am instrument -w -r -e isolated true com.veypanel.client.test/com.veypanel.client.StoreInstrumentation | tee runtime-smoke.log
 grep -Fq 'PASS: AndroidKeyStore actual encryption' runtime-smoke.log
 grep -Fq 'PASS: synthetic offline QR decode' runtime-smoke.log
+grep -Fq 'PASS: Android extended telemetry fixture' runtime-smoke.log
 grep -Eq '^INSTRUMENTATION_CODE: -1[[:space:]]* runtime-smoke.log
 ! grep -Fq 'FAIL:' runtime-smoke.log
  runtime-smoke.log
