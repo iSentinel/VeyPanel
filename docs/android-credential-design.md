@@ -17,3 +17,5 @@ Review and pin scanner dependency/license first, prefer offline scanning and cam
 Actual tablet API level, Android Network Security Config behavior with intended CA, lifecycle/rotation, expiration and reconnect need emulator/physical acceptance. No video decoder or touchscreen forwarding yet. Native WSS should use this same validated private origin and revocable reader model. 
 
 Implemented experimental camera integration using pinned ZXing Android Embedded 4.3.0 and Core 3.5.3. Explicit private scanner Activity, QR-only, no barcode image output, strict InvitationLink parsing, separate Connect action. License and notice bundled. Neither actual sensor permissions nor camera decoding are verified; review transitive dependencies before production redistribution.
+
+Build evidence: 45078027152 and 45078101699 PASS; JVM saved age/origin/expiry and actual APK/lint build. QR build 45078196387: CI PASS. Emulator execution 45078273557: in progress. Neither build tests nor synthetic decoder tests establish physical camera or hardware-backed Keystore availability.

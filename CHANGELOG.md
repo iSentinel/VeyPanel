@@ -1,6 +1,6 @@
 # Changelog
 
-## Android 0.1.0-alpha.11 (development; CI pending)
+## Android 0.1.0-alpha.11 (Keystore build CI PASS; QR CI PASS; runtime in progress)
 
 - Added opt-in AndroidKeyStore protected reader access, local forget and saved reconnect.
 - Added local camera QR invitation scanner and isolated Keystore instrumentation source. No automatic background reconnect. Windows version unchanged.
