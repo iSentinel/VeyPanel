@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.0-alpha.9 (development; CI pending)
+
+- Added opt-in persistence groundwork: Windows DPAPI CurrentUser, restrictive directory ACL, exclusive lock, bounded atomic replacement and interrupted transaction refusal. Live registry remains RAM-only in this increment.
+- Alpha.8 strict grant codec CI passed.
+
 ## 0.1.0-alpha.8 (QR CI verified; grant codec CI in progress; hardware acceptance pending)
 
 - Implemented short-lived one-time invitation API with explicit local owner verification and reader-only redemption.

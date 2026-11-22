@@ -16,3 +16,5 @@
 3. Physical acceptance: Lenovo TB-J607Z, Intel Arc, CPU/GPU thermal provider and actual SSD counters, Apollo v0.4.6 pairing/Quick Sync, Mirror/Extend 2000x1200 at 60 Hz; rollback watchdog before topology writes.
 4. No actual driver installation, monitor changes, live pairing or physical streaming performed. Original source license remains undecided; third-party QR license separately bundled.
 
+
+Alpha.9: previous grant codec CI 45064798561 PASS. Added Windows-only CurrentUser DPAPI protected storage primitive with fixed default profile path, restrictive ACL, reparse checks, exclusive file lock, bounded ciphertext and flushed same-directory replacement with pending transaction marker. Tested by isolated reopen, lock, revoke-empty, corruption and pending marker fixtures (CI pending). Not yet wired to live grants. No guarantee against same-account/admin tampering, old valid ciphertext rollback or power-loss filesystem metadata failure.

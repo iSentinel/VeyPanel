@@ -93,4 +93,5 @@ failed += await ThermalTests.RunAsync();
 failed += DeviceTests.Run();
 failed += InvitationTests.Run();
 failed += GrantStoreTests.Run();
+failed += ProtectedStoreTests.Run();
 return failed == 0 ? 0 : 1;

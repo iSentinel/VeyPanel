@@ -36,8 +36,9 @@
 - [x] Implement two-minute invitation claim, explicit owner verification and atomic one-time reader redemption ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45064325652)).
 - [x] Add local invitation owner UI, tablet claim/finish page and real HTTPS enrollment integration test ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45064400938); browser acceptance pending).
 - [x] Implement local QR PNG rendering using pinned MIT encoder and package license ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45064630788); independent scan acceptance pending).
-- [x] Add bounded strict future grant-store codec and corruption/expiry/privacy fixtures ([CI in progress](https://github.com/iSentinel/VeyPanel/actions/runs/45064798561); not wired to runtime).
-- [ ] 0.4: protected atomic durable device enrollment, history.
+- [x] Add bounded strict future grant-store codec and corruption/expiry/privacy fixtures ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45064798561); not wired to runtime).
+- [x] Implement Windows DPAPI CurrentUser grant-store primitive, strict directory ACL, exclusive lock and interrupted transaction refusal (CI pending; runtime not wired).
+- [ ] 0.4: live grant persistence and failure/restart acceptance, history.
 - [ ] 0.5: Android client, native video and telemetry.
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.
 - [ ] 0.7: overlay, alerts, history and diagnostics.
