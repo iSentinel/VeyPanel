@@ -18,3 +18,5 @@
 4. Debug APK only; original source license remains owner decision. Full dependency redistribution audit, signing and physical power-loss/storage/thermal acceptance pending.
 
 2026-11-23: runtime run 45078273557 booted and installed both APKs, reached instrumentation PASS after runStore and runQr. Shell gate failed because adb am instrument lacked -r and did not emit INSTRUMENTATION_CODE. Added raw mode and separate explicit QR success marker, retained status/FAIL checks. Corrected CI pending.
+
+Alpha.12 Android WSS source: pinned OkHttp 4.12.1 with license asset, fixed WSS origin/path from validated reader URI, platform TLS trust/hostname verification, no proxy or redirect, first text frame token only, one latest-sample slot, 5.5s sample deadline, 15s fallback before WSS retry. TLS errors stop; other closure checks HTTPS REST and only REST 401/403 invalidates credentials. Pause closes socket and generation guard discards callbacks. Message length checked after library materialization; hostile-message memory limit not established. CI and live Android transport pending; Windows unchanged.

@@ -7,8 +7,8 @@ android {
         minSdk 26
         targetSdk 35
         testInstrumentationRunner 'com.veypanel.client.StoreInstrumentation'
-        versionCode 11
-        versionName '0.1.0-alpha.11'
+        versionCode 12
+        versionName '0.1.0-alpha.12'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -22,5 +22,11 @@ dependencies {
     }
     implementation('com.google.zxing:core:3.5.3') {
         version { strictly '3.5.3' }
+    }
+}
+
+dependencies {
+    implementation('com.squareup.okhttp3:okhttp:4.12.1') {
+        version { strictly '4.12.1' }
     }
 }

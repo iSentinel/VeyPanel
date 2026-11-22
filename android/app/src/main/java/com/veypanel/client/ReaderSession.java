@@ -22,6 +22,10 @@ final class ReaderSession {
         return new ReaderSession(URI.create("https://" + m.group(1) + ":47861/api/v1/telemetry"), m.group(2));
     }
 
+    String websocketUrl() {
+        return "wss://" + endpoint.getHost() + ":47861/api/v1/telemetry/ws";
+    }
+
     static boolean privateIp(String address) {
         String[] parts = address.split("\\.", -1);
         if (parts.length != 4) return false;

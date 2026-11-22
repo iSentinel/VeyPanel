@@ -20,6 +20,8 @@ public final class MainActivity extends Activity {
     private final Handler main = new Handler(Looper.getMainLooper());
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
     private ReaderSession session;
+    private TelemetryStream stream;
+    private long nextStreamAttempt;
     private CredentialStore credentials;
     private SavedReader savedReader;
     private CheckBox remember;
@@ -204,6 +206,15 @@ public final class MainActivity extends Activity {
         if (!resumed || session == null) return;
         int current = generation;
         ReaderSession chosen = session;
+        if (stream == null && android.os.SystemClock.elapsedRealtime() >= nextStreamAttempt) {
+            try { stream = new TelemetryStream(chosen); }
+            catch (RuntimeException ex) { nextStreamAttempt = android.os.SystemClock.elapsedRealtime() + 15000; }
+        }
+        TelemetryStream active = stream;
+        if (active != null) {
+            request = worker.submit(() -> readStream(current, active));
+            return;
+        }
         request = worker.submit(() -> {
             try {
                 TelemetrySample sample = TelemetryClient.fetch(chosen);
@@ -216,6 +227,29 @@ public final class MainActivity extends Activity {
                 main.post(() -> complete(current, null, "Unavailable / stale sample; retrying", false));
             }
         });
+    }
+
+    private void readStream(int current, TelemetryStream active) {
+        try {
+            TelemetrySample sample = active.next();
+            main.post(() -> complete(current, sample, null, false));
+        } catch (Exception ex) {
+            boolean tls = TelemetryStream.isTlsError(ex);
+            main.post(() -> streamFailed(current, active, tls));
+        }
+    }
+
+    private void streamFailed(int current, TelemetryStream active, boolean tls) {
+        active.close();
+        if (!resumed || current != generation || stream != active) return;
+        stream = null;
+        if (tls) {
+            complete(current, null, "TLS trust failed. Verify the PC certificate.", true);
+            return;
+        }
+        nextStreamAttempt = android.os.SystemClock.elapsedRealtime() + 15000;
+        offline("WSS unavailable · checking HTTPS REST");
+        main.post(poll);
     }
 
     private void complete(int current, TelemetrySample sample, String error, boolean terminal) {
@@ -309,7 +343,7 @@ public final class MainActivity extends Activity {
     }
 
     private void showSample(TelemetrySample s) {
-        status.setText("Connected · HTTPS REST · " + s.stamp);
+        status.setText("Connected · " + (stream == null ? "HTTPS REST" : "WSS") + " · " + s.stamp);
         values.setText("CPU  " + pct(s.cpu) + "\nRAM  " + pct(s.ram) + "\nGPU  " + pct(s.gpu)
             + "\nVideo Encode  " + pct(s.encode) + "\nVideo Decode  " + pct(s.decode)
             + "\nDisk Read  " + rate(s.read) + "\nDisk Write  " + rate(s.write));
@@ -328,6 +362,8 @@ public final class MainActivity extends Activity {
 
     private void stopPoll() {
         generation++;
+        if (stream != null) { stream.close(); stream = null; }
+        nextStreamAttempt = 0;
         // A claim/finish interrupted during an in-flight exchange is ambiguous; do not replay it.
         if (enrollmentBusy) clearClaim();
         main.removeCallbacks(poll);
