@@ -46,6 +46,7 @@ internal static class DeviceTests
             http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", owner);
             using var created = await http.PostAsync("api/v1/devices",
                 new StringContent("{\"name\":\"Tablet\"}", Encoding.UTF8, "application/json"), ct);
+            Console.WriteLine($"Create device HTTP status: {(int)created.StatusCode}");
             Check(created.StatusCode == HttpStatusCode.Created, "Create device");
             using var json = JsonDocument.Parse(await created.Content.ReadAsByteArrayAsync(ct));
             var token = json.RootElement.GetProperty("token").GetString()!;
@@ -98,7 +99,7 @@ internal static class DeviceTests
 
     private static void Check(bool pass, string label)
     {
-        if (!pass) throw new InvalidOperationException(label);
+        if (!pass) { Console.WriteLine($"FAIL: {label}"); throw new InvalidOperationException(label); }
         Console.WriteLine($"PASS: {label}");
     }
 }

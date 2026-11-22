@@ -15,3 +15,5 @@
 3. Continue history, Android telemetry and physical Apollo/Lenovo Mirror/Extend 2000x1200 at 60 Hz; actual Intel Quick Sync and CPU/GPU sensors, SSD counters and rollback are not physically validated.
 4. Keep topology mutation disabled until watchdog and hardware acceptance. No driver installation, live pairing, real streaming or monitor changes performed. Original source license still undecided.
 
+
+Device API CI 45063802814 failed the first HTTP creation assertion, although build, registry fixtures, HTTPS LAN and WS smoke passed. Likely route-handler overload issue; explicitly select Delegate-returning IResult overload and report HTTP status/assertion label without secrets. Fix not yet verified; inspect subsequent CI. Do not ship device authorization as accepted until full lifecycle passes.

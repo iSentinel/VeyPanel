@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0-alpha.7 (thermal CI verified; device API CI in progress; owner UI CI in progress; hardware acceptance pending)
+## 0.1.0-alpha.7 (thermal CI verified; device API runtime failure under remediation; owner UI CI in progress; hardware acceptance pending)
 
 - Optional local LibreHardwareMonitor read-only thermal adapter with explicit Celsius schema, bounded polling and dashboard.
 - Added scoped ephemeral per-device tokens, local-only owner API, expiry/revocation and active WebSocket checks.
