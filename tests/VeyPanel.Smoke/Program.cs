@@ -1,6 +1,9 @@
 using VeyPanel.Host;
 using System.Net;
 
+if (args.Length == 2 && args[0] == "--ws-smoke")
+    return await WebSocketSmoke.RunAsync(args[1]);
+
 if (args.Length == 2 && args[0] == "--lifecycle-smoke")
     return await LifecycleSmoke.RunAsync(args[1]);
 

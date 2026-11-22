@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.0-alpha.5 (development; CI pending)
+
+- Added authenticated local WebSocket telemetry with bounded sessions and browser REST fallback.
+- GPU alpha.4 CI passed; real Intel Arc monitoring remains unverified.
+
 ## 0.1.0-alpha.4 (desktop, Host and disk CI verified; GPU CI in progress)
 
 - Bundle telemetry Host with the Desktop package; start, stop and open local dashboard.

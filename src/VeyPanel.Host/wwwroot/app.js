@@ -73,19 +73,62 @@ function offline(message) {
   $('capacity').textContent='N/A';$('timestamp').textContent='No current sample';
   samples.push({});if(samples.length>60)samples.shift();draw();
 }
+let socket = null, socketFresh = 0, nextConnect = 0, lastTimestamp = 0;
+function render(s, transport) {
+  const stamp = Date.parse(s.timestampUtc), age = Date.now() - stamp;
+  if (!Number.isFinite(age) || age > 5000 || age < -5000) throw Error('Stale sample');
+  resources(s.resources);diskIo(s.diskIo);gpu(s.gpu);
+  $('status').textContent=s.status + ' · ' + transport;
+  metric('cpu',s.cpuPercent);metric('ram',s.memoryUsedPercent);
+  $('capacity').textContent=Number.isFinite(s.memoryTotalBytes)&&Number.isFinite(s.memoryAvailableBytes)?`${gib(s.memoryTotalBytes-s.memoryAvailableBytes)} / ${gib(s.memoryTotalBytes)} GiB`:'N/A';
+  $('timestamp').textContent=`Updated ${new Date(s.timestampUtc).toLocaleTimeString()}`;
+  if (stamp !== lastTimestamp) {
+    lastTimestamp=stamp;samples.push(s);if(samples.length>60)samples.shift();draw();
+  }
+}
+function connect() {
+  if (!token || socket || Date.now() < nextConnect) return;
+  nextConnect = Date.now() + 10000;
+  let candidate;
+  try {
+    const url = new URL('/api/v1/telemetry/ws', location.href);
+    url.protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    candidate = new WebSocket(url);
+  } catch { return; }
+  socket = candidate;
+  let timer = setTimeout(() => candidate.close(), 6000);
+  candidate.onopen = () => { if (socket === candidate) candidate.send(token); };
+  candidate.onmessage = event => {
+    if (socket !== candidate) return;
+    try {
+      render(JSON.parse(event.data), 'WebSocket');
+      socketFresh = Date.now();
+      clearTimeout(timer);
+      timer = setTimeout(() => candidate.close(), 4500);
+    } catch { candidate.close(); }
+  };
+  candidate.onerror = () => candidate.close();
+  candidate.onclose = () => {
+    clearTimeout(timer);
+    if (socket === candidate) { socket = null; socketFresh = 0; }
+  };
+}
 async function update() {
   if (!token) { offline('Open the access link printed by Host'); return; }
-  try {
-    const response=await fetch('/api/v1/telemetry',{headers:{Authorization:`Bearer ${token}`},cache:'no-store',signal:AbortSignal.timeout(3000)});
-    if (!response.ok) throw Error(`HTTP ${response.status}`);
-    const s=await response.json(); const age=Date.now()-Date.parse(s.timestampUtc);
-    if (!Number.isFinite(age)||age>5000||age< -5000) throw Error('Stale sample / clock mismatch');
-    resources(s.resources);diskIo(s.diskIo);gpu(s.gpu);
-    $('status').textContent=s.status;metric('cpu',s.cpuPercent);metric('ram',s.memoryUsedPercent);
-    $('capacity').textContent=Number.isFinite(s.memoryTotalBytes)&&Number.isFinite(s.memoryAvailableBytes)?`${gib(s.memoryTotalBytes-s.memoryAvailableBytes)} / ${gib(s.memoryTotalBytes)} GiB`:'N/A';
-    $('timestamp').textContent=`Updated ${new Date(s.timestampUtc).toLocaleTimeString()}`;
-    samples.push(s);if(samples.length>60)samples.shift();draw();
-  } catch { offline('Disconnected / unauthorized'); }
+  connect();
+  if (!socketFresh || Date.now() - socketFresh > 3500) {
+    try {
+      const response = await fetch('/api/v1/telemetry', {
+        headers: {Authorization:`Bearer ${token}`}, cache:'no-store', signal:AbortSignal.timeout(3000)
+      });
+      if (!response.ok) throw Error('Unauthorized or unavailable');
+      const s=await response.json();
+      if (!socketFresh || Date.now()-socketFresh > 3500) render(s,'REST');
+    } catch {
+      if (!socketFresh || Date.now()-socketFresh > 3500) offline('Disconnected / unauthorized');
+    }
+  }
   setTimeout(update,1000);
 }
+window.addEventListener('pagehide',()=>{if(socket)socket.close();});
 window.addEventListener('resize',draw);update();

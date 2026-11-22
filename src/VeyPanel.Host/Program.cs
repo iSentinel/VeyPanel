@@ -85,6 +85,8 @@ builder.WebHost.ConfigureKestrel(kestrel =>
 builder.Services.AddSingleton<Telemetry>();
 builder.Services.AddHostedService<Telemetry>(services => services.GetRequiredService<Telemetry>());
 var app = builder.Build();
+var telemetrySocket = new TelemetrySocket(tokenBytes, lan, json);
+app.UseWebSockets(new WebSocketOptions { KeepAliveInterval = TimeSpan.FromSeconds(15) });
 app.Use(async (context, next) =>
 {
     context.Response.Headers.CacheControl = "no-store";
@@ -93,7 +95,7 @@ app.Use(async (context, next) =>
     context.Response.Headers["Referrer-Policy"] = "no-referrer";
     if (!context.Request.IsHttps && !IPAddress.IsLoopback(context.Connection.RemoteIpAddress ?? IPAddress.None))
     { context.Response.StatusCode = 403; return; }
-    if (context.Request.Path.StartsWithSegments("/api"))
+    if (context.Request.Path.StartsWithSegments("/api") && context.Request.Path != "/api/v1/telemetry/ws")
     {
         var authorization = context.Request.Headers.Authorization.ToString();
         var supplied = authorization.StartsWith("Bearer ", StringComparison.Ordinal)
@@ -106,6 +108,8 @@ app.Use(async (context, next) =>
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.MapGet("/api/v1/telemetry", (Telemetry telemetry) => Results.Json(telemetry.Latest, json));
+app.MapGet("/api/v1/telemetry/ws", (HttpContext context, Telemetry telemetry, IHostApplicationLifetime lifetime) =>
+    telemetrySocket.HandleAsync(context, telemetry, lifetime));
 Console.WriteLine($"Local dashboard: http://127.0.0.1:47860/#token={token}");
 if (!string.IsNullOrWhiteSpace(lan)) Console.WriteLine($"LAN dashboard: https://{lan}:47861/#token={token}");
 if (!managed)

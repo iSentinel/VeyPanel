@@ -23,3 +23,5 @@ Commit 51c5616b58fb1483c01256dc7eb709268ff80915 adds experimental Windows x64 GP
 5. Continue device enrollment, Android client and installer.
 
 No actual driver installation, production pairing, monitor topology changes or streaming took place. GUI launch and operation on target Windows, GPU telemetry on Intel Arc, browser HTTPS trust on Lenovo and physical recovery remain unverified. License decision for original source remains pending; no upstream binaries redistributed.
+
+Alpha.5: GPU CI 45050942800 completed successfully (6/6 synthetic/ABI tests; runtime GPU status warming-up). Added /api/v1/telemetry/ws, first-frame token auth, origin allowlist, eight slots including pending auth, five-second auth timeout, bounded send, read-only session, browser reconnect/REST fallback and loopback integration tests. CI pending; actual WSS on Lenovo remains unverified. Next: verify CI, extend WSS testing and sensor mapping.

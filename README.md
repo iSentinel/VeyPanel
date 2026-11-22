@@ -4,7 +4,7 @@ Extend. Monitor. Control.
 
 Windows-to-Android display streaming and independent system telemetry over a local network.
 
-**Status: 0.1.0-alpha.4 development source, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, native Android, WebSocket, GPU sensors, and installers are not yet implemented. An initial WPF display diagnostic UI and a local Apollo inventory CLI are implemented; actual upstream runtime compatibility remains unverified. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
+**Status: 0.1.0-alpha.5 development source, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, native Android, GPU temperature sensors, and installers are not yet implemented. An initial WPF display diagnostic UI and a local Apollo inventory CLI are implemented; actual upstream runtime compatibility remains unverified. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
 
 ## Build and run locally (Windows 11)
 
@@ -29,7 +29,7 @@ $env:VEYPANEL_PFX = 'C:\certs\veypanel.pfx' # replace with actual path
 dotnet run --project src/VeyPanel.Host -c Release
 ```
 
-Allow TCP 47861 only on the private local network when needed. Enter the printed HTTPS URL in the tablet browser. Do not enable router port forwarding. The API requires a per-process 256-bit token. This prototype polls once per second; it does not use WebSocket yet. The dashboard is read-only. Clear the LAN environment variables to return to loopback mode. No firewall or certificate settings are automatically changed.
+Allow TCP 47861 only on the private local network when needed. Enter the printed HTTPS URL in the tablet browser. Do not enable router port forwarding. The API requires a per-process 256-bit token. The browser prefers authenticated WebSocket updates once per second and falls back to REST polling automatically. The dashboard is read-only. Clear the LAN environment variables to return to loopback mode. No firewall or certificate settings are automatically changed.
 
 ## Target device
 
@@ -104,3 +104,7 @@ The Apollo tab provides local inventory and explicit PIN pairing with the same c
 ## Extended monitoring
 
 The dashboard also shows per-active-interface RX/TX byte rates (no IP/MAC or adapter IDs exposed) and fixed local volume capacity/free space. Rates are calculated using monotonic counter deltas; first sample, resets and unavailable counters are N/A. Volume data refreshes every five seconds. These are logical volume capacity metrics, not SSD/NVMe SMART, physical disk I/O or temperatures. The disk I/O panel uses native Windows PDH English counters for system-wide PhysicalDisk(_Total) read/write bytes/sec and read/write operations/sec. Counters require warm-up; unavailable values are N/A, not zero. This is not per-SSD throughput, latency, SMART or NVMe health. Experimental GPU engine telemetry uses Windows PDH, resolves the localized wildcard path, samples current process instances and aggregates each observed adapter/engine across processes. Reports the busiest observed engine across adapters and busiest observed Video Encode / Video Decode engines; absent/invalid samples are N/A. This is not a named Intel Arc metric, not streaming encoder verification, and not GPU temperature or VRAM. Real WDDM GPU validation remains pending.
+
+## Telemetry WebSocket
+
+Connect to `/api/v1/telemetry/ws` on the same listener (ws loopback, wss for LAN). Send the 64-character uppercase token as the first complete text message within five seconds. No query-string tokens. Subsequent messages are read-only server snapshots in the same JSON schema as REST; extra client messages close the connection. Browser origins must match the explicit listener; native clients may omit Origin. Eight total concurrent sockets including pending authentication; excess connections return 503. Browser reconnects with REST fallback. This is still a per-host ephemeral token, not per-device enrollment.
