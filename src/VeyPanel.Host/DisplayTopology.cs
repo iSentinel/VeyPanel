@@ -14,7 +14,10 @@ internal sealed record TopologyMode(uint Type, AdapterKey Adapter, uint Id,
 internal sealed record TopologyPath(AdapterKey SourceAdapter, uint SourceId, uint? SourceMode,
     uint? CloneGroup, uint SourceStatus, AdapterKey TargetAdapter, uint TargetId,
     uint? TargetMode, uint? DesktopMode, uint Technology, uint Rotation, uint Scaling,
-    DisplayRate Refresh, uint Scanline, bool Available, uint TargetStatus, uint Flags);
+    DisplayRate Refresh, uint Scanline, bool Available, uint TargetStatus, uint Flags)
+{
+    public DisplayIdentity? Identity { get; init; }
+}
 internal sealed record TopologySnapshot(int SchemaVersion, DateTimeOffset TimestampUtc, uint QueryFlags,
     string Status, int? NativeError, TopologyPath[] Paths, TopologyMode[] Modes, string[] Issues);
 
@@ -40,7 +43,7 @@ internal static class DisplayTopology
             if (result != 0) return Failure(flags, "native-error", result);
             if (pathCount > paths.Length || modeCount > modes.Length) return Failure(flags, "invalid-native-counts");
             var snapshot = new TopologySnapshot(1, DateTimeOffset.UtcNow, flags, "ok", null,
-                paths.Take((int)pathCount).Select(ConvertPath).ToArray(),
+                paths.Take((int)pathCount).Select(path => ConvertPath(path) with { Identity = DisplayIdentityReader.Read(path) }).ToArray(),
                 modes.Take((int)modeCount).Select(ConvertMode).ToArray(), []);
             var issues = Validate(snapshot);
             return snapshot with { Status = issues.Length == 0 ? "ok" : "partial", Issues = issues };

@@ -11,7 +11,8 @@
 - [ ] Apollo PoC: verify actual installer/publisher/driver catalog, TLS and API on host, Quick Sync; test mirror and extended desktop.
 - [x] Implement read-only Windows desktop-source inventory and JSON diagnostic baseline ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45046953751); physical validation pending).
 - [x] Implement read-only CCD active-path/mode capture with virtual-mode indices, structural validation and recovery design (CI pending).
-- [ ] 0.2: WPF tray host, persistent display identity, safe topology validation/rollback, PIN pairing.
+- [x] Add CCD target names/device paths and conservative same-session identity eligibility checks (CI pending).
+- [ ] 0.2: WPF tray host, safe topology validation/rollback, PIN pairing.
 - [ ] 0.3: GPU/encoder, SSD, network; sensor capability discovery and N/A semantics; WebSocket.
 - [ ] 0.4: secure device enrollment, per-device revocation, QR, history.
 - [ ] 0.5: Android client, native video and telemetry.

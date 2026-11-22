@@ -15,6 +15,8 @@ internal static class TopologyTests
             ("CCD source/target mode matching", Matching),
             ("CCD duplicate target rejected", Duplicate),
             ("CCD snapshot JSON round trip", RoundTrip),
+            ("CCD identity ABI", DisplayIdentityReader.LayoutValid),
+            ("CCD recovery identity policy", Recovery),
             ("CCD live capture", Live)
         };
         foreach (var test in tests)
@@ -89,6 +91,23 @@ internal static class TopologyTests
         var read = JsonSerializer.Deserialize<TopologySnapshot>(json);
         return read is not null && read.Modes[0].Source?.X == -2000
             && DisplayTopology.Validate(read).Length == 0;
+    }
+
+    private static bool Recovery()
+    {
+        var fixture = Fixture();
+        var path = fixture.Paths[0] with {
+            Identity = new DisplayIdentity("DISPLAY1", "Panel", "mock-monitor-path", 1, 5, null, null, 0, 0, 0)
+        };
+        var baseline = fixture with { Paths = [path] };
+        var missing = fixture with { Paths = [path with { Identity = null }] };
+        var changed = fixture with { Paths = [path with {
+            Identity = path.Identity! with { MonitorDevicePath = "other-monitor" }
+        }] };
+        return DisplayRecoveryPolicy.Check(baseline, baseline).Length == 0
+            && DisplayRecoveryPolicy.Check(baseline, missing).Contains("target-identity-unavailable")
+            && DisplayRecoveryPolicy.Check(baseline, changed).Contains("target-missing")
+            && DisplayRecoveryPolicy.Check(baseline, baseline with { Status = "partial" }).Contains("incomplete-topology");
     }
 
     private static bool Live()
