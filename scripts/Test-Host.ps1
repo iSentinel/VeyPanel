@@ -63,6 +63,14 @@ try {
         Assert-Check ($null -eq $metric -or $metric -ge 0) 'Disk I/O nonnegative or unavailable'
     }
     Write-Host "Disk I/O capability: $($sample.diskIo.status)"
+    Assert-Check ($null -ne $sample.physicalDisks -and $sample.physicalDisks.status -in @('ok','partial','warming-up','unavailable')) 'Physical disk instances schema'
+    foreach ($disk in $sample.physicalDisks.disks) {
+        Assert-Check ($disk.instance -ne '_Total' -and -not [string]::IsNullOrWhiteSpace($disk.instance)) 'Physical disk instance identity'
+        foreach ($metric in @($disk.readBytesPerSecond, $disk.writeBytesPerSecond, $disk.readsPerSecond, $disk.writesPerSecond)) {
+            Assert-Check ($null -eq $metric -or $metric -ge 0) 'Physical disk metric valid or unavailable'
+        }
+    }
+    Write-Host "Physical disk capability: $($sample.physicalDisks.status)"
     Assert-Check ($null -ne $sample.gpu -and $sample.gpu.status -in @('ok','partial','warming-up','unavailable')) 'GPU capability schema'
     foreach ($metric in @($sample.gpu.busiestEnginePercent, $sample.gpu.videoEncodePercent, $sample.gpu.videoDecodePercent)) {
         Assert-Check ($null -eq $metric -or ($metric -ge 0 -and $metric -le 100)) 'GPU percentage valid or unavailable'

@@ -60,4 +60,16 @@ var pdhPass = DiskIoSampler.LayoutValid() && DiskIoSampler.Normalize(0, 123) == 
 Console.WriteLine($"{(pdhPass ? "PASS" : "FAIL")} PDH ABI and status normalization");
 if (!pdhPass) failed++;
 failed += GpuTests.Run();
+var disks = PhysicalDiskSampler.Merge([
+    [("0 C:", 100), ("1 D:", 200), ("_Total", 300)],
+    [("0 C:", 20), ("1 D:", null)],
+    [("0 C:", 0), ("1 D:", 3), ("1 D:", 4)],
+    [("0 C:", 5)]
+]);
+var diskMerge = disks.Status == "partial" && disks.Disks.Length == 2
+    && disks.Disks[0].ReadBytesPerSecond == 100 && disks.Disks[0].ReadsPerSecond == 0
+    && disks.Disks[1].WriteBytesPerSecond is null && disks.Disks[1].ReadsPerSecond is null
+    && PhysicalDiskSampler.Merge([[], [], [], [("_Total", 5)]]).Status == "unavailable";
+Console.WriteLine($"{(diskMerge ? "PASS" : "FAIL")} Physical disk instance merge and missing values");
+if (!diskMerge) failed++;
 return failed == 0 ? 0 : 1;

@@ -8,6 +8,7 @@ public sealed record Snapshot(DateTimeOffset TimestampUtc, double? CpuPercent,
 {
     public ResourceSnapshot? Resources { get; init; }
     public DiskIoMetric? DiskIo { get; init; }
+    public PhysicalDiskSnapshot? PhysicalDisks { get; init; }
     public GpuMetric? Gpu { get; init; }
 }
 
@@ -29,6 +30,7 @@ public sealed class Telemetry : BackgroundService
     private (ulong Idle, ulong Kernel, ulong User)? _previous;
     private readonly ResourceInventory resources = new();
     private readonly DiskIoSampler diskIo = new();
+    private readonly PhysicalDiskSampler physicalDisks = new();
     private readonly GpuEngineSampler gpu = new();
     private readonly GpuAdapterInventory gpuInventory = new();
     public Snapshot Latest => Volatile.Read(ref _latest);
@@ -36,6 +38,7 @@ public sealed class Telemetry : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         using var sampler = diskIo;
+        using var physicalSampler = physicalDisks;
         using var gpuSampler = gpu;
         using var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
         do
@@ -65,7 +68,7 @@ public sealed class Telemetry : BackgroundService
         return new(now, cpu, valid ? memory.TotalPhysical : null,
             valid ? memory.AvailablePhysical : null,
             valid ? 100.0 * (memory.TotalPhysical - memory.AvailablePhysical) / memory.TotalPhysical : null,
-            cpu.HasValue && valid ? "ok" : "partial") { Resources = resources.Capture(), DiskIo = diskIo.Capture(), Gpu = gpuInventory.Attach(gpu.Capture()) };
+            cpu.HasValue && valid ? "ok" : "partial") { Resources = resources.Capture(), DiskIo = diskIo.Capture(), PhysicalDisks = physicalDisks.Capture(), Gpu = gpuInventory.Attach(gpu.Capture()) };
     }
 
     [StructLayout(LayoutKind.Sequential)]

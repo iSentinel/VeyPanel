@@ -4,7 +4,7 @@ Extend. Monitor. Control.
 
 Windows-to-Android display streaming and independent system telemetry over a local network.
 
-**Status: 0.1.0-alpha.5 development source, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, native Android, GPU temperature sensors, and installers are not yet implemented. An initial WPF display diagnostic UI and a local Apollo inventory CLI are implemented; actual upstream runtime compatibility remains unverified. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
+**Status: 0.1.0-alpha.6 development source, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, native Android, GPU temperature sensors, and installers are not yet implemented. An initial WPF display diagnostic UI and a local Apollo inventory CLI are implemented; actual upstream runtime compatibility remains unverified. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
 
 ## Build and run locally (Windows 11)
 
@@ -118,3 +118,7 @@ DXGI 1.1 inventory is refreshed every ten seconds, including adapter description
 ## Local storage reliability diagnostic
 
 From a repository checkout on Windows, run `powershell.exe -NoProfile -File scripts/Get-StorageHealth.ps1 -AsJson` (or omit `-AsJson` for a table). It reads provider-visible disks and reliability counters without mutating settings or elevating privileges. Missing/invalid readings are null; zero temperature is conservatively treated as unavailable, while other zeros may be valid provider values. Provider health and wear are reported as supplied and are not an independent SMART/NVMe log-page verdict. No serial or unique identifiers are exported. Unsupported devices or permission failures are explicit. This manual diagnostic is not part of the continuous dashboard or installer yet. Reference: https://learn.microsoft.com/en-us/powershell/module/storage/get-storagereliabilitycounter .
+
+## Physical disk instance I/O
+
+The additional panel reports Windows PhysicalDisk wildcard instances (excluding _Total), up to 128 rows. Rates and IOPS are joined by exact case-insensitive provider instance name; missing/duplicate values remain N/A. Instance labels may change and may represent virtual or aggregated devices, not stable SSD identifiers. No correlation with reliability counters is inferred. Hosted CI and actual physical storage acceptance are separate.

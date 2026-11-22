@@ -24,7 +24,7 @@ internal sealed class GpuEngineSampler : IDisposable
         { Reset(); return GpuEngineMath.Empty("unavailable"); }
         lastSample = now;
         if (++samples < 2) return GpuEngineMath.Empty("warming-up");
-        var data = ReadArray();
+        var data = ReadArray(counter);
         var metric = GpuEngineMath.Aggregate(data);
         if (metric.Status == "unavailable") Reset();
         return metric;
@@ -47,7 +47,7 @@ internal sealed class GpuEngineSampler : IDisposable
         return false;
     }
 
-    private static string? LocalizedPath(IntPtr counter)
+    internal static string? LocalizedPath(IntPtr counter)
     {
         uint size = 0;
         if (PdhGetCounterInfoW(counter, false, ref size, IntPtr.Zero) != MoreData || size < 48 || size > MaxBuffer)
@@ -64,7 +64,7 @@ internal sealed class GpuEngineSampler : IDisposable
         finally { Marshal.FreeHGlobal(buffer); }
     }
 
-    private (string Name, double? Percent)[] ReadArray()
+    internal static (string Name, double? Percent)[] ReadArray(IntPtr counter)
     {
         for (var attempt = 0; attempt < 2; attempt++)
         {
