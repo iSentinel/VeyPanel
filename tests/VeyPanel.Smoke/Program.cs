@@ -97,4 +97,5 @@ failed += DeviceTests.Run();
 failed += InvitationTests.Run();
 failed += GrantStoreTests.Run();
 failed += ProtectedStoreTests.Run();
+failed += HistoryTests.Run();
 return failed == 0 ? 0 : 1;

@@ -31,8 +31,12 @@ internal static class PersistentHostSmoke
             await VerifyAfterRevokeAsync(exe, http, reader);
             File.WriteAllBytes(Path.Combine(store, "transaction.pending"), [1]);
             using var blocked = Start(exe, new(TaskCreationOptions.RunContinuationsAsynchronously));
-            await blocked.WaitForExitAsync().WaitAsync(TimeSpan.FromSeconds(15));
-            Check(blocked.ExitCode == 1, "Interrupted store refuses process startup");
+            try
+            {
+                await blocked.WaitForExitAsync().WaitAsync(TimeSpan.FromSeconds(15));
+                Check(blocked.ExitCode == 1, "Interrupted store refuses process startup");
+            }
+            finally { await StopAsync(blocked); }
             Console.WriteLine("PASS: persistent Host restart and fail-closed startup");
             return 0;
         }

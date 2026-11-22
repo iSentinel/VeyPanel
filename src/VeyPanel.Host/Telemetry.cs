@@ -35,7 +35,9 @@ public sealed class Telemetry(StorageHealthWorker storageHealth, ThermalWorker t
     private readonly PhysicalDiskSampler physicalDisks = new();
     private readonly GpuEngineSampler gpu = new();
     private readonly GpuAdapterInventory gpuInventory = new();
+    private readonly TelemetryHistory history = new();
     public Snapshot Latest => Volatile.Read(ref _latest);
+    internal HistorySnapshot History => history.Read(DateTimeOffset.UtcNow);
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -45,7 +47,9 @@ public sealed class Telemetry(StorageHealthWorker storageHealth, ThermalWorker t
         using var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
         do
         {
-            Volatile.Write(ref _latest, Collect());
+            var sample = Collect();
+            history.Add(sample);
+            Volatile.Write(ref _latest, sample);
         } while (await timer.WaitForNextTickAsync(stoppingToken));
     }
 

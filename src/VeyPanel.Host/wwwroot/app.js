@@ -3,6 +3,7 @@ const $ = id => document.getElementById(id);
 const token = new URLSearchParams(location.hash.slice(1)).get('token');
 if (token) history.replaceState(null, '', location.pathname + location.search);
 const samples = [];
+let historyData = null, historyBusy = false;
 const pct = value => Number.isFinite(value) ? `${value.toFixed(1)}%` : 'N/A';
 const gib = value => (value / 1073741824).toFixed(1);
 function metric(name, value) {
@@ -97,6 +98,7 @@ function gpu(data) {
   rows('gpu-adapters', data?.adapters, a => a.name + (a.software ? ' (software)' : '') + ' · GPU ' + pct(a.busiestEnginePercent) + ' · Encode ' + pct(a.videoEncodePercent) + ' · Decode ' + pct(a.videoDecodePercent) + ' · Dedicated capacity ' + (Number.isFinite(a.dedicatedVideoBytes) ? gib(a.dedicatedVideoBytes) + ' GiB' : 'N/A'), 'N/A');
 }
 function offline(message) {
+  clearHistory();
   $('status').textContent = message; metric('cpu', null);metric('ram',null);
   resources(null);diskIo(null);physicalDisks(null);storageHealth(null);thermal(null);gpu(null);
   $('capacity').textContent='N/A';$('timestamp').textContent='No current sample';
@@ -108,6 +110,7 @@ function render(s, transport) {
   if (!Number.isFinite(age) || age > 5000 || age < -5000) throw Error('Stale sample');
   resources(s.resources);diskIo(s.diskIo);physicalDisks(s.physicalDisks);storageHealth(s.storageHealth);thermal(s.thermal);gpu(s.gpu);
   $('status').textContent=s.status + ' · ' + transport;
+  $('history-load').disabled = false;
   metric('cpu',s.cpuPercent);metric('ram',s.memoryUsedPercent);
   $('capacity').textContent=Number.isFinite(s.memoryTotalBytes)&&Number.isFinite(s.memoryAvailableBytes)?`${gib(s.memoryTotalBytes-s.memoryAvailableBytes)} / ${gib(s.memoryTotalBytes)} GiB`:'N/A';
   $('timestamp').textContent=`Updated ${new Date(s.timestampUtc).toLocaleTimeString()}`;
@@ -330,3 +333,58 @@ async function initializeInvitations() {
   await invitationAction(refreshInvitations);
 }
 window.addEventListener('pagehide', clearInvitation);
+
+function clearHistory() {
+  $('history-load').disabled = true;
+  historyData = null;
+  $('history-status').textContent = 'No current history access';
+  drawHistory();
+}
+function drawHistory() {
+  const canvas = $('history-chart'), ctx = canvas.getContext('2d');
+  const width = canvas.clientWidth, height = canvas.clientHeight, ratio = window.devicePixelRatio || 1;
+  canvas.width = width * ratio; canvas.height = height * ratio;
+  ctx.scale(ratio, ratio);
+  ctx.strokeStyle = '#354358';
+  for (let i=0; i<=4; i++) {
+    ctx.beginPath(); ctx.moveTo(0, i*height/4); ctx.lineTo(width, i*height/4); ctx.stroke();
+  }
+  if (!historyData) return;
+  const end = Date.parse(historyData.timestampUtc), start = end - 900000;
+  for (const [key, color] of [['cpuPercent','#69baff'],['memoryUsedPercent','#b9a5ff'],['gpuPercent','#66d9aa']]) {
+    ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2;
+    let previous = null;
+    for (const s of historyData.samples) {
+      const stamp = Date.parse(s.timestampUtc), v = s[key];
+      if (!Number.isFinite(stamp) || stamp <= start || stamp > end || !Number.isFinite(v) || v < 0 || v > 100) {
+        previous = null; continue;
+      }
+      const x = (stamp-start)*width/900000, y = (100-v)*height/100;
+      if (previous !== null && stamp > previous && stamp-previous <= 2500) ctx.lineTo(x,y);
+      else ctx.moveTo(x,y);
+      previous = stamp;
+    }
+    ctx.stroke();
+  }
+}
+async function loadHistory() {
+  if (historyBusy || !token || $('history-load').disabled) return;
+  historyBusy = true;
+  try {
+    const response = await fetch('/api/v1/history', {headers:{Authorization:'Bearer '+token},
+      cache:'no-store', signal:AbortSignal.timeout(5000)});
+    if (!response.ok) throw Error('History denied');
+    const data = await response.json();
+    if (!Array.isArray(data.samples) || data.samples.length > 900 || data.windowSeconds !== 900
+        || !Number.isFinite(Date.parse(data.timestampUtc))) throw Error('Invalid history');
+    if ($('history-load').disabled) return;
+    historyData = data;
+    $('history-status').textContent = data.samples.length + ' stored samples · snapshot at ' +
+      new Date(data.timestampUtc).toLocaleTimeString() + ' · press Refresh to update';
+    drawHistory();
+  } catch {
+    historyData = null; $('history-status').textContent = 'History unavailable'; drawHistory();
+  } finally { historyBusy = false; }
+}
+$('history-load').addEventListener('click', loadHistory);
+window.addEventListener('resize', drawHistory);

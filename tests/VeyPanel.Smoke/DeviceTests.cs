@@ -66,6 +66,11 @@ internal static class DeviceTests
             Check(denied.StatusCode == HttpStatusCode.Forbidden, "Device cannot administer");
             using var sample = await http.GetAsync("api/v1/telemetry", ct);
             Check(sample.IsSuccessStatusCode, "Device telemetry allowed");
+            using var history = await http.GetAsync("api/v1/history", ct);
+            Check(history.IsSuccessStatusCode, "Device history allowed");
+            using var historyBody = JsonDocument.Parse(await history.Content.ReadAsByteArrayAsync(ct));
+            Check(historyBody.RootElement.GetProperty("windowSeconds").GetInt32() == 900
+                && historyBody.RootElement.GetProperty("samples").GetArrayLength() <= 900, "Bounded history schema");
             using var ws = new ClientWebSocket();
             await ws.ConnectAsync(new Uri("ws://127.0.0.1:47860/api/v1/telemetry/ws"), ct);
             await ws.SendAsync(Encoding.ASCII.GetBytes(token).AsMemory(), WebSocketMessageType.Text, true, ct);
@@ -76,6 +81,8 @@ internal static class DeviceTests
             http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             using var revoked = await http.GetAsync("api/v1/telemetry", ct);
             Check(revoked.StatusCode == HttpStatusCode.Unauthorized, "Revoked REST denied");
+            using var revokedHistory = await http.GetAsync("api/v1/history", ct);
+            Check(revokedHistory.StatusCode == HttpStatusCode.Unauthorized, "Revoked history denied");
             await ClosedAsync(ws, ct);
             Console.WriteLine("PASS: device API and active WebSocket revocation");
             return 0;

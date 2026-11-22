@@ -143,7 +143,8 @@ app.Use(async (context, next) =>
                 || (origin.Count == 1 && origin[0] != "http://127.0.0.1:47860"))
             { context.Response.StatusCode = 403; return; }
         }
-        else if (context.Request.Path != "/api/v1/telemetry" || !HttpMethods.IsGet(context.Request.Method))
+        else if ((context.Request.Path != "/api/v1/telemetry" && context.Request.Path != "/api/v1/history")
+            || !HttpMethods.IsGet(context.Request.Method) || context.Request.QueryString.HasValue)
         { context.Response.StatusCode = 403; return; }
     }
     try { await next(); }
@@ -156,6 +157,7 @@ app.Use(async (context, next) =>
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.MapGet("/api/v1/telemetry", (Telemetry telemetry) => Results.Json(telemetry.Latest, json));
+app.MapGet("/api/v1/history", (Telemetry telemetry) => Results.Json(telemetry.History, json));
 app.MapGet("/api/v1/telemetry/ws", (HttpContext context, Telemetry telemetry, IHostApplicationLifetime lifetime) =>
     telemetrySocket.HandleAsync(context, telemetry, lifetime));
 DeviceEndpoints.Map(app, registry, lan);
