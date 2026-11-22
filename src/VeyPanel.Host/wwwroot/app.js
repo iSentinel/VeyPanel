@@ -161,3 +161,89 @@ async function update() {
 }
 window.addEventListener('pagehide',()=>{if(socket)socket.close();});
 window.addEventListener('resize',draw);update();
+
+async function ownerRequest(method, path = '', name) {
+  const headers = {Authorization: 'Bearer ' + token};
+  const options = {method, headers, cache: 'no-store', signal: AbortSignal.timeout(5000)};
+  if (name !== undefined) {
+    headers['Content-Type'] = 'application/json';
+    options.body = JSON.stringify({name});
+  }
+  const response = await fetch('/api/v1/devices' + path, options);
+  if (!response.ok) throw Error('HTTP ' + response.status);
+  return response.status === 204 ? null : response.json();
+}
+
+let ownerBusy = false;
+async function ownerAction(action) {
+  if (ownerBusy) return;
+  ownerBusy = true;
+  $('device-create').disabled = $('device-refresh').disabled = true;
+  try { await action(); }
+  catch { $('device-status').textContent = 'Operation failed. Verify Host access and retry.'; }
+  finally {
+    ownerBusy = false;
+    $('device-create').disabled = $('device-refresh').disabled = false;
+  }
+}
+
+function renderDevices(devices) {
+  const list = $('device-list');
+  list.replaceChildren();
+  if (!Array.isArray(devices)) throw Error('Invalid device list');
+  for (const device of devices) {
+    const row = document.createElement('div');
+    row.className = 'device-row resource-row';
+    const label = document.createElement('span');
+    label.textContent = device.name + ' · expires ' + new Date(device.expiresUtc).toLocaleString();
+    const revoke = document.createElement('button');
+    revoke.type = 'button';
+    revoke.textContent = 'Revoke';
+    revoke.addEventListener('click', () => ownerAction(async () => {
+      if (!window.confirm('Revoke this reader device?')) return;
+      await ownerRequest('DELETE', '/' + encodeURIComponent(device.id));
+      renderDevices(await ownerRequest('GET'));
+      $('device-status').textContent = 'Access revoked';
+      clearIssued();
+    }));
+    row.append(label, revoke);
+    list.append(row);
+  }
+  if (devices.length === 0) list.textContent = 'No active reader devices';
+}
+function clearIssued() {
+  $('issued-link').value = '';
+  $('issued-panel').hidden = true;
+}
+async function initializeOwner() {
+  if (!token || location.origin !== 'http://127.0.0.1:47860') return;
+  try {
+    renderDevices(await ownerRequest('GET'));
+    $('device-owner').hidden = false;
+  } catch { return; }
+  $('device-refresh').addEventListener('click', () => ownerAction(async () => {
+    clearIssued();
+    renderDevices(await ownerRequest('GET'));
+    $('device-status').textContent = 'Updated';
+  }));
+  $('device-clear').addEventListener('click', clearIssued);
+  $('device-create').addEventListener('click', () => ownerAction(async () => {
+    const name = $('device-name').value.trim();
+    if (!name || Array.from(name).some(c => c.charCodeAt(0) < 32 || c.charCodeAt(0) === 127)) {
+      $('device-status').textContent = 'Enter a device name';
+      return;
+    }
+    clearIssued();
+    const issued = await ownerRequest('POST', '', name);
+    $('issued-link').value = issued.dashboardUrl || issued.token;
+    $('issued-panel').hidden = false;
+    $('issued-label').textContent = issued.dashboardUrl
+      ? 'Private reader link (24 hours); share only with the intended device.'
+      : 'Reader token (24 hours). LAN is disabled; this cannot reach the tablet.';
+    $('device-name').value = '';
+    $('device-status').textContent = 'Reader access created';
+    renderDevices(await ownerRequest('GET'));
+  }));
+}
+window.addEventListener('pagehide', clearIssued);
+initializeOwner();

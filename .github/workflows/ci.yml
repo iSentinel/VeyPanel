@@ -10,6 +10,8 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
+      - name: Check dashboard JavaScript syntax
+        run: node --check src/VeyPanel.Host/wwwroot/app.js
       - run: dotnet build src/VeyPanel.Host -c Release
       - run: dotnet run --project tests/VeyPanel.Smoke -c Release
       - run: dotnet publish src/VeyPanel.Host -c Release -r win-x64 --self-contained true -o publish

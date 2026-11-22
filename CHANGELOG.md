@@ -4,6 +4,7 @@
 
 - Optional local LibreHardwareMonitor read-only thermal adapter with explicit Celsius schema, bounded polling and dashboard.
 - Added scoped ephemeral per-device tokens, local-only owner API, expiry/revocation and active WebSocket checks.
+- Added local owner dashboard controls for creating, listing and revoking reader access; no QR or persistence yet.
 - Alpha.6 storage worker CI passed (provider partial, two rows).
 
 ## 0.1.0-alpha.6 (per-disk and worker CI verified; hardening runtime smoke passed; hardware acceptance pending)

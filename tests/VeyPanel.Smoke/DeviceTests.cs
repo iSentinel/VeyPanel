@@ -50,6 +50,14 @@ internal static class DeviceTests
             using var json = JsonDocument.Parse(await created.Content.ReadAsByteArrayAsync(ct));
             var token = json.RootElement.GetProperty("token").GetString()!;
             var id = json.RootElement.GetProperty("device").GetProperty("id").GetGuid();
+            using var foreign = new HttpRequestMessage(HttpMethod.Get, "api/v1/devices");
+            foreign.Headers.TryAddWithoutValidation("Origin", "http://example.invalid");
+            using var deniedOrigin = await http.SendAsync(foreign, ct);
+            Check(deniedOrigin.StatusCode == HttpStatusCode.Forbidden, "Foreign admin origin denied");
+            using var rebinding = new HttpRequestMessage(HttpMethod.Get, "api/v1/devices");
+            rebinding.Headers.Host = "untrusted.example:47860";
+            using var deniedHost = await http.SendAsync(rebinding, ct);
+            Check(deniedHost.StatusCode == HttpStatusCode.Forbidden, "Unexpected admin Host denied");
             using var list = await http.GetAsync("api/v1/devices", ct);
             Check(list.IsSuccessStatusCode && !(await list.Content.ReadAsStringAsync(ct)).Contains(token), "No tokens in list");
             http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);

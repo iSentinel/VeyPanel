@@ -31,7 +31,8 @@
 - [x] Implement opt-in loopback-only LHM v0.9.6-shaped read adapter, explicit Celsius parsing and thermal dashboard (CI pending; real provider validation pending).
 - [ ] 0.3: validate real GPU/encoder, physical-disk I/O/SMART, network acceptance; CPU/GPU temperature sensors, physical WSS acceptance.
 - [x] Implement ephemeral individually revocable read-only device tokens, local owner API and active WS revalidation (CI pending).
-- [ ] 0.4: owner enrollment UI, QR, durable device enrollment, history.
+- [x] Implement local owner dashboard issuance/list/revoke UI (CI pending; interactive browser acceptance pending).
+- [ ] 0.4: QR, durable device enrollment, history.
 - [ ] 0.5: Android client, native video and telemetry.
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.
 - [ ] 0.7: overlay, alerts, history and diagnostics.
