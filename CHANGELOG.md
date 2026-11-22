@@ -3,7 +3,7 @@
 ## 0.1.0-alpha.8 (development; CI pending)
 
 - Implemented short-lived one-time invitation API with explicit local owner verification and reader-only redemption.
-- Added parallel replay, expiry, cancellation and capacity tests. Added local owner controls, separate tablet enrollment page and HTTPS integration scenario. Added local QR PNG generation with pinned MIT encoder and packaged license. Durable grant store not implemented.
+- Added parallel replay, expiry, cancellation and capacity tests. Added local owner controls, separate tablet enrollment page and HTTPS integration scenario. Added local QR PNG generation with pinned MIT encoder and packaged license. Added strict bounded codec and corruption/expiry/privacy fixtures for the future grant store. Protected disk persistence and live integration not implemented.
 
 ## 0.1.0-alpha.7 (thermal CI verified; device API runtime failure under remediation; owner UI CI in progress; hardware acceptance pending)
 

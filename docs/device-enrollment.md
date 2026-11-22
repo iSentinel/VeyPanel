@@ -16,3 +16,7 @@ The owner creates an invitation with POST /api/v1/devices/invitations (JSON name
 
 ## Acceptance gates
 No automatic TLS CA installation, firewall changes, LAN exposure of administrative APIs or hardware configuration changes. QR flow implemented, pending CI/interactive acceptance. Durable grants and Android credential storage remain unimplemented. Actual Lenovo certificate trust and enrollment must be validated on target hardware.
+
+## Durable store groundwork
+
+A pure schema v1 codec (GrantStoreCodec) accepts a maximum of 32 records, 32 KiB, exact JSON fields and uppercase SHA-256 digest strings. It rejects duplicate IDs/digests, empty owner ID, invalid names, malformed fields and expiry beyond the current 24-hour issuance window; expired records are filtered at read. It intentionally does not open files, trust local filesystem metadata, authenticate stored contents or change live grants. Next choose OS-protected integrity/confidentiality, fixed per-user path, exclusive owner lock, atomic replacement and fail-closed behavior on storage failure. Test restart, revoke-before-crash, corruption, ACL/reparse safety and rollback. Do not enable persistence until these gates are satisfied.
