@@ -1,10 +1,10 @@
 # Changelog
 
-## 0.1.0-alpha.10 (development; CI pending)
+## 0.1.0-alpha.10 (Windows history/CSV CI PASS; Android Monitor APK CI PASS; native invitation APK/lint PASS; publishing; hardware acceptance pending)
 
 - Added history range selector, codec/disk charts and authenticated CSV export.
 - Added initial native Android Monitor-only app with strict private HTTPS link validation, REST polling and debug APK CI.
-- Fixed CI SDK provisioning after initial runner lacked sdkmanager; native JVM fixtures passed, APK build pending.
+- Fixed CI SDK provisioning after initial runner lacked sdkmanager; native JVM fixtures and corrected APK/lint CI passed.
 - Added native pasted invitation flow with explicit code comparison and reader-only handoff; camera scanning and protected storage pending.
 - Alpha.9 final ACL and reparse fixtures and full CI passed.
 

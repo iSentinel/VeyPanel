@@ -151,4 +151,6 @@ History charts support 1/5/15-minute view of the fetched snapshot, including vid
 
 ## Android Monitor preview
 
-See [android/README.md](android/README.md). Initial native read-only monitor accepts an existing private HTTPS reader link; native QR scanning, protected credential storage, WSS and video remain pending. Build/debug APK CI is separate from Windows. Do not install unknown certificate authorities or bypass TLS verification.
+See [android/README.md](android/README.md). Initial native read-only monitor accepts an existing private HTTPS reader link. Latest source also supports pasted two-step invitation links; camera QR scanning, protected credential storage, WSS and video remain pending. Build/debug APK CI is separate from Windows. Do not install unknown certificate authorities or bypass TLS verification.
+
+First verified debug APK: https://github.com/iSentinel/VeyPanel/actions/runs/45067558759/artifacts/14771743918 (development signing key only; no device runtime acceptance).
