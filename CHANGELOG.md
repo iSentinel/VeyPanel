@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0-alpha.2 (development; CI pending)
+
+- Added local Apollo v0.4.6 cookie-authenticated inventory CLI, strict SHA-256 certificate pinning and date validation.
+- No redirects, proxy, credential persistence, upstream config writes or LAN admin API.
+- Added nine mock protocol and certificate checks; real upstream compatibility remains pending.
+
 ## 0.1.0-alpha.1 (source checkpoint; unreleased)
 
 - Proposed VeyPanel architecture and hardware target.

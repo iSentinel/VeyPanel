@@ -4,7 +4,7 @@ Extend. Monitor. Control.
 
 Windows-to-Android display streaming and independent system telemetry over a local network.
 
-**Status: 0.1.0-alpha.1 source prototype, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, WPF, native Android, WebSocket, GPU sensors, and installers are not yet implemented. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
+**Status: 0.1.0-alpha.2 development source, not a validated release.** CPU/RAM telemetry and an adaptive browser dashboard are implemented; streaming, virtual displays, WPF, native Android, WebSocket, GPU sensors, and installers are not yet implemented. A local Apollo inventory CLI is implemented; actual upstream runtime compatibility remains unverified. No Apollo or driver binary is bundled. See [ROADMAP](ROADMAP.md) and [RESUME](RESUME.md).
 
 ## Build and run locally (Windows 11)
 
@@ -38,3 +38,13 @@ Lenovo TB-J607Z, 2000x1200 at 60 Hz; Intel Core Ultra 5 125H / Intel Arc. HEVC w
 ## Streaming plan
 
 Use a separately installed, verified Apollo release and its virtual display driver with Moonlight/Artemis. Review the upstream release's supported API and permissions before integrating. Do not reuse existing display configurations or install drivers automatically without a recovery plan. See docs/architecture.md.
+
+## Inspect Apollo (experimental CLI)
+
+Use a separately installed Apollo v0.4.6 and confirm its TLS certificate SHA-256 fingerprint independently from the host's actual certificate file. Do not trust a fingerprint merely presented by the connection. With the verified fingerprint, run:
+
+```powershell
+.\VeyPanel.Host.exe --apollo-inspect YOUR_VERIFIED_64_HEX_SHA256
+```
+
+The CLI prompts for credentials without echoing the password; they are not persisted. It connects only to HTTPS loopback port 47990, rejects redirects, pins the entire certificate and checks validity dates. Exact pinning is the trust model for Apollo's self-signed certificate; a changed certificate fails closed. Login replaces the active upstream Web UI session. The only subsequent actions are GET inventory calls, with client count and application names printed locally rather than exposing sensitive upstream config through the LAN dashboard. No pairing or topology changes. Physical validation pending.

@@ -4,11 +4,18 @@ using System.Text;
 using System.Text.Json;
 using VeyPanel.Host;
 
+if (args.Contains("--apollo-inspect"))
+{
+    Environment.ExitCode = await ApolloInspectCommand.RunAsync(args);
+    return;
+}
+
 if (args.Contains("--help") || args.Contains("-h"))
 {
     Console.WriteLine("VeyPanel Host: local dashboard http://127.0.0.1:47860.\n" +
         "Optional LAN: set VEYPANEL_LAN_IP, VEYPANEL_PFX and VEYPANEL_PFX_PASSWORD.\n" +
-        "LAN requires a certificate trusted by the client. Access token is generated on startup.");
+        "LAN requires a certificate trusted by the client. Access token is generated on startup.\n" +
+        "Apollo inventory: --apollo-inspect <verified-certificate-sha256>");
     return;
 }
 var builder = WebApplication.CreateBuilder(args);

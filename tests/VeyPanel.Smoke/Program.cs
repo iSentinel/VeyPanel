@@ -19,4 +19,5 @@ foreach (var check in checks)
     if (!pass) failed++;
 }
 Console.WriteLine($"{checks.Length - failed}/{checks.Length} passed");
+failed += await ApolloTests.RunAsync();
 return failed == 0 ? 0 : 1;
