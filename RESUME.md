@@ -19,3 +19,5 @@
 No actual target hardware access, driver installation, display topology changes, live pairing or streaming performed. Browser behavior remains unverified on target. Original source license remains an owner decision.
 
 Alpha.7: Alpha.6 full hardening CI 45063263774 passed; actual provider partial, 2 rows, freshness PASS. Optional LHM loopback-only GET adapter and dashboard implemented; default disabled, no service exposure, script/driver install or auth bypass. Reads v0.9.6-shaped Celsius strings only; receipt time is not provider sensor sampling time. CI pending. Real Intel temperatures remain unverified.
+
+Alpha.7 device authorization: in-memory hashed per-device tokens, 24h expiry, 32 entries, owner token restricted to loopback; initial LAN link receives separate revocable token. Local owner endpoints issue/list/revoke, list excludes secrets, LAN/reader administration denied. WebSocket checks grant each send; in-flight frames may complete. New mock and integration tests pending CI. No persistent identity, QR or UI yet.

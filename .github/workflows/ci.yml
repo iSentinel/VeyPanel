@@ -23,6 +23,8 @@ jobs:
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --lan-smoke publish
       - name: Test WebSocket telemetry
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --ws-smoke publish
+      - name: Test device token lifecycle
+        run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --device-smoke publish
       - name: Test managed Host lifecycle
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --lifecycle-smoke publish
       - uses: actions/upload-artifact@v4

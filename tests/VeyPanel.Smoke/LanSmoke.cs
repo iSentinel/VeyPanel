@@ -166,6 +166,8 @@ internal static class LanSmoke
         using (var rejected = await client.GetAsync("api/v1/telemetry"))
             Check(rejected.StatusCode == HttpStatusCode.Unauthorized, "HTTPS wrong token rejected");
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        using (var admin = await client.GetAsync("api/v1/devices"))
+            Check(admin.StatusCode == HttpStatusCode.Forbidden, "LAN device administration denied");
         for (var i = 0; i < 10; i++)
         {
             using var result = await client.GetAsync("api/v1/telemetry");

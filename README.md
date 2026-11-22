@@ -29,7 +29,7 @@ $env:VEYPANEL_PFX = 'C:\certs\veypanel.pfx' # replace with actual path
 dotnet run --project src/VeyPanel.Host -c Release
 ```
 
-Allow TCP 47861 only on the private local network when needed. Enter the printed HTTPS URL in the tablet browser. Do not enable router port forwarding. The API requires a per-process 256-bit token. The browser prefers authenticated WebSocket updates once per second and falls back to REST polling automatically. The dashboard is read-only. Clear the LAN environment variables to return to loopback mode. No firewall or certificate settings are automatically changed.
+Allow TCP 47861 only on the private local network when needed. Enter the printed HTTPS URL in the tablet browser. Do not enable router port forwarding. The initial LAN link receives a separate 256-bit reader token, valid for 24 hours or until revoked/restart. The loopback owner token never authorizes LAN requests. The browser prefers authenticated WebSocket updates once per second and falls back to REST polling automatically. The dashboard is read-only. Clear the LAN environment variables to return to loopback mode. No firewall or certificate settings are automatically changed.
 
 ## Target device
 
@@ -107,7 +107,7 @@ The dashboard also shows per-active-interface RX/TX byte rates (no IP/MAC or ada
 
 ## Telemetry WebSocket
 
-Connect to `/api/v1/telemetry/ws` on the same listener (ws loopback, wss for LAN). Send the 64-character uppercase token as the first complete text message within five seconds. No query-string tokens. Subsequent messages are read-only server snapshots in the same JSON schema as REST; extra client messages close the connection. Browser origins must match the explicit listener; native clients may omit Origin. Eight total concurrent sockets including pending authentication; excess connections return 503. Browser reconnects with REST fallback. This is still a per-host ephemeral token, not per-device enrollment.
+Connect to `/api/v1/telemetry/ws` on the same listener (ws loopback, wss for LAN). Send the 64-character uppercase token as the first complete text message within five seconds. No query-string tokens. Subsequent messages are read-only server snapshots in the same JSON schema as REST; extra client messages close the connection. Browser origins must match the explicit listener; native clients may omit Origin. Eight total concurrent sockets including pending authentication; excess connections return 503. Browser reconnects with REST fallback. This alpha supports individually revocable in-memory reader grants and a separate loopback owner token. No durable enrollment yet.
 
 CI covers loopback WS and private-interface WSS with a temporary pinned certificate, negative trust tests, origin and query rejection and connection capacity. Browser trust on Android must use a valid trusted certificate; the CI pinning callback is test-only.
 
@@ -130,3 +130,7 @@ The Host invokes the bundled Windows PowerShell diagnostic without elevation or 
 ## Optional CPU/GPU temperatures (experimental)
 
 The default is disabled. If you already run a separately installed, trusted LibreHardwareMonitor v0.9.6-compatible provider, with an existing loopback-only HTTP listener on port 8085 and read access permitted, set `VEYPANEL_LHM_LOCAL=1` before launching Host. The adapter uses only GET http://127.0.0.1:8085/data.json, no redirects/proxy, no credential guessing or configuration changes. Do not enable a LAN listener or disable existing provider authentication to use this alpha; authenticated providers are not supported yet. No provider version handshake is available. The adapter accepts the reviewed v0.9.6 Celsius string shape only, rejects other units and numeric schema, and keeps sensor labels separate. Receipt age is checked, but upstream sample age cannot be verified. No driver or LHM binary bundled. Real sensor acceptance pending.
+
+## Local device enrollment API (experimental)
+
+Only the loopback owner link can administer devices using the owner token as Bearer authorization. On http://127.0.0.1:47860, GET /api/v1/devices lists metadata, POST /api/v1/devices with a JSON body containing name (1–64 characters, Content-Length at most 1024) issues a reader token once, DELETE /api/v1/devices/{id} revokes it. If LAN HTTPS is enabled, issue returns a separate dashboard URL; send it privately to the intended tablet. No secret is returned by list. Up to 32 active grants, fixed 24-hour expiry, all lost on restart. Tokens are stored hashed in memory. Reader tokens cannot administer; owner token cannot authenticate via LAN. Active sockets revalidate before each sample; an in-flight sample can still complete. No QR, persistent enrollment or UI yet. Treat both URL and token as secrets.

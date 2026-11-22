@@ -1,6 +1,9 @@
 using VeyPanel.Host;
 using System.Net;
 
+if (args.Length == 2 && args[0] == "--device-smoke")
+    return await DeviceTests.SmokeAsync(args[1]);
+
 if (args.Length == 2 && args[0] == "--ws-smoke")
     return await WebSocketSmoke.RunAsync(args[1]);
 
@@ -87,4 +90,5 @@ var healthPass = health.Status == "partial" && health.Disks.Length == 1
 Console.WriteLine($"{(healthPass ? "PASS" : "FAIL")} Storage worker schema, nulls, bounds and freshness");
 if (!healthPass) failed++;
 failed += await ThermalTests.RunAsync();
+failed += DeviceTests.Run();
 return failed == 0 ? 0 : 1;

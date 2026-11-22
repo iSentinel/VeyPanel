@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace VeyPanel.Host;
 
-internal sealed class TelemetrySocket(byte[] token, string? lan, JsonSerializerOptions json)
+internal sealed class TelemetrySocket(DeviceRegistry registry, string? lan, JsonSerializerOptions json)
 {
     internal const int Capacity = 8;
     private readonly SemaphoreSlim slots = new(Capacity, Capacity);
@@ -30,19 +30,20 @@ internal sealed class TelemetrySocket(byte[] token, string? lan, JsonSerializerO
         {
             using var socket = await context.WebSockets.AcceptWebSocketAsync();
             using var stop = CancellationTokenSource.CreateLinkedTokenSource(context.RequestAborted, lifetime.ApplicationStopping);
-            if (!await AuthenticateAsync(socket, stop.Token))
+            var grant = await AuthenticateAsync(socket, DeviceRegistry.LocalOwner(context), stop.Token);
+            if (grant is null)
             {
                 await CloseAsync(socket, WebSocketCloseStatus.PolicyViolation, "Authentication required");
                 return;
             }
-            await StreamAsync(socket, telemetry, stop);
+            await StreamAsync(socket, telemetry, grant, stop);
         }
         catch (Exception ex) when (ex is WebSocketException or OperationCanceledException or IOException)
         { /* Untrusted disconnects and payloads are never logged. */ }
         finally { slots.Release(); }
     }
 
-    private async Task<bool> AuthenticateAsync(WebSocket socket, CancellationToken ct)
+    private async Task<DeviceGrant?> AuthenticateAsync(WebSocket socket, bool local, CancellationToken ct)
     {
         using var timeout = CancellationTokenSource.CreateLinkedTokenSource(ct);
         timeout.CancelAfter(TimeSpan.FromSeconds(5));
@@ -51,14 +52,13 @@ internal sealed class TelemetrySocket(byte[] token, string? lan, JsonSerializerO
         {
             var message = await socket.ReceiveAsync(buffer.AsMemory(), timeout.Token);
             return message.MessageType == WebSocketMessageType.Text && message.EndOfMessage
-                && message.Count == token.Length
-                && CryptographicOperations.FixedTimeEquals(buffer.AsSpan(0, message.Count), token);
+                ? registry.Authenticate(buffer.AsSpan(0, message.Count), local, DateTimeOffset.UtcNow) : null;
         }
-        catch (OperationCanceledException) { return false; }
+        catch (OperationCanceledException) { return null; }
         finally { CryptographicOperations.ZeroMemory(buffer); }
     }
 
-    private async Task StreamAsync(WebSocket socket, Telemetry telemetry, CancellationTokenSource stop)
+    private async Task StreamAsync(WebSocket socket, Telemetry telemetry, DeviceGrant grant, CancellationTokenSource stop)
     {
         var peer = ObservePeerAsync(socket, stop);
         try
@@ -66,7 +66,7 @@ internal sealed class TelemetrySocket(byte[] token, string? lan, JsonSerializerO
             using var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
             do
             {
-                if (socket.State != WebSocketState.Open) break;
+                if (socket.State != WebSocketState.Open || !registry.Active(grant, DateTimeOffset.UtcNow)) break;
                 var payload = JsonSerializer.SerializeToUtf8Bytes(telemetry.Latest, json);
                 using var send = CancellationTokenSource.CreateLinkedTokenSource(stop.Token);
                 send.CancelAfter(TimeSpan.FromSeconds(3));
