@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0-alpha.4 (development; CI pending)
+## 0.1.0-alpha.4 (desktop, Host and disk CI verified; GPU CI in progress)
 
 - Bundle telemetry Host with the Desktop package; start, stop and open local dashboard.
 - Managed child uses loopback only, ephemeral tokens, authenticated readiness and stdin EOF shutdown; lifecycle smoke tests cover restart and collision.
@@ -9,8 +9,9 @@
 - Added per-interface network throughput and fixed-volume capacity monitoring with explicit unavailable values and dashboard cards.
 - Added native PDH system-total disk read/write throughput and IOPS; unavailable counters remain N/A.
 - Added experimental PDH GPU busiest-engine and Video Encode/Decode monitoring with strict grouping and unavailable semantics.
+- Managed lifecycle, Apollo WPF build, network/volume and native PDH disk smoke passed in CI runs 45050593038, 45050643363, 45050707013 and 45050803404. Native disk capability was `ok`. GPU CI: run 45050942800.
 
-## 0.1.0-alpha.3 (Host CI verified; desktop CI in progress)
+## 0.1.0-alpha.3 (Host and desktop CI verified; physical acceptance pending)
 
 - Added read-only Windows 11 CCD topology capture with virtual mode/refresh awareness.
 - Added structural validation, JSON export, twelve CCD tests and staged recovery design. No topology changes.

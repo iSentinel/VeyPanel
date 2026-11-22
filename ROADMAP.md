@@ -15,12 +15,12 @@
 - [x] Implement explicit local PIN pairing CLI and five additional mock tests ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45049726317); live pairing pending).
 - [x] Implement native validate-only current CCD topology CLI, stable snapshot guard and fixed non-apply flags ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45049793209); native target validation pending).
 - [x] Implement initial WPF display diagnostics and tray shell; separate CI artifact ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45049892455); interactive acceptance pending).
-- [x] Implement bundled Windows desktop/Host lifecycle, local dashboard controls and managed child tests (CI pending).
-- [x] Add local Apollo inventory and operator-confirmed PIN pairing in WPF (CI pending; physical acceptance pending).
+- [x] Implement bundled Windows desktop/Host lifecycle, local dashboard controls and managed child tests ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45050593038)).
+- [x] Add local Apollo inventory and operator-confirmed PIN pairing in WPF ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45050643363); physical acceptance pending).
 - [ ] 0.2: integrate streaming controls in WPF; hardware-tested rollback and live PIN acceptance.
-- [x] Add per-interface network throughput and fixed-volume capacity telemetry/UI (CI pending).
-- [x] Implement system-total Windows PDH disk throughput and IOPS with status validation (CI pending).
-- [x] Implement experimental per-engine GPU/Video Encode/Decode utilization with mock aggregation and runtime capability schema (CI pending).
+- [x] Add per-interface network throughput and fixed-volume capacity telemetry/UI ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45050707013)).
+- [x] Implement system-total Windows PDH disk throughput and IOPS with status validation ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45050803404)).
+- [x] Implement experimental per-engine GPU/Video Encode/Decode utilization with mock aggregation and runtime capability schema ([CI in progress](https://github.com/iSentinel/VeyPanel/actions/runs/45050942800); physical GPU pending).
 - [ ] 0.3: validate real GPU/encoder, adapter mapping, per-disk I/O/SMART, network acceptance; sensor capability discovery and WebSocket.
 - [ ] 0.4: secure device enrollment, per-device revocation, QR, history.
 - [ ] 0.5: Android client, native video and telemetry.

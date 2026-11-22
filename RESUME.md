@@ -1,29 +1,25 @@
 # Resume checkpoint
 
-2026-11-22 — VeyPanel 0.1.0-alpha.3.
+2026-11-22 — VeyPanel 0.1.0-alpha.4.
 
-## Verified
-- Alpha.2 host, CPU/RAM, Apollo inventory, GDI inventory and HTTPS LAN CI: run 45047071449.
-- Alpha.3 active CCD topology capture: run 45049611656; target identity and conservative eligibility: run 45049672009; explicit PIN and mock tests: run 45049726317.
-- Validate-only command and guards: run 45049793209 completed successfully (8/8 CPU math, 14/14 Apollo mocks, 12/12 CCD tests, host and HTTPS LAN smoke). Hosted CCD query returned partial, 1 path/2 modes; this is not target topology acceptance. Native SDC_VALIDATE on physical PC remains untested.
-- Verified alpha.3 host artifact: https://github.com/iSentinel/VeyPanel/actions/runs/45049793209/artifacts/14765157246 (unsigned).
-- Latest program commit 06de9cb03ad9550c3cc5e991da4916d727906e0a adds WPF desktop diagnostics and tray shell. CI in progress at checkpoint: https://github.com/iSentinel/VeyPanel/actions/runs/45049892455. Interactive acceptance pending regardless of CI.
+## Verified evidence
+- Alpha.3 WPF and Host build completed successfully in run 45049892455.
+- Managed Host lifecycle (run 45050593038): authenticated readiness, idempotent start/stop, port collision, token rotation, disposal. Bundled desktop artifact compiled and published. Interactive WPF acceptance remains pending.
+- Apollo GUI inventory and explicit PIN pairing build (run 45050643363). Existing mock protocol tests passed; no live Apollo pairing or streaming.
+- Network interface throughput and fixed-volume capacity (run 45050707013): integration schema and rate math passed.
+- Native PDH PhysicalDisk(_Total) throughput/IOPS (run 45050803404): build, all existing smoke tests, local and HTTPS LAN integration, managed lifecycle and desktop publish passed. Runtime disk capability reported ok. No physical SSD mapping or SMART acceptance.
+- Latest fully verified code commit: 61566580ab80799f1206e11fc9f83146cd07fbf1.
+- Verified bundled Desktop/Host (unsigned): https://github.com/iSentinel/VeyPanel/actions/runs/45050803404/artifacts/14765336763
+- Verified standalone Host (unsigned): https://github.com/iSentinel/VeyPanel/actions/runs/45050803404/artifacts/14765207177
+
+## Latest source
+Commit 51c5616b58fb1483c01256dc7eb709268ff80915 adds experimental Windows x64 GPU Engine PDH sampler, language-neutral path lookup, bounded buffer parsing, per-engine aggregation and Video Encode/Decode metrics. Six additional synthetic/ABI tests and runtime capability schema. CI in progress at checkpoint: https://github.com/iSentinel/VeyPanel/actions/runs/45050942800. Target GPU capability, named adapter mapping and actual encoder usage are not verified.
 
 ## Next steps
-1. Check WPF CI; fix any build problems and verify artifacts; run physical desktop GUI acceptance.
-2. Implement desktop telemetry Host lifecycle and local dashboard controls; keep credentials and tokens out of logs. Add bounded shutdown/reconnection.
-3. Validate actual Apollo installer, signed driver, certificate and API on physical Windows host; pair Lenovo with explicit permission. Test 2000x1200, 60 Hz and Intel Quick Sync.
-4. Design and test independent rollback watchdog in controlled hardware environment before implementing any topology apply/restore. Current validation accepts fresh native paths only and never applies/saves settings.
-5. Continue roadmap telemetry sensors, WebSocket and Android client.
+1. Verify final GPU CI and artifacts; fix any failures. Build a WebSocket telemetry channel with authentication, origin checks, bounded sessions and REST fallback.
+2. Continue GPU adapter mapping, temperatures, storage I/O/SMART and sensor capability detection; actual Intel Arc and Lenovo remain physical acceptance gates.
+3. Verify actual Apollo v0.4.6 installer, certificate, signed driver and API on physical Windows host; pair Lenovo and test Mirror/Extend, 2000x1200 at 60 Hz, Quick Sync and permissions.
+4. Before display mutation, implement and hardware-test an independent rollback watchdog. CCD native capture was partial on hosted runner; validate-only flags and guards passed tests, not actual target SDC_VALIDATE acceptance.
+5. Continue device enrollment, Android client and installer.
 
-No production driver install, device pairing, monitor setting changes or real streaming performed. Real Lenovo/Intel Arc acceptance remains pending. Source license remains an owner decision; no upstream binaries redistributed.
-
-Alpha.4: previous WPF CI 45049892455 PASS, GUI physical acceptance pending. Added bundled Host process management, fixed loopback managed mode, stdin-owned shutdown, readiness verification, start/stop/open controls and lifecycle tests. New CI pending. No topology mutation or live pairing. Next: verify alpha.4 CI, add GUI Apollo controls and diagnostics; actual hardware acceptance remains pending.
-
-Alpha.4 Apollo GUI: added certificate-pinned local inspection and single operator-confirmed PIN pairing. No password/PIN persistence, no automatic permission or stream changes. UI compile and actual GUI/device acceptance pending. Next: check CI and add read-only extended telemetry; hardware gates remain open.
-
-Alpha.4 resource increment: per-interface byte rates via IP statistics and monotonic deltas, logical fixed-volume capacity refreshed at five seconds, null status handling and web panel, rate arithmetic and runtime schema checks. Actual SSD SMART/I/O and GPU sensors remain pending. Latest CI pending.
-
-Alpha.4 disk increment: native Windows PDH PhysicalDisk(_Total) English counters for read/write throughput and IOPS. Two-sample warm-up, explicit unavailable status, bounded query reopen, ABI/normalization and published runtime schema tests. No per-disk mapping/SMART/temperature. Latest CI pending. Next: verify CI, then implement GPU engine telemetry and WebSocket independently of physical streaming acceptance.
-
-Alpha.4 GPU increment: added Windows x64 PDH GPU Engine wildcard sampling, localized path lookup, bounded buffer parsing, conservative per-engine aggregation and explicit Video Encode/Decode N/A. Six new tests; actual Intel Arc counters and adapter mapping remain unverified. Latest CI pending. Next: confirm CI and implement WebSocket telemetry with REST fallback.
+No actual driver installation, production pairing, monitor topology changes or streaming took place. GUI launch and operation on target Windows, GPU telemetry on Intel Arc, browser HTTPS trust on Lenovo and physical recovery remain unverified. License decision for original source remains pending; no upstream binaries redistributed.
