@@ -101,3 +101,5 @@
 - Compilation, runtime, security acceptance and physical device tests pending.
 
 
+
+- Confirmed full corrected Android runtime smoke and fixed graph selector resource IDs after lint found invalid literal IDs.

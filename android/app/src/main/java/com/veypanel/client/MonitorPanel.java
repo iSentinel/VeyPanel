@@ -30,13 +30,21 @@ final class MonitorPanel extends LinearLayout {
         historyStatus = new TextView(context); historyStatus.setTextSize(14); addView(historyStatus);
         android.widget.RadioGroup ranges = new android.widget.RadioGroup(context); ranges.setOrientation(HORIZONTAL);
         for (int seconds : new int[]{60,300,900}) {
-            android.widget.RadioButton b = new android.widget.RadioButton(context); b.setId(seconds); b.setText(seconds/60 + " min"); ranges.addView(b);
+            android.widget.RadioButton b = new android.widget.RadioButton(context);
+            b.setId(android.view.View.generateViewId()); b.setTag(seconds);
+            b.setText(seconds/60 + " min"); ranges.addView(b);
+            if (seconds == 900) ranges.check(b.getId());
         }
-        ranges.check(900); addView(ranges);
+        addView(ranges);
         utilization = chart("CPU (blue) · RAM (purple) · GPU (green)",0,3);
         codecs = chart("Encode (orange) · Decode (cyan)",3,2);
         io = chart("Disk read (blue) · Disk write (purple) · MiB/s",5,2);
-        ranges.setOnCheckedChangeListener((group,id) -> { range=id; refreshHistory(); });
+        ranges.setOnCheckedChangeListener((group,id) -> {
+            android.view.View selected = group.findViewById(id);
+            if (selected != null && selected.getTag() instanceof Integer) {
+                range = (Integer)selected.getTag(); refreshHistory();
+            }
+        });
         rebuild(); refreshHistory();
     }
 

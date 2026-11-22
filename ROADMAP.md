@@ -55,10 +55,11 @@
 - [x] Add mandatory raw instrumentation reporting and software-emulation fallback when KVM is unavailable ([all instrumentation assertions PASS, shell syntax FAIL](https://github.com/iSentinel/VeyPanel/actions/runs/45082028995); script rewritten and syntax gate added).
 - [x] Preserve existing saved access on invalid link and unrelated authorization denial; replace only after successful authorized sample (CI pending; Activity acceptance pending).
 - [x] Add isolated actual native HTTPS/WSS transport fixture with ephemeral IP-SAN TLS, denial and manual REST-after-close checks (CI pending; not Windows Host or Activity end-to-end).
-- [ ] 0.5: credential instrumentation execution, Android QR camera acceptance, native WSS transport acceptance and native video.
+- [x] Confirm actual Android Keystore, synthetic QR and extended telemetry instrumentation with strict final result gate ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45083538875)).
+- [ ] 0.5: Android QR camera acceptance, native WSS transport acceptance and native video.
 - [x] Implement adaptive 1/2/3-column native monitor, collapsible controls, memory/IOPS, network/volumes and age-gated thermal/storage health details ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45081976468); visual tablet acceptance pending).
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.
-- [x] Add Android foreground observed history (900 points / 15 minutes), CPU/RAM/GPU, codec and disk charts with 1/5/15-minute selection (CI pending; UI acceptance pending).
+- [x] Add Android foreground observed history (900 points / 15 minutes), CPU/RAM/GPU, codec and disk charts with 1/5/15-minute selection (initial compile passed, lint resource ID error corrected; CI pending; UI acceptance pending).
 - [ ] 0.7: overlay, alerts, Host history synchronization and diagnostics.
 - [ ] 0.8: reconnection, sleep/wake and USB network transport.
 - [ ] 0.9: installer, signing, reproducible release, upgrade/uninstall acceptance.
