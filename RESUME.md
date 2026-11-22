@@ -29,3 +29,5 @@ Alpha.5: GPU CI 45050942800 completed successfully (6/6 synthetic/ABI tests; run
 Alpha.5 transport testing increment: added same-listener CSP connect-src, secure WebSocket test on real private NIC with temporary trusted-by-pin CI certificate, untrusted WSS rejection, query prohibition and eight authenticated socket capacity check. CI pending. Browser compatibility and Lenovo certificate trust remain physical tests.
 
 Alpha.5 DXGI increment: enumerates DXGI 1.1 adapter names/vendor/device/capacity, matches PDH LUID groups to named adapters, preserves unmatched observations and null readings. Refresh every ten seconds; no raw LUIDs serialized. ABI and mapping tests plus live inventory smoke added. Target Intel Arc matching and loaded video engine acceptance pending.
+
+Alpha.5 storage increment: local read-only scripts/Get-StorageHealth.ps1 queries Get-PhysicalDisk and Get-StorageReliabilityCounter; sanitized explicit provider results, null handling and fixture tests. Not integrated into periodic telemetry yet; no full SMART log or independent hardware validation. CI pending.

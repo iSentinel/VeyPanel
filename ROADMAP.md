@@ -23,7 +23,8 @@
 - [x] Implement experimental per-engine GPU/Video Encode/Decode utilization with mock aggregation and runtime capability schema ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45050942800); physical GPU pending).
 - [x] Implement authenticated WebSocket telemetry, bounded sessions, origin checks, browser reconnect and REST fallback (CI pending); loopback/HTTPS WSS and capacity tests added.
 - [x] Add DXGI named adapter inventory and LUID-based GPU engine matching with N/A for unmatched metrics (CI pending).
-- [ ] 0.3: validate real GPU/encoder, per-disk I/O/SMART, network acceptance; sensor capability discovery and physical WSS acceptance.
+- [x] Add local-only Windows Storage Provider reliability diagnostic and conversion/privacy fixtures (CI pending; actual counters pending).
+- [ ] 0.3: validate real GPU/encoder, per-disk I/O/SMART, network acceptance; integrate storage and temperature sensors, physical WSS acceptance.
 - [ ] 0.4: secure device enrollment, per-device revocation, QR, history.
 - [ ] 0.5: Android client, native video and telemetry.
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.

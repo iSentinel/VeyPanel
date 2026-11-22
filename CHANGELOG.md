@@ -5,6 +5,7 @@
 - Added authenticated local WebSocket telemetry with bounded sessions and browser REST fallback.
 - Added loopback and private-NIC WSS integration tests, origin/query rejection, connection capacity and test certificate trust checks.
 - Added native DXGI adapter inventory and per-adapter GPU/codec metrics matched by session LUID; unmatched and unavailable values remain explicit.
+- Added local Windows Storage Provider reliability probe with sanitized JSON/table output and conversion fixtures; not yet in dashboard.
 - GPU alpha.4 CI passed; real Intel Arc monitoring remains unverified.
 
 ## 0.1.0-alpha.4 (desktop, Host and disk CI verified; GPU CI in progress)

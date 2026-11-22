@@ -114,3 +114,7 @@ CI covers loopback WS and private-interface WSS with a temporary pinned certific
 ## Named graphics adapters
 
 DXGI 1.1 inventory is refreshed every ten seconds, including adapter description, PCI vendor/device IDs, reported dedicated/shared capacity and software flag. PDH observations are grouped by normalized session LUID and matched to DXGI adapters; unmatched observations remain unnamed, idle/unobserved engines are N/A, not fake zero. Capacity is not current memory usage. LUID format and matching on Intel Arc require physical validation. API reference: https://learn.microsoft.com/en-us/windows/win32/api/dxgi/ns-dxgi-dxgi_adapter_desc1 .
+
+## Local storage reliability diagnostic
+
+From a repository checkout on Windows, run `powershell.exe -NoProfile -File scripts/Get-StorageHealth.ps1 -AsJson` (or omit `-AsJson` for a table). It reads provider-visible disks and reliability counters without mutating settings or elevating privileges. Missing/invalid readings are null; zero temperature is conservatively treated as unavailable, while other zeros may be valid provider values. Provider health and wear are reported as supplied and are not an independent SMART/NVMe log-page verdict. No serial or unique identifiers are exported. Unsupported devices or permission failures are explicit. This manual diagnostic is not part of the continuous dashboard or installer yet. Reference: https://learn.microsoft.com/en-us/powershell/module/storage/get-storagereliabilitycounter .
