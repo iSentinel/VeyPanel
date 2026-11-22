@@ -1,33 +1,21 @@
 # Resume checkpoint
 
-2026-11-22 — VeyPanel 0.1.0-alpha.4.
+2026-11-22 — VeyPanel 0.1.0-alpha.5.
 
 ## Verified evidence
-- Alpha.3 WPF and Host build completed successfully in run 45049892455.
-- Managed Host lifecycle (run 45050593038): authenticated readiness, idempotent start/stop, port collision, token rotation, disposal. Bundled desktop artifact compiled and published. Interactive WPF acceptance remains pending.
-- Apollo GUI inventory and explicit PIN pairing build (run 45050643363). Existing mock protocol tests passed; no live Apollo pairing or streaming.
-- Network interface throughput and fixed-volume capacity (run 45050707013): integration schema and rate math passed.
-- Native PDH PhysicalDisk(_Total) throughput/IOPS (run 45050803404): build, all existing smoke tests, local and HTTPS LAN integration, managed lifecycle and desktop publish passed. Runtime disk capability reported ok. No physical SSD mapping or SMART acceptance.
-- Latest fully verified code commit: 61566580ab80799f1206e11fc9f83146cd07fbf1.
-- Verified bundled Desktop/Host (unsigned): https://github.com/iSentinel/VeyPanel/actions/runs/45050803404/artifacts/14765336763
-- Verified standalone Host (unsigned): https://github.com/iSentinel/VeyPanel/actions/runs/45050803404/artifacts/14765207177
-
-## Latest source
-Commit 51c5616b58fb1483c01256dc7eb709268ff80915 adds experimental Windows x64 GPU Engine PDH sampler, language-neutral path lookup, bounded buffer parsing, per-engine aggregation and Video Encode/Decode metrics. Six additional synthetic/ABI tests and runtime capability schema. CI in progress at checkpoint: https://github.com/iSentinel/VeyPanel/actions/runs/45050942800. Target GPU capability, named adapter mapping and actual encoder usage are not verified.
+- Alpha.4 GPU CI 45050942800 passed 6/6 synthetic and ABI tests, build/publish and all previous smoke. Runtime GPU status was warming-up; physical GPU capability not established.
+- Alpha.5 WS transport commit 8e13f379b239d30cac3351e18b82cf98b64a435b passed CI 45062181527. First-frame token, exact browser Origin, bounded concurrent sessions, read-only stream, REST fallback.
+- WSS/security increment efe6e98ff5650315e901ba737fb520446ba1757f passed CI 45062225593. Verified private-interface authenticated WSS, untrusted TLS rejection, foreign origin, wrong token, advancing samples, reconnect, query rejection and concurrent capacity.
+- DXGI increment 5e37be98bbc0e792a003c6c5cc4f063d6f2ff359 passed CI 45062321592 with zero Host build warnings/errors, GPU 8/8, live DXGI inventory ok with two runner adapters. Runtime PDH GPU status warming-up; real engine-to-Intel-Arc mapping remains unverified.
+- Storage diagnostic commit 476ef05f1a7e1956ca1e3da4ff7a4c2e98e5eb04: local read-only Windows Storage Provider probe and conversion/privacy fixtures. Fixture step passed in run 45062430196; remaining CI in progress at checkpoint. The actual provider probe was not executed on physical disks. No periodic sensor integration or independent SMART verification.
+- Latest verified package run: 45062321592.
+- Desktop + Host (unsigned): https://github.com/iSentinel/VeyPanel/actions/runs/45062321592/artifacts/14770545158
+- Standalone Host (unsigned): https://github.com/iSentinel/VeyPanel/actions/runs/45062321592/artifacts/14769509854
 
 ## Next steps
-1. Verify final GPU CI and artifacts; fix any failures. Build a WebSocket telemetry channel with authentication, origin checks, bounded sessions and REST fallback.
-2. Continue GPU adapter mapping, temperatures, storage I/O/SMART and sensor capability detection; actual Intel Arc and Lenovo remain physical acceptance gates.
-3. Verify actual Apollo v0.4.6 installer, certificate, signed driver and API on physical Windows host; pair Lenovo and test Mirror/Extend, 2000x1200 at 60 Hz, Quick Sync and permissions.
-4. Before display mutation, implement and hardware-test an independent rollback watchdog. CCD native capture was partial on hosted runner; validate-only flags and guards passed tests, not actual target SDC_VALIDATE acceptance.
-5. Continue device enrollment, Android client and installer.
+1. Confirm final storage CI; implement bounded per-disk I/O sampling and separate asynchronous storage reliability collection with capability status, timeout and freshness.
+2. Add CPU/GPU temperatures only from validated sensor providers (no inferred values). Design certificate enrollment, QR and per-device revocation before exposing administrative actions.
+3. Target acceptance: install only verified Apollo and signed driver with operator permission; check real Lenovo WSS trust, WPF, pairing, Intel Arc engine observation during HEVC streaming, Mirror/Extend 2000x1200 at 60 Hz and safe recovery.
+4. Continue Android client and installer. Keep topology writes disabled until watchdog/recovery design and physical acceptance.
 
-No actual driver installation, production pairing, monitor topology changes or streaming took place. GUI launch and operation on target Windows, GPU telemetry on Intel Arc, browser HTTPS trust on Lenovo and physical recovery remain unverified. License decision for original source remains pending; no upstream binaries redistributed.
-
-Alpha.5: GPU CI 45050942800 completed successfully (6/6 synthetic/ABI tests; runtime GPU status warming-up). Added /api/v1/telemetry/ws, first-frame token auth, origin allowlist, eight slots including pending auth, five-second auth timeout, bounded send, read-only session, browser reconnect/REST fallback and loopback integration tests. CI pending; actual WSS on Lenovo remains unverified. Next: verify CI, extend WSS testing and sensor mapping.
-
-Alpha.5 transport testing increment: added same-listener CSP connect-src, secure WebSocket test on real private NIC with temporary trusted-by-pin CI certificate, untrusted WSS rejection, query prohibition and eight authenticated socket capacity check. CI pending. Browser compatibility and Lenovo certificate trust remain physical tests.
-
-Alpha.5 DXGI increment: enumerates DXGI 1.1 adapter names/vendor/device/capacity, matches PDH LUID groups to named adapters, preserves unmatched observations and null readings. Refresh every ten seconds; no raw LUIDs serialized. ABI and mapping tests plus live inventory smoke added. Target Intel Arc matching and loaded video engine acceptance pending.
-
-Alpha.5 storage increment: local read-only scripts/Get-StorageHealth.ps1 queries Get-PhysicalDisk and Get-StorageReliabilityCounter; sanitized explicit provider results, null handling and fixture tests. Not integrated into periodic telemetry yet; no full SMART log or independent hardware validation. CI pending.
+Browser REST fallback is implemented but actual browser/Android behavior not yet verified. The one-token alpha model is not per-device enrollment. No driver installation, physical topology mutation or live pairing took place. Original license decision and upstream redistribution review remain open.

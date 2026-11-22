@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0-alpha.5 (development; CI pending)
+## 0.1.0-alpha.5 (WS/WSS and DXGI CI verified; storage fixtures passed; hardware acceptance pending)
 
 - Added authenticated local WebSocket telemetry with bounded sessions and browser REST fallback.
 - Added loopback and private-NIC WSS integration tests, origin/query rejection, connection capacity and test certificate trust checks.
@@ -8,7 +8,7 @@
 - Added local Windows Storage Provider reliability probe with sanitized JSON/table output and conversion fixtures; not yet in dashboard.
 - GPU alpha.4 CI passed; real Intel Arc monitoring remains unverified.
 
-## 0.1.0-alpha.4 (desktop, Host and disk CI verified; GPU CI in progress)
+## 0.1.0-alpha.4 (CI verified; hardware acceptance pending)
 
 - Bundle telemetry Host with the Desktop package; start, stop and open local dashboard.
 - Managed child uses loopback only, ephemeral tokens, authenticated readiness and stdin EOF shutdown; lifecycle smoke tests cover restart and collision.
@@ -45,3 +45,4 @@
 - Added token-protected REST endpoint, local responsive dashboard, 60-sample history and optional TLS LAN configuration.
 - Added CPU math smoke test project and Windows build/publish CI definition.
 - Compilation, runtime, security acceptance and physical device tests pending.
+

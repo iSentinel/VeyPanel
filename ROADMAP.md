@@ -21,9 +21,9 @@
 - [x] Add per-interface network throughput and fixed-volume capacity telemetry/UI ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45050707013)).
 - [x] Implement system-total Windows PDH disk throughput and IOPS with status validation ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45050803404)).
 - [x] Implement experimental per-engine GPU/Video Encode/Decode utilization with mock aggregation and runtime capability schema ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45050942800); physical GPU pending).
-- [x] Implement authenticated WebSocket telemetry, bounded sessions, origin checks, browser reconnect and REST fallback (CI pending); loopback/HTTPS WSS and capacity tests added.
-- [x] Add DXGI named adapter inventory and LUID-based GPU engine matching with N/A for unmatched metrics (CI pending).
-- [x] Add local-only Windows Storage Provider reliability diagnostic and conversion/privacy fixtures (CI pending; actual counters pending).
+- [x] Implement authenticated WebSocket telemetry, bounded sessions, origin checks, browser reconnect and REST fallback ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45062225593)); loopback/HTTPS WSS and capacity tests passed.
+- [x] Add DXGI named adapter inventory and LUID-based GPU engine matching with N/A for unmatched metrics ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45062321592)).
+- [x] Add local-only Windows Storage Provider reliability diagnostic and conversion/privacy fixtures ([fixtures PASS; remaining CI in progress](https://github.com/iSentinel/VeyPanel/actions/runs/45062430196); actual counters pending).
 - [ ] 0.3: validate real GPU/encoder, per-disk I/O/SMART, network acceptance; integrate storage and temperature sensors, physical WSS acceptance.
 - [ ] 0.4: secure device enrollment, per-device revocation, QR, history.
 - [ ] 0.5: Android client, native video and telemetry.
