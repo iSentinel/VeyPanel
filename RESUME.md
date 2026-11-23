@@ -57,6 +57,10 @@
 - PR #4 head fdb9949: Windows 45093130787 PASS, Android 45093130783 PASS, runtime 45093126068 PASS including bounded TLS unknown-CA and oversized-header rejection. Merged as experimental transport only.
 - Current production Android client still uses OkHttp; full streaming integration pending.
 
+## Bounded WSS controls PR #5
+- Close status/UTF-8 validation, masked pong and close reply, two consecutive samples over isolated TLS, and cancellation of a blocked read by closing the underlying socket. New fixtures and CI gates added; runtime not yet verified.
+- Production integration requires continuous operation deadlines, stale/revoked handling, correct default/user CA acceptance and review. Keep current OkHttp path unchanged until verified.
+
 ## Next
 1. Verify history and transport raw CI and latest build. Fix any failures with logs. Test actual Activity switching, pause/reconnect, forget and live Windows Host TLS/WSS, including revocation and fallback. Fixture trust injection is not production system/user CA integration. Review WSS message pre-allocation bounds and dependency audit.
 2. Verify Android UI and camera on Lenovo TB-J607Z; add Host history synchronization and diagnostics. Continue native video / Display/Monitor/Hybrid and touch. Real Apollo/Intel Quick Sync PoC, signed driver and independent rollback watchdog before display mutation.

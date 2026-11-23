@@ -88,6 +88,11 @@ class Fixture(BaseHTTPRequestHandler):
             if token == b"F"*64:
                 self.control_exchange()
                 return
+            if token == b"H"*64:
+                self.frame(0x81, self.sample())
+                # Stay silent after a valid sample until the client cancels.
+                time.sleep(5)
+                return
             if token == b"G"*64:
                 self.frame(0x88, bytes([3, 237]))
                 return
