@@ -23,7 +23,7 @@ final class EnrollmentClient {
     static Claim claim(InvitationLink link) throws Exception {
         JSONObject body = post(link.endpoint(false), link.id, link.secret, 200);
         String secret = body.getString("secret"), code = body.getString("code");
-        Instant expires = Instant.parse(body.getString("expiresUtc")), now = Instant.now();
+        Instant expires = SampleRules.timestamp(body.getString("expiresUtc")), now = Instant.now();
         if (!link.id.equals(body.getString("id")) || !secret.matches("[A-F0-9]{64}")
             || secret.equals(link.secret) || !code.matches("[0-9]{6}") || !expires.isAfter(now)
             || expires.isAfter(now.plusSeconds(125))) throw new IllegalStateException("Invalid claim");

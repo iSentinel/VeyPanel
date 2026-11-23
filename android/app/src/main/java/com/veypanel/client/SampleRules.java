@@ -4,6 +4,11 @@ import java.time.Instant;
 
 final class SampleRules {
     private SampleRules() { }
+    // Windows DateTimeOffset JSON uses an explicit offset and up to seven fractional digits.
+    static Instant timestamp(String value) {
+        return java.time.OffsetDateTime.parse(value, java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME).toInstant();
+    }
+
     static boolean fresh(Instant timestamp, Instant now) {
         return !timestamp.isBefore(now.minusSeconds(5)) && !timestamp.isAfter(now.plusSeconds(5));
     }

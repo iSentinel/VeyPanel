@@ -37,7 +37,7 @@ final class ResourceDetails {
         String field = key.equals("sensors") ? "receivedUtc" : key.equals("volumes") ? "storageTimestampUtc" : "timestampUtc";
         long limit = key.equals("sensors") ? 20 : key.equals("volumes") ? 12 : 150;
         try {
-            Instant stamp = Instant.parse(source.getString(field));
+            Instant stamp = SampleRules.timestamp(source.getString(field));
             return !stamp.isBefore(now.minusSeconds(limit)) && !stamp.isAfter(now.plusSeconds(5));
         } catch (Exception ex) { return false; }
     }
