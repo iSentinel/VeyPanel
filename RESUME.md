@@ -74,8 +74,13 @@
 - PR #6 has merged into main after runtime PASS. BoundedTelemetryStream is available but MainActivity still uses OkHttp pending separate production transport acceptance.
 
 
-## Synthetic native AVC decode test (PR pending)
-- Test-only 64x64 two-frame original AVC Baseline MP4 asset and MediaExtractor/MediaCodec ByteBuffer decode smoke. No changes to production video renderer, Windows Host or physical display. Android emulator CI pending; do not call hardware video PASS.
+## Synthetic AVC MediaCodec smoke
+- PR #8 head ade33df: Android build 45153234091 PASS and exact-head runtime 45153552741 PASS. Original 64x64 two-frame AVC MP4 is decoded with MediaExtractor and MediaCodec on the emulator; physical hardware and streaming remain untested. Combined mainline CI after merging PR #9 pending.
+
+## WSS feed abstraction
+- PR #9 head b1611f3: Android build 45153409806, Windows CI 45153409950 and runtime 45153400342 PASS; merged as 64647b3.
+- MainActivity stores TelemetryFeed but still constructs the reviewed OkHttp client. No default transport switch, trust weakening or display mutation.
+
 
 ## Next
 1. Verify history and transport raw CI and latest build. Fix any failures with logs. Test actual Activity switching, pause/reconnect, forget and live Windows Host TLS/WSS, including revocation and fallback. Fixture trust injection is not production system/user CA integration. Review WSS message pre-allocation bounds and dependency audit.

@@ -18,7 +18,7 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
 /** A bounded WSS stream, held separate from MainActivity until acceptance. */
-final class BoundedTelemetryStream implements AutoCloseable {
+final class BoundedTelemetryStream implements TelemetryFeed {
     private final ReaderSession session;
     private final SSLSocketFactory factory;
     private final SecureRandom random = new SecureRandom();
@@ -42,7 +42,7 @@ final class BoundedTelemetryStream implements AutoCloseable {
         this.factory = trust;
     }
 
-    TelemetrySample next() throws Exception {
+    @Override public TelemetrySample next() throws Exception {
         if (closed) throw new IOException("Stream closed");
         try {
             if (input == null) open();

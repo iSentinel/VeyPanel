@@ -67,3 +67,13 @@ Per-read socket timeouts are intentionally not enough to reject this stream.
 The persistent candidate must close the underlying TLS connection at the
 absolute 5.5-second message deadline, without allocating the advertised
 payload. Emulator instrumentation checks the elapsed wall-clock budget.
+
+## Pluggable foreground feed interface
+
+Both the established OkHttp stream and the separate bounded candidate implement
+`TelemetryFeed` (one cancellable `next()` and `close()`). MainActivity stores
+only the interface and retains its session generation guards, 15-second WSS
+retry, REST fallback, and terminal TLS handling. The default constructor
+remains `TelemetryStream` (OkHttp). The refactor is intentionally non-switching.
+A subsequent gated change must verify actual Windows Host protocol, lifecycle
+and certificate trust before selecting the candidate.
