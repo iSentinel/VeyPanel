@@ -66,6 +66,10 @@
 - Isolated bounded TLS prototype covers ping/pong, two consecutive messages, close validation and blocked read cancellation. MainActivity still uses OkHttp and production inbound allocation bounds are not yet enforced.
 - Next: persistent bounded stream using platform SSL, absolute read watchdog and generation-safe cancellation; verify with fixture before considering MainActivity switch.
 
+## Android alpha.15 read-only video codec survey candidate
+- Source enumerates regular AVC/HEVC/AV1 decoders via MediaCodecList, API29+ hardware classification, declared 720p/1080p/2560x1600 at 60 Hz capability checks, and explicit N/A for missing API/capabilities. No codec instances, video stream, permissions or driver changes.
+- A button shows local results for owner tablet acceptance; isolated emulator instrumentation validates API/report bounds only. CI and physical Lenovo acceptance pending. This does NOT establish any hardware/video playback performance.
+
 ## Next
 1. Verify history and transport raw CI and latest build. Fix any failures with logs. Test actual Activity switching, pause/reconnect, forget and live Windows Host TLS/WSS, including revocation and fallback. Fixture trust injection is not production system/user CA integration. Review WSS message pre-allocation bounds and dependency audit.
 2. Verify Android UI and camera on Lenovo TB-J607Z; add Host history synchronization and diagnostics. Continue native video / Display/Monitor/Hybrid and touch. Real Apollo/Intel Quick Sync PoC, signed driver and independent rollback watchdog before display mutation.
