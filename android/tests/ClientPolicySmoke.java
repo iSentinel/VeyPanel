@@ -57,6 +57,13 @@ public final class ClientPolicySmoke {
         try { SavedReader.decode(record.encode(), now.plusSeconds(86400)); }
         catch (IllegalArgumentException ex) { expired = true; }
         check(expired, "Expired saved reader rejected");
+        ConnectionDiagnostics diagnostics = new ConnectionDiagnostics();
+        diagnostics.attempt(); diagnostics.fallback(); diagnostics.networkError(); diagnostics.fresh(false, 1000);
+        String report = diagnostics.describe(4000);
+        check(report.contains("REST") && report.contains("attempts: 1") && report.contains("Fallbacks: 1")
+            && report.contains("errors: 1") && report.contains("samples: 1") && report.contains("3 s ago"), "Reconnect diagnostics");
+        diagnostics.reset();
+        check(diagnostics.describe(4000).contains("IDLE") && diagnostics.describe(4000).contains("N/A"), "Diagnostics reset");
         System.out.println("PASS: native client policy fixtures");
     }
     private static void reject(String link) {
