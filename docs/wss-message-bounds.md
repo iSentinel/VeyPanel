@@ -1,6 +1,6 @@
 # Telemetry WebSocket message bounds
 
-Status: Host outbound cap and experimental Android frame-header gate with JVM fixtures.
+Status: Host outbound cap and experimental Android frame-header gate and bounded message assembler with JVM fixtures.
 The Android production WSS client still uses OkHttp; its onMessage callback limit
 is after buffering/decompression and is not a pre-allocation memory guarantee.
 
@@ -9,7 +9,7 @@ than 1 MiB. This is an outbound wire cap, not a bound on serialization memory.
 The new header gate accepts uncompressed, unmasked, server-to-client text frames,
 permitted continuations and bounded control frames. Extended lengths are checked
 before a payload read, including canonical encoding and a caller-supplied remaining
-aggregate message budget. It does not implement WebSocket transport.
+aggregate message budget. The assembler retains a bounded message, rejects malformed UTF-8, limits frames per message to 256 and dispatches control frames. Neither component implements full WebSocket transport or its time/close validation.
 
 Integration requirements:
 - Preserve OS TLS trust, IP hostname verification and same fixed private origin.
