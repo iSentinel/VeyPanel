@@ -83,3 +83,8 @@
 - PR #6 head f7121ee: Android CI 45150815811 PASS, Windows CI 45150815933 PASS, Android runtime 45150808675 PASS. Merged as deb7982; read-only candidate does not change production OkHttp.
 - The fixture checks two messages, ping/pong, invalid frame, unknown CA, socket cancellation and absolute timeout under drip-feed. Actual Windows Host/Lenovo integration and security review remain required before the production switch.
 - Android 0.1.0-alpha.14 continues as the mainline version; separate video codec survey alpha.15 is under PR #7.
+
+## Verified Android alpha.15 video decoder survey (2026-11-23)
+- PR #7 head d05f127, merge 65338d8. Android CI 45151764750 PASS, Windows CI 45151764974 PASS, emulator runtime 45151759925 PASS. Version 0.1.0-alpha.15.
+- Debug APK artifact 14806213555 from Android CI 45151764750 (app-debug.apk). Local codec report checks declared AVC/HEVC/AV1 and 720p/1080p/2560x1600 at 60 FPS; does not start a decoder and does not establish real hardware performance.
+- Actual 64x64 AVC decode instrumentation under PR #8 remains pending. Lenovo tablet, Windows Quick Sync, Apollo and display acceptance unverified.
