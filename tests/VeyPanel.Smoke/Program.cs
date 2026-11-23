@@ -99,4 +99,9 @@ failed += GrantStoreTests.Run();
 failed += ProtectedStoreTests.Run();
 failed += HistoryTests.Run();
 failed += HistoryCsvTests.Run();
+var wsSizePass = !TelemetrySocket.PayloadAllowed(-1) && !TelemetrySocket.PayloadAllowed(0)
+    && TelemetrySocket.PayloadAllowed(1) && TelemetrySocket.PayloadAllowed(1024 * 1024)
+    && !TelemetrySocket.PayloadAllowed(1024 * 1024 + 1);
+Console.WriteLine($"{(wsSizePass ? "PASS" : "FAIL")} WebSocket outbound UTF-8 byte limit");
+if (!wsSizePass) failed++;
 return failed == 0 ? 0 : 1;

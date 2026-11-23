@@ -7,6 +7,9 @@ namespace VeyPanel.Host;
 internal sealed class TelemetrySocket(DeviceRegistry registry, string? lan, JsonSerializerOptions json)
 {
     internal const int Capacity = 8;
+    internal const int MaxPayloadBytes = 1024 * 1024;
+
+    internal static bool PayloadAllowed(int length) => length > 0 && length <= MaxPayloadBytes;
     private readonly SemaphoreSlim slots = new(Capacity, Capacity);
 
     internal static bool OriginAllowed(string? origin, bool https, string? lan)
@@ -68,6 +71,11 @@ internal sealed class TelemetrySocket(DeviceRegistry registry, string? lan, Json
             {
                 if (socket.State != WebSocketState.Open || !registry.Active(grant, DateTimeOffset.UtcNow)) break;
                 var payload = JsonSerializer.SerializeToUtf8Bytes(telemetry.Latest, json);
+                if (!PayloadAllowed(payload.Length))
+                {
+                    await CloseAsync(socket, WebSocketCloseStatus.MessageTooBig, "Telemetry size limit");
+                    break;
+                }
                 using var send = CancellationTokenSource.CreateLinkedTokenSource(stop.Token);
                 send.CancelAfter(TimeSpan.FromSeconds(3));
                 await socket.SendAsync(payload.AsMemory(), WebSocketMessageType.Text, true, send.Token);
