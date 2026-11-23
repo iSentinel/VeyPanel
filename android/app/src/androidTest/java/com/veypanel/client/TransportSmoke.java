@@ -29,6 +29,7 @@ final class TransportSmoke {
 
     void runBounded() throws Exception {
         BoundedTlsSmoke.run(context.getSocketFactory());
+        BoundedStreamSmoke.run(context.getSocketFactory());
     }
 
     void run() throws Exception {

@@ -66,6 +66,10 @@
 - Isolated bounded TLS prototype covers ping/pong, two consecutive messages, close validation and blocked read cancellation. MainActivity still uses OkHttp and production inbound allocation bounds are not yet enforced.
 - Next: persistent bounded stream using platform SSL, absolute read watchdog and generation-safe cancellation; verify with fixture before considering MainActivity switch.
 
+## Persistent bounded stream candidate (PR pending)
+- Added separate BoundedTelemetryStream (platform TLS, explicit hostname verification, fixed 47861 IP, no proxy, bounded Upgrade/messages, absolute handshake and per-message deadlines, concurrent close) and instrumentation with valid/invalid frame, TLS and cancellation.
+- Production MainActivity still uses OkHttp; test and security acceptance required before selecting the new stream. CI pending.
+
 ## Next
 1. Verify history and transport raw CI and latest build. Fix any failures with logs. Test actual Activity switching, pause/reconnect, forget and live Windows Host TLS/WSS, including revocation and fallback. Fixture trust injection is not production system/user CA integration. Review WSS message pre-allocation bounds and dependency audit.
 2. Verify Android UI and camera on Lenovo TB-J607Z; add Host history synchronization and diagnostics. Continue native video / Display/Monitor/Hybrid and touch. Real Apollo/Intel Quick Sync PoC, signed driver and independent rollback watchdog before display mutation.
