@@ -59,3 +59,11 @@ This is still **not hardware acceptance**. In particular, user-installed
 CA handling, fragmented byte trickle under a hard deadline, throughput, actual
 Windows Host interoperability and sleep/wake require verification before
 replacing the established OkHttp-based path.
+
+### Absolute read-deadline fixture
+
+A separate token I isolates a frame whose sender emits a byte every second.
+Per-read socket timeouts are intentionally not enough to reject this stream.
+The persistent candidate must close the underlying TLS connection at the
+absolute 5.5-second message deadline, without allocating the advertised
+payload. Emulator instrumentation checks the elapsed wall-clock budget.

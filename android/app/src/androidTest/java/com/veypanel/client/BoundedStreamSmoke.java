@@ -30,6 +30,7 @@ final class BoundedStreamSmoke {
         rejectFrame('E', fixtureTrust, "Frame exceeds remaining budget");
         rejectFrame('G', fixtureTrust, "Invalid close status");
         cancellation(fixtureTrust);
+        absoluteDeadline(fixtureTrust);
     }
 
     private static BoundedTelemetryStream open(char token, SSLSocketFactory factory) {
@@ -64,6 +65,20 @@ final class BoundedStreamSmoke {
             } catch (ExecutionException ex) {
                 throw new IllegalStateException("Cancel task failed", ex);
             } finally { worker.shutdownNow(); }
+        }
+    }
+
+    private static void absoluteDeadline(SSLSocketFactory factory) throws Exception {
+        try (BoundedTelemetryStream stream = open('I', factory)) {
+            long start = android.os.SystemClock.elapsedRealtime();
+            try {
+                stream.next();
+                throw new IllegalStateException("Drip-fed message accepted");
+            } catch (IOException expected) {
+                long elapsed = android.os.SystemClock.elapsedRealtime() - start;
+                check(elapsed >= 4800 && elapsed < 8500, "Absolute message deadline");
+                check(!(expected instanceof java.net.SocketTimeoutException), "Socket idle timeout, not deadline");
+            }
         }
     }
 
