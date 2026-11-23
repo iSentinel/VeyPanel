@@ -42,3 +42,28 @@ A separate silent-peer fixture verifies that concurrent raw socket closure
 interrupts a blocked read before its ordinary timeout. Production OkHttp remains
 unchanged. Continuous production operation and user-installed CA acceptance
 still require independent verification.
+
+## Persistent bounded-stream candidate
+
+The native `BoundedTelemetryStream` is a separate, **not yet selected**
+candidate for continuous foreground reception. It connects to the fixed IP and
+port without a proxy, uses platform TLS verification and HTTPS endpoint
+identification, enforces an 8 s upgrade deadline plus a 5.5 s deadline per
+message, and stops blocked reads when closed by the lifecycle owner.
+The 1 MiB byte budget and 256 frame count apply before frame content reads.
+Instrumentation covers system CA rejection, a trusted synthetic CA, two
+messages/ping/pong/close, malformed close and oversized header, and concurrent
+close cancellation. There is no production preference switch in this stage.
+
+This is still **not hardware acceptance**. In particular, user-installed
+CA handling, fragmented byte trickle under a hard deadline, throughput, actual
+Windows Host interoperability and sleep/wake require verification before
+replacing the established OkHttp-based path.
+
+### Absolute read-deadline fixture
+
+A separate token I isolates a frame whose sender emits a byte every second.
+Per-read socket timeouts are intentionally not enough to reject this stream.
+The persistent candidate must close the underlying TLS connection at the
+absolute 5.5-second message deadline, without allocating the advertised
+payload. Emulator instrumentation checks the elapsed wall-clock budget.

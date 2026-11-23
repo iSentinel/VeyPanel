@@ -70,3 +70,4 @@
 - [ ] 0.8: reconnection, sleep/wake and USB network transport.
 - [ ] 0.9: installer, signing, reproducible release, upgrade/uninstall acceptance.
 - [ ] 1.0: physical device acceptance and stable release.
+- [x] Add isolated cancellable Android bounded WSS stream with platform TLS and pre-read limits; validate against synthetic valid, malformed, stalled and revoked flows ([Android Build PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45150815811), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45150808675); PR #6 merged as deb7982). Not selected in production MainActivity.

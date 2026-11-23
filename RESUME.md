@@ -67,10 +67,19 @@
 - Next: persistent bounded stream using platform SSL, absolute read watchdog and generation-safe cancellation; verify with fixture before considering MainActivity switch.
 
 ## Android alpha.15 read-only video codec survey candidate
-- Source enumerates regular AVC/HEVC/AV1 decoders via MediaCodecList, API29+ hardware classification, declared 720p/1080p/2560x1600 at 60 Hz capability checks, and explicit N/A for missing API/capabilities. No codec instances, video stream, permissions or driver changes.
-- A button shows local results for owner tablet acceptance; isolated emulator instrumentation validates API/report bounds only. CI and physical Lenovo acceptance pending. This does NOT establish any hardware/video playback performance.
+- Enumerate regular AVC/HEVC/AV1 decoders via MediaCodecList, API29+ hardware classification, declared 720p/1080p/2560x1600 at 60 FPS capabilities, and explicit N/A on absent API data. No codec instances, streaming or driver changes.
+- On-demand UI inventory and emulator instrumentation report only declared capabilities; physical Lenovo/video decode acceptance remains pending.
+
+## Bounded WSS candidate status
+- PR #6 has merged into main after runtime PASS. BoundedTelemetryStream is available but MainActivity still uses OkHttp pending separate production transport acceptance.
+
 
 ## Next
 1. Verify history and transport raw CI and latest build. Fix any failures with logs. Test actual Activity switching, pause/reconnect, forget and live Windows Host TLS/WSS, including revocation and fallback. Fixture trust injection is not production system/user CA integration. Review WSS message pre-allocation bounds and dependency audit.
 2. Verify Android UI and camera on Lenovo TB-J607Z; add Host history synchronization and diagnostics. Continue native video / Display/Monitor/Hybrid and touch. Real Apollo/Intel Quick Sync PoC, signed driver and independent rollback watchdog before display mutation.
 3. No physical streaming or display changes performed. Real storage power loss, sensors, dependency audit, licenses and release signing remain open.
+
+## Verified bounded-stream candidate (2026-11-23)
+- PR #6 head f7121ee: Android CI 45150815811 PASS, Windows CI 45150815933 PASS, Android runtime 45150808675 PASS. Merged as deb7982; read-only candidate does not change production OkHttp.
+- The fixture checks two messages, ping/pong, invalid frame, unknown CA, socket cancellation and absolute timeout under drip-feed. Actual Windows Host/Lenovo integration and security review remain required before the production switch.
+- Android 0.1.0-alpha.14 continues as the mainline version; separate video codec survey alpha.15 is under PR #7.

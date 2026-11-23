@@ -88,6 +88,17 @@ class Fixture(BaseHTTPRequestHandler):
             if token == b"F"*64:
                 self.control_exchange()
                 return
+            if token == b"I"*64:
+                # Advertise a modest frame but drip one byte per second.
+                # Each read can succeed before the socket timeout; the
+                # absolute message deadline must still stop the connection.
+                self.wfile.write(bytes([0x81, 126, 0, 126]))
+                self.wfile.flush()
+                for _ in range(9):
+                    time.sleep(1)
+                    self.wfile.write(b"x")
+                    self.wfile.flush()
+                return
             if token == b"H"*64:
                 self.frame(0x81, self.sample())
                 # Stay silent after a valid sample until the client cancels.

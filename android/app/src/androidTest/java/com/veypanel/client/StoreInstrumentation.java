@@ -51,7 +51,7 @@ public final class StoreInstrumentation extends Instrumentation {
                 transport.run();
                 stage = "Bounded TLS prototype";
                 transport.runBounded();
-                results.append("PASS: bounded TLS prototype rejects unknown CA and oversized header; ping/pong, two samples, close validation and read cancellation\n");
+                results.append("PASS: bounded TLS and persistent stream reject unknown CA and oversized frame; ping/pong, two samples, close, cancellation and drip-feed deadline\n");
                 results.append("PASS: isolated HTTPS/WSS transport, TLS denial, fallback and revocation\n");
             } else {
                 results.append("SKIP: transport fixture not configured\n");
