@@ -39,6 +39,9 @@ public final class StoreInstrumentation extends Instrumentation {
             stage = "Host history codec";
             HostHistorySmoke.run();
             results.append("PASS: Android Host history codec fixture\n");
+            stage = "Activity UI";
+            ActivitySmoke.run(this);
+            results.append("PASS: Android Activity diagnostics visibility and disconnected history gate\n");
             stage = "HTTPS/WSS transport";
             if (fixtureCa != null) {
                 new TransportSmoke(fixtureCa).run();

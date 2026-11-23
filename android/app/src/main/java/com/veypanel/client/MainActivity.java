@@ -37,6 +37,8 @@ public final class MainActivity extends Activity {
     private boolean enrollmentBusy;
     private EditText input;
     private TextView status;
+    private TextView diagnosticStatus;
+    private final ConnectionDiagnostics diagnostics = new ConnectionDiagnostics();
     private MonitorPanel monitor;
     private LinearLayout controls;
     private boolean hideOnSample = true;
@@ -74,6 +76,16 @@ public final class MainActivity extends Activity {
         title.setText("VeyPanel · Monitor"); title.setTextSize(28);
         column.addView(title);
         status = new TextView(this); status.setTextSize(16); column.addView(status);
+        diagnosticStatus = new TextView(this); diagnosticStatus.setTextSize(13);
+        diagnosticStatus.setVisibility(android.view.View.GONE);
+        Button diagnosticToggle = new Button(this);
+        diagnosticToggle.setText("Show / hide diagnostics");
+        diagnosticToggle.setOnClickListener(v -> {
+            diagnosticStatus.setVisibility(diagnosticStatus.getVisibility() == android.view.View.VISIBLE
+                ? android.view.View.GONE : android.view.View.VISIBLE);
+            renderDiagnostics();
+        });
+        column.addView(diagnosticToggle); column.addView(diagnosticStatus);
         Button toggle = new Button(this); toggle.setText("Show / hide connection controls");
         column.addView(toggle);
         controls = new LinearLayout(this); controls.setOrientation(LinearLayout.VERTICAL); column.addView(controls);
@@ -224,8 +236,12 @@ public final class MainActivity extends Activity {
         int current = generation;
         ReaderSession chosen = session;
         if (stream == null && android.os.SystemClock.elapsedRealtime() >= nextStreamAttempt) {
+            diagnostics.attempt(); renderDiagnostics();
             try { stream = new TelemetryStream(chosen); }
-            catch (RuntimeException ex) { nextStreamAttempt = android.os.SystemClock.elapsedRealtime() + 15000; }
+            catch (RuntimeException ex) {
+                diagnostics.fallback(); renderDiagnostics();
+                nextStreamAttempt = android.os.SystemClock.elapsedRealtime() + 15000;
+            }
         }
         TelemetryStream active = stream;
         if (active != null) {
@@ -264,6 +280,7 @@ public final class MainActivity extends Activity {
             complete(current, null, "TLS trust failed. Verify the PC certificate.", true);
             return;
         }
+        diagnostics.fallback(); renderDiagnostics();
         nextStreamAttempt = android.os.SystemClock.elapsedRealtime() + 15000;
         offline("WSS unavailable · checking HTTPS REST");
         main.post(poll);
@@ -271,8 +288,13 @@ public final class MainActivity extends Activity {
 
     private void complete(int current, TelemetrySample sample, String error, boolean terminal) {
         if (!resumed || current != generation) return;
-        if (sample == null || !SampleRules.fresh(sample.stamp, java.time.Instant.now()))
+        if (sample == null || !SampleRules.fresh(sample.stamp, java.time.Instant.now())) {
+            if (terminal) diagnostics.mark("Access expired or revoked".equals(error)
+                ? ConnectionDiagnostics.Event.DENIED : ConnectionDiagnostics.Event.TLS);
+            else if (sample == null) diagnostics.networkError();
+            else diagnostics.mark(ConnectionDiagnostics.Event.STALE);
             offline(error == null ? "Stale sample" : error);
+        }
         else {
             showSample(sample);
             if (savePending && remember.isChecked() && !storageBusy && !storageFault) persistCurrent();
@@ -280,7 +302,10 @@ public final class MainActivity extends Activity {
         if (terminal) {
             if ("Access expired or revoked".equals(error) && session != null
                 && savedReader != null && session.sameAccess(savedReader.session)) deleteCredential();
-            stopPoll(); session = null; savePending = false; return;
+            stopPoll(false); session = null; savePending = false;
+            diagnostics.mark("Access expired or revoked".equals(error)
+                ? ConnectionDiagnostics.Event.DENIED : ConnectionDiagnostics.Event.TLS);
+            renderDiagnostics(); return;
         }
         main.postDelayed(poll, 1000);
     }
@@ -392,7 +417,13 @@ public final class MainActivity extends Activity {
         monitor.historyEnabled(lastLive != null && SampleRules.fresh(lastLive, java.time.Instant.now()));
     }
 
+    private void renderDiagnostics() {
+        diagnosticStatus.setText(diagnostics.describe(android.os.SystemClock.elapsedRealtime()));
+    }
+
     private void showSample(TelemetrySample s) {
+        diagnostics.fresh(stream != null, android.os.SystemClock.elapsedRealtime());
+        renderDiagnostics();
         lastLive = s.stamp;
         monitor.historyEnabled(!historyBusy);
         status.setText("Connected · " + (stream == null ? "HTTPS REST" : "WSS") + " · " + s.stamp);
@@ -402,17 +433,24 @@ public final class MainActivity extends Activity {
         main.postDelayed(expire, 5000);
     }
 
-    private final Runnable expire = () -> offline("No fresh sample");
+    private final Runnable expire = () -> {
+        diagnostics.mark(ConnectionDiagnostics.Event.STALE);
+        offline("No fresh sample");
+    };
     private void offline(String message) {
         main.removeCallbacks(expire);
-        status.setText(message);
+        status.setText(message); renderDiagnostics();
         lastLive = null; monitor.historyEnabled(false);
         monitor.render(null);
         controls.setVisibility(android.view.View.VISIBLE);
     }
 
-    private void stopPoll() {
+    private void stopPoll() { stopPoll(true); }
+
+    private void stopPoll(boolean resetDiagnostics) {
         generation++;
+        if (resetDiagnostics) diagnostics.reset();
+        renderDiagnostics();
         lastLive = null; historyBusy = false;
         if (historyRequest != null) historyRequest.cancel(true);
         monitor.historyEnabled(false);
@@ -426,6 +464,6 @@ public final class MainActivity extends Activity {
         if (request != null) request.cancel(true);
     }
     @Override protected void onResume() { super.onResume(); resumed = true; if (session != null) main.post(poll); else if (claim != null) showClaim(); }
-    @Override protected void onPause() { resumed = false; stopPoll(); offline("Paused"); super.onPause(); }
+    @Override protected void onPause() { resumed = false; stopPoll(); diagnostics.mark(ConnectionDiagnostics.Event.PAUSED); offline("Paused"); super.onPause(); }
     @Override protected void onDestroy() { stopPoll(); session = null; clearClaim(); worker.shutdownNow(); historyWorker.shutdownNow(); super.onDestroy(); }
 }

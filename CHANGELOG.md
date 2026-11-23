@@ -1,5 +1,9 @@
 # Changelog
 
+## Android 0.1.0-alpha.14 (CI pending)
+
+- Add foreground connection diagnostic panel with WSS attempts, fallback, REST errors, fresh receipt age and reset on session lifecycle. No endpoints, tokens or exception text are retained.
+
 ## Android 0.1.0-alpha.13 (credential and baseline runtime CI PASS; history APK/lint and isolated transport runtime PASS)
 
 - Added isolated Android TLS/WSS transport instrumentation using CI-only certificates and synthetic reader grants. Corrected fixture routing via explicit adb reverse and added host readiness and phase-specific runtime reporting after ConnectException.
