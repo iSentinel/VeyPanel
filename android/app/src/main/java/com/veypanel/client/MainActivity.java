@@ -302,7 +302,7 @@ public final class MainActivity extends Activity {
         if (terminal) {
             if ("Access expired or revoked".equals(error) && session != null
                 && savedReader != null && session.sameAccess(savedReader.session)) deleteCredential();
-            stopPoll(); session = null; savePending = false;
+            stopPoll(false); session = null; savePending = false;
             diagnostics.mark("Access expired or revoked".equals(error)
                 ? ConnectionDiagnostics.Event.DENIED : ConnectionDiagnostics.Event.TLS);
             renderDiagnostics(); return;
@@ -445,9 +445,12 @@ public final class MainActivity extends Activity {
         controls.setVisibility(android.view.View.VISIBLE);
     }
 
-    private void stopPoll() {
+    private void stopPoll() { stopPoll(true); }
+
+    private void stopPoll(boolean resetDiagnostics) {
         generation++;
-        diagnostics.reset(); renderDiagnostics();
+        if (resetDiagnostics) diagnostics.reset();
+        renderDiagnostics();
         lastLive = null; historyBusy = false;
         if (historyRequest != null) historyRequest.cancel(true);
         monitor.historyEnabled(false);

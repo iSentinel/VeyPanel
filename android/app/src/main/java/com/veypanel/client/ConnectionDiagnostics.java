@@ -27,11 +27,11 @@ final class ConnectionDiagnostics {
     void mark(Event value) { event = value; }
 
     String describe(long now) {
-        String age = lastFresh < 0 || now < lastFresh ? "N/A" : ((now - lastFresh) / 1000) + " s";
+        String age = lastFresh < 0 || now < lastFresh ? "N/A" : ((now - lastFresh) / 1000) + " s ago";
         return "Connection diagnostics · " + event.name()
             + "\nWSS attempts: " + attempts + " · Fallbacks: " + fallback
             + "\nREST errors: " + restErrors + " · Fresh samples: " + samples
-            + "\nLast fresh receipt: " + age + " ago · RAM only";
+            + "\nLast fresh receipt: " + age + " · RAM only";
     }
 
     private static int increment(int value) {

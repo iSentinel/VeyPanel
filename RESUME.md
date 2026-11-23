@@ -31,6 +31,11 @@
 - History PR head 2cfcbeb: Android build/lint 45090687195, Windows 45090687370 and isolated runtime 45090682478 PASS. Raw instrumentation result -1 and final gate PASS including codec/merge, HTTPS/WSS, TLS rejection, fallback and revocation. PR #1 merged as f5632a8.
 - Android alpha.13 debug APK: https://github.com/iSentinel/VeyPanel/actions/runs/45090687195/artifacts/14780468583 . No physical tablet, Activity interaction or live Windows Host transport acceptance claimed.
 
+## Android alpha.14 diagnostics PR #2
+- PR branch adds foreground connection counters and fixed event categories, collapsed diagnostics UI, JVM fixtures, and isolated Activity startup/toggle/disconnected-history test. Terminal denial retains counters for troubleshooting; new session, pause and disconnect reset them. No logging of host or token.
+- First alpha.14 Android build 45091118899 PASS; extended Activity runtime retry pending. Do not merge until updated build and runtime pass. Real session switch/reconnect and production CA/Host acceptance still pending.
+- WSS callback size checks remain post-allocation in OkHttp. Do not claim a strict pre-allocation bound until the transport can enforce frame and fragmented-message budgets prior to buffering.
+
 ## Next
 1. Verify history and transport raw CI and latest build. Fix any failures with logs. Test actual Activity switching, pause/reconnect, forget and live Windows Host TLS/WSS, including revocation and fallback. Fixture trust injection is not production system/user CA integration. Review WSS message pre-allocation bounds and dependency audit.
 2. Verify Android UI and camera on Lenovo TB-J607Z; add Host history synchronization and diagnostics. Continue native video / Display/Monitor/Hybrid and touch. Real Apollo/Intel Quick Sync PoC, signed driver and independent rollback watchdog before display mutation.
