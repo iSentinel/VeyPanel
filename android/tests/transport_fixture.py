@@ -85,6 +85,12 @@ class Fixture(BaseHTTPRequestHandler):
                 self.wfile.write(bytes([0x81, 127]) + (1024 * 1024 + 1).to_bytes(8, "big"))
                 self.wfile.flush()
                 return
+            if token == b"F"*64:
+                self.control_exchange()
+                return
+            if token == b"G"*64:
+                self.frame(0x88, bytes([3, 237]))
+                return
             if token not in (b"A"*64,b"D"*64):
                 self.frame(0x88, bytes([3, 240]))
                 return
@@ -95,6 +101,25 @@ class Fixture(BaseHTTPRequestHandler):
             self.frame(0x88, bytes([3, 232]))
         except (OSError, ValueError):
             return
+
+    def control_exchange(self):
+        self.frame(0x89, b"check")
+        if not self.client_frame(0x8a, b"check"):
+            return
+        self.frame(0x81, self.sample())
+        self.frame(0x81, self.sample())
+        self.frame(0x88, bytes([3, 232]))
+        self.client_frame(0x88, bytes([3, 232]))
+
+    def client_frame(self, opcode, payload):
+        header = self.rfile.read(2)
+        if header != bytes([opcode, 0x80 | len(payload)]):
+            return False
+        mask = self.rfile.read(4)
+        raw = self.rfile.read(len(payload))
+        if len(mask) != 4 or len(raw) != len(payload):
+            return False
+        return bytes(value ^ mask[i % 4] for i, value in enumerate(raw)) == payload
 
     def frame(self, opcode, payload):
         size = len(payload)

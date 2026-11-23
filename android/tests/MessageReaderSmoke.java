@@ -19,6 +19,10 @@ final class MessageReaderSmoke {
             reject(input(0x81,1,0xff));
             reject(input(0x81,2,'a'));
             reject(input(0x88,0));
+            rejectInvalidClose(0x88,2,3,237);
+            rejectInvalidClose(0x88,3,3,232,0xff);
+            WssControl.validateClose(new byte[]{3, (byte)232});
+            WssControl.validateClose(new byte[]{(byte)0x0b,(byte)0xb8});
             reject(input(0x81,127,0,0,0,0,0,16,0,1));
             byte[] frames = new byte[514];
             frames[0] = 1;
@@ -28,6 +32,15 @@ final class MessageReaderSmoke {
         } catch (IOException ex) {
             throw new IllegalStateException("Valid message rejected", ex);
         }
+    }
+
+    private static void rejectInvalidClose(int... values) {
+        try {
+            BoundedMessageReader.readText(input(values), (o,d) -> {
+                throw new IllegalStateException("Invalid close dispatched");
+            });
+        } catch (IOException expected) { return; }
+        throw new IllegalStateException("Invalid close accepted");
     }
 
     private static ByteArrayInputStream input(int... values) {

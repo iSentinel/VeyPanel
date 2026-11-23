@@ -25,7 +25,7 @@ final class ReaderSession {
     // Fixed loopback endpoint and artificial tokens for isolated instrumentation only.
     // User-facing parsing continues to reject all loopback links.
     static ReaderSession fixture(char token) {
-        if (token < 'A' || token > 'E') throw new IllegalArgumentException();
+        if (token < 'A' || token > 'G') throw new IllegalArgumentException();
         return new ReaderSession(URI.create("https://127.0.0.1:47861/api/v1/telemetry"),
             new String(new char[64]).replace('\0', token));
     }

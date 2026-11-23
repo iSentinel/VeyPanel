@@ -42,7 +42,7 @@ grep -Fq 'PASS: Android extended telemetry fixture' runtime-smoke.log
 grep -Fq 'PASS: Android bounded history fixture' runtime-smoke.log
 grep -Fq 'PASS: Android Host history codec fixture' runtime-smoke.log
 grep -Fq 'PASS: Android Activity diagnostics visibility and disconnected history gate' runtime-smoke.log
-grep -Fq 'PASS: bounded TLS prototype rejects unknown CA and oversized header' runtime-smoke.log
+grep -Fq 'PASS: bounded TLS prototype rejects unknown CA and oversized header; ping/pong, two samples and close validation' runtime-smoke.log
 grep -Fq 'PASS: isolated HTTPS/WSS transport, TLS denial, fallback and revocation' runtime-smoke.log
 grep -Eq '^INSTRUMENTATION_CODE: -1[[:space:]]*$' runtime-smoke.log
 if grep -Fq 'FAIL:' runtime-smoke.log; then exit 1; fi

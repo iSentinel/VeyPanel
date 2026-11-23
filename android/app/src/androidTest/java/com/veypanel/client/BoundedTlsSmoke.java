@@ -27,6 +27,14 @@ final class BoundedTlsSmoke {
         } catch (SSLException expected) { }
         if (TelemetrySample.parse(exchange(factory, 'A')).cpu != 42)
             throw new IllegalStateException("Bounded TLS sample mismatch");
+        if (TelemetrySample.parse(exchange(factory, 'F')).cpu != 42)
+            throw new IllegalStateException("Ping and stream fixture mismatch");
+        try {
+            exchange(factory, 'G');
+            throw new IllegalStateException("Invalid close accepted");
+        } catch (IOException expected) {
+            if (!"Invalid close status".equals(expected.getMessage())) throw expected;
+        }
         try {
             exchange(factory, 'E');
             throw new IllegalStateException("Oversized frame accepted");
@@ -63,9 +71,19 @@ final class BoundedTlsSmoke {
         byte[] token = session.token.getBytes(StandardCharsets.US_ASCII);
         try { MaskedClientFrame.write(output, 1, token, random); }
         finally { java.util.Arrays.fill(token, (byte)0); }
-        return BoundedMessageReader.readText(input, (opcode, payload) -> {
-            if (opcode == 9) MaskedClientFrame.write(output, 10, payload, random);
-        });
+        BoundedMessageReader.Control control = (opcode, payload) ->
+            WssControl.reply(output, opcode, payload, random);
+        String first = BoundedMessageReader.readText(input, control);
+        if (!session.token.startsWith("F")) return first;
+        if (TelemetrySample.parse(BoundedMessageReader.readText(input, control)).cpu != 42)
+            throw new IOException("Second sample mismatch");
+        try {
+            BoundedMessageReader.readText(input, control);
+            throw new IllegalStateException("Close did not end stream");
+        } catch (java.io.EOFException expected) {
+            if (!"Peer closed".equals(expected.getMessage())) throw expected;
+        }
+        return first;
     }
 
     private static void closeQuietly(Socket socket) {
