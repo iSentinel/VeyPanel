@@ -19,6 +19,8 @@ final class MonitorPanel extends LinearLayout {
     private final MonitorHistory history = new MonitorHistory();
     private final MonitorChart utilization, codecs, io;
     private final TextView historyStatus;
+    private final android.widget.Button historyLoad;
+    private final TextView historyFeedback;
     private int range = 900;
 
     MonitorPanel(Context context) {
@@ -28,6 +30,9 @@ final class MonitorPanel extends LinearLayout {
         details = new TextView(context);
         details.setTextSize(16); details.setPadding(dp(8),dp(12),dp(8),dp(12)); addView(details);
         historyStatus = new TextView(context); historyStatus.setTextSize(14); addView(historyStatus);
+        historyLoad = new android.widget.Button(context);
+        historyLoad.setText("Refresh Host history"); historyLoad.setEnabled(false); addView(historyLoad);
+        historyFeedback = new TextView(context); addView(historyFeedback);
         android.widget.RadioGroup ranges = new android.widget.RadioGroup(context); ranges.setOrientation(HORIZONTAL);
         for (int seconds : new int[]{60,300,900}) {
             android.widget.RadioButton b = new android.widget.RadioButton(context);
@@ -88,12 +93,20 @@ final class MonitorPanel extends LinearLayout {
         addView(view,new LayoutParams(LayoutParams.MATCH_PARENT,dp(140))); return view;
     }
     void observe(TelemetrySample sample) { history.add(sample); refreshHistory(); }
-    void clearHistory() { history.clear(); refreshHistory(); }
+    void clearHistory() { history.clear(); historyFeedback.setText(""); refreshHistory(); }
+    void onHistoryRefresh(Runnable action) { historyLoad.setOnClickListener(v -> action.run()); }
+    void historyEnabled(boolean enabled) { historyLoad.setEnabled(enabled); }
+    void historyFeedback(String message) { historyFeedback.setText(message); }
+    void hostHistory(MonitorHistory.Point[] data) {
+        history.replaceHost(data); refreshHistory();
+        historyFeedback("Host snapshot refreshed");
+    }
     private void refreshHistory() {
         java.time.Instant now = java.time.Instant.now();
         MonitorHistory.Point[] data = history.read(now);
         utilization.update(data,now,range); codecs.update(data,now,range); io.update(data,now,range);
-        historyStatus.setText("Foreground history · " + data.length + " observed samples · RAM only");
+        historyStatus.setText((history.hasHost() ? "Host + foreground history" : "Foreground history")
+            + " · " + data.length + " samples · RAM only");
     }
     void render(TelemetrySample sample) {
         latest = sample;

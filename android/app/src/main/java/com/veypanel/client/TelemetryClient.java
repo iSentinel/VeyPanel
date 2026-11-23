@@ -16,7 +16,21 @@ final class TelemetryClient {
 
     // The explicit factory overload is exercised only by the isolated transport fixture.
     static TelemetrySample fetch(ReaderSession session, javax.net.ssl.SSLSocketFactory fixtureTrust) throws Exception {
-        HttpsURLConnection c = (HttpsURLConnection)session.endpoint.toURL().openConnection(Proxy.NO_PROXY);
+        return TelemetrySample.parse(fetchJson(session, false, fixtureTrust));
+    }
+
+    static MonitorHistory.Point[] fetchHistory(ReaderSession session) throws Exception {
+        return fetchHistory(session, null);
+    }
+
+    static MonitorHistory.Point[] fetchHistory(ReaderSession session, javax.net.ssl.SSLSocketFactory fixtureTrust) throws Exception {
+        return HostHistory.parse(fetchJson(session, true, fixtureTrust), java.time.Instant.now());
+    }
+
+    private static String fetchJson(ReaderSession session, boolean history,
+                                    javax.net.ssl.SSLSocketFactory fixtureTrust) throws Exception {
+        java.net.URI uri = history ? session.endpoint.resolve("/api/v1/history") : session.endpoint;
+        HttpsURLConnection c = (HttpsURLConnection)uri.toURL().openConnection(Proxy.NO_PROXY);
         if (fixtureTrust != null) c.setSSLSocketFactory(fixtureTrust);
         c.setInstanceFollowRedirects(false);
         c.setConnectTimeout(3000);
@@ -31,7 +45,7 @@ final class TelemetryClient {
             String type = c.getContentType();
             if (status != 200 || type == null || !type.startsWith("application/json")
                 || c.getContentLengthLong() > LIMIT) throw new IllegalStateException("Invalid response");
-            return TelemetrySample.parse(read(c));
+            return read(c);
         } finally { c.disconnect(); }
     }
 

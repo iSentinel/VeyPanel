@@ -40,13 +40,19 @@ class Fixture(BaseHTTPRequestHandler):
         if self.path == "/api/v1/telemetry/ws":
             self.websocket()
             return
-        if self.path != "/api/v1/telemetry":
+        if self.path not in ("/api/v1/telemetry", "/api/v1/history"):
             self.reply(404)
             return
         token = self.headers.get("Authorization", "")
         if token in ("Bearer " + "A" * 64, "Bearer " + "C" * 64) or (
                 token == "Bearer " + "D" * 64 and not REVOKED.is_set()):
-            self.reply(200, self.sample())
+            if self.path == "/api/v1/history":
+                stamp = datetime.now(timezone.utc).isoformat()
+                payload = dict(timestampUtc=stamp, windowSeconds=900,
+                               samples=[dict(timestampUtc=stamp, cpuPercent=42)])
+                self.reply(200, json.dumps(payload).encode())
+            else:
+                self.reply(200, self.sample())
         else:
             self.reply(401)
 
