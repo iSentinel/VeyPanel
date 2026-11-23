@@ -66,6 +66,7 @@ public final class ClientPolicySmoke {
         check(diagnostics.describe(4000).contains("IDLE") && diagnostics.describe(4000).contains("N/A"), "Diagnostics reset");
         FrameHeaderSmoke.run();
         MessageReaderSmoke.run();
+        UpgradeSmoke.run();
         System.out.println("PASS: native client policy fixtures");
     }
     private static void reject(String link) {

@@ -21,3 +21,14 @@ Integration requirements:
 - Add actual TLS oversized-header, fragmented aggregate, malformed UTF-8, close,
   ping/pong and cancellation fixtures before replacing the current client.
 - Keep REST fallback, deny invalid TLS, and retain device revocation semantics.
+
+## Isolated TLS prototype
+
+PR #4 adds bounded HTTP Upgrade, RFC accept-key verification, extension refusal,
+masked client auth/control frames, and an instrumentation-only TLS socket.
+The test exchange uses HTTPS endpoint identification, an explicit fixture trust
+factory (or default trust for negative checks), 3 s socket timeout and an
+8 s overall close watchdog. It checks a valid sample and oversized header
+without receiving the advertised payload. Production remains unchanged.
+Close status validation, full ping/pong, continuous deadline/cancellation and
+production user CA acceptance remain open.

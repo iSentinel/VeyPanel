@@ -80,6 +80,11 @@ class Fixture(BaseHTTPRequestHandler):
             if len(mask) != 4 or len(raw) != 64:
                 return
             token = bytes(value ^ mask[i % 4] for i, value in enumerate(raw))
+            if token == b"E"*64:
+                # Advertise an excessive length without sending or allocating its payload.
+                self.wfile.write(bytes([0x81, 127]) + (1024 * 1024 + 1).to_bytes(8, "big"))
+                self.wfile.flush()
+                return
             if token not in (b"A"*64,b"D"*64):
                 self.frame(0x88, bytes([3, 240]))
                 return

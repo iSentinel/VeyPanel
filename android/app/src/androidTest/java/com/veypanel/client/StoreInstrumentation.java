@@ -44,7 +44,11 @@ public final class StoreInstrumentation extends Instrumentation {
             results.append("PASS: Android Activity diagnostics visibility and disconnected history gate\n");
             stage = "HTTPS/WSS transport";
             if (fixtureCa != null) {
-                new TransportSmoke(fixtureCa).run();
+                TransportSmoke transport = new TransportSmoke(fixtureCa);
+                transport.run();
+                stage = "Bounded TLS prototype";
+                transport.runBounded();
+                results.append("PASS: bounded TLS prototype rejects unknown CA and oversized header\n");
                 results.append("PASS: isolated HTTPS/WSS transport, TLS denial, fallback and revocation\n");
             } else {
                 results.append("SKIP: transport fixture not configured\n");
