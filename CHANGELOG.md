@@ -1,5 +1,9 @@
 # Changelog
 
+## Bounded WebSocket control prototype (CI PASS)
+
+- Validate ping/pong, close codes, sequential samples and read cancellation against isolated TLS fixture. Production Android transport remains OkHttp.
+
 ## WSS bounds follow-up (CI PASS)
 
 - Windows Host outbound telemetry cap; Android experimental bounded frame/message parser. Production client integration pending.
