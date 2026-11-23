@@ -32,3 +32,13 @@ factory (or default trust for negative checks), 3 s socket timeout and an
 without receiving the advertised payload. Production remains unchanged.
 Close status validation, full ping/pong, continuous deadline/cancellation and
 production user CA acceptance remain open.
+
+## Continuous and cancellation fixtures
+
+PR #5 validates close codes and close-reason UTF-8 before dispatch, replies to
+server ping using a masked pong, and reads consecutive samples over one TLS
+socket. The isolated server waits for the correct pong before sending samples.
+A separate silent-peer fixture verifies that concurrent raw socket closure
+interrupts a blocked read before its ordinary timeout. Production OkHttp remains
+unchanged. Continuous production operation and user-installed CA acceptance
+still require independent verification.

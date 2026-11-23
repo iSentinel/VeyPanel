@@ -28,6 +28,7 @@ final class BoundedMessageReader {
             if (frame.opcode >= 8) {
                 byte[] payload = new byte[frame.length];
                 readFully(in, payload, payload.length);
+                if (frame.opcode == 8) WssControl.validateClose(payload);
                 control.accept(frame.opcode, payload);
                 if (frame.opcode == 8) throw new EOFException("Peer closed");
                 continue;
