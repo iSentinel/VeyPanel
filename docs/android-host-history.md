@@ -1,6 +1,6 @@
 # Android Host history synchronization
 
-Status: codec passed isolated runtime; native explicit refresh, merge and lifecycle integration implemented on PR branch. Updated runtime and actual Activity/device acceptance pending.
+Status: codec passed isolated runtime; native explicit refresh, merge and lifecycle integration implemented on PR branch. Updated isolated runtime PASS (45090682478); PR #1 merged. Actual Activity/device and live Windows Host acceptance pending.
 
 The existing same-origin authenticated GET /api/v1/history returns timestampUtc,
 windowSeconds=900, and up to 900 sorted numeric samples. Each point has seven

@@ -54,12 +54,13 @@
 - [x] Implement native WSS-first monitor, one latest-sample slot, HTTPS REST fallback and bounded retry; fixed URI fixture ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45081890582); live transport pending).
 - [x] Add mandatory raw instrumentation reporting and software-emulation fallback when KVM is unavailable ([all instrumentation assertions PASS, shell syntax FAIL](https://github.com/iSentinel/VeyPanel/actions/runs/45082028995); script rewritten and syntax gate added).
 - [x] Preserve existing saved access on invalid link and unrelated authorization denial; replace only after successful authorized sample ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45083538812); Activity acceptance pending).
-- [x] Add isolated actual native HTTPS/WSS transport fixture with ephemeral IP-SAN TLS, denial and manual REST-after-close checks ([runtime FAIL: ConnectException](https://github.com/iSentinel/VeyPanel/actions/runs/45083916229); adb reverse readiness PASS; runtime 45089770854 reached timestamp parsing and failed; offset normalization retry pending; not Windows Host or Activity end-to-end).
+- [x] Add isolated actual native HTTPS/WSS transport fixture with ephemeral IP-SAN TLS, denial and manual REST-after-close checks ([corrected runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45090572041); not Windows Host or Activity end-to-end).
 - [x] Confirm actual Android Keystore, synthetic QR and extended telemetry instrumentation with strict final result gate ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45083538875)).
 - [ ] 0.5: Android QR camera acceptance, native WSS transport acceptance and native video.
 - [x] Implement adaptive 1/2/3-column native monitor, collapsible controls, memory/IOPS, network/volumes and age-gated thermal/storage health details ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45081976468); visual tablet acceptance pending).
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.
 - [x] Add Android foreground observed history (900 points / 15 minutes), CPU/RAM/GPU, codec and disk charts with 1/5/15-minute selection ([build/lint PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45083916217); [history instrumentation PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45083699289); UI acceptance pending).
+- [x] Integrate explicit Android Host history refresh, bounded UTC merge, authorization and revocation fixtures ([build PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45090687195), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45090682478), PR #1 merged; Activity and actual Host acceptance pending).
 - [ ] 0.7: overlay, alerts, Host history synchronization and diagnostics.
 - [ ] 0.8: reconnection, sleep/wake and USB network transport.
 - [ ] 0.9: installer, signing, reproducible release, upgrade/uninstall acceptance.
