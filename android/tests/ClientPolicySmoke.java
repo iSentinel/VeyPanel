@@ -14,6 +14,12 @@ public final class ClientPolicySmoke {
         check(session.websocketUrl().equals("wss://192.168.1.10:47861/api/v1/telemetry/ws"), "WSS fixed same-origin path, no token");
         for (String host : new String[] {"127.0.0.1", "8.8.8.8", "100.64.1.2", "192.168.01.2", "192.168.256.1", "172.32.0.1", "example.com"})
             reject("https://" + host + ":47861/#token=" + token);
+        ReaderSession fixture = ReaderSession.fixture('A');
+        check(fixture.endpoint.getHost().equals("127.0.0.1") && fixture.token.equals(token)
+            && fixture.websocketUrl().equals("wss://127.0.0.1:47861/api/v1/telemetry/ws"), "Fixed instrumentation endpoint");
+        boolean rejectedFixture = false;
+        try { ReaderSession.fixture('X'); } catch (IllegalArgumentException ex) { rejectedFixture = true; }
+        check(rejectedFixture, "Only synthetic fixture tokens allowed");
         reject("http://192.168.1.10:47861/#token=" + token);
         reject("https://192.168.1.10:443/#token=" + token);
         reject("https://192.168.1.10:47861/?x=1#token=" + token);

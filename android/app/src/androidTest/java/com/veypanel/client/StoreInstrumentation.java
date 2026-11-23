@@ -20,18 +20,35 @@ public final class StoreInstrumentation extends Instrumentation {
     }
     @Override public void onStart() {
         Bundle report = new Bundle();
+        String stage = "isolation";
+        StringBuilder results = new StringBuilder("\n");
         try {
             if (!isolated) throw new IllegalStateException("Explicit isolated test required");
+            stage = "AndroidKeyStore";
             runStore();
+            results.append("PASS: AndroidKeyStore actual encryption, reopen, fresh ciphertext, corruption, key removal and Forget\n");
+            stage = "QR";
             runQr();
+            results.append("PASS: synthetic offline QR decode\n");
+            stage = "telemetry";
             runMetrics();
+            results.append("PASS: Android extended telemetry fixture\n");
+            stage = "history";
             runHistory();
-            boolean transport = fixtureCa != null;
-            if (transport) new TransportSmoke(fixtureCa).run();
-            report.putString("stream", "\nPASS: AndroidKeyStore actual encryption, reopen, fresh ciphertext, corruption, key removal and Forget\nPASS: synthetic offline QR decode\nPASS: Android extended telemetry fixture\nPASS: Android bounded history fixture\n" + (transport ? "PASS: isolated HTTPS/WSS transport, TLS denial, fallback and revocation\n" : "SKIP: transport fixture not configured\n"));
+            results.append("PASS: Android bounded history fixture\n");
+            stage = "HTTPS/WSS transport";
+            if (fixtureCa != null) {
+                new TransportSmoke(fixtureCa).run();
+                results.append("PASS: isolated HTTPS/WSS transport, TLS denial, fallback and revocation\n");
+            } else {
+                results.append("SKIP: transport fixture not configured\n");
+            }
+            report.putString("stream", results.toString());
             finish(Activity.RESULT_OK, report);
         } catch (Exception ex) {
-            report.putString("stream", "\nFAIL: AndroidKeyStore smoke (" + ex.getClass().getSimpleName() + ")\n");
+            results.append("FAIL: ").append(stage).append(" (")
+                .append(ex.getClass().getSimpleName()).append(")\n");
+            report.putString("stream", results.toString());
             finish(Activity.RESULT_CANCELED, report);
         }
     }

@@ -1,8 +1,8 @@
 # Changelog
 
-## Android 0.1.0-alpha.13 (credential and baseline runtime CI PASS; revised charts build in progress; transport runtime in progress)
+## Android 0.1.0-alpha.13 (credential and baseline runtime CI PASS; history APK/lint PASS; transport runtime retry pending)
 
-- Added isolated Android TLS/WSS transport instrumentation using CI-only certificates and synthetic reader grants.
+- Added isolated Android TLS/WSS transport instrumentation using CI-only certificates and synthetic reader grants. Corrected fixture routing via explicit adb reverse and added host readiness and phase-specific runtime reporting after ConnectException.
 - Added Android foreground history and three responsive graphs.
 - Fixed destructive invalid-link handling, scoped saved access invalidation to matching reader, and corrected runtime shell result gate.
 

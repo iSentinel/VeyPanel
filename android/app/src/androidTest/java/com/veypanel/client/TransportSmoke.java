@@ -10,7 +10,6 @@ import javax.net.ssl.X509TrustManager;
 import javax.net.ssl.SSLException;
 
 final class TransportSmoke {
-    private static final String BASE = "https://10.0.2.2:47861/#token=";
     private final SSLContext context;
     private final X509TrustManager manager;
 
@@ -29,7 +28,7 @@ final class TransportSmoke {
     }
 
     void run() throws Exception {
-        ReaderSession valid = session('A'), denied = session('B'), fallback = session('C'), revoke = session('D');
+        ReaderSession valid = ReaderSession.fixture('A'), denied = ReaderSession.fixture('B'), fallback = ReaderSession.fixture('C'), revoke = ReaderSession.fixture('D');
         expectTls(valid);
         check(TelemetryClient.fetch(valid,context.getSocketFactory()).cpu == 42,"Trusted HTTPS");
         try (TelemetryStream stream = open(valid)) {
@@ -71,9 +70,6 @@ final class TransportSmoke {
         catch (SSLException ex) { throw ex; }
         catch (IOException ex) { return; }
         throw new IllegalStateException("Expected stream end");
-    }
-    private static ReaderSession session(char token) {
-        return ReaderSession.parse(BASE + new String(new char[64]).replace('\0',token));
     }
     private static void check(boolean condition,String message) {
         if (!condition) throw new IllegalStateException(message);

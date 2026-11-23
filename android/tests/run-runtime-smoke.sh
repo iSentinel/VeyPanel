@@ -6,15 +6,16 @@ fixture="$(mktemp -d)"
 pid=""
 cleanup() {
   if [[ -n "$pid" ]]; then kill "$pid" 2>/dev/null || true; wait "$pid" 2>/dev/null || true; fi
+  adb -s "$serial" reverse --remove tcp:47861 >/dev/null 2>&1 || true
   rm -rf "$fixture"
 }
 trap cleanup EXIT
 openssl req -x509 -newkey rsa:2048 -nodes -days 1 -subj '/CN=VeyPanel isolated fixture CA' \
   -addext 'basicConstraints=critical,CA:TRUE' -addext 'keyUsage=critical,keyCertSign,cRLSign' \
   -keyout "$fixture/ca.key" -out "$fixture/ca.pem" >/dev/null 2>&1
-openssl req -new -newkey rsa:2048 -nodes -subj '/CN=10.0.2.2' \
+openssl req -new -newkey rsa:2048 -nodes -subj '/CN=127.0.0.1' \
   -keyout "$fixture/server.key" -out "$fixture/server.csr" >/dev/null 2>&1
-printf '%s\n' 'subjectAltName=IP:10.0.2.2' 'extendedKeyUsage=serverAuth' 'basicConstraints=critical,CA:FALSE' > "$fixture/extensions"
+printf '%s\n' 'subjectAltName=IP:127.0.0.1' 'extendedKeyUsage=serverAuth' 'basicConstraints=critical,CA:FALSE' > "$fixture/extensions"
 openssl x509 -req -in "$fixture/server.csr" -CA "$fixture/ca.pem" -CAkey "$fixture/ca.key" \
   -CAcreateserial -days 1 -extfile "$fixture/extensions" -out "$fixture/server.pem" >/dev/null 2>&1
 python3 android/tests/transport_fixture.py "$fixture/server.pem" "$fixture/server.key" > "$fixture/server.log" 2>&1 &
@@ -25,6 +26,12 @@ for attempt in {1..30}; do
   sleep 1
 done
 grep -Fq 'READY: isolated transport fixture' "$fixture/server.log"
+status="$(curl --silent --show-error --max-time 5 --noproxy '*' --cacert "$fixture/ca.pem" \
+  --output /dev/null --write-out '%{http_code}' https://127.0.0.1:47861/api/v1/telemetry)"
+[[ "$status" == 401 ]] || { echo "FAIL: fixture readiness HTTP $status"; exit 1; }
+echo 'PASS: fixture HTTPS readiness and unauthenticated denial'
+adb -s "$serial" reverse tcp:47861 tcp:47861
+adb -s "$serial" reverse --list
 ca="$(openssl x509 -in "$fixture/ca.pem" -outform DER | base64 -w0)"
 adb -s "$serial" install android/app/build/outputs/apk/debug/app-debug.apk
 adb -s "$serial" install android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk

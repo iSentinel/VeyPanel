@@ -22,6 +22,14 @@ final class ReaderSession {
         return new ReaderSession(URI.create("https://" + m.group(1) + ":47861/api/v1/telemetry"), m.group(2));
     }
 
+    // Fixed loopback endpoint and artificial tokens for isolated instrumentation only.
+    // User-facing parsing continues to reject all loopback links.
+    static ReaderSession fixture(char token) {
+        if (token < 'A' || token > 'D') throw new IllegalArgumentException();
+        return new ReaderSession(URI.create("https://127.0.0.1:47861/api/v1/telemetry"),
+            new String(new char[64]).replace('\0', token));
+    }
+
     boolean sameAccess(ReaderSession other) {
         return other != null && endpoint.equals(other.endpoint) && token.equals(other.token);
     }
