@@ -1,6 +1,6 @@
 # Changelog
 
-## Android 0.1.0-alpha.14 (CI pending)
+## Android 0.1.0-alpha.14 (build, isolated Activity and transport runtime PASS)
 
 - Add foreground connection diagnostic panel with WSS attempts, fallback, REST errors, fresh receipt age and reset on session lifecycle. No endpoints, tokens or exception text are retained.
 

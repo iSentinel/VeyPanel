@@ -1,6 +1,6 @@
 # Resume checkpoint
 
-2026-11-23 — Android 0.1.0-alpha.13; Windows 0.1.0-alpha.10.
+2026-11-23 — Android 0.1.0-alpha.14; Windows 0.1.0-alpha.10.
 
 ## Verified and pending
 - Alpha.12 final adaptive Android/Windows CI 45082029020 / 45082029025 PASS. Software-emulator run 45082028995 had actual Keystore, QR and extended schema PASS and INSTRUMENTATION_CODE -1, but final shell failed unmatched quote.
@@ -35,6 +35,11 @@
 - PR branch adds foreground connection counters and fixed event categories, collapsed diagnostics UI, JVM fixtures, and isolated Activity startup/toggle/disconnected-history test. Terminal denial retains counters for troubleshooting; new session, pause and disconnect reset them. No logging of host or token.
 - First alpha.14 Android build 45091118899 PASS; extended Activity runtime retry pending. Do not merge until updated build and runtime pass. Real session switch/reconnect and production CA/Host acceptance still pending.
 - WSS callback size checks remain post-allocation in OkHttp. Do not claim a strict pre-allocation bound until the transport can enforce frame and fragmented-message budgets prior to buffering.
+
+## Verified alpha.14 diagnostics baseline
+- PR #2 head 36fd2e1: Android build 45091283003, Windows 45091282989 and runtime 45091277957 PASS. Raw result -1, actual Activity launch/toggle/disconnected history gate and prior transport fixtures PASS. Merged as 0e46e9d.
+- Debug APK: https://github.com/iSentinel/VeyPanel/actions/runs/45091283003/artifacts/14781567158 . Physical UI, live reconnect, camera, actual Windows Host TLS/WSS still pending.
+- Next: Host outbound frame limit and Android pre-buffer frame parser design/tests, then bounded transport integration; no claim that OkHttp currently enforces a pre-allocation limit.
 
 ## Next
 1. Verify history and transport raw CI and latest build. Fix any failures with logs. Test actual Activity switching, pause/reconnect, forget and live Windows Host TLS/WSS, including revocation and fallback. Fixture trust injection is not production system/user CA integration. Review WSS message pre-allocation bounds and dependency audit.

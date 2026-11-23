@@ -61,6 +61,7 @@
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.
 - [x] Add Android foreground observed history (900 points / 15 minutes), CPU/RAM/GPU, codec and disk charts with 1/5/15-minute selection ([build/lint PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45083916217); [history instrumentation PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45083699289); UI acceptance pending).
 - [x] Integrate explicit Android Host history refresh, bounded UTC merge, authorization and revocation fixtures ([build PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45090687195), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45090682478), PR #1 merged; Activity and actual Host acceptance pending).
+- [x] Add local foreground connection diagnostics and disconnected Activity UI smoke ([build PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45091283003), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45091277957); PR #2 merged; physical lifecycle acceptance pending).
 - [ ] 0.7: overlay, alerts, Host history synchronization and diagnostics.
 - [ ] 0.8: reconnection, sleep/wake and USB network transport.
 - [ ] 0.9: installer, signing, reproducible release, upgrade/uninstall acceptance.
