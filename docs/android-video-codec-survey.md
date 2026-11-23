@@ -20,3 +20,15 @@ The Windows capture/Quick Sync/APOLLO path is not established by this survey.
 
 API references: Android MediaCodecList, MediaCodecInfo and VideoCapabilities
 in the official Android SDK documentation.
+
+## Original AVC decode fixture
+
+The instrumentation APK contains an original red 64x64, two-frame AVC Baseline
+MP4 generated from FFmpeg's `color` source. The `VideoDecodeSmoke` test uses
+MediaExtractor and Android MediaCodec with byte-buffer output. It requires both
+input access units to be submitted, at least one decoded output buffer, and
+end-of-stream within eight seconds. It always releases the codec and extractor.
+
+This is an emulator *actual decoding* smoke, not hardware-accelerated decode,
+sustained 60 FPS throughput, display latency, hardware encoder interoperability
+or physical Lenovo acceptance. No third-party video material is included.
