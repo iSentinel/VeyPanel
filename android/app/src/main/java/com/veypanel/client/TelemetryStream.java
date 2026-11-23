@@ -14,7 +14,7 @@ import okhttp3.WebSocketListener;
 import okio.ByteString;
 
 /** Single foreground stream; only the newest received sample is retained. */
-final class TelemetryStream implements AutoCloseable {
+final class TelemetryStream implements TelemetryFeed {
     private static final int MAX_TEXT = 1024 * 1024;
     private static final OkHttpClient CLIENT = new OkHttpClient.Builder()
         .proxy(Proxy.NO_PROXY).followRedirects(false).followSslRedirects(false)
@@ -60,7 +60,7 @@ final class TelemetryStream implements AutoCloseable {
         });
     }
 
-    TelemetrySample next() throws Exception {
+    @Override public TelemetrySample next() throws Exception {
         long until = android.os.SystemClock.elapsedRealtime() + 5500;
         while (!ended.get() && android.os.SystemClock.elapsedRealtime() < until) {
             TelemetrySample sample = latest.poll(250, TimeUnit.MILLISECONDS);

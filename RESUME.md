@@ -74,6 +74,10 @@
 - PR #6 has merged into main after runtime PASS. BoundedTelemetryStream is available but MainActivity still uses OkHttp pending separate production transport acceptance.
 
 
+## WSS feed abstraction (CI pending)
+- Introduce TelemetryFeed interface implemented by existing OkHttp TelemetryStream and separate BoundedTelemetryStream. MainActivity now stores the interface, but still constructs OkHttp by default.
+- No trust behavior, retry/cancellation cadence, screen state or device grant logic changed. CI and runtime gate pending; physical Windows Host trust tests still required before switching.
+
 ## Next
 1. Verify history and transport raw CI and latest build. Fix any failures with logs. Test actual Activity switching, pause/reconnect, forget and live Windows Host TLS/WSS, including revocation and fallback. Fixture trust injection is not production system/user CA integration. Review WSS message pre-allocation bounds and dependency audit.
 2. Verify Android UI and camera on Lenovo TB-J607Z; add Host history synchronization and diagnostics. Continue native video / Display/Monitor/Hybrid and touch. Real Apollo/Intel Quick Sync PoC, signed driver and independent rollback watchdog before display mutation.

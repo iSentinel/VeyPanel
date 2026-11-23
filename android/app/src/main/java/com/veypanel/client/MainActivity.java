@@ -19,7 +19,7 @@ public final class MainActivity extends Activity {
     private final Handler main = new Handler(Looper.getMainLooper());
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
     private ReaderSession session;
-    private TelemetryStream stream;
+    private TelemetryFeed stream;
     private long nextStreamAttempt;
     private CredentialStore credentials;
     private SavedReader savedReader;
@@ -272,7 +272,7 @@ public final class MainActivity extends Activity {
                 nextStreamAttempt = android.os.SystemClock.elapsedRealtime() + 15000;
             }
         }
-        TelemetryStream active = stream;
+        TelemetryFeed active = stream;
         if (active != null) {
             request = worker.submit(() -> readStream(current, active));
             return;
@@ -291,7 +291,7 @@ public final class MainActivity extends Activity {
         });
     }
 
-    private void readStream(int current, TelemetryStream active) {
+    private void readStream(int current, TelemetryFeed active) {
         try {
             TelemetrySample sample = active.next();
             main.post(() -> complete(current, sample, null, false));
@@ -301,7 +301,7 @@ public final class MainActivity extends Activity {
         }
     }
 
-    private void streamFailed(int current, TelemetryStream active, boolean tls) {
+    private void streamFailed(int current, TelemetryFeed active, boolean tls) {
         active.close();
         if (!resumed || current != generation || stream != active) return;
         stream = null;

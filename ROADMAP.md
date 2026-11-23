@@ -68,6 +68,7 @@
 - [x] Prototype bounded WSS upgrade and isolated TLS transport ([JVM PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45093130783), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45093126068); PR #4 merged; production transport unchanged).
 - [x] Validate bounded WSS control frames, consecutive samples, malformed close and blocked read cancellation ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45096636484), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45096631311); PR #5 merged as f2b6e7e, isolated TLS only).
 - [ ] 0.8: reconnection, sleep/wake and USB network transport.
+- [ ] Introduce shared Android cancellable telemetry-feed interface, retaining OkHttp default; CI pending and bounded production switch not yet accepted.
 - [ ] 0.9: installer, signing, reproducible release, upgrade/uninstall acceptance.
 - [ ] 1.0: physical device acceptance and stable release.
 - [x] Add isolated cancellable Android bounded WSS stream with platform TLS and pre-read limits; validate against synthetic valid, malformed, stalled and revoked flows ([Android Build PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45150815811), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45150808675); PR #6 merged as deb7982). Not selected in production MainActivity.
