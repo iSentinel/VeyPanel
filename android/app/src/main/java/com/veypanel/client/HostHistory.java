@@ -18,7 +18,7 @@ final class HostHistory {
         Object window = root.opt("windowSeconds");
         if (!(window instanceof Number) || ((Number)window).doubleValue() != MonitorHistory.WINDOW_SECONDS)
             throw new IllegalArgumentException("History window");
-        Instant snapshot = Instant.parse(root.getString("timestampUtc"));
+        Instant snapshot = SampleRules.timestamp(root.getString("timestampUtc"));
         if (!SampleRules.fresh(snapshot, now)) throw new IllegalArgumentException("Stale history");
         JSONArray samples = root.getJSONArray("samples");
         if (samples.length() > MonitorHistory.CAPACITY) throw new IllegalArgumentException("History capacity");
@@ -26,7 +26,7 @@ final class HostHistory {
         Instant previous = snapshot.minusSeconds(MonitorHistory.WINDOW_SECONDS);
         for (int i = 0; i < data.length; i++) {
             JSONObject record = samples.getJSONObject(i);
-            Instant stamp = Instant.parse(record.getString("timestampUtc"));
+            Instant stamp = SampleRules.timestamp(record.getString("timestampUtc"));
             if (!stamp.isAfter(previous) || stamp.isAfter(snapshot))
                 throw new IllegalArgumentException("History timestamp order/window");
             data[i] = new MonitorHistory.Point(stamp, decodeValues(record));

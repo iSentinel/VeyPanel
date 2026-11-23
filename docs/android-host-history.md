@@ -1,6 +1,6 @@
 # Android Host history synchronization
 
-Status: codec and isolated runtime fixtures; not connected to the native UI yet.
+Status: codec passed isolated runtime; native explicit refresh, merge and lifecycle integration implemented on PR branch. Updated runtime and actual Activity/device acceptance pending.
 
 The existing same-origin authenticated GET /api/v1/history returns timestampUtc,
 windowSeconds=900, and up to 900 sorted numeric samples. Each point has seven
@@ -9,7 +9,7 @@ rejects stale snapshots, incorrect windows, duplicate/out-of-order points,
 points outside the snapshot window, excessive counts, and malformed metrics.
 Missing data stays N/A; no credentials or hardware identifiers are stored.
 
-Next integration gate:
+Implemented integration contract and remaining acceptance gates:
 - Request a single explicit refresh after a fresh authorized live sample, using the
   existing private HTTPS origin and Bearer reader. Never accept redirects.
 - Limit decoded response bytes and wall-clock read budget before JSON allocation.

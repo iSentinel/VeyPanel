@@ -41,6 +41,10 @@ public final class MainActivity extends Activity {
     private LinearLayout controls;
     private boolean hideOnSample = true;
     private Future<?> request;
+    private final ExecutorService historyWorker = Executors.newSingleThreadExecutor();
+    private Future<?> historyRequest;
+    private boolean historyBusy;
+    private java.time.Instant lastLive;
     private boolean resumed;
     private int generation;
     private final Runnable poll = this::pollOnce;
@@ -103,7 +107,7 @@ public final class MainActivity extends Activity {
         Button disconnect = new Button(this); disconnect.setText("Disconnect");
         disconnect.setOnClickListener(v -> { stopPoll(); session = null; clearClaim(); savePending = false; input.setText(""); offline("Disconnected"); });
         controls.addView(disconnect);
-        monitor = new MonitorPanel(this); column.addView(monitor);
+        monitor = new MonitorPanel(this); monitor.onHistoryRefresh(this::refreshHostHistory); column.addView(monitor);
         setContentView(scroll);
     }
 
@@ -276,7 +280,7 @@ public final class MainActivity extends Activity {
         if (terminal) {
             if ("Access expired or revoked".equals(error) && session != null
                 && savedReader != null && session.sameAccess(savedReader.session)) deleteCredential();
-            session = null; savePending = false; monitor.clearHistory(); return;
+            stopPoll(); session = null; savePending = false; return;
         }
         main.postDelayed(poll, 1000);
     }
@@ -356,7 +360,41 @@ public final class MainActivity extends Activity {
         deleteCredential(); offline("Disconnected. Forget requested; revoke on PC to invalidate the token there.");
     }
 
+    private void refreshHostHistory() {
+        if (!resumed || session == null || historyBusy || lastLive == null
+            || !SampleRules.fresh(lastLive, java.time.Instant.now())) return;
+        int current = generation;
+        ReaderSession chosen = session;
+        historyBusy = true;
+        monitor.historyEnabled(false);
+        monitor.historyFeedback("Refreshing Host history…");
+        historyRequest = historyWorker.submit(() -> {
+            try {
+                MonitorHistory.Point[] points = TelemetryClient.fetchHistory(chosen);
+                main.post(() -> finishHistory(current, chosen, points, null, false));
+            } catch (TelemetryClient.Denied ex) {
+                main.post(() -> finishHistory(current, chosen, null, "Access expired or revoked", true));
+            } catch (SSLException ex) {
+                main.post(() -> finishHistory(current, chosen, null, "TLS trust failed. Verify the PC certificate.", true));
+            } catch (Exception ex) {
+                main.post(() -> finishHistory(current, chosen, null, "Host history unavailable; local data retained", false));
+            }
+        });
+    }
+
+    private void finishHistory(int current, ReaderSession chosen, MonitorHistory.Point[] points,
+                               String error, boolean terminal) {
+        if (!resumed || current != generation || !chosen.sameAccess(session)) return;
+        historyBusy = false;
+        if (terminal) { complete(current, null, error, true); return; }
+        if (points != null) monitor.hostHistory(points);
+        else monitor.historyFeedback(error);
+        monitor.historyEnabled(lastLive != null && SampleRules.fresh(lastLive, java.time.Instant.now()));
+    }
+
     private void showSample(TelemetrySample s) {
+        lastLive = s.stamp;
+        monitor.historyEnabled(!historyBusy);
         status.setText("Connected · " + (stream == null ? "HTTPS REST" : "WSS") + " · " + s.stamp);
         monitor.render(s); monitor.observe(s);
         if (hideOnSample) { controls.setVisibility(android.view.View.GONE); hideOnSample = false; }
@@ -368,12 +406,16 @@ public final class MainActivity extends Activity {
     private void offline(String message) {
         main.removeCallbacks(expire);
         status.setText(message);
+        lastLive = null; monitor.historyEnabled(false);
         monitor.render(null);
         controls.setVisibility(android.view.View.VISIBLE);
     }
 
     private void stopPoll() {
         generation++;
+        lastLive = null; historyBusy = false;
+        if (historyRequest != null) historyRequest.cancel(true);
+        monitor.historyEnabled(false);
         monitor.clearHistory();
         if (stream != null) { stream.close(); stream = null; }
         nextStreamAttempt = 0;
@@ -385,5 +427,5 @@ public final class MainActivity extends Activity {
     }
     @Override protected void onResume() { super.onResume(); resumed = true; if (session != null) main.post(poll); else if (claim != null) showClaim(); }
     @Override protected void onPause() { resumed = false; stopPoll(); offline("Paused"); super.onPause(); }
-    @Override protected void onDestroy() { stopPoll(); session = null; clearClaim(); worker.shutdownNow(); super.onDestroy(); }
+    @Override protected void onDestroy() { stopPoll(); session = null; clearClaim(); worker.shutdownNow(); historyWorker.shutdownNow(); super.onDestroy(); }
 }

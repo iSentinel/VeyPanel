@@ -35,6 +35,9 @@ final class TransportSmoke {
             check(stream.next().cpu == 42,"Trusted WSS");
         }
         expectDenied(denied);
+        MonitorHistory.Point[] history = TelemetryClient.fetchHistory(valid,context.getSocketFactory());
+        check(history.length == 1 && history[0].series(0) == 42, "Trusted HTTPS history");
+        expectHistoryDenied(denied);
         try (TelemetryStream stream = open(fallback)) { expectEnded(stream); }
         check(TelemetryClient.fetch(fallback,context.getSocketFactory()).cpu == 42,"REST after WSS refusal");
         try (TelemetryStream stream = open(revoke)) {
@@ -42,6 +45,7 @@ final class TransportSmoke {
             expectEnded(stream);
         }
         expectDenied(revoke);
+        expectHistoryDenied(revoke);
         // The test fixture accepts only known artificial credentials.
     }
 
@@ -65,6 +69,12 @@ final class TransportSmoke {
         catch (TelemetryClient.Denied ex) { return; }
         throw new IllegalStateException("Reader access not denied");
     }
+    private void expectHistoryDenied(ReaderSession s) throws Exception {
+        try { TelemetryClient.fetchHistory(s,context.getSocketFactory()); }
+        catch (TelemetryClient.Denied ex) { return; }
+        throw new IllegalStateException("History access not denied");
+    }
+
     private static void expectEnded(TelemetryStream stream) throws Exception {
         try { stream.next(); }
         catch (SSLException ex) { throw ex; }

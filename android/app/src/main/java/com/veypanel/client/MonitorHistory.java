@@ -21,6 +21,14 @@ final class MonitorHistory {
         Double series(int i) { return values[i]; }
     }
     private final ArrayDeque<Point> points = new ArrayDeque<>();
+    private Point[] host = new Point[0];
+
+    void replaceHost(Point[] snapshot) {
+        if (snapshot.length > CAPACITY) throw new IllegalArgumentException("Host history capacity");
+        host = snapshot.clone();
+    }
+
+    boolean hasHost() { return host.length != 0; }
     void add(TelemetrySample sample) {
         if (!points.isEmpty()) {
             int order = sample.stamp.compareTo(points.getLast().stamp);
@@ -34,11 +42,20 @@ final class MonitorHistory {
     Point[] read(Instant now) {
         if (!points.isEmpty() && points.getLast().stamp.isAfter(now.plusSeconds(5))) clear();
         prune(now);
-        return points.toArray(new Point[0]);
+        java.util.TreeMap<Instant, Point> merged = new java.util.TreeMap<>();
+        Instant start = now.minusSeconds(WINDOW_SECONDS);
+        if (host.length != 0 && !host[host.length-1].stamp.isAfter(start)) host = new Point[0];
+        for (Point point : host) {
+            if (point.stamp.isAfter(now.plusSeconds(5))) { clear(); return new Point[0]; }
+            if (point.stamp.isAfter(start)) merged.put(point.stamp, point);
+        }
+        for (Point point : points) merged.put(point.stamp, point);
+        while (merged.size() > CAPACITY) merged.pollFirstEntry();
+        return merged.values().toArray(new Point[0]);
     }
     private void prune(Instant now) {
         Instant start = now.minusSeconds(WINDOW_SECONDS);
         while (!points.isEmpty() && !points.getFirst().stamp.isAfter(start)) points.removeFirst();
     }
-    void clear() { points.clear(); }
+    void clear() { points.clear(); host = new Point[0]; }
 }
