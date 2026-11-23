@@ -32,3 +32,5 @@ end-of-stream within eight seconds. It always releases the codec and extractor.
 This is an emulator *actual decoding* smoke, not hardware-accelerated decode,
 sustained 60 FPS throughput, display latency, hardware encoder interoperability
 or physical Lenovo acceptance. No third-party video material is included.
+
+Fixture SHA-256: f5817649d60c70b99db2c54cffcacf0bbe23c5384515165b9b1e71f4d8bb81a6.

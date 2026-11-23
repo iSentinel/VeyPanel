@@ -38,11 +38,12 @@ final class VideoDecodeSmoke {
                 decoder.start(); started = true;
                 decode(decoder, extractor);
             } finally {
-                if (decoder != null) {
-                    if (started) decoder.stop();
-                    decoder.release();
-                }
-                extractor.release();
+                try {
+                    if (decoder != null) {
+                        try { if (started) decoder.stop(); }
+                        finally { decoder.release(); }
+                    }
+                } finally { extractor.release(); }
             }
         }
     }
