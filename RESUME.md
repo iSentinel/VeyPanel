@@ -74,3 +74,8 @@
 1. Verify history and transport raw CI and latest build. Fix any failures with logs. Test actual Activity switching, pause/reconnect, forget and live Windows Host TLS/WSS, including revocation and fallback. Fixture trust injection is not production system/user CA integration. Review WSS message pre-allocation bounds and dependency audit.
 2. Verify Android UI and camera on Lenovo TB-J607Z; add Host history synchronization and diagnostics. Continue native video / Display/Monitor/Hybrid and touch. Real Apollo/Intel Quick Sync PoC, signed driver and independent rollback watchdog before display mutation.
 3. No physical streaming or display changes performed. Real storage power loss, sensors, dependency audit, licenses and release signing remain open.
+
+## Verified bounded-stream candidate (2026-11-23)
+- PR #6 head f7121ee: Android CI 45150815811 PASS, Windows CI 45150815933 PASS, Android runtime 45150808675 PASS. Merged as deb7982; read-only candidate does not change production OkHttp.
+- The fixture checks two messages, ping/pong, invalid frame, unknown CA, socket cancellation and absolute timeout under drip-feed. Actual Windows Host/Lenovo integration and security review remain required before the production switch.
+- Android 0.1.0-alpha.14 continues as the mainline version; separate video codec survey alpha.15 is under PR #7.
