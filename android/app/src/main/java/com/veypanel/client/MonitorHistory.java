@@ -11,8 +11,12 @@ final class MonitorHistory {
         final Instant stamp;
         private final Double[] values;
         Point(TelemetrySample s) {
-            stamp = s.stamp;
-            values = new Double[]{s.cpu,s.ram,s.gpu,s.encode,s.decode,s.read,s.write};
+            this(s.stamp, new Double[]{s.cpu,s.ram,s.gpu,s.encode,s.decode,s.read,s.write});
+        }
+        Point(Instant stamp, Double[] values) {
+            if (values.length != 7) throw new IllegalArgumentException("History series count");
+            this.stamp = stamp;
+            this.values = values.clone();
         }
         Double series(int i) { return values[i]; }
     }

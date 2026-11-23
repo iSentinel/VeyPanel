@@ -36,6 +36,9 @@ public final class StoreInstrumentation extends Instrumentation {
             stage = "history";
             runHistory();
             results.append("PASS: Android bounded history fixture\n");
+            stage = "Host history codec";
+            HostHistorySmoke.run();
+            results.append("PASS: Android Host history codec fixture\n");
             stage = "HTTPS/WSS transport";
             if (fixtureCa != null) {
                 new TransportSmoke(fixtureCa).run();
