@@ -27,6 +27,10 @@ final class TransportSmoke {
         context.init(null,new javax.net.ssl.TrustManager[]{manager},null);
     }
 
+    void runBounded() throws Exception {
+        BoundedTlsSmoke.run(context.getSocketFactory());
+    }
+
     void run() throws Exception {
         ReaderSession valid = ReaderSession.fixture('A'), denied = ReaderSession.fixture('B'), fallback = ReaderSession.fixture('C'), revoke = ReaderSession.fixture('D');
         expectTls(valid);
