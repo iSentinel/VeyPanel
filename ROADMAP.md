@@ -64,6 +64,7 @@
 - [x] Add local foreground connection diagnostics and disconnected Activity UI smoke ([build PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45091283003), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45091277957); PR #2 merged; physical lifecycle acceptance pending).
 - [ ] 0.7: overlay, alerts, Host history synchronization and diagnostics.
 - [x] Limit Host outbound WSS messages to 1 MiB and prototype bounded Android frame/message decoding ([Windows PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45092513666), [JVM PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45092513667), [runtime regression PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45092508834); PR #3 merged; Android production client still uses OkHttp).
+- [x] Prototype bounded WSS upgrade and isolated TLS transport ([JVM PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45093130783), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45093126068); PR #4 merged; production transport unchanged).
 - [ ] 0.8: reconnection, sleep/wake and USB network transport.
 - [ ] 0.9: installer, signing, reproducible release, upgrade/uninstall acceptance.
 - [ ] 1.0: physical device acceptance and stable release.

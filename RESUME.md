@@ -53,6 +53,10 @@
 - Bounded upgrade headers (8 KiB), RFC accept-key and masked auth/control encoder, JVM positive and negative fixtures; isolated actual TLS prototype with endpoint identification and absolute close watchdog, valid sample, unknown CA and oversized header. CI awaiting verification. Production client unchanged; do not merge as production transport.
 - Remaining: close validation, ping/pong, continuous stream deadlines and cancellation, actual user CA integration, security review, then production integration.
 
+## Verified bounded upgrade baseline
+- PR #4 head fdb9949: Windows 45093130787 PASS, Android 45093130783 PASS, runtime 45093126068 PASS including bounded TLS unknown-CA and oversized-header rejection. Merged as experimental transport only.
+- Current production Android client still uses OkHttp; full streaming integration pending.
+
 ## Next
 1. Verify history and transport raw CI and latest build. Fix any failures with logs. Test actual Activity switching, pause/reconnect, forget and live Windows Host TLS/WSS, including revocation and fallback. Fixture trust injection is not production system/user CA integration. Review WSS message pre-allocation bounds and dependency audit.
 2. Verify Android UI and camera on Lenovo TB-J607Z; add Host history synchronization and diagnostics. Continue native video / Display/Monitor/Hybrid and touch. Real Apollo/Intel Quick Sync PoC, signed driver and independent rollback watchdog before display mutation.

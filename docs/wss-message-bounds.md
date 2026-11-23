@@ -24,7 +24,7 @@ Integration requirements:
 
 ## Isolated TLS prototype
 
-PR #4 adds bounded HTTP Upgrade, RFC accept-key verification, extension refusal,
+Merged PR #4 (runtime 45093126068 PASS) adds bounded HTTP Upgrade, RFC accept-key verification, extension refusal,
 masked client auth/control frames, and an instrumentation-only TLS socket.
 The test exchange uses HTTPS endpoint identification, an explicit fixture trust
 factory (or default trust for negative checks), 3 s socket timeout and an
