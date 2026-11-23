@@ -42,6 +42,9 @@ public final class StoreInstrumentation extends Instrumentation {
             stage = "Activity UI";
             ActivitySmoke.run(this);
             results.append("PASS: Android Activity diagnostics visibility and disconnected history gate\n");
+            stage = "Android video decoder inventory";
+            VideoDecoderSmoke.run();
+            results.append("PASS: read-only Android video decoder API survey (no hardware guarantee)\n");
             stage = "HTTPS/WSS transport";
             if (fixtureCa != null) {
                 TransportSmoke transport = new TransportSmoke(fixtureCa);

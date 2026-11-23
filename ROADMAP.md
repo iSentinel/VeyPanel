@@ -57,6 +57,7 @@
 - [x] Add isolated actual native HTTPS/WSS transport fixture with ephemeral IP-SAN TLS, denial and manual REST-after-close checks ([corrected runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45090572041); not Windows Host or Activity end-to-end).
 - [x] Confirm actual Android Keystore, synthetic QR and extended telemetry instrumentation with strict final result gate ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45083538875)).
 - [ ] 0.5: Android QR camera acceptance, native WSS transport acceptance and native video.
+- [ ] Add read-only Android AVC/HEVC/AV1 decoder capability inventory; CI and physical tablet evidence pending (survey is not decoding acceptance).
 - [x] Implement adaptive 1/2/3-column native monitor, collapsible controls, memory/IOPS, network/volumes and age-gated thermal/storage health details ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45081976468); visual tablet acceptance pending).
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.
 - [x] Add Android foreground observed history (900 points / 15 minutes), CPU/RAM/GPU, codec and disk charts with 1/5/15-minute selection ([build/lint PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45083916217); [history instrumentation PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45083699289); UI acceptance pending).

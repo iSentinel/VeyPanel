@@ -1,5 +1,9 @@
 # Changelog
 
+## Android 0.1.0-alpha.15 (CI pending)
+
+- Add a read-only, on-demand AVC/HEVC/AV1 decoder survey; never claim hardware decode success from declared capabilities.
+
 ## Bounded WebSocket control prototype (CI PASS)
 
 - Validate ping/pong, close codes, sequential samples and read cancellation against isolated TLS fixture. Production Android transport remains OkHttp.

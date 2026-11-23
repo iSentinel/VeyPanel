@@ -44,6 +44,11 @@ public final class MainActivity extends Activity {
     private boolean hideOnSample = true;
     private Future<?> request;
     private final ExecutorService historyWorker = Executors.newSingleThreadExecutor();
+    private final ExecutorService videoWorker = Executors.newSingleThreadExecutor();
+    private Future<?> videoRequest;
+    private Button videoButton;
+    private TextView videoStatus;
+    private boolean videoBusy;
     private Future<?> historyRequest;
     private boolean historyBusy;
     private java.time.Instant lastLive;
@@ -120,7 +125,31 @@ public final class MainActivity extends Activity {
         disconnect.setOnClickListener(v -> { stopPoll(); session = null; clearClaim(); savePending = false; input.setText(""); offline("Disconnected"); });
         controls.addView(disconnect);
         monitor = new MonitorPanel(this); monitor.onHistoryRefresh(this::refreshHostHistory); column.addView(monitor);
+        videoButton = new Button(this);
+        videoButton.setText("Inspect video decoders");
+        videoButton.setOnClickListener(v -> inspectVideoDecoders());
+        column.addView(videoButton);
+        videoStatus = new TextView(this); videoStatus.setText("No decoder inspection run");
+        videoStatus.setTextSize(13); column.addView(videoStatus);
         setContentView(scroll);
+    }
+
+    private void inspectVideoDecoders() {
+        if (!resumed || videoBusy) return;
+        videoBusy = true; videoButton.setEnabled(false);
+        videoStatus.setText("Inspecting local Android decoders…");
+        int current = generation;
+        videoRequest = videoWorker.submit(() -> {
+            String result;
+            try { result = VideoDecoderSurvey.report(VideoDecoderSurvey.collect()); }
+            catch (RuntimeException ex) { result = "Decoder inventory unavailable"; }
+            String message = result;
+            main.post(() -> {
+                if (!resumed || current != generation) return;
+                videoBusy = false; videoButton.setEnabled(true);
+                videoStatus.setText(message);
+            });
+        });
     }
 
     private void scanInvitation() {
@@ -464,6 +493,9 @@ public final class MainActivity extends Activity {
         if (request != null) request.cancel(true);
     }
     @Override protected void onResume() { super.onResume(); resumed = true; if (session != null) main.post(poll); else if (claim != null) showClaim(); }
-    @Override protected void onPause() { resumed = false; stopPoll(); diagnostics.mark(ConnectionDiagnostics.Event.PAUSED); offline("Paused"); super.onPause(); }
-    @Override protected void onDestroy() { stopPoll(); session = null; clearClaim(); worker.shutdownNow(); historyWorker.shutdownNow(); super.onDestroy(); }
+    @Override protected void onPause() {
+        if (videoRequest != null) videoRequest.cancel(true);
+        videoBusy = false; videoButton.setEnabled(true);
+        resumed = false; stopPoll(); diagnostics.mark(ConnectionDiagnostics.Event.PAUSED); offline("Paused"); super.onPause(); }
+    @Override protected void onDestroy() { stopPoll(); session = null; clearClaim(); worker.shutdownNow(); historyWorker.shutdownNow(); videoWorker.shutdownNow(); super.onDestroy(); }
 }
