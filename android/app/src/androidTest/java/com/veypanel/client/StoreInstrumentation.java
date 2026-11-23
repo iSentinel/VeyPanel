@@ -97,6 +97,8 @@ public final class StoreInstrumentation extends Instrumentation {
     }
     private static void runMetrics() throws Exception {
         Instant now = Instant.now();
+        check(SampleRules.timestamp("2026-11-22T14:00:00.1234567+02:00")
+            .equals(Instant.parse("2026-11-22T12:00:00.123456700Z")), "Android offset timestamp");
         org.json.JSONObject root = new org.json.JSONObject().put("timestampUtc",now.toString())
             .put("cpuPercent",0).put("memoryTotalBytes",1024).put("memoryAvailableBytes",512)
             .put("diskIo",new org.json.JSONObject().put("readsPerSecond",5));

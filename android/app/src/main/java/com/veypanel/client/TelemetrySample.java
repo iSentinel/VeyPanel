@@ -9,7 +9,7 @@ final class TelemetrySample {
     final String details;
 
     private TelemetrySample(JSONObject root) throws Exception {
-        stamp = Instant.parse(root.getString("timestampUtc"));
+        stamp = SampleRules.timestamp(root.getString("timestampUtc"));
         if (!SampleRules.fresh(stamp, Instant.now())) throw new IllegalArgumentException("Stale sample");
         cpu = SampleRules.percent(root.opt("cpuPercent"));
         ram = SampleRules.percent(root.opt("memoryUsedPercent"));

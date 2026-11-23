@@ -27,6 +27,13 @@ public final class ClientPolicySmoke {
         reject("https://192.168.1.10:47861/#token=bad");
         check(ReaderSession.privateIp("172.16.0.1") && ReaderSession.privateIp("172.31.1.2") && ReaderSession.privateIp("10.1.1.1"), "Private ranges");
         Instant now = Instant.parse("2026-11-22T12:00:00Z");
+        check(SampleRules.timestamp("2026-11-22T12:00:00+00:00").equals(now)
+            && SampleRules.timestamp("2026-11-22T14:00:00.1234567+02:00").equals(now.plusNanos(123456700))
+            && SampleRules.timestamp("2026-11-22T12:00:00Z").equals(now), "Windows offset timestamp normalization");
+        boolean noOffset = false;
+        try { SampleRules.timestamp("2026-11-22T12:00:00"); }
+        catch (java.time.format.DateTimeParseException ex) { noOffset = true; }
+        check(noOffset, "Offset required");
         check(SampleRules.fresh(now.minusSeconds(5), now) && !SampleRules.fresh(now.minusSeconds(6), now)
             && !SampleRules.fresh(now.plusSeconds(6), now), "Sample freshness");
         check(SampleRules.percent(0) == 0 && SampleRules.percent(100) == 100 && SampleRules.percent(null) == null
