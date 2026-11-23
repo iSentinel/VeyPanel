@@ -45,6 +45,10 @@
 - Host serialized outbound message byte gate (1 MiB), isolated Android uncompressed frame-header and message assembly prototype, strict UTF-8, continuation/control and frame count tests. PR #3 pending CI; current OkHttp path unchanged, no production inbound allocation limit claimed.
 - Next transport gate: security review of bounded handshake/TLS, close validation and absolute read deadlines before integration; add actual adversarial TLS fixture. No hardware or native video changes.
 
+## Verified WSS bounds baseline
+- PR #3 head c126db7: Windows 45092513666 PASS including outbound byte cap, Android 45092513667 PASS including header/aggregate/UTF-8 JVM fixtures, runtime 45092508834 PASS including previous Activity/transport gates. Merged as bb40f3f.
+- Production Android WSS pre-allocation protection still pending; do not equate prototype tests with live transport acceptance.
+
 ## Next
 1. Verify history and transport raw CI and latest build. Fix any failures with logs. Test actual Activity switching, pause/reconnect, forget and live Windows Host TLS/WSS, including revocation and fallback. Fixture trust injection is not production system/user CA integration. Review WSS message pre-allocation bounds and dependency audit.
 2. Verify Android UI and camera on Lenovo TB-J607Z; add Host history synchronization and diagnostics. Continue native video / Display/Monitor/Hybrid and touch. Real Apollo/Intel Quick Sync PoC, signed driver and independent rollback watchdog before display mutation.

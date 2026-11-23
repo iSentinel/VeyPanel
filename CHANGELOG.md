@@ -1,5 +1,9 @@
 # Changelog
 
+## WSS bounds follow-up (CI PASS)
+
+- Windows Host outbound telemetry cap; Android experimental bounded frame/message parser. Production client integration pending.
+
 ## Android 0.1.0-alpha.14 (build, isolated Activity and transport runtime PASS)
 
 - Add foreground connection diagnostic panel with WSS attempts, fallback, REST errors, fresh receipt age and reset on session lifecycle. No endpoints, tokens or exception text are retained.
