@@ -1,6 +1,6 @@
 # Dependency and redistribution preflight
 
-Status: source and published-debug-APK inspection, not full dependency or
+Status: Android CI 45334220672 PASS for license packaging; not full dependency or
 license acceptance for a production release.
 
 ## Reviewed direct dependencies

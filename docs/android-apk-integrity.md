@@ -63,3 +63,11 @@ Fetch the exact artifact and verify without installing it:
     python3 scripts/check_android_badging.py veypanel-alpha18-verified/apk-badging.txt android/app/build.gradle
 
 No release signing keys or sensitive host credentials were used.
+
+## License packaging gate verified
+
+Android CI 45334220672 requires the existing ZXing Android Embedded,
+ZXing Core and OkHttp license/notice assets inside the published APK; the
+negative missing-notice fixture is enforced. The gate does not prove a full
+transitive SBOM or grant permission to redistribute third-party components
+without a separate release review.

@@ -90,4 +90,4 @@
 
 - [x] 0.9: Verify compiled APK ID/version/min/target SDK and exactly CAMERA+INTERNET permissions ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45333601381), [Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45333601475), PR #17 merged). Production signing, reproducible releases and physical acceptance pending.
 
-- [ ] 0.9: Verify bundled ZXing/OkHttp license and notice assets survive Android APK publication. CI pending; full transitive SBOM/license review remains open.
+- [x] 0.9: Verify bundled ZXing/OkHttp license and notice assets survive Android APK publication ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45334220672), [Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45334220748); PR #18 merged). Full transitive SBOM/license audit remains open.

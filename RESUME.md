@@ -173,3 +173,7 @@
 ## Android third-party license packaging guard (CI pending)
 - Source audit: Android ZXing Embedded 4.3.0, ZXing Core 3.5.3, OkHttp 4.12.1 pinned; app license/NOTICE assets exist and were present in actual alpha.18 debug APK. Windows Host packages pinned, Codecrete MIT license bundled, NuGetAudit enabled.
 - APK verifier now requires five known Android third-party license/notice assets; updated fixtures include missing-notice negative. CI pending. This does not establish transitive lockfiles/SBOM or production redistribution acceptance.
+
+## Verified third-party license archive gate (2026-11-24)
+- PR #18 head f1037b8: Android CI 45334220672/45334212229 PASS, Windows CI 45334220748/45334212121 PASS; merged as fe43f31.
+- APK verifier requires five bundled ZXing/OkHttp license/NOTICE assets. Actual signed debug APK artifact 14892659707 from run 45334220672 includes verification reports. Full Gradle/NuGet transitive dependency lockfiles and SBOM are still absent, and physical hardware and release signing remain pending.
