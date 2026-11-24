@@ -83,7 +83,7 @@ final class LocalAvcSelfTest {
                     if (!"video/avc".equalsIgnoreCase(type)) continue;
                     try {
                         if (codec.getCapabilitiesForType(type).getVideoCapabilities()
-                            .areSizeSupported(64, 64)) return MediaCodec.createByCodecName(codec.getName());
+                            .areSizeAndRateSupported(64, 64, 30)) return MediaCodec.createByCodecName(codec.getName());
                     } catch (RuntimeException ignored) { /* Try the next available decoder. */ }
                 }
             }
