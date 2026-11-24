@@ -1,5 +1,9 @@
 # Changelog
 
+## Side-by-side package selection (CI PASS)
+
+- Verify atomic selection metadata, idempotence and rollback without launching applications.
+
 ## Windows package preflight and staging (CI PASS)
 
 - Require external package digest, nested Host and source identity checks; default dry-run and explicit isolated staging verified on Windows CI.

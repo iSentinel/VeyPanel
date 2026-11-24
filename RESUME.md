@@ -320,3 +320,6 @@
 
 ## Side-by-side package selection candidate
 - Digest-derived version directories, atomic selection.json with active/previous records and pinned manifest hashes, exclusive cooperating writer lock, dry-run default. Thirteen fixtures, 109/109 total local tests PASS. Real PR #30 repack and PR #33 portable ZIP selected in sequence and rolled back; both versions and ZIPs retained. Windows CI tests real first selection/idempotence and synthetic upgrade/rollback. No process launch, migration, automatic orphan deletion or physical power-loss guarantee.
+
+## Verified side-by-side selection
+- PR #35 head 90c0951, Windows CI 45428020239/45427999735 PASS, merged cbe863f. Local 109 fixtures and real package A/B rollback were verified previously. Next: correct CI pipeline failure propagation before further release acceptance; launcher and recovery remain open.

@@ -125,4 +125,4 @@
 
 - [x] 0.9: Require trusted external SHA-256 and verified nested Host/source identity before dry-run or isolated package staging; both Windows CI 45426452023/45426432998 PASS, PR #34 merged. Real Windows package staging verified 836 files. Activation, upgrade/rollback and uninstall separate.
 
-- [ ] 0.9: Verify side-by-side package selection, idempotence, atomic state replacement, interrupted-write refusal and verified rollback. Local real two-package test PASS; Windows CI pending. Activation/launcher and uninstall remain separate.
+- [x] 0.9: Verify side-by-side package selection, idempotence, atomic state replacement, interrupted-write refusal and verified rollback. PR #35 merged; Windows CI 45428020239/45427999735 PASS. Activation/launcher and uninstall remain separate.

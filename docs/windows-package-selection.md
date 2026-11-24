@@ -1,6 +1,6 @@
 # Side-by-side Windows package selection
 
-Status: candidate, Windows CI pending. Python 3.12 and trusted source checkout
+Status: PR #35 merged; both Windows CI runs passed. Python 3.12 and trusted source checkout
 required. Use an existing private dedicated directory owned by the current
 user. All package and root access must be under exclusive owner control.
 
