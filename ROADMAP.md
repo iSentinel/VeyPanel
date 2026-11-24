@@ -120,3 +120,5 @@
 - [x] 0.9: Adopt verified deterministic Host CI publication settings (ContinuousIntegrationBuild and source-epoch endpoint normalization); both Windows CI runs 45411446910/45411465466 PASS, PR #31 merged. Raw/normalized evidence independently verified. Local publish and signed release reproducibility remain separate.
 
 - [x] 0.9: Run independent same-checkout Desktop bundle reproduction ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45412111245), PR #32 merged). All 832 experimental bundle files identical; both Host smoke tests PASS. Interactive Desktop acceptance separate.
+
+- [ ] 0.9: Publish unsigned portable Windows ZIP with embedded manifests, verify Windows extraction and compare exact archive SHA-256 between independent same-checkout runners. CI pending; installation/upgrade/uninstall and signing separate.

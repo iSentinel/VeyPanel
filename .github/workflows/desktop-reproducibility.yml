@@ -9,6 +9,8 @@ on:
       - 'scripts/build_source_evidence.py'
       - 'global.json'
       - 'scripts/artifact_manifest.py'
+      - 'scripts/portable_zip.py'
+      - 'scripts/test_portable_zip.py'
       - 'scripts/normalize_static_endpoints.py'
       - 'scripts/test_normalize_static_endpoints.py'
       - '.github/workflows/desktop-reproducibility.yml'
@@ -75,6 +77,19 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           Copy-Item publish-desktop/artifact-files.sha256.json evidence/desktop.json
           Copy-Item publish-desktop/build-source.json evidence/build-source.json
+      - name: Build and verify deterministic portable ZIP
+        shell: pwsh
+        run: |
+          python -m unittest discover -s scripts -p test_portable_zip.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/portable_zip.py write publish-desktop desktop-portable.zip
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $digest = (Get-FileHash desktop-portable.zip -Algorithm SHA256).Hash.ToLowerInvariant()
+          Set-Content -Path evidence/portable-sha256.txt -Encoding utf8 -NoNewline -Value $digest
+          Expand-Archive -LiteralPath desktop-portable.zip -DestinationPath extracted
+          python scripts/artifact_manifest.py verify extracted
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/artifact_manifest.py verify extracted/host
       - uses: actions/upload-artifact@v4
         with:
           name: desktop-reproduction-${{ matrix.copy }}
@@ -101,6 +116,8 @@ jobs:
           test "$(head -n 1 "$a/checkout.txt")" = "$GITHUB_SHA"
           diff -u "$a/build-source.json" "$b/build-source.json"
           python3 scripts/artifact_manifest.py compare "$a/desktop.json" "$b/desktop.json" | tee desktop-comparison.txt
+          diff -u "$a/portable-sha256.txt" "$b/portable-sha256.txt"
+          printf 'PASS: independent portable ZIP SHA-256: %s\n' "$(cat "$a/portable-sha256.txt")" | tee -a desktop-comparison.txt
       - uses: actions/upload-artifact@v4
         if: always()
         with:
