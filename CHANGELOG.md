@@ -1,5 +1,9 @@
 # Changelog
 
+## Native Windows NuGet lock (CI PASS)
+
+- Enforce Windows Host locked restore with the SDK-generated win-x64 lock and package SHA-512 hashes. Self-contained publication and integration tests passed.
+
 ## Native Gradle runtime lock (CI and emulator runtime PASS)
 
 - Strictly lock Android debug runtime dependencies and verify regeneration; capture SDK-generated NuGet lock candidate with content hashes for subsequent enforcement.

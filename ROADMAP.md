@@ -99,3 +99,5 @@
 - [x] 0.9: Enforce Gradle debug runtime native lock and capture actual NuGet win-x64 native lock ([Android CI](https://github.com/iSentinel/VeyPanel/actions/runs/45364765561), [Windows CI](https://github.com/iSentinel/VeyPanel/actions/runs/45364765530), [runtime](https://github.com/iSentinel/VeyPanel/actions/runs/45364754109) PASS; PR #21 merged). NuGet enforcement remains pending.
 
 - [ ] 0.9: Enforce native NuGet locked mode for Windows Host using actual CI-generated package hashes; Windows restore/build/publish CI pending.
+
+- [x] 0.9: Enforce native NuGet locked mode for Windows Host with SDK-generated win-x64 lock and package SHA-512 hashes ([Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45370338307), [second CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45370350526); PR #22 merged). SDK/runtime packs and Desktop scope remain open.

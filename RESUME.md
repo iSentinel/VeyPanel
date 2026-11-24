@@ -208,3 +208,8 @@
 - Initial PR #22 Windows runs 45365416506/45365405289 failed NU1004 during self-contained win-x64 publish: the generated lock represented only net10.0. Declare Host RuntimeIdentifiers=win-x64 and generate a candidate explicitly on the Windows runner. Temporary unlocked generation is not eligible for merge and must be removed after capturing the candidate.
 
 - Corrected RID-aware lock from CI run 45369999676 artifact 14908917225 adds net10.0/win-x64 with no package/version/hash changes. Temporary generation removed. Strict restore/build/self-contained publish and integration CI must pass before merge.
+
+## Verified NuGet locked mode (2026-11-24)
+- PR #22 head 8d6d22c, Windows CI 45370338307 and 45370350526 PASS, merged as 1bfe1ea.
+- Initial NU1004 at self-contained publish corrected using explicit RuntimeIdentifiers=win-x64 and genuine SDK-generated net10.0/win-x64 lock section, preserving both package SHA-512 hashes. Temporary unlocked capture removed; strict restore/build/publish and lockfile diff passed.
+- Next: enforce Gradle artifact checksum verification from matching build captures, with negative checksum test. Complete upstream provenance, runtime packs, SDK pinning, production signing and physical acceptance remain open.

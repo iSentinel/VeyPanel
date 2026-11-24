@@ -68,3 +68,12 @@ content hashes. Host enables RestorePackagesWithLockFile and
 RestoreLockedMode. Windows CI must pass locked restore, build, publish
 and integration tests; lockfile modification fails the verification step.
 This does not lock the .NET SDK, runtime packs or Desktop project separately.
+
+### NuGet lock accepted
+
+Windows CI 45370338307/45370350526 passed with strict locked restore.
+The initial NU1004 publish failure was fixed by declaring win-x64 in
+RuntimeIdentifiers and obtaining the actual SDK-generated RID section
+(artifact 14908917225 from run 45369999676). The temporary capture was
+removed. Both package content hashes remained unchanged. SDK/runtime-pack
+and Desktop dependency reproducibility remain separate tasks.
