@@ -17,6 +17,11 @@ jobs:
         run: |
           if ((dotnet --version).Trim() -ne '10.0.404') { throw 'Unexpected .NET SDK' }
           if ((python --version).Trim() -ne 'Python 3.12.10') { throw 'Unexpected Python version' }
+      - name: Record actual Git source checkout before build
+        run: |
+          python -m unittest discover -s scripts -p test_build_source_evidence.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/build_source_evidence.py build-source.json
       - name: Dependency inventory fixtures
         run: |
           python -m unittest discover -s scripts -p test_dependency_inventory.py -v
@@ -70,6 +75,9 @@ jobs:
         run: |
           python -m unittest discover -s scripts -p test_artifact_manifest.py -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/build_source_evidence.py build-source.json --verify
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Copy-Item build-source.json publish/build-source.json
           python scripts/artifact_manifest.py write publish
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python scripts/artifact_manifest.py verify publish
@@ -89,6 +97,9 @@ jobs:
         run: Copy-Item -Path publish -Destination publish-desktop/host -Recurse
       - name: Verify published Desktop artifact file manifest
         run: |
+          python scripts/build_source_evidence.py build-source.json --verify
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Copy-Item build-source.json publish-desktop/build-source.json
           python scripts/artifact_manifest.py write publish-desktop
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python scripts/artifact_manifest.py verify publish-desktop

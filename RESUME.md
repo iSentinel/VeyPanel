@@ -278,3 +278,6 @@
 - Actual identical checkout d3cead4a81edfd9f6cf788bbf62a3b131d550af7, tree 9255f186e8913a6568a5e6b1be513769030e780a. Raw 356/357 files identical, only static web asset endpoints JSON changed; normalized 357/357 identical, including DLL/EXE/PDB; both Host runtime smoke tests passed. Comparison artifact 14923894198.
 - Initial CRLF checkout evidence failure corrected. Experiment confirms unsigned Host output reproduction with explicitly normalized timestamp metadata, not ordinary artifact byte equality, Desktop reproduction, Authenticode, or complete installer reproduction.
 - Next: record actual clean tracked source checkout in ordinary artifacts (build-source.json); then evaluate adopting validated deterministic publication settings. Hardware and production signing remain open.
+
+## Build source evidence candidate
+- Capture actual clean tracked Git checkout SHA/tree/epoch before build and verify unchanged before publishing Android/Host/Desktop artifact manifests. Six local Git repository fixtures and CLI verification PASS. CI pending; no signed attestation claim.

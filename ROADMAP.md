@@ -114,3 +114,5 @@
 - [x] 0.9: Verify Android exact-checkout reproduction on two independent CI runners ([runtime reproduction PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45403501445); PR #28 merged); both v2 signatures verify, bytes outside signing block identical. Full signed APK equality remains open.
 
 - [x] 0.9: Run independent Windows exact-checkout Host reproduction ([comparison PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45404314553); PR #29 merged). Raw 356/357 identical; normalized 357/357 identical; both Host smoke tests PASS. Normal publication unchanged.
+
+- [ ] 0.9: Record and revalidate actual clean tracked Git checkout commit/tree/epoch in ordinary Android, Host and Desktop artifacts; CI pending. Signed build attestation remains open.

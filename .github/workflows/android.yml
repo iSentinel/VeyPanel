@@ -1,9 +1,9 @@
 name: Android CI
 on:
   push:
-    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json', 'scripts/check_gradle_verification.py', 'scripts/test_check_gradle_verification.py', 'scripts/test_gradle_checksum_gate.sh', 'scripts/dependency_license_evidence.py', 'scripts/test_dependency_license_evidence.py', 'scripts/artifact_manifest.py', 'scripts/test_artifact_manifest.py']
+    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json', 'scripts/check_gradle_verification.py', 'scripts/test_check_gradle_verification.py', 'scripts/test_gradle_checksum_gate.sh', 'scripts/dependency_license_evidence.py', 'scripts/test_dependency_license_evidence.py', 'scripts/artifact_manifest.py', 'scripts/test_artifact_manifest.py', 'scripts/build_source_evidence.py', 'scripts/test_build_source_evidence.py']
   pull_request:
-    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json', 'scripts/check_gradle_verification.py', 'scripts/test_check_gradle_verification.py', 'scripts/test_gradle_checksum_gate.sh', 'scripts/dependency_license_evidence.py', 'scripts/test_dependency_license_evidence.py', 'scripts/artifact_manifest.py', 'scripts/test_artifact_manifest.py']
+    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json', 'scripts/check_gradle_verification.py', 'scripts/test_check_gradle_verification.py', 'scripts/test_gradle_checksum_gate.sh', 'scripts/dependency_license_evidence.py', 'scripts/test_dependency_license_evidence.py', 'scripts/artifact_manifest.py', 'scripts/test_artifact_manifest.py', 'scripts/build_source_evidence.py', 'scripts/test_build_source_evidence.py']
   workflow_dispatch:
 permissions:
   contents: read
@@ -17,6 +17,10 @@ jobs:
         with:
           distribution: temurin
           java-version: '17.0.21+9'
+      - name: Record actual Git source checkout before build
+        run: |
+          python3 -m unittest discover -s scripts -p test_build_source_evidence.py -v
+          python3 scripts/build_source_evidence.py build-source.json
       - name: Native client policy fixtures
         run: |
           mkdir -p /tmp/veypanel-client-tests
@@ -93,7 +97,9 @@ jobs:
       - name: Stage and verify exact Android artifact file set
         run: |
           python3 -m unittest discover -s scripts -p test_artifact_manifest.py -v
+          python3 scripts/build_source_evidence.py build-source.json --verify
           mkdir -p android-artifact
+          cp build-source.json android-artifact/
           cp android/app/build/outputs/apk/debug/{app-debug.apk,apk-integrity.txt,apk-signing.txt,apk-badging.txt,apk-identity.txt,runtime-components.cdx.json,build-toolchain.txt,dependency-license-evidence.json} android-artifact/
           python3 scripts/artifact_manifest.py write android-artifact
           python3 scripts/artifact_manifest.py verify android-artifact
