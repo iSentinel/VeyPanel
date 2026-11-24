@@ -272,3 +272,9 @@
 - Prior static asset JSON differs only in 50 Last-Modified values; diagnostic normalization produces identical JSON, six local fixtures PASS. New dedicated Windows CI builds identical checkout twice with locked packages and pinned SDK, captures raw and normalized inventories, smoke tests normalized output, and compares all normalized files without excluding binaries. Ordinary Windows CI unchanged. CI pending.
 
 - Initial experiment 45403857956 failed checkout text comparison due CRLF, corrected in b59102b. Run 45403914865 PASS: both independent builds used checkout 66bffb0772aa75d7928c5e66366274456d36f890, tree 66556a5676f414d26588adb0db5bb2eef84b2ce0; raw 356/357 identical, only static endpoint JSON differs; normalized 357/357 identical, both runtime smoke tests passed. Comparison artifact 14922904731. Final combined HEAD CI pending.
+
+## Verified Windows exact-checkout reproduction (2026-11-24)
+- PR #29 final HEAD 3cc40d9: reproduction 45404314553 (both builds and comparison PASS), Windows CI 45404301160/45404314462 PASS; merged as b186b92.
+- Actual identical checkout d3cead4a81edfd9f6cf788bbf62a3b131d550af7, tree 9255f186e8913a6568a5e6b1be513769030e780a. Raw 356/357 files identical, only static web asset endpoints JSON changed; normalized 357/357 identical, including DLL/EXE/PDB; both Host runtime smoke tests passed. Comparison artifact 14923894198.
+- Initial CRLF checkout evidence failure corrected. Experiment confirms unsigned Host output reproduction with explicitly normalized timestamp metadata, not ordinary artifact byte equality, Desktop reproduction, Authenticode, or complete installer reproduction.
+- Next: record actual clean tracked source checkout in ordinary artifacts (build-source.json); then evaluate adopting validated deterministic publication settings. Hardware and production signing remain open.

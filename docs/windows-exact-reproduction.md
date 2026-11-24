@@ -1,6 +1,6 @@
 # Windows Host exact-checkout reproduction experiment
 
-Status: candidate, not normal publication policy.
+Status: PR #29 merged, two reproduction experiments passed; not normal publication policy.
 
 PR #25 comparisons found four different Host files but compared PR and
 push jobs, whose actual Git checkout IDs were not equal. The static endpoint
@@ -37,3 +37,14 @@ JSON differed. After experimental normalization all 357 file hashes
 matched exactly, including Host DLL, EXE and PDB. Both published Hosts
 passed runtime smoke. Comparison artifact 14922904731. Final combined PR
 HEAD verification remains pending. Ordinary publication is not changed.
+
+## Final verified result
+
+Run 45404314553 repeated the experiment on checkout
+d3cead4a81edfd9f6cf788bbf62a3b131d550af7 (tree
+9255f186e8913a6568a5e6b1be513769030e780a). Both raw inventories contained
+357 files, only static endpoint JSON differed. Both normalized inventories
+matched all 357 files exactly; both Host runtime smoke tests passed.
+Comparison artifact 14923894198. Ordinary Windows CI 45404301160 and
+45404314462 passed. PR #29 merged as b186b92. No production signing or
+normal publication change has been made.

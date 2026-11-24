@@ -1,5 +1,9 @@
 # Changelog
 
+## Windows exact-checkout Host reproduction (CI PASS)
+
+- Independently build the same checkout twice with locked dependencies and continuous integration mode. Raw 356/357 files match; experimental Last-Modified normalization gives 357/357 matching files and both Host smoke tests pass. Ordinary publication unchanged.
+
 ## Android exact-checkout APK reproduction (CI PASS)
 
 - Independently build identical Git checkout twice, validate both debug APK signatures and require exact bytes outside validated equal-size signing blocks. Full signed APK byte equality remains open.
