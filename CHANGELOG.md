@@ -1,5 +1,9 @@
 # Changelog
 
+## Scoped runtime advisory audit (CI PASS)
+
+- Collect time-stamped OSV advisory snapshots for the 12 reviewed Maven/NuGet runtime coordinates using independent CI. Do not equate zero matches with complete security acceptance.
+
 ## Runtime dependency license evidence (CI PASS)
 
 - Publish checksum-verified package license declarations and notice hashes; use native NuGet signature and content hash verification for signed packages. Record supplemental exact Maven POM declarations without treating them as complete redistribution approval.

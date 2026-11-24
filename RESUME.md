@@ -245,3 +245,8 @@
 
 ## Runtime advisory audit candidate
 - Public OSV querybatch collector with bounded response/pagination validation, six offline tests PASS. First live query 2026-11-24 covered 12 runtime package coordinates and returned zero matches. CI workflow and artifact publication pending; no full security approval or app networking changes.
+
+## Verified runtime advisory audit (2026-11-24)
+- PR #26 exact HEAD 8353025: OSV CI 45378191048/45378182750, Android CI 45378182940 and Windows CI 45378191025/45378182772 PASS; merged as 5643653.
+- Actual time-stamped CI artifact 14911593443 contains 12 exact runtime package coordinates and zero advisory matches at collection time. No full vulnerability coverage or security approval; findings require review. Combined local Python tests 51/51 PASS.
+- Next: record exact artifact file membership and SHA-256, independently compare two builds of the same commit, and investigate reproducibility differences before release signing.

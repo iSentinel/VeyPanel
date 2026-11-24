@@ -1,6 +1,6 @@
 # Runtime package advisory audit
 
-Status: candidate; first live API snapshot and six offline fixtures passed.
+Status: PR #26 merged; both OSV CI snapshots, Android and Windows CI passed. Six offline fixtures passed.
 This is a narrowly scoped inventory query, not security approval.
 
 The script queries the public OSV batch API for exact versions in the
@@ -30,3 +30,5 @@ records and advisory source coverage require separate review. The workflow
 runs on relevant changes or manual dispatch, not as an application service.
 
 API reference: https://google.github.io/osv.dev/post-v1-querybatch/
+
+Verified snapshot: run 45378191048, artifact 14911593443. The recorded 12-package query returned zero advisory matches; this is a scoped, time-dependent result.
