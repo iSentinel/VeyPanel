@@ -1,5 +1,9 @@
 # Changelog
 
+## Windows package preflight and staging (CI PASS)
+
+- Require external package digest, nested Host and source identity checks; default dry-run and explicit isolated staging verified on Windows CI.
+
 ## Portable Windows ZIP (CI PASS)
 
 - Publish manifest-verified unsigned portable Windows package and verify independent experimental ZIP reproduction and Windows extraction.

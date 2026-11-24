@@ -313,3 +313,7 @@
 
 ## Digest-pinned Windows staging candidate
 - Default read-only package preflight, explicit --apply into a new directory below an existing non-reparse parent. Verify full archive digest, file hashes, nested Host manifest, matching valid source evidence, disk space and extracted tree. Nine offline fixtures; no activation, overwrite, registry or service changes. Windows CI pending.
+
+## Verified Windows package staging
+- PR #34 head acdac46, Windows CI 45426452023/45426432998 PASS, merged as eb5d51c. Actual CI log confirms dry-run and staging of 836 files, both extracted manifests match.
+- Next: side-by-side verified package selection with an atomic state record, explicit rollback and no process launch or system mutation. Power-loss recovery and uninstall remain separate.

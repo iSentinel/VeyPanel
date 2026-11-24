@@ -1,6 +1,6 @@
 # Windows package preflight and isolated staging
 
-Status: candidate; Windows CI pending. Requires Python 3.12 and the scripts
+Status: PR #34 merged; both Windows CI passed, actual dry-run and staging verified 836 files. Requires Python 3.12 and the scripts
 from a trusted source checkout. This is not an installer or activation tool.
 
 Obtain the expected SHA-256 from an independently trusted channel. An
