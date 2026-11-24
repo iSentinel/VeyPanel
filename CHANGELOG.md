@@ -1,6 +1,6 @@
 # Changelog
 
-## Android 0.1.0-alpha.18 (CI pending)
+## Android 0.1.0-alpha.18 (CI and emulator runtime PASS; physical pending)
 
 - Add local diagnostic touch coordinates on the embedded synthetic AVC preview. Uses shared fail-closed TouchMath, rejects multi-touch and touches outside the image. No touch events forwarded to Windows or OS injected.
 - Add JVM geometry fixtures and Android Activity synthetic tap assertions.

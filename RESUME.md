@@ -144,3 +144,7 @@
 ## Android alpha.18 local preview touch diagnostics (CI pending)
 - LocalTouchProbe projects touch-up coordinates on synthetic 64x64 preview via existing TouchMath; multi-pointer, letterbox/outside and invalid inputs rejected. Text stays on-device in RAM and explicitly states not sent to Windows.
 - MainActivity attaches a listener only to the local TextureView. JVM and Activity tests cover center touch, bounds and nonforwarding. No input network protocol, Windows injection, privileges or display mutations. Physical Lenovo acceptance remains open.
+
+## Verified Android alpha.18 local touch probe (2026-11-24)
+- PR #15 head 11f6eda: Android CI 45331898798/45331893717 PASS, Windows CI 45331898833/45331893745 PASS, Android runtime 45331893810 PASS with Activity local touch probe and prior TLS/history/AVC gates. Merged as 683e5b7.
+- Debug APK artifact 14892476862 from run 45331898798; version 0.1.0-alpha.18. All touch readings are local synthetic 64x64 values, no network input or Windows injection. Actual Lenovo gestures, rotations and physical video remain pending.

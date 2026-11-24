@@ -88,3 +88,16 @@ then tap the center and corners of its test image. The UI should display local
 it should say **multi-touch rejected**. Confirm the label **not sent to Windows**.
 This is purely local motion-event validation; actual remote touchscreen control,
 display rotation, accuracy and gesture policy are still unimplemented.
+
+## Verified alpha.18 debug APK (not a production release)
+
+    gh run download 45331898798 -R iSentinel/VeyPanel -n veypanel-android-monitor-debug -D veypanel-alpha18
+    adb devices -l
+    adb -s DEVICE_SERIAL install -r veypanel-alpha18/app-debug.apk
+    adb -s DEVICE_SERIAL shell am start -n com.veypanel.client/.MainActivity
+
+Tap **Preview local AVC frame**, then touch the center and edge of the
+synthetic test picture. The coordinate is shown only on the tablet and
+is explicitly not sent to Windows. Confirm multi-touch rejection and no
+rotation/letterboxing errors on actual Lenovo hardware. Do not treat this
+as permissioned remote control, validated display mapping or streaming.
