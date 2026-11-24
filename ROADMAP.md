@@ -97,3 +97,5 @@
 - [x] 0.9: Enforce post-resolution component version/membership baselines in Android and Windows CI ([Android PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45364210959), [Windows PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45364210957); PR #20 merged). Native lockfiles and package hashes remain open.
 
 - [x] 0.9: Enforce Gradle debug runtime native lock and capture actual NuGet win-x64 native lock ([Android CI](https://github.com/iSentinel/VeyPanel/actions/runs/45364765561), [Windows CI](https://github.com/iSentinel/VeyPanel/actions/runs/45364765530), [runtime](https://github.com/iSentinel/VeyPanel/actions/runs/45364754109) PASS; PR #21 merged). NuGet enforcement remains pending.
+
+- [ ] 0.9: Enforce native NuGet locked mode for Windows Host using actual CI-generated package hashes; Windows restore/build/publish CI pending.
