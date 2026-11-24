@@ -1,5 +1,9 @@
 # Changelog
 
+## Android exact-checkout APK reproduction (CI PASS)
+
+- Independently build identical Git checkout twice, validate both debug APK signatures and require exact bytes outside validated equal-size signing blocks. Full signed APK byte equality remains open.
+
 ## Artifact file integrity manifests (CI PASS)
 
 - Publish SHA-256 file manifests for Android, Host and Desktop. Independent download verification passed for 1202 entries across the three artifacts. Exact checkout reproducibility is separate.

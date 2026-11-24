@@ -1,0 +1,79 @@
+name: Android exact-checkout reproduction
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'android/**'
+      - 'scripts/compare_apk_payload.py'
+      - 'scripts/test_compare_apk_payload.py'
+      - 'scripts/verify_android_apk.py'
+      - '.github/workflows/android-reproducibility.yml'
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        copy: [a, b]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17.0.21+9'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+          cache-disabled: true
+      - uses: android-actions/setup-android@7731365548f3f81c15d4c49c8f1d29101e02cdcf
+        with:
+          cmdline-tools-version: '14742923'
+          packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
+      - name: Build clean debug APK
+        working-directory: android
+        run: gradle --no-daemon --no-build-cache --dependency-verification strict :app:assembleDebug
+      - name: Record exact checkout and verify APK
+        run: |
+          mkdir -p evidence
+          git rev-parse HEAD > evidence/checkout.txt
+          git rev-parse 'HEAD^{tree}' >> evidence/checkout.txt
+          test "$(head -n 1 evidence/checkout.txt)" = "$GITHUB_SHA"
+          cp android/app/build/outputs/apk/debug/app-debug.apk evidence/
+          python3 scripts/verify_android_apk.py evidence/app-debug.apk
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose evidence/app-debug.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-reproduction-${{ matrix.copy }}
+          path: evidence/
+          if-no-files-found: error
+  compare:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: android-reproduction-*
+          path: reproduction
+      - name: Compare verified APKs from identical checkout
+        run: |
+          python3 -m unittest discover -s scripts -p test_compare_apk_payload.py -v
+          a=reproduction/android-reproduction-a
+          b=reproduction/android-reproduction-b
+          diff -u "$a/checkout.txt" "$b/checkout.txt"
+          test "$(head -n 1 "$a/checkout.txt")" = "$GITHUB_SHA"
+          python3 scripts/compare_apk_payload.py "$a/app-debug.apk" "$b/app-debug.apk" | tee comparison.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: android-reproduction-comparison
+          path: comparison.txt
+          if-no-files-found: warn

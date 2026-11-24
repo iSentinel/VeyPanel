@@ -26,3 +26,14 @@ Authenticode and complete reproducible release packaging remain separate.
 
     python3 -m unittest discover -s scripts -p test_normalize_static_endpoints.py -v
     python3 scripts/normalize_static_endpoints.py PATH_TO_EXPERIMENTAL_MANIFEST --epoch SOURCE_COMMIT_EPOCH
+
+## Initial verified experiment
+
+Run 45403914865 built checkout 66bffb0772aa75d7928c5e66366274456d36f890
+on both independent Windows runners. The actual tree was
+66556a5676f414d26588adb0db5bb2eef84b2ce0. All 357 raw files were present
+on both runners; 356 matched exactly. Only the generated static endpoint
+JSON differed. After experimental normalization all 357 file hashes
+matched exactly, including Host DLL, EXE and PDB. Both published Hosts
+passed runtime smoke. Comparison artifact 14922904731. Final combined PR
+HEAD verification remains pending. Ordinary publication is not changed.
