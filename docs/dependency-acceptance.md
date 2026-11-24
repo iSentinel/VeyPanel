@@ -77,3 +77,21 @@ RuntimeIdentifiers and obtaining the actual SDK-generated RID section
 (artifact 14908917225 from run 45369999676). The temporary capture was
 removed. Both package content hashes remained unchanged. SDK/runtime-pack
 and Desktop dependency reproducibility remain separate tasks.
+
+## Gradle SHA-256 artifact verification candidate
+
+Two successful generation jobs (45370100108 and 45370108991) produced
+identical verification metadata with 395 artifact SHA-256 records. These
+records cover the observed build and lint dependencies and all ten selected
+debug runtime module coordinates. This is trust on first use; matching
+captures do not independently authenticate the upstream publisher.
+
+Normal Android CI and runtime builds use strict verification and do not
+generate checksum metadata automatically. The offline checker rejects trust
+exemptions, malformed digests, duplicate records and missing runtime
+coordinates. A separate CI test temporarily substitutes an incorrect SHA-256
+for ZXing core, requires Gradle to reject that artifact and restores the
+original metadata. No dependency versions are changed by the test.
+
+A future intentional dependency update needs review of upstream artifacts,
+provenance, license and security advisories before committing new hashes.

@@ -213,3 +213,8 @@
 - PR #22 head 8d6d22c, Windows CI 45370338307 and 45370350526 PASS, merged as 1bfe1ea.
 - Initial NU1004 at self-contained publish corrected using explicit RuntimeIdentifiers=win-x64 and genuine SDK-generated net10.0/win-x64 lock section, preserving both package SHA-512 hashes. Temporary unlocked capture removed; strict restore/build/publish and lockfile diff passed.
 - Next: enforce Gradle artifact checksum verification from matching build captures, with negative checksum test. Complete upstream provenance, runtime packs, SDK pinning, production signing and physical acceptance remain open.
+
+## Gradle artifact verification candidate (2026-11-24)
+- PR #23 captures from Android runs 45370100108 and 45370108991 are byte-identical (metadata SHA-256 895024f250298a8b6be73c214f50546e442a9fb7d2d8440e09a5eaa2520f26c0); 395 SHA-256 artifact records, all ten runtime component coordinates covered, no trust exemptions.
+- Strict mode replaces temporary metadata generation in Android CI and runtime workflow. Five offline policy fixtures pass. A Gradle negative test changes only the expected ZXing core JAR checksum temporarily, requires the correct artifact verification failure, restores metadata and verifies no Git diff.
+- Combined CI pending. The capture is trust-on-first-use, not independent upstream attestation or complete production SBOM.
