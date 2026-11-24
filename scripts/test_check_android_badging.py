@@ -66,6 +66,29 @@ class BadgingTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "INTERNET"):
             check_badging(text, GRADLE)
 
+    def test_missing_camera(self):
+        text = BADGING.replace("uses-permission: name='android.permission.CAMERA'\n", "")
+        with self.assertRaisesRegex(ValueError, "CAMERA"):
+            check_badging(text, GRADLE)
+
+    def test_duplicate_permission(self):
+        with self.assertRaisesRegex(ValueError, "Duplicate"):
+            check_badging(BADGING + "uses-permission: name='android.permission.CAMERA'\n", GRADLE)
+
+    def test_malformed_permission(self):
+        with self.assertRaisesRegex(ValueError, "malformed"):
+            check_badging(BADGING + "uses-permission: unknown='x'\n", GRADLE)
+
+    def test_sdk_specific_permission(self):
+        text = BADGING + "uses-permission-sdk-23: name='android.permission.CAMERA'\n"
+        with self.assertRaisesRegex(ValueError, "Unsupported"):
+            check_badging(text, GRADLE)
+
+    def test_conditional_permission(self):
+        text = BADGING.replace("name='android.permission.CAMERA'", "name='android.permission.CAMERA' maxSdkVersion='28'")
+        with self.assertRaisesRegex(ValueError, "malformed"):
+            check_badging(text, GRADLE)
+
 
 if __name__ == "__main__":
     unittest.main()

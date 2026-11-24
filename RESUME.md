@@ -323,3 +323,6 @@
 
 ## Verified side-by-side selection
 - PR #35 head 90c0951, Windows CI 45428020239/45427999735 PASS, merged cbe863f. Local 109 fixtures and real package A/B rollback were verified previously. Next: correct CI pipeline failure propagation before further release acceptance; launcher and recovery remain open.
+
+## Fail-closed release gate correction candidate
+- Audit found implicit bash -e report pipelines without pipefail in Android CI/runtime and Android/Windows reproduction. Explicit bash shell policy now used in five relevant workflows; intentional negative step requires failure outcome. Exact unconditional CAMERA/INTERNET permissions required, duplicate/unsupported declarations and colon/trailing-separator APK paths rejected. Seven added fixtures, 116 total tests PASS; actual downloaded APK and badging PASS. Real negative archive and identity commands through tee rejected locally; apksigner negative case requires CI. Previously downloaded Android and Windows reproduction evidence independently rechecked. No claim that old CI statuses alone established failure propagation. Launcher/recovery remain next.

@@ -108,6 +108,7 @@ jobs:
           pattern: desktop-reproduction-*
           path: reproduction
       - name: Compare complete Desktop bundle manifests
+        shell: bash
         run: |
           set -o pipefail
           a=reproduction/desktop-reproduction-a

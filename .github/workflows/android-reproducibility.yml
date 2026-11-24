@@ -10,6 +10,9 @@ on:
       - '.github/workflows/android-reproducibility.yml'
 permissions:
   contents: read
+defaults:
+  run:
+    shell: bash
 jobs:
   build:
     runs-on: ubuntu-24.04

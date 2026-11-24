@@ -98,6 +98,17 @@ class ApkVerifyTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "symlink"):
             verify(self.path)
 
+    def test_colon_in_entry(self):
+        for name in ("drive:stream", "assets/file:stream"):
+            self.make_archive(["AndroidManifest.xml", "classes.dex", "resources.arsc", name])
+            with self.assertRaisesRegex(ValueError, "entry name"):
+                verify(self.path)
+
+    def test_repeated_trailing_separator(self):
+        self.make_archive(["AndroidManifest.xml", "classes.dex", "resources.arsc", "assets//"])
+        with self.assertRaisesRegex(ValueError, "entry name"):
+            verify(self.path)
+
 
 if __name__ == "__main__":
     unittest.main()

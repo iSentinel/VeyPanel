@@ -14,7 +14,7 @@ ALLOWED = frozenset({
 PACKAGE = re.compile(
     r"^package:\s+name='([^']+)'\s+versionCode='(\d+)'\s+versionName='([^']+)'")
 PERMISSION = re.compile(
-    r"^uses-permission(?:-sdk-\d+)?:\s+name='([^']+)'")
+    r"^uses-permission:\s+name='([^']+)'$")
 
 
 def gradle_value(text: str, key: str) -> str:
@@ -35,6 +35,29 @@ def badging_value(text: str, key: str) -> str:
     return matches[0]
 
 
+def check_permissions(badging: str) -> tuple[str, ...]:
+    """Require exactly the two unconditional reviewed permissions."""
+    names = set()
+    for line in badging.splitlines():
+        line = line.strip()
+        if not line.startswith("uses-permission"):
+            continue
+        match = PERMISSION.fullmatch(line)
+        if match is None:
+            raise ValueError("Unsupported or malformed APK permission declaration")
+        name = match.group(1)
+        if name in names:
+            raise ValueError("Duplicate APK permission: " + name)
+        names.add(name)
+    forbidden = names - ALLOWED
+    if forbidden:
+        raise ValueError("Unexpected APK permissions: " + ", ".join(sorted(forbidden)))
+    missing = ALLOWED - names
+    if missing:
+        raise ValueError("Missing APK permissions: " + ", ".join(sorted(missing)))
+    return tuple(sorted(names))
+
+
 def check_badging(badging: str, gradle: str) -> tuple[str, str, tuple[str, ...]]:
     """Ensure the built package matches source and least-privilege policy."""
     packages = [match.groups() for line in badging.splitlines()
@@ -53,13 +76,7 @@ def check_badging(badging: str, gradle: str) -> tuple[str, str, tuple[str, ...]]
                                 ("targetSdkVersion", "targetSdk")):
         if badging_value(badging, apk_key) != gradle_value(gradle, gradle_key):
             raise ValueError("APK SDK policy differs from Gradle")
-    permissions = tuple(sorted({match.group(1) for line in badging.splitlines()
-                                if (match := PERMISSION.match(line))}))
-    if "android.permission.INTERNET" not in permissions:
-        raise ValueError("Expected INTERNET permission not found")
-    forbidden = set(permissions) - ALLOWED
-    if forbidden:
-        raise ValueError("Unexpected APK permissions: " + ", ".join(sorted(forbidden)))
+    permissions = check_permissions(badging)
     return package, version, permissions
 
 
