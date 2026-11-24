@@ -41,7 +41,7 @@ grep -Fq 'PASS: synthetic offline QR decode' runtime-smoke.log
 grep -Fq 'PASS: Android extended telemetry fixture' runtime-smoke.log
 grep -Fq 'PASS: Android bounded history fixture' runtime-smoke.log
 grep -Fq 'PASS: Android Host history codec fixture' runtime-smoke.log
-grep -Fq 'PASS: Android Activity diagnostics, disconnected history and local AVC button' runtime-smoke.log
+grep -Fq 'PASS: Android Activity diagnostics, local AVC decode and visible Surface preview' runtime-smoke.log
 grep -Fq 'PASS: read-only Android video decoder API survey (no hardware guarantee)' runtime-smoke.log
 grep -Fq 'PASS: Android local AVC self-test decodes original clip twice (emulator only)' runtime-smoke.log
 grep -Fq 'PASS: Android MediaCodec delivered original AVC frame to test Surface (emulator only)' runtime-smoke.log

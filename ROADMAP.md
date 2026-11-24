@@ -81,3 +81,5 @@
 - [x] Add session/target-identity/freshness gate before any future touch injection ([Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45329353667), PR #12 merged). No real input forwarded.
 
 - [x] Android Surface-output AVC instrumentation with original local clip and frame-available callback ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45329953560), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45329948361); PR #13 merged as 6034990). Actual tablet display/hardware acceptance pending.
+
+- [ ] Android alpha.17 on-device local TextureView AVC preview and actual MediaCodec Surface output, with emulator UI/runtime verification; CI and physical Lenovo display acceptance pending. No streaming yet.

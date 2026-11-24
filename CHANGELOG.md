@@ -1,5 +1,10 @@
 # Changelog
 
+## Android 0.1.0-alpha.17 (CI pending)
+
+- Add on-demand local AVC Surface preview using an Android TextureView, original bundled two-frame clip, background MediaCodec, and cancellation on Activity pause or Surface loss. No Windows video transport.
+- Exercise the production decoder with a headless SurfaceTexture and the visible preview button in emulator instrumentation.
+
 ## Local Android AVC Surface-output smoke (Android emulator runtime PASS)
 
 - Add Android test-only MediaCodec-to-Surface frame-available fixture. No new video stream or display changes.

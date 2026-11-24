@@ -8,6 +8,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.InputType;
 import android.view.WindowManager;
+import android.view.Surface;
+import android.view.TextureView;
+import android.graphics.SurfaceTexture;
 import android.widget.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -48,6 +51,10 @@ public final class MainActivity extends Activity {
     private Future<?> videoRequest;
     private Button videoButton;
     private Button videoDecodeButton;
+    private Button videoPreviewButton;
+    private TextureView videoPreview;
+    private boolean previewRequested;
+    private boolean previewStarted;
     private int videoRevision;
     private TextView videoStatus;
     private boolean videoBusy;
@@ -135,6 +142,16 @@ public final class MainActivity extends Activity {
         videoDecodeButton.setText("Run local AVC decode test");
         videoDecodeButton.setOnClickListener(v -> runLocalVideoTest());
         column.addView(videoDecodeButton);
+        videoPreviewButton = new Button(this);
+        videoPreviewButton.setText("Preview local AVC frame");
+        videoPreviewButton.setOnClickListener(v -> runLocalPreview());
+        column.addView(videoPreviewButton);
+        videoPreview = new TextureView(this);
+        int previewSize = (int)(160 * getResources().getDisplayMetrics().density);
+        videoPreview.setLayoutParams(new LinearLayout.LayoutParams(previewSize, previewSize));
+        videoPreview.setVisibility(android.view.View.GONE);
+        videoPreview.setSurfaceTextureListener(previewListener());
+        column.addView(videoPreview);
         videoStatus = new TextView(this); videoStatus.setText("No decoder inspection run");
         videoStatus.setTextSize(13); column.addView(videoStatus);
         setContentView(scroll);
@@ -148,9 +165,78 @@ public final class MainActivity extends Activity {
         runVideoJob(true);
     }
 
+    private TextureView.SurfaceTextureListener previewListener() {
+        return new TextureView.SurfaceTextureListener() {
+            @Override public void onSurfaceTextureAvailable(SurfaceTexture texture, int w, int h) {
+                startLocalPreview(texture, videoRevision);
+            }
+            @Override public void onSurfaceTextureSizeChanged(SurfaceTexture texture, int w, int h) { }
+            @Override public void onSurfaceTextureUpdated(SurfaceTexture texture) { }
+            @Override public boolean onSurfaceTextureDestroyed(SurfaceTexture texture) {
+                cancelLostPreview();
+                return true;
+            }
+        };
+    }
+
+    private void runLocalPreview() {
+        if (!resumed || videoBusy) return;
+        videoBusy = true;
+        setVideoButtons(false);
+        previewRequested = true;
+        previewStarted = false;
+        int revision = ++videoRevision;
+        videoStatus.setText("Decoding original local AVC into a visible Surface…");
+        videoPreview.setVisibility(android.view.View.VISIBLE);
+        if (videoPreview.isAvailable()) startLocalPreview(videoPreview.getSurfaceTexture(), revision);
+        main.postDelayed(() -> {
+            if (resumed && revision == videoRevision && previewRequested && !previewStarted)
+                finishVideoJob(revision, "Local AVC preview FAILED: Surface unavailable.");
+        }, 3000);
+    }
+
+    private void startLocalPreview(SurfaceTexture texture, int revision) {
+        if (!resumed || !previewRequested || previewStarted
+            || revision != videoRevision || texture == null) return;
+        previewStarted = true;
+        Surface surface = new Surface(texture);
+        videoRequest = videoWorker.submit(() -> {
+            String report;
+            try {
+                int rendered = LocalAvcSurfacePreview.run(getApplicationContext(), surface);
+                report = "Local AVC preview: PASS · " + rendered
+                    + " frame buffers sent to Surface. Not a Windows video stream.";
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+                return;
+            } catch (Exception ex) {
+                report = "Local AVC preview FAILED: Decoder or Surface unavailable.";
+            } finally { surface.release(); }
+            String result = report;
+            main.post(() -> finishVideoJob(revision, result));
+        });
+    }
+
+    private void cancelLostPreview() {
+        if (!previewRequested) return;
+        if (videoRequest != null) videoRequest.cancel(true);
+        videoRevision++;
+        previewRequested = false;
+        previewStarted = false;
+        videoBusy = false;
+        setVideoButtons(true);
+        videoStatus.setText("Local AVC preview stopped: Surface released.");
+    }
+
+    private void setVideoButtons(boolean enabled) {
+        videoButton.setEnabled(enabled);
+        videoDecodeButton.setEnabled(enabled);
+        videoPreviewButton.setEnabled(enabled);
+    }
+
     private void runVideoJob(boolean decode) {
         if (!resumed || videoBusy) return;
-        videoBusy = true; videoButton.setEnabled(false); videoDecodeButton.setEnabled(false);
+        videoBusy = true; setVideoButtons(false);
         videoStatus.setText(decode ? "Decoding bundled synthetic AVC clip…" : "Inspecting decoders…");
         int revision = ++videoRevision;
         videoRequest = videoWorker.submit(() -> {
@@ -173,7 +259,9 @@ public final class MainActivity extends Activity {
     private void finishVideoJob(int revision, String report) {
         if (!resumed || revision != videoRevision) return;
         videoBusy = false;
-        videoButton.setEnabled(true); videoDecodeButton.setEnabled(true);
+        previewRequested = false;
+        previewStarted = false;
+        setVideoButtons(true);
         videoStatus.setText(report);
     }
 
@@ -519,9 +607,13 @@ public final class MainActivity extends Activity {
     }
     @Override protected void onResume() { super.onResume(); resumed = true; if (session != null) main.post(poll); else if (claim != null) showClaim(); }
     @Override protected void onPause() {
+        previewRequested = false;
+        previewStarted = false;
         if (videoRequest != null) videoRequest.cancel(true);
         videoRevision++;
-        videoBusy = false; videoButton.setEnabled(true); videoDecodeButton.setEnabled(true);
+        videoBusy = false;
+        setVideoButtons(true);
+        videoPreview.setVisibility(android.view.View.GONE);
         resumed = false; stopPoll(); diagnostics.mark(ConnectionDiagnostics.Event.PAUSED); offline("Paused"); super.onPause(); }
     @Override protected void onDestroy() { stopPoll(); session = null; clearClaim(); worker.shutdownNow(); historyWorker.shutdownNow(); videoWorker.shutdownNow(); super.onDestroy(); }
 }

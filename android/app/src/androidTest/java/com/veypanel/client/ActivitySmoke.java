@@ -36,6 +36,7 @@ final class ActivitySmoke {
             });
             if (!passed.get()) throw new IllegalStateException("Activity diagnostics gate");
             verifyLocalDecoderButton(runner, activity);
+            verifyLocalPreview(runner, activity);
         } finally {
             runner.runOnMainSync(activity::finish);
             runner.waitForIdleSync();
@@ -64,6 +65,31 @@ final class ActivitySmoke {
             }
         }
         if (!complete.get()) throw new IllegalStateException("Activity local AVC decode result missing");
+    }
+
+    private static void verifyLocalPreview(Instrumentation runner, Activity activity) {
+        runner.runOnMainSync(() -> {
+            View root = activity.getWindow().getDecorView();
+            TextView button = find(root, "Preview local AVC frame", true);
+            if (button == null || !button.performClick())
+                throw new IllegalStateException("Preview action unavailable");
+        });
+        java.util.concurrent.atomic.AtomicBoolean complete = new java.util.concurrent.atomic.AtomicBoolean();
+        for (int attempt = 0; attempt < 150 && !complete.get(); attempt++) {
+            runner.waitForIdleSync();
+            runner.runOnMainSync(() -> {
+                View root = activity.getWindow().getDecorView();
+                TextView status = find(root, "Local AVC preview: PASS", false);
+                TextView button = find(root, "Preview local AVC frame", true);
+                complete.set(status != null && button != null && button.isEnabled()
+                    && status.getText().toString().contains("Not a Windows video stream"));
+            });
+            if (!complete.get()) {
+                try { Thread.sleep(100); }
+                catch (InterruptedException ex) { Thread.currentThread().interrupt(); break; }
+            }
+        }
+        if (!complete.get()) throw new IllegalStateException("Visible AVC preview did not complete");
     }
 
     private static TextView find(View view, String text, boolean button) {

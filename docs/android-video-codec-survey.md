@@ -51,3 +51,17 @@ The test intentionally uses the API-26+ detached `SurfaceTexture(false)`
 constructor; unlike a GL texture-name constructor, it does not require a
 pre-existing EGL texture binding. See the official Android SurfaceTexture API:
 https://developer.android.com/reference/android/graphics/SurfaceTexture .
+
+## Owner-visible local Surface preview — alpha.17 candidate
+
+Tap **Preview local AVC frame** to show the original synthetic 64x64 AVC
+clip in a local Android TextureView. The decoder runs off the UI thread,
+uses the same MediaCodec Surface-output path as instrumentation, and releases
+its Surface when finished. A short red test frame may remain visible until
+you leave the screen. The foreground lifecycle cancels work on pause and
+Surface destruction. Results stay on-device and do not involve any PC video.
+
+The emulator gate clicks the actual preview button and requires a completed
+in-app status in addition to the isolated frame-available test. This does NOT
+prove HDMI/display duplication, network streaming, sustained 60 FPS, hardware
+acceleration on Lenovo, acceptable thermals, or input/control support.
