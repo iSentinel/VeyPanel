@@ -1,5 +1,9 @@
 # Changelog
 
+## Resolved component drift gate (CI pending)
+
+- Compare actual Maven and NuGet package coordinates to reviewed captured baselines; reject additions, removals and version changes before artifact publication.
+
 ## Resolved component inventories (CI and emulator runtime PASS)
 
 - Publish scoped Android debug Maven and Windows Host win-x64 NuGet component inventories alongside build artifacts. No complete SBOM or native lockfile claim.

@@ -1,0 +1,27 @@
+{
+  "bomFormat": "CycloneDX",
+  "components": [
+    {
+      "bom-ref": "pkg:nuget/Net.Codecrete.QrCodeGenerator@3.2.1",
+      "name": "Net.Codecrete.QrCodeGenerator",
+      "purl": "pkg:nuget/Net.Codecrete.QrCodeGenerator@3.2.1",
+      "type": "library",
+      "version": "3.2.1"
+    },
+    {
+      "bom-ref": "pkg:nuget/System.Security.Cryptography.ProtectedData@10.0.15",
+      "name": "System.Security.Cryptography.ProtectedData",
+      "purl": "pkg:nuget/System.Security.Cryptography.ProtectedData@10.0.15",
+      "type": "library",
+      "version": "10.0.15"
+    }
+  ],
+  "metadata": {
+    "component": {
+      "name": "VeyPanel-Host-win-x64",
+      "type": "application"
+    }
+  },
+  "specVersion": "1.5",
+  "version": 1
+}

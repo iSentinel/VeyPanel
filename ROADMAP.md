@@ -93,3 +93,5 @@
 - [x] 0.9: Verify bundled ZXing/OkHttp license and notice assets survive Android APK publication ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45334220672), [Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45334220748); PR #18 merged). Full transitive SBOM/license audit remains open.
 
 - [x] 0.9: Publish resolved Android debug runtime (10 Maven modules) and Windows Host win-x64 NuGet (2 packages) CycloneDX component inventories ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45363577089), [Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45363577252), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45363566687); PR #19 merged). Full dependency graph, runtime packs, licenses and native locks remain open.
+
+- [ ] 0.9: Enforce post-resolution component version/membership baselines in Android and Windows CI; native lockfiles and package hashes remain open.
