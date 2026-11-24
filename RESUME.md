@@ -201,3 +201,6 @@
 - PR #21 head 1260f6e; Android CI 45364765561/45364754303, Windows CI 45364765530/45364754053, runtime 45364754109 PASS; merged as 7f30b4d.
 - Strict debugRuntimeClasspath lock confirmed by Gradle regeneration and runtime acceptance on emulator. Other configurations and artifact verification hashes remain outside scope.
 - Windows-generated lock candidate artifact 14905543319 from run 45364754053 contains two packages, both valid SHA-512 contentHash values. Next: enable native NuGet locked mode for Host and verify restore/build/publish CI.
+
+## NuGet locked mode candidate
+- Original lockfile from run 45364754053 artifact 14905543319 is committed. Host enables RestorePackagesWithLockFile and RestoreLockedMode. CI explicitly restores win-x64 with --locked-mode and checks the lockfile remains unchanged. CI pending; no complete reproducible release claim.
