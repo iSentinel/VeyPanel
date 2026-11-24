@@ -99,3 +99,7 @@
 
 - Alpha.16 initial Android CI 45327692507 failed at javac: invalid `VideoCapabilities.areSizeSupported`; corrected to public `areSizeAndRateSupported(64,64,30)` and rerun required.
 - Alpha.16 Activity instrumentation now clicks the local AVC self-test button and waits for a bounded on-screen PASS and re-enabled button. This is separate from direct repeated decode fixture. CI pending.
+
+## Verified alpha.16 local video self-test (2026-11-24)
+- PR #10 head c7f44d2: Android build/lint 45328031303 PASS, Windows 45328031480 PASS, Android runtime 45328022894 PASS including user-visible button, decoded output, two decoder openings, and cancellation lifecycle checks. Merged as f7a9af8.
+- Debug APK from Android run 45328031303, artifact 14890334063; version 0.1.0-alpha.16. Hardware result only from actual Lenovo self-test can qualify. No measured 60 FPS, Surface rendering, Apollo/Quick Sync or tablet acceptance.

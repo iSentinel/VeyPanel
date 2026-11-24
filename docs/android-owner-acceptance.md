@@ -44,3 +44,15 @@ reports hardware acceleration, actual decoded buffer count and elapsed time.
 This test uses only the bundled original two-frame clip; it does not establish
 60 FPS performance or Windows streaming. The UI is protected by FLAG_SECURE;
 transcribe displayed results rather than disabling screen security.
+
+## Verified alpha.16 debug APK and local video self-test
+
+    gh run download 45328031303 -R iSentinel/VeyPanel -n veypanel-android-monitor-debug -D veypanel-alpha16
+    adb devices -l
+    adb -s DEVICE_SERIAL install -r veypanel-alpha16/app-debug.apk
+
+After installation, open VeyPanel, tap **Run local AVC decode test** and
+record the codec name, whether Android reports it as hardware-accelerated,
+decoded buffers and elapsed time. The prior alpha.15 instructions remain
+historical. The alpha.16 debug APK is not release-signed and has not been
+installed or validated on Lenovo TB-J607Z.
