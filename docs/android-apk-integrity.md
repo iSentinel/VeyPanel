@@ -36,3 +36,14 @@ Verified debug artifact example: GitHub Actions run 45332888028,
 artifact 14893015165. It contains the APK and two text verification reports.
 The signature report demonstrates APK Signature Scheme v2 with one signer,
 which remains a development/debug signer.
+
+## Packaged identity and permission gate (pending CI)
+
+Android CI additionally records the output of Android Build Tools aapt dump
+badging and checks package ID, version code/name, minSdk, targetSdk against the
+reviewed app build.gradle. The permissions are explicitly limited to the
+reviewed telemetry, camera, vibration, flashlight and network-state set.
+Any unexpected merged-manifest permission rejects the build pending human
+review. APK badging and identity reports accompany the existing ZIP/SHA256
+and signature reports. This does not request device privileges, enable input
+injection, grant network exposure or establish trusted release signing.
