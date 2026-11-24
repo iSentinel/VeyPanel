@@ -1,9 +1,9 @@
 name: Android CI
 on:
   push:
-    paths: ['android/**', '.github/workflows/android.yml']
+    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py']
   pull_request:
-    paths: ['android/**', '.github/workflows/android.yml']
+    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py']
   workflow_dispatch:
 permissions:
   contents: read

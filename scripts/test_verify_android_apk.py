@@ -53,6 +53,22 @@ class ApkVerifyTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Duplicate"):
             verify(self.path)
 
+    def test_backslash_path(self):
+        """Windows-style backslash entries are rejected."""
+        self.make_archive(
+            ["AndroidManifest.xml", "classes.dex", "resources.arsc",
+             "assets\\unsafe"])
+        with self.assertRaisesRegex(ValueError, "entry name"):
+            verify(self.path)
+
+    def test_ambiguous_separator(self):
+        """Empty directory components are rejected."""
+        self.make_archive(
+            ["AndroidManifest.xml", "classes.dex", "resources.arsc",
+             "assets//unsafe"])
+        with self.assertRaisesRegex(ValueError, "entry name"):
+            verify(self.path)
+
     def test_truncated(self):
         """A truncated archive fails closed."""
         self.path.write_bytes(bytes([80, 75, 3, 4]))

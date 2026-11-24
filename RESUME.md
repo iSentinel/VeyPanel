@@ -152,3 +152,4 @@
 ## Android debug APK integrity gate (CI pending)
 - Introduced offline stdlib verify_android_apk.py: bounded ZIP file/entry counts, no traversal/duplicates/encryption/symlinks, required Android manifest/DEX/resources, CRC and SHA256. Six fixtures PASS locally; earlier saved debug APK also PASS (not a signature guarantee).
 - Android CI now runs verifier tests, validates built APK and requires apksigner verification, publishing text evidence beside debug APK. No release signing or physical device install attempted. CI pending.
+- Added explicit Android CI path triggers for both APK verifier scripts and negative fixtures for Windows-style and double-slash archive paths. Runtime still unchanged.\n
