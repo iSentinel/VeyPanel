@@ -45,6 +45,9 @@ public final class StoreInstrumentation extends Instrumentation {
             stage = "Android video decoder inventory";
             VideoDecoderSmoke.run();
             results.append("PASS: read-only Android video decoder API survey (no hardware guarantee)\n");
+            stage = "Synthetic AVC decoding";
+            VideoDecodeSmoke.run(getContext());
+            results.append("PASS: Android MediaCodec decoded synthetic 64x64 AVC fixture (emulator only)\n");
             stage = "HTTPS/WSS transport";
             if (fixtureCa != null) {
                 TransportSmoke transport = new TransportSmoke(fixtureCa);

@@ -57,6 +57,7 @@
 - [x] Add isolated actual native HTTPS/WSS transport fixture with ephemeral IP-SAN TLS, denial and manual REST-after-close checks ([corrected runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45090572041); not Windows Host or Activity end-to-end).
 - [x] Confirm actual Android Keystore, synthetic QR and extended telemetry instrumentation with strict final result gate ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45083538875)).
 - [ ] 0.5: Android QR camera acceptance, native WSS transport acceptance and native video.
+- [ ] Verify original 64x64 two-frame AVC via Android MediaCodec in emulator; CI and physical hardware decode acceptance pending.
 - [ ] Add read-only Android AVC/HEVC/AV1 decoder capability inventory; CI and physical tablet evidence pending (survey is not decoding acceptance).
 - [x] Implement adaptive 1/2/3-column native monitor, collapsible controls, memory/IOPS, network/volumes and age-gated thermal/storage health details ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45081976468); visual tablet acceptance pending).
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.
@@ -68,7 +69,7 @@
 - [x] Prototype bounded WSS upgrade and isolated TLS transport ([JVM PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45093130783), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45093126068); PR #4 merged; production transport unchanged).
 - [x] Validate bounded WSS control frames, consecutive samples, malformed close and blocked read cancellation ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45096636484), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45096631311); PR #5 merged as f2b6e7e, isolated TLS only).
 - [ ] 0.8: reconnection, sleep/wake and USB network transport.
-- [ ] Introduce shared Android cancellable telemetry-feed interface, retaining OkHttp default; CI pending and bounded production switch not yet accepted.
+- [x] Introduce shared Android cancellable telemetry-feed interface, retaining OkHttp default ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45153409806), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45153400342); PR #9 merged). Bounded production switch remains unaccepted.
 - [ ] 0.9: installer, signing, reproducible release, upgrade/uninstall acceptance.
 - [ ] 1.0: physical device acceptance and stable release.
 - [x] Add isolated cancellable Android bounded WSS stream with platform TLS and pre-read limits; validate against synthetic valid, malformed, stalled and revoked flows ([Android Build PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45150815811), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45150808675); PR #6 merged as deb7982). Not selected in production MainActivity.
