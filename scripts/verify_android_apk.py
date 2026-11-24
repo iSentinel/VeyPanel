@@ -27,7 +27,7 @@ def safe_name(name: str) -> bool:
             and chr(92) not in name and chr(0) not in name
             and all(part not in ("", ".", "..") for part in parts)
             and not any(ord(char) < 32 for char in name)
-            and not (len(parts) > 1 and ":" in parts[0]))
+            and ":" not in name)
 
 
 def inspect_archive(archive: zipfile.ZipFile) -> tuple[int, int]:
@@ -44,7 +44,7 @@ def inspect_archive(archive: zipfile.ZipFile) -> tuple[int, int]:
         raise ValueError("APK is missing third-party license notices")
     total = 0
     for item in entries:
-        if not safe_name(item.filename.rstrip("/")):
+        if not safe_name(item.filename.removesuffix("/")):
             raise ValueError("Invalid APK entry name")
         if item.flag_bits & 1:
             raise ValueError("Encrypted APK entry")

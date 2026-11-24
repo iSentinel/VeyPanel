@@ -81,6 +81,7 @@ jobs:
           pattern: windows-reproduction-*
           path: reproduction
       - name: Compare raw and normalized exact-checkout outputs
+        shell: bash
         run: |
           a=reproduction/windows-reproduction-a
           b=reproduction/windows-reproduction-b
