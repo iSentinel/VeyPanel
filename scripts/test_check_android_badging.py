@@ -54,6 +54,12 @@ class BadgingTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Unexpected APK permissions"):
             check_badging(text, GRADLE)
 
+    def test_unrequested_vibration(self):
+        """The bundled QR scanner does not justify VIBRATE permission."""
+        text = BADGING + "uses-permission: name='android.permission.VIBRATE'\n"
+        with self.assertRaisesRegex(ValueError, "Unexpected APK permissions"):
+            check_badging(text, GRADLE)
+
     def test_missing_internet(self):
         """The expected telemetry permission must be declared."""
         text = BADGING.replace("uses-permission: name='android.permission.INTERNET'\n", "")

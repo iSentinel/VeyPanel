@@ -10,9 +10,6 @@ MAX_REPORT = 256 * 1024
 ALLOWED = frozenset({
     "android.permission.INTERNET",
     "android.permission.CAMERA",
-    "android.permission.VIBRATE",
-    "android.permission.FLASHLIGHT",
-    "android.permission.ACCESS_NETWORK_STATE",
 })
 PACKAGE = re.compile(
     r"^package:\s+name='([^']+)'\s+versionCode='(\d+)'\s+versionName='([^']+)'")

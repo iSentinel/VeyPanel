@@ -42,7 +42,8 @@ which remains a development/debug signer.
 Android CI additionally records the output of Android Build Tools aapt dump
 badging and checks package ID, version code/name, minSdk, targetSdk against the
 reviewed app build.gradle. The permissions are explicitly limited to the
-reviewed telemetry, camera, vibration, flashlight and network-state set.
+reviewed INTERNET and CAMERA permissions only (confirmed in the actual
+alpha.18 merged manifest).
 Any unexpected merged-manifest permission rejects the build pending human
 review. APK badging and identity reports accompany the existing ZIP/SHA256
 and signature reports. This does not request device privileges, enable input
