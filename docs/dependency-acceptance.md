@@ -36,3 +36,13 @@ complete release dependency audit.
 
 No library version, device setting, driver or runtime permission changes were
 made by this preflight.
+
+## Scoped resolved component inventories (CI pending)
+
+Android CI records the selected debugRuntimeClasspath modules. Windows CI
+reads the restored win-x64 Host package target after publish. Both produce
+runtime-components.cdx.json (CycloneDX 1.5), sorted by package URL, beside
+their application artifacts. This is an inventory, not an exhaustive release
+SBOM: build plugins, Android SDK, .NET runtime packs, dependency edges,
+file hashes, license conclusions and advisory results are out of scope.
+Use the recorded versions as inputs to subsequent lockfile and review gates.

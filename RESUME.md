@@ -177,3 +177,6 @@
 ## Verified third-party license archive gate (2026-11-24)
 - PR #18 head f1037b8: Android CI 45334220672/45334212229 PASS, Windows CI 45334220748/45334212121 PASS; merged as fe43f31.
 - APK verifier requires five bundled ZXing/OkHttp license/NOTICE assets. Actual signed debug APK artifact 14892659707 from run 45334220672 includes verification reports. Full Gradle/NuGet transitive dependency lockfiles and SBOM are still absent, and physical hardware and release signing remain pending.
+
+## Resolved dependency inventory candidate
+- Gradle selected debug runtime modules and restored Windows Host win-x64 NuGet package target converted to sorted CycloneDX 1.5 component inventories; six offline fixtures PASS. CI pending. No claim of exhaustive SBOM, trusted build or dependency lock.
