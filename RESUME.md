@@ -331,3 +331,6 @@
 - PR #36 head a29feaf, merged e35bf8c; all 14 jobs across eight workflow runs PASS. Android CI 45433922627/45433944680 includes mandatory negative pipeline outcome and archive/identity/signing rejection step; job step conclusions independently checked, raw negative log unavailable on latest query.
 - Runtime 45433922633, Android reproduction 45433945066, Host reproduction 45433944945, Desktop/ZIP reproduction 45433944815 and Windows CI 45433922629/45433944858 PASS.
 - Next: publish locally prepared verified-package launcher, then interrupted-state recovery. Full physical acceptance and signing remain open.
+
+## Verified-package launcher candidate
+- Nine new local fixtures (125 total PASS), real selected package dry-run PASS. Launcher verifies the external archive SHA-256, full package preflight, exact selected tree and byte-identical embedded manifest before planning/launching a fixed Desktop EXE. Explicit --apply only on Windows; mock process boundary tested, no executable launched. Windows CI integration prepared; prerequisite PR #36 accepted. Recovery/uninstall and actual interactive launch pending.

@@ -128,3 +128,5 @@
 - [x] 0.9: Verify side-by-side package selection, idempotence, atomic state replacement, interrupted-write refusal and verified rollback. PR #35 merged; Windows CI 45428020239/45427999735 PASS. Activation/launcher and uninstall remain separate.
 
 - [x] 0.9: Correct fail-closed CI report pipelines, require exact CAMERA/INTERNET declarations and reject ambiguous APK entry names. PR #36 merged; all 14 CI jobs PASS, including negative gate outcome assertions and fresh reproduction experiments.
+
+- [ ] 0.9: Add digest-bound Desktop launch plan and explicit Windows activation; actual package dry-run and mocked launch boundary verified locally, Windows CI and interactive acceptance pending. Interrupted-state recovery/uninstall separate.
