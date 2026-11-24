@@ -289,3 +289,8 @@
 
 ## Deterministic Host ordinary publication candidate
 - Apply prior verified experimental settings to ordinary Windows Host CI publish. Preserve raw and normalized endpoint JSON with checkout evidence in a separate manifest-protected artifact. Existing Host integrations and Desktop bundling exercise normalized output. CI pending; no local installer, Desktop reproduction, or signing claim.
+
+## Verified ordinary deterministic Host CI publication
+- PR #31 head 614e369, Windows CI 45411446910/45411465466 PASS, merged as bc5aedb.
+- Actual publication evidence artifact 14929330243 independently verified: all 50 Last-Modified values use recorded source epoch; all non-timestamp fields preserved. Host artifact 14928032295, Desktop artifact 14928551984. Existing Host integration gates passed.
+- Ordinary CI publication now uses tested settings; local commands unchanged. Next independent Desktop exact-checkout experiment includes complete experimental bundle with verified embedded Host, without runner-specific reports. Interactive WPF and physical hardware remain open.

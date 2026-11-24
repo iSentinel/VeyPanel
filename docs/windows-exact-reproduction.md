@@ -49,7 +49,7 @@ Comparison artifact 14923894198. Ordinary Windows CI 45404301160 and
 45404314462 passed. PR #29 merged as b186b92. No production signing or
 normal publication change has been made.
 
-## Ordinary CI adoption candidate
+## Ordinary CI adoption (CI PASS)
 
 The normal Windows CI Host publish now explicitly enables
 ContinuousIntegrationBuild and applies the previously validated endpoint
@@ -62,4 +62,4 @@ which is also bundled into Desktop. Ordinary local dotnet publish commands
 are unchanged.
 
 This is not a claim that all published evidence or signed packages are
-byte-identical across runner revisions. CI acceptance is pending.
+byte-identical across runner revisions. Both ordinary Windows CI runs 45411446910 and 45411465466 passed; PR #31 merged. The separately downloaded evidence verified all 50 timestamp values and preserved every non-timestamp field.

@@ -1,5 +1,9 @@
 # Changelog
 
+## Deterministic Host CI publication (CI PASS)
+
+- Apply verified CI build settings and source-epoch static endpoint normalization to ordinary Host artifact. Preserve raw metadata separately and retain existing integration tests.
+
 ## Artifact source evidence (CI PASS)
 
 - Record and revalidate actual tracked Git checkout before ordinary Android, Host and Desktop artifact publication. All three downloaded manifests independently verified.
