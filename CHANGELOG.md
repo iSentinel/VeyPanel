@@ -1,5 +1,9 @@
 # Changelog
 
+## Native Gradle runtime lock (CI and emulator runtime PASS)
+
+- Strictly lock Android debug runtime dependencies and verify regeneration; capture SDK-generated NuGet lock candidate with content hashes for subsequent enforcement.
+
 ## Resolved component drift gate (CI PASS)
 
 - Compare actual Maven and NuGet package coordinates to reviewed captured baselines; reject additions, removals and version changes before artifact publication.

@@ -196,3 +196,8 @@
 
 ## Native dependency lock candidate
 - Gradle runtime lock derived from observed ten Maven coordinates; strict locking enabled, CI must reproduce identical state with --write-locks. Windows restore uses --use-lock-file and publishes actual generated candidate; NuGet locked mode remains pending.
+
+## Verified native Gradle lock and NuGet capture (2026-11-24)
+- PR #21 head 1260f6e; Android CI 45364765561/45364754303, Windows CI 45364765530/45364754053, runtime 45364754109 PASS; merged as 7f30b4d.
+- Strict debugRuntimeClasspath lock confirmed by Gradle regeneration and runtime acceptance on emulator. Other configurations and artifact verification hashes remain outside scope.
+- Windows-generated lock candidate artifact 14905543319 from run 45364754053 contains two packages, both valid SHA-512 contentHash values. Next: enable native NuGet locked mode for Host and verify restore/build/publish CI.
