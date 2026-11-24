@@ -95,3 +95,12 @@ original metadata. No dependency versions are changed by the test.
 
 A future intentional dependency update needs review of upstream artifacts,
 provenance, license and security advisories before committing new hashes.
+
+## Exact build toolchain candidate
+
+The .NET SDK (10.0.404) and Temurin JDK (17.0.21+9) versions are taken from
+successful Windows and Android CI logs. Gradle remains pinned to 8.9 and
+Windows Python is pinned to 3.12.10. The workflows assert selected versions
+and publish actual toolchain evidence. This does not establish byte-identical
+release output or freeze GitHub runner images, Android SDK revisions,
+Windows runtime packs or every external build tool. CI pending.

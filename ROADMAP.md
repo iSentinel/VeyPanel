@@ -103,3 +103,5 @@
 - [x] 0.9: Enforce native NuGet locked mode for Windows Host with SDK-generated win-x64 lock and package SHA-512 hashes ([Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45370338307), [second CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45370350526); PR #22 merged). SDK/runtime packs and Desktop scope remain open.
 
 - [x] 0.9: Enforce Gradle SHA-256 verification for 395 observed artifact records, reject deliberate incorrect ZXing checksum ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45371001724), [Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45371001725), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45371079169); PR #23 merged). Upstream provenance review remains open.
+
+- [ ] 0.9: Pin observed .NET SDK 10.0.404, JDK 17.0.21+9, Gradle 8.9 and Windows Python 3.12.10; publish actual toolchain evidence with artifacts. CI pending; SDK image/runtime pack reproducibility remains separate.
