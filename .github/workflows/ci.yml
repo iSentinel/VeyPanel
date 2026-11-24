@@ -30,6 +30,12 @@ jobs:
       - run: dotnet build src/VeyPanel.Host -c Release
       - run: dotnet run --project tests/VeyPanel.Smoke -c Release
       - run: dotnet publish src/VeyPanel.Host -c Release -r win-x64 --self-contained true -o publish
+      - name: Record Windows build toolchain evidence
+        shell: pwsh
+        run: |
+          @("dotnet SDK: $(dotnet --version)", "Python: $(python --version)",
+            "Runner image: $env:ImageOS / $env:ImageVersion") |
+            Set-Content -Encoding utf8 publish/build-toolchain.txt
       - name: Verify Windows Host NuGet locked restore
         run: |
           dotnet restore src/VeyPanel.Host -r win-x64 --locked-mode
