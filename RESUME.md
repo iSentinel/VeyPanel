@@ -96,3 +96,7 @@
 - PR #7 head d05f127, merge 65338d8. Android CI 45151764750 PASS, Windows CI 45151764974 PASS, emulator runtime 45151759925 PASS. Version 0.1.0-alpha.15.
 - Debug APK artifact 14806213555 from Android CI 45151764750 (app-debug.apk). Local codec report checks declared AVC/HEVC/AV1 and 720p/1080p/2560x1600 at 60 FPS; does not start a decoder and does not establish real hardware performance.
 - Actual 64x64 AVC decode instrumentation under PR #8 remains pending. Lenovo tablet, Windows Quick Sync, Apollo and display acceptance unverified.
+
+## Touch geometry preparation (CI pending)
+- Added pure TouchMapping for the future 0.6 touch plane: contain-fit letterbox checks, 0/90/180/270 inverse transforms, negative-origin Windows desktop and fail-closed invalid dimensions. Windows CI synthetic tests pending.
+- No native pointer injection, network control, paired input authorization, display mutation, or physical tablet acceptance. A fresh target identity and owner-confirmed input channel are prerequisites.

@@ -1,5 +1,9 @@
 # Changelog
 
+## Touch geometry preflight (CI pending)
+
+- Add pure, side-effect-free tablet-to-desktop touch coordinate math and synthetic tests. No input forwarding or display changes.
+
 ## Android 0.1.0-alpha.15 (build and emulator runtime PASS; hardware pending)
 
 - Add a read-only, on-demand AVC/HEVC/AV1 decoder survey; never claim hardware decode success from declared capabilities.

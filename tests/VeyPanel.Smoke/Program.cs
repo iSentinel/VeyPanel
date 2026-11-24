@@ -53,6 +53,7 @@ var privatePass = new[] { "10.1.2.3", "172.16.0.2", "172.31.1.2", "192.168.1.2" 
 Console.WriteLine($"{(privatePass ? "PASS" : "FAIL")} RFC1918 LAN address policy");
 if (!privatePass) failed++;
 failed += TopologyTests.Run();
+failed += TouchMappingTests.Run();
 var ratePass = RateMath.Calculate(100, 300, 2) == 100
     && RateMath.Calculate(200, 100, 1) is null
     && RateMath.Calculate(null, 100, 1) is null
