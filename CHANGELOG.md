@@ -1,6 +1,6 @@
 # Changelog
 
-## Resolved component drift gate (CI pending)
+## Resolved component drift gate (CI PASS)
 
 - Compare actual Maven and NuGet package coordinates to reviewed captured baselines; reject additions, removals and version changes before artifact publication.
 
