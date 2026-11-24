@@ -1,0 +1,3134 @@
+{
+  "findings": [
+    {
+      "detail": "missing public docstring",
+      "line": 15,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "docstring",
+      "symbol": "Fixture"
+    },
+    {
+      "detail": "missing parameter: opcode",
+      "line": 130,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "annotation",
+      "symbol": "Fixture.client_frame"
+    },
+    {
+      "detail": "missing parameter: payload",
+      "line": 130,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "annotation",
+      "symbol": "Fixture.client_frame"
+    },
+    {
+      "detail": "missing return",
+      "line": 130,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "annotation",
+      "symbol": "Fixture.client_frame"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 130,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "docstring",
+      "symbol": "Fixture.client_frame"
+    },
+    {
+      "detail": "missing return",
+      "line": 121,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "annotation",
+      "symbol": "Fixture.control_exchange"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 121,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "docstring",
+      "symbol": "Fixture.control_exchange"
+    },
+    {
+      "detail": "missing return",
+      "line": 39,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "annotation",
+      "symbol": "Fixture.do_GET"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 39,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "docstring",
+      "symbol": "Fixture.do_GET"
+    },
+    {
+      "detail": "missing parameter: opcode",
+      "line": 140,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "annotation",
+      "symbol": "Fixture.frame"
+    },
+    {
+      "detail": "missing parameter: payload",
+      "line": 140,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "annotation",
+      "symbol": "Fixture.frame"
+    },
+    {
+      "detail": "missing return",
+      "line": 140,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "annotation",
+      "symbol": "Fixture.frame"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 140,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "docstring",
+      "symbol": "Fixture.frame"
+    },
+    {
+      "detail": "missing parameter: _args",
+      "line": 18,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "annotation",
+      "symbol": "Fixture.log_message"
+    },
+    {
+      "detail": "missing return",
+      "line": 18,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "annotation",
+      "symbol": "Fixture.log_message"
+    },
+    {
+      "detail": "missing parameter: code",
+      "line": 25,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "annotation",
+      "symbol": "Fixture.reply"
+    },
+    {
+      "detail": "missing parameter: payload",
+      "line": 25,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "annotation",
+      "symbol": "Fixture.reply"
+    },
+    {
+      "detail": "missing return",
+      "line": 25,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "annotation",
+      "symbol": "Fixture.reply"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 25,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "docstring",
+      "symbol": "Fixture.reply"
+    },
+    {
+      "detail": "missing return",
+      "line": 35,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "annotation",
+      "symbol": "Fixture.sample"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 35,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "docstring",
+      "symbol": "Fixture.sample"
+    },
+    {
+      "detail": "missing return",
+      "line": 21,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "annotation",
+      "symbol": "Fixture.setup"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 21,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "docstring",
+      "symbol": "Fixture.setup"
+    },
+    {
+      "detail": "missing return",
+      "line": 59,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "annotation",
+      "symbol": "Fixture.websocket"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 59,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "docstring",
+      "symbol": "Fixture.websocket"
+    },
+    {
+      "detail": "function exceeds 40 lines",
+      "line": 59,
+      "path": "android/tests/transport_fixture.py",
+      "rule": "length",
+      "symbol": "Fixture.websocket"
+    },
+    {
+      "detail": "missing parameter: root",
+      "line": 35,
+      "path": "scripts/artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "collect"
+    },
+    {
+      "detail": "missing return",
+      "line": 35,
+      "path": "scripts/artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "collect"
+    },
+    {
+      "detail": "missing parameter: first",
+      "line": 96,
+      "path": "scripts/artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "compare"
+    },
+    {
+      "detail": "missing parameter: second",
+      "line": 96,
+      "path": "scripts/artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "compare"
+    },
+    {
+      "detail": "missing return",
+      "line": 96,
+      "path": "scripts/artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "compare"
+    },
+    {
+      "detail": "missing parameter: manifest",
+      "line": 72,
+      "path": "scripts/artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "entries"
+    },
+    {
+      "detail": "missing return",
+      "line": 72,
+      "path": "scripts/artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "entries"
+    },
+    {
+      "detail": "missing parameter: path",
+      "line": 18,
+      "path": "scripts/artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "hash_file"
+    },
+    {
+      "detail": "missing return",
+      "line": 18,
+      "path": "scripts/artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "hash_file"
+    },
+    {
+      "detail": "missing return",
+      "line": 104,
+      "path": "scripts/artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "main"
+    },
+    {
+      "detail": "missing parameter: path",
+      "line": 27,
+      "path": "scripts/artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "safe_entry"
+    },
+    {
+      "detail": "missing return",
+      "line": 27,
+      "path": "scripts/artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "safe_entry"
+    },
+    {
+      "detail": "missing parameter: code",
+      "line": 43,
+      "path": "scripts/audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "NoRedirect.redirect_request"
+    },
+    {
+      "detail": "missing parameter: fp",
+      "line": 43,
+      "path": "scripts/audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "NoRedirect.redirect_request"
+    },
+    {
+      "detail": "missing parameter: headers",
+      "line": 43,
+      "path": "scripts/audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "NoRedirect.redirect_request"
+    },
+    {
+      "detail": "missing parameter: msg",
+      "line": 43,
+      "path": "scripts/audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "NoRedirect.redirect_request"
+    },
+    {
+      "detail": "missing parameter: newurl",
+      "line": 43,
+      "path": "scripts/audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "NoRedirect.redirect_request"
+    },
+    {
+      "detail": "missing parameter: req",
+      "line": 43,
+      "path": "scripts/audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "NoRedirect.redirect_request"
+    },
+    {
+      "detail": "missing return",
+      "line": 43,
+      "path": "scripts/audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "NoRedirect.redirect_request"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 43,
+      "path": "scripts/audit_runtime_advisories.py",
+      "rule": "docstring",
+      "symbol": "NoRedirect.redirect_request"
+    },
+    {
+      "detail": "missing parameter: queries",
+      "line": 47,
+      "path": "scripts/audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "fetch"
+    },
+    {
+      "detail": "missing return",
+      "line": 47,
+      "path": "scripts/audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "fetch"
+    },
+    {
+      "detail": "missing parameter: paths",
+      "line": 17,
+      "path": "scripts/audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "load_queries"
+    },
+    {
+      "detail": "missing return",
+      "line": 17,
+      "path": "scripts/audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "load_queries"
+    },
+    {
+      "detail": "missing return",
+      "line": 95,
+      "path": "scripts/audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "main"
+    },
+    {
+      "detail": "missing parameter: entries",
+      "line": 60,
+      "path": "scripts/audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "scan"
+    },
+    {
+      "detail": "missing parameter: request",
+      "line": 60,
+      "path": "scripts/audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "scan"
+    },
+    {
+      "detail": "missing return",
+      "line": 60,
+      "path": "scripts/audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "scan"
+    },
+    {
+      "detail": "missing parameter: actual",
+      "line": 41,
+      "path": "scripts/check_dependency_baseline.py",
+      "rule": "annotation",
+      "symbol": "compare"
+    },
+    {
+      "detail": "missing parameter: baseline",
+      "line": 41,
+      "path": "scripts/check_dependency_baseline.py",
+      "rule": "annotation",
+      "symbol": "compare"
+    },
+    {
+      "detail": "missing return",
+      "line": 41,
+      "path": "scripts/check_dependency_baseline.py",
+      "rule": "annotation",
+      "symbol": "compare"
+    },
+    {
+      "detail": "missing parameter: bom",
+      "line": 20,
+      "path": "scripts/check_dependency_baseline.py",
+      "rule": "annotation",
+      "symbol": "coordinates"
+    },
+    {
+      "detail": "missing return",
+      "line": 20,
+      "path": "scripts/check_dependency_baseline.py",
+      "rule": "annotation",
+      "symbol": "coordinates"
+    },
+    {
+      "detail": "missing return",
+      "line": 50,
+      "path": "scripts/check_dependency_baseline.py",
+      "rule": "annotation",
+      "symbol": "main"
+    },
+    {
+      "detail": "missing parameter: path",
+      "line": 13,
+      "path": "scripts/check_dependency_baseline.py",
+      "rule": "annotation",
+      "symbol": "read_json"
+    },
+    {
+      "detail": "missing return",
+      "line": 13,
+      "path": "scripts/check_dependency_baseline.py",
+      "rule": "annotation",
+      "symbol": "read_json"
+    },
+    {
+      "detail": "missing parameter: artifact",
+      "line": 37,
+      "path": "scripts/check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "artifact_hash"
+    },
+    {
+      "detail": "missing return",
+      "line": 37,
+      "path": "scripts/check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "artifact_hash"
+    },
+    {
+      "detail": "missing parameter: root",
+      "line": 26,
+      "path": "scripts/check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "check_configuration"
+    },
+    {
+      "detail": "missing return",
+      "line": 26,
+      "path": "scripts/check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "check_configuration"
+    },
+    {
+      "detail": "missing parameter: root",
+      "line": 47,
+      "path": "scripts/check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "inventory"
+    },
+    {
+      "detail": "missing return",
+      "line": 47,
+      "path": "scripts/check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "inventory"
+    },
+    {
+      "detail": "missing return",
+      "line": 81,
+      "path": "scripts/check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "main"
+    },
+    {
+      "detail": "missing parameter: path",
+      "line": 16,
+      "path": "scripts/check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "read_metadata"
+    },
+    {
+      "detail": "missing return",
+      "line": 16,
+      "path": "scripts/check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "read_metadata"
+    },
+    {
+      "detail": "missing parameter: baseline",
+      "line": 73,
+      "path": "scripts/check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "require_runtime"
+    },
+    {
+      "detail": "missing parameter: records",
+      "line": 73,
+      "path": "scripts/check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "require_runtime"
+    },
+    {
+      "detail": "missing return",
+      "line": 73,
+      "path": "scripts/check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "require_runtime"
+    },
+    {
+      "detail": "missing parameter: first",
+      "line": 65,
+      "path": "scripts/compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "compare"
+    },
+    {
+      "detail": "missing parameter: second",
+      "line": 65,
+      "path": "scripts/compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "compare"
+    },
+    {
+      "detail": "missing return",
+      "line": 65,
+      "path": "scripts/compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "compare"
+    },
+    {
+      "detail": "missing parameter: path",
+      "line": 55,
+      "path": "scripts/compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "inspect"
+    },
+    {
+      "detail": "missing return",
+      "line": 55,
+      "path": "scripts/compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "inspect"
+    },
+    {
+      "detail": "missing return",
+      "line": 81,
+      "path": "scripts/compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "main"
+    },
+    {
+      "detail": "missing parameter: data",
+      "line": 19,
+      "path": "scripts/compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "signing_bounds"
+    },
+    {
+      "detail": "missing return",
+      "line": 19,
+      "path": "scripts/compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "signing_bounds"
+    },
+    {
+      "detail": "missing parameter: cursor",
+      "line": 40,
+      "path": "scripts/compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "validate_pairs"
+    },
+    {
+      "detail": "missing parameter: data",
+      "line": 40,
+      "path": "scripts/compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "validate_pairs"
+    },
+    {
+      "detail": "missing parameter: end",
+      "line": 40,
+      "path": "scripts/compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "validate_pairs"
+    },
+    {
+      "detail": "missing return",
+      "line": 40,
+      "path": "scripts/compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "validate_pairs"
+    },
+    {
+      "detail": "missing parameter: group",
+      "line": 23,
+      "path": "scripts/dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "component"
+    },
+    {
+      "detail": "missing parameter: kind",
+      "line": 23,
+      "path": "scripts/dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "component"
+    },
+    {
+      "detail": "missing parameter: name",
+      "line": 23,
+      "path": "scripts/dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "component"
+    },
+    {
+      "detail": "missing parameter: version",
+      "line": 23,
+      "path": "scripts/dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "component"
+    },
+    {
+      "detail": "missing return",
+      "line": 23,
+      "path": "scripts/dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "component"
+    },
+    {
+      "detail": "missing parameter: value",
+      "line": 14,
+      "path": "scripts/dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "field"
+    },
+    {
+      "detail": "missing return",
+      "line": 14,
+      "path": "scripts/dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "field"
+    },
+    {
+      "detail": "missing return",
+      "line": 72,
+      "path": "scripts/dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "main"
+    },
+    {
+      "detail": "missing parameter: data",
+      "line": 59,
+      "path": "scripts/dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "make_bom"
+    },
+    {
+      "detail": "missing parameter: kind",
+      "line": 59,
+      "path": "scripts/dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "make_bom"
+    },
+    {
+      "detail": "missing parameter: label",
+      "line": 59,
+      "path": "scripts/dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "make_bom"
+    },
+    {
+      "detail": "missing return",
+      "line": 59,
+      "path": "scripts/dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "make_bom"
+    },
+    {
+      "detail": "missing parameter: data",
+      "line": 36,
+      "path": "scripts/dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "maven_components"
+    },
+    {
+      "detail": "missing return",
+      "line": 36,
+      "path": "scripts/dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "maven_components"
+    },
+    {
+      "detail": "missing parameter: data",
+      "line": 44,
+      "path": "scripts/dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "nuget_components"
+    },
+    {
+      "detail": "missing return",
+      "line": 44,
+      "path": "scripts/dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "nuget_components"
+    },
+    {
+      "detail": "missing parameter: path",
+      "line": 69,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "archive_evidence"
+    },
+    {
+      "detail": "missing parameter: read_nuspec",
+      "line": 69,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "archive_evidence"
+    },
+    {
+      "detail": "missing return",
+      "line": 69,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "archive_evidence"
+    },
+    {
+      "detail": "missing parameter: algorithm",
+      "line": 23,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "digest"
+    },
+    {
+      "detail": "missing parameter: path",
+      "line": 23,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "digest"
+    },
+    {
+      "detail": "missing return",
+      "line": 23,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "digest"
+    },
+    {
+      "detail": "missing parameter: name",
+      "line": 62,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "is_notice"
+    },
+    {
+      "detail": "missing return",
+      "line": 62,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "is_notice"
+    },
+    {
+      "detail": "missing return",
+      "line": 171,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "main"
+    },
+    {
+      "detail": "missing parameter: raw",
+      "line": 41,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "maven_licenses"
+    },
+    {
+      "detail": "missing return",
+      "line": 41,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "maven_licenses"
+    },
+    {
+      "detail": "missing parameter: cache",
+      "line": 94,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "maven_record"
+    },
+    {
+      "detail": "missing parameter: component",
+      "line": 94,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "maven_record"
+    },
+    {
+      "detail": "missing parameter: records",
+      "line": 94,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "maven_record"
+    },
+    {
+      "detail": "missing return",
+      "line": 94,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "maven_record"
+    },
+    {
+      "detail": "missing parameter: path",
+      "line": 141,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "nuget_content_hash"
+    },
+    {
+      "detail": "missing return",
+      "line": 141,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "nuget_content_hash"
+    },
+    {
+      "detail": "missing parameter: raw",
+      "line": 48,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "nuget_licenses"
+    },
+    {
+      "detail": "missing return",
+      "line": 48,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "nuget_licenses"
+    },
+    {
+      "detail": "missing parameter: cache",
+      "line": 152,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "nuget_record"
+    },
+    {
+      "detail": "missing parameter: component",
+      "line": 152,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "nuget_record"
+    },
+    {
+      "detail": "missing parameter: lock",
+      "line": 152,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "nuget_record"
+    },
+    {
+      "detail": "missing return",
+      "line": 152,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "nuget_record"
+    },
+    {
+      "detail": "missing parameter: raw",
+      "line": 34,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "parse_xml"
+    },
+    {
+      "detail": "missing return",
+      "line": 34,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "parse_xml"
+    },
+    {
+      "detail": "missing parameter: path",
+      "line": 126,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "signed_content_hash"
+    },
+    {
+      "detail": "missing return",
+      "line": 126,
+      "path": "scripts/dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "signed_content_hash"
+    },
+    {
+      "detail": "missing return",
+      "line": 37,
+      "path": "scripts/normalize_static_endpoints.py",
+      "rule": "annotation",
+      "symbol": "main"
+    },
+    {
+      "detail": "missing parameter: data",
+      "line": 13,
+      "path": "scripts/normalize_static_endpoints.py",
+      "rule": "annotation",
+      "symbol": "normalize"
+    },
+    {
+      "detail": "missing parameter: epoch",
+      "line": 13,
+      "path": "scripts/normalize_static_endpoints.py",
+      "rule": "annotation",
+      "symbol": "normalize"
+    },
+    {
+      "detail": "missing return",
+      "line": 13,
+      "path": "scripts/normalize_static_endpoints.py",
+      "rule": "annotation",
+      "symbol": "normalize"
+    },
+    {
+      "detail": "missing return",
+      "line": 126,
+      "path": "scripts/portable_zip.py",
+      "rule": "annotation",
+      "symbol": "main"
+    },
+    {
+      "detail": "missing parameter: root",
+      "line": 28,
+      "path": "scripts/portable_zip.py",
+      "rule": "annotation",
+      "symbol": "read_manifest"
+    },
+    {
+      "detail": "missing return",
+      "line": 28,
+      "path": "scripts/portable_zip.py",
+      "rule": "annotation",
+      "symbol": "read_manifest"
+    },
+    {
+      "detail": "missing parameter: archive",
+      "line": 80,
+      "path": "scripts/portable_zip.py",
+      "rule": "annotation",
+      "symbol": "validate_members"
+    },
+    {
+      "detail": "missing return",
+      "line": 80,
+      "path": "scripts/portable_zip.py",
+      "rule": "annotation",
+      "symbol": "validate_members"
+    },
+    {
+      "detail": "missing parameter: path",
+      "line": 107,
+      "path": "scripts/portable_zip.py",
+      "rule": "annotation",
+      "symbol": "verify_zip"
+    },
+    {
+      "detail": "missing return",
+      "line": 107,
+      "path": "scripts/portable_zip.py",
+      "rule": "annotation",
+      "symbol": "verify_zip"
+    },
+    {
+      "detail": "missing parameter: name",
+      "line": 21,
+      "path": "scripts/portable_zip.py",
+      "rule": "annotation",
+      "symbol": "windows_path"
+    },
+    {
+      "detail": "missing return",
+      "line": 21,
+      "path": "scripts/portable_zip.py",
+      "rule": "annotation",
+      "symbol": "windows_path"
+    },
+    {
+      "detail": "missing parameter: output",
+      "line": 52,
+      "path": "scripts/portable_zip.py",
+      "rule": "annotation",
+      "symbol": "write_zip"
+    },
+    {
+      "detail": "missing parameter: root",
+      "line": 52,
+      "path": "scripts/portable_zip.py",
+      "rule": "annotation",
+      "symbol": "write_zip"
+    },
+    {
+      "detail": "missing return",
+      "line": 52,
+      "path": "scripts/portable_zip.py",
+      "rule": "annotation",
+      "symbol": "write_zip"
+    },
+    {
+      "detail": "missing parameter: name",
+      "line": 40,
+      "path": "scripts/portable_zip.py",
+      "rule": "annotation",
+      "symbol": "zip_info"
+    },
+    {
+      "detail": "missing parameter: size",
+      "line": 40,
+      "path": "scripts/portable_zip.py",
+      "rule": "annotation",
+      "symbol": "zip_info"
+    },
+    {
+      "detail": "missing return",
+      "line": 40,
+      "path": "scripts/portable_zip.py",
+      "rule": "annotation",
+      "symbol": "zip_info"
+    },
+    {
+      "detail": "missing parameter: destination",
+      "line": 90,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "check_destination"
+    },
+    {
+      "detail": "missing return",
+      "line": 90,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "check_destination"
+    },
+    {
+      "detail": "missing parameter: archive",
+      "line": 31,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "checked_manifest"
+    },
+    {
+      "detail": "missing parameter: name",
+      "line": 31,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "checked_manifest"
+    },
+    {
+      "detail": "missing return",
+      "line": 31,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "checked_manifest"
+    },
+    {
+      "detail": "missing parameter: source",
+      "line": 21,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "digest"
+    },
+    {
+      "detail": "missing return",
+      "line": 21,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "digest"
+    },
+    {
+      "detail": "missing parameter: archive",
+      "line": 104,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "extract_verified"
+    },
+    {
+      "detail": "missing parameter: destination",
+      "line": 104,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "extract_verified"
+    },
+    {
+      "detail": "missing parameter: names",
+      "line": 104,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "extract_verified"
+    },
+    {
+      "detail": "missing return",
+      "line": 104,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "extract_verified"
+    },
+    {
+      "detail": "missing return",
+      "line": 145,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "main"
+    },
+    {
+      "detail": "missing parameter: archive",
+      "line": 58,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "preflight"
+    },
+    {
+      "detail": "missing return",
+      "line": 58,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "preflight"
+    },
+    {
+      "detail": "missing parameter: destination",
+      "line": 122,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "stage"
+    },
+    {
+      "detail": "missing parameter: dry_run",
+      "line": 122,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "stage"
+    },
+    {
+      "detail": "missing parameter: expected",
+      "line": 122,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "stage"
+    },
+    {
+      "detail": "missing parameter: package",
+      "line": 122,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "stage"
+    },
+    {
+      "detail": "missing return",
+      "line": 122,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "stage"
+    },
+    {
+      "detail": "missing parameter: archive",
+      "line": 38,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "verify_source_evidence"
+    },
+    {
+      "detail": "missing return",
+      "line": 38,
+      "path": "scripts/stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "verify_source_evidence"
+    },
+    {
+      "detail": "missing return",
+      "line": 13,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "ManifestTests.setUp"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 13,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "docstring",
+      "symbol": "ManifestTests.setUp"
+    },
+    {
+      "detail": "missing return",
+      "line": 27,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "ManifestTests.test_added"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 27,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "docstring",
+      "symbol": "ManifestTests.test_added"
+    },
+    {
+      "detail": "missing return",
+      "line": 22,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "ManifestTests.test_changed"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 22,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "docstring",
+      "symbol": "ManifestTests.test_changed"
+    },
+    {
+      "detail": "missing return",
+      "line": 37,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "ManifestTests.test_empty"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 37,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "docstring",
+      "symbol": "ManifestTests.test_empty"
+    },
+    {
+      "detail": "missing return",
+      "line": 62,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "ManifestTests.test_hidden_file"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 62,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "docstring",
+      "symbol": "ManifestTests.test_hidden_file"
+    },
+    {
+      "detail": "missing return",
+      "line": 55,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "ManifestTests.test_malformed_manifest"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 55,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "docstring",
+      "symbol": "ManifestTests.test_malformed_manifest"
+    },
+    {
+      "detail": "missing return",
+      "line": 32,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "ManifestTests.test_manifest_excluded"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 32,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "docstring",
+      "symbol": "ManifestTests.test_manifest_excluded"
+    },
+    {
+      "detail": "missing return",
+      "line": 42,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "ManifestTests.test_paths"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 42,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "docstring",
+      "symbol": "ManifestTests.test_paths"
+    },
+    {
+      "detail": "missing return",
+      "line": 47,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "ManifestTests.test_removed"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 47,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "docstring",
+      "symbol": "ManifestTests.test_removed"
+    },
+    {
+      "detail": "missing return",
+      "line": 19,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "ManifestTests.test_stable"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 19,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "docstring",
+      "symbol": "ManifestTests.test_stable"
+    },
+    {
+      "detail": "missing return",
+      "line": 67,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "annotation",
+      "symbol": "ManifestTests.test_symlink"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 67,
+      "path": "scripts/test_artifact_manifest.py",
+      "rule": "docstring",
+      "symbol": "ManifestTests.test_symlink"
+    },
+    {
+      "detail": "missing return",
+      "line": 11,
+      "path": "scripts/test_audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "AuditTests.setUp"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 11,
+      "path": "scripts/test_audit_runtime_advisories.py",
+      "rule": "docstring",
+      "symbol": "AuditTests.setUp"
+    },
+    {
+      "detail": "missing return",
+      "line": 16,
+      "path": "scripts/test_audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "AuditTests.test_empty_matches"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 16,
+      "path": "scripts/test_audit_runtime_advisories.py",
+      "rule": "docstring",
+      "symbol": "AuditTests.test_empty_matches"
+    },
+    {
+      "detail": "missing return",
+      "line": 32,
+      "path": "scripts/test_audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "AuditTests.test_incomplete"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 32,
+      "path": "scripts/test_audit_runtime_advisories.py",
+      "rule": "docstring",
+      "symbol": "AuditTests.test_incomplete"
+    },
+    {
+      "detail": "missing return",
+      "line": 20,
+      "path": "scripts/test_audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "AuditTests.test_match"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 20,
+      "path": "scripts/test_audit_runtime_advisories.py",
+      "rule": "docstring",
+      "symbol": "AuditTests.test_match"
+    },
+    {
+      "detail": "missing return",
+      "line": 25,
+      "path": "scripts/test_audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "AuditTests.test_pages"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 25,
+      "path": "scripts/test_audit_runtime_advisories.py",
+      "rule": "docstring",
+      "symbol": "AuditTests.test_pages"
+    },
+    {
+      "detail": "missing return",
+      "line": 36,
+      "path": "scripts/test_audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "AuditTests.test_repeated_page"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 36,
+      "path": "scripts/test_audit_runtime_advisories.py",
+      "rule": "docstring",
+      "symbol": "AuditTests.test_repeated_page"
+    },
+    {
+      "detail": "missing return",
+      "line": 40,
+      "path": "scripts/test_audit_runtime_advisories.py",
+      "rule": "annotation",
+      "symbol": "AuditTests.test_unknown_schema"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 40,
+      "path": "scripts/test_audit_runtime_advisories.py",
+      "rule": "docstring",
+      "symbol": "AuditTests.test_unknown_schema"
+    },
+    {
+      "detail": "missing return",
+      "line": 87,
+      "path": "scripts/test_check_android_badging.py",
+      "rule": "annotation",
+      "symbol": "BadgingTests.test_conditional_permission"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 87,
+      "path": "scripts/test_check_android_badging.py",
+      "rule": "docstring",
+      "symbol": "BadgingTests.test_conditional_permission"
+    },
+    {
+      "detail": "missing return",
+      "line": 74,
+      "path": "scripts/test_check_android_badging.py",
+      "rule": "annotation",
+      "symbol": "BadgingTests.test_duplicate_permission"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 74,
+      "path": "scripts/test_check_android_badging.py",
+      "rule": "docstring",
+      "symbol": "BadgingTests.test_duplicate_permission"
+    },
+    {
+      "detail": "missing return",
+      "line": 78,
+      "path": "scripts/test_check_android_badging.py",
+      "rule": "annotation",
+      "symbol": "BadgingTests.test_malformed_permission"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 78,
+      "path": "scripts/test_check_android_badging.py",
+      "rule": "docstring",
+      "symbol": "BadgingTests.test_malformed_permission"
+    },
+    {
+      "detail": "missing return",
+      "line": 69,
+      "path": "scripts/test_check_android_badging.py",
+      "rule": "annotation",
+      "symbol": "BadgingTests.test_missing_camera"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 69,
+      "path": "scripts/test_check_android_badging.py",
+      "rule": "docstring",
+      "symbol": "BadgingTests.test_missing_camera"
+    },
+    {
+      "detail": "missing return",
+      "line": 63,
+      "path": "scripts/test_check_android_badging.py",
+      "rule": "annotation",
+      "symbol": "BadgingTests.test_missing_internet"
+    },
+    {
+      "detail": "missing return",
+      "line": 82,
+      "path": "scripts/test_check_android_badging.py",
+      "rule": "annotation",
+      "symbol": "BadgingTests.test_sdk_specific_permission"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 82,
+      "path": "scripts/test_check_android_badging.py",
+      "rule": "docstring",
+      "symbol": "BadgingTests.test_sdk_specific_permission"
+    },
+    {
+      "detail": "missing return",
+      "line": 51,
+      "path": "scripts/test_check_android_badging.py",
+      "rule": "annotation",
+      "symbol": "BadgingTests.test_unexpected_permission"
+    },
+    {
+      "detail": "missing return",
+      "line": 57,
+      "path": "scripts/test_check_android_badging.py",
+      "rule": "annotation",
+      "symbol": "BadgingTests.test_unrequested_vibration"
+    },
+    {
+      "detail": "missing return",
+      "line": 29,
+      "path": "scripts/test_check_android_badging.py",
+      "rule": "annotation",
+      "symbol": "BadgingTests.test_valid"
+    },
+    {
+      "detail": "missing return",
+      "line": 36,
+      "path": "scripts/test_check_android_badging.py",
+      "rule": "annotation",
+      "symbol": "BadgingTests.test_wrong_package"
+    },
+    {
+      "detail": "missing return",
+      "line": 46,
+      "path": "scripts/test_check_android_badging.py",
+      "rule": "annotation",
+      "symbol": "BadgingTests.test_wrong_sdk"
+    },
+    {
+      "detail": "missing return",
+      "line": 41,
+      "path": "scripts/test_check_android_badging.py",
+      "rule": "annotation",
+      "symbol": "BadgingTests.test_wrong_version"
+    },
+    {
+      "detail": "missing return",
+      "line": 29,
+      "path": "scripts/test_check_dependency_baseline.py",
+      "rule": "annotation",
+      "symbol": "BaselineTests.test_added"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 29,
+      "path": "scripts/test_check_dependency_baseline.py",
+      "rule": "docstring",
+      "symbol": "BaselineTests.test_added"
+    },
+    {
+      "detail": "missing return",
+      "line": 42,
+      "path": "scripts/test_check_dependency_baseline.py",
+      "rule": "annotation",
+      "symbol": "BaselineTests.test_duplicate"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 42,
+      "path": "scripts/test_check_dependency_baseline.py",
+      "rule": "docstring",
+      "symbol": "BaselineTests.test_duplicate"
+    },
+    {
+      "detail": "missing return",
+      "line": 47,
+      "path": "scripts/test_check_dependency_baseline.py",
+      "rule": "annotation",
+      "symbol": "BaselineTests.test_empty"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 47,
+      "path": "scripts/test_check_dependency_baseline.py",
+      "rule": "docstring",
+      "symbol": "BaselineTests.test_empty"
+    },
+    {
+      "detail": "missing return",
+      "line": 51,
+      "path": "scripts/test_check_dependency_baseline.py",
+      "rule": "annotation",
+      "symbol": "BaselineTests.test_invalid_purl"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 51,
+      "path": "scripts/test_check_dependency_baseline.py",
+      "rule": "docstring",
+      "symbol": "BaselineTests.test_invalid_purl"
+    },
+    {
+      "detail": "missing return",
+      "line": 21,
+      "path": "scripts/test_check_dependency_baseline.py",
+      "rule": "annotation",
+      "symbol": "BaselineTests.test_order_independent"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 21,
+      "path": "scripts/test_check_dependency_baseline.py",
+      "rule": "docstring",
+      "symbol": "BaselineTests.test_order_independent"
+    },
+    {
+      "detail": "missing return",
+      "line": 33,
+      "path": "scripts/test_check_dependency_baseline.py",
+      "rule": "annotation",
+      "symbol": "BaselineTests.test_removed"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 33,
+      "path": "scripts/test_check_dependency_baseline.py",
+      "rule": "docstring",
+      "symbol": "BaselineTests.test_removed"
+    },
+    {
+      "detail": "missing return",
+      "line": 37,
+      "path": "scripts/test_check_dependency_baseline.py",
+      "rule": "annotation",
+      "symbol": "BaselineTests.test_scope_mismatch"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 37,
+      "path": "scripts/test_check_dependency_baseline.py",
+      "rule": "docstring",
+      "symbol": "BaselineTests.test_scope_mismatch"
+    },
+    {
+      "detail": "missing return",
+      "line": 25,
+      "path": "scripts/test_check_dependency_baseline.py",
+      "rule": "annotation",
+      "symbol": "BaselineTests.test_version_changed"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 25,
+      "path": "scripts/test_check_dependency_baseline.py",
+      "rule": "docstring",
+      "symbol": "BaselineTests.test_version_changed"
+    },
+    {
+      "detail": "missing parameter: scope",
+      "line": 8,
+      "path": "scripts/test_check_dependency_baseline.py",
+      "rule": "annotation",
+      "symbol": "inventory"
+    },
+    {
+      "detail": "missing parameter: urls",
+      "line": 8,
+      "path": "scripts/test_check_dependency_baseline.py",
+      "rule": "annotation",
+      "symbol": "inventory"
+    },
+    {
+      "detail": "missing return",
+      "line": 8,
+      "path": "scripts/test_check_dependency_baseline.py",
+      "rule": "annotation",
+      "symbol": "inventory"
+    },
+    {
+      "detail": "missing return",
+      "line": 32,
+      "path": "scripts/test_check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "VerificationTests.test_exemption"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 32,
+      "path": "scripts/test_check_gradle_verification.py",
+      "rule": "docstring",
+      "symbol": "VerificationTests.test_exemption"
+    },
+    {
+      "detail": "missing return",
+      "line": 28,
+      "path": "scripts/test_check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "VerificationTests.test_invalid_digest"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 28,
+      "path": "scripts/test_check_gradle_verification.py",
+      "rule": "docstring",
+      "symbol": "VerificationTests.test_invalid_digest"
+    },
+    {
+      "detail": "missing return",
+      "line": 36,
+      "path": "scripts/test_check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "VerificationTests.test_missing_runtime"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 36,
+      "path": "scripts/test_check_gradle_verification.py",
+      "rule": "docstring",
+      "symbol": "VerificationTests.test_missing_runtime"
+    },
+    {
+      "detail": "missing return",
+      "line": 41,
+      "path": "scripts/test_check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "VerificationTests.test_runtime_coverage"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 41,
+      "path": "scripts/test_check_gradle_verification.py",
+      "rule": "docstring",
+      "symbol": "VerificationTests.test_runtime_coverage"
+    },
+    {
+      "detail": "missing return",
+      "line": 25,
+      "path": "scripts/test_check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "VerificationTests.test_valid"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 25,
+      "path": "scripts/test_check_gradle_verification.py",
+      "rule": "docstring",
+      "symbol": "VerificationTests.test_valid"
+    },
+    {
+      "detail": "missing parameter: digest",
+      "line": 9,
+      "path": "scripts/test_check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "document"
+    },
+    {
+      "detail": "missing parameter: extra",
+      "line": 9,
+      "path": "scripts/test_check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "document"
+    },
+    {
+      "detail": "missing return",
+      "line": 9,
+      "path": "scripts/test_check_gradle_verification.py",
+      "rule": "annotation",
+      "symbol": "document"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 30,
+      "path": "scripts/test_compare_apk_payload.py",
+      "rule": "docstring",
+      "symbol": "ComparisonTests"
+    },
+    {
+      "detail": "missing return",
+      "line": 31,
+      "path": "scripts/test_compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "ComparisonTests.setUp"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 31,
+      "path": "scripts/test_compare_apk_payload.py",
+      "rule": "docstring",
+      "symbol": "ComparisonTests.setUp"
+    },
+    {
+      "detail": "missing return",
+      "line": 51,
+      "path": "scripts/test_compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "ComparisonTests.test_bad_size"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 51,
+      "path": "scripts/test_compare_apk_payload.py",
+      "rule": "docstring",
+      "symbol": "ComparisonTests.test_bad_size"
+    },
+    {
+      "detail": "missing return",
+      "line": 67,
+      "path": "scripts/test_compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "ComparisonTests.test_different_block_sizes"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 67,
+      "path": "scripts/test_compare_apk_payload.py",
+      "rule": "docstring",
+      "symbol": "ComparisonTests.test_different_block_sizes"
+    },
+    {
+      "detail": "missing return",
+      "line": 48,
+      "path": "scripts/test_compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "ComparisonTests.test_identical"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 48,
+      "path": "scripts/test_compare_apk_payload.py",
+      "rule": "docstring",
+      "symbol": "ComparisonTests.test_identical"
+    },
+    {
+      "detail": "missing return",
+      "line": 58,
+      "path": "scripts/test_compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "ComparisonTests.test_missing_magic"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 58,
+      "path": "scripts/test_compare_apk_payload.py",
+      "rule": "docstring",
+      "symbol": "ComparisonTests.test_missing_magic"
+    },
+    {
+      "detail": "missing return",
+      "line": 63,
+      "path": "scripts/test_compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "ComparisonTests.test_payload_difference"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 63,
+      "path": "scripts/test_compare_apk_payload.py",
+      "rule": "docstring",
+      "symbol": "ComparisonTests.test_payload_difference"
+    },
+    {
+      "detail": "missing return",
+      "line": 42,
+      "path": "scripts/test_compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "ComparisonTests.test_signature_only"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 42,
+      "path": "scripts/test_compare_apk_payload.py",
+      "rule": "docstring",
+      "symbol": "ComparisonTests.test_signature_only"
+    },
+    {
+      "detail": "missing parameter: path",
+      "line": 14,
+      "path": "scripts/test_compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "fixture"
+    },
+    {
+      "detail": "missing parameter: payload",
+      "line": 14,
+      "path": "scripts/test_compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "fixture"
+    },
+    {
+      "detail": "missing parameter: signature",
+      "line": 14,
+      "path": "scripts/test_compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "fixture"
+    },
+    {
+      "detail": "missing return",
+      "line": 14,
+      "path": "scripts/test_compare_apk_payload.py",
+      "rule": "annotation",
+      "symbol": "fixture"
+    },
+    {
+      "detail": "missing return",
+      "line": 30,
+      "path": "scripts/test_dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "InventoryTests.test_duplicate"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 30,
+      "path": "scripts/test_dependency_inventory.py",
+      "rule": "docstring",
+      "symbol": "InventoryTests.test_duplicate"
+    },
+    {
+      "detail": "missing return",
+      "line": 35,
+      "path": "scripts/test_dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "InventoryTests.test_empty"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 35,
+      "path": "scripts/test_dependency_inventory.py",
+      "rule": "docstring",
+      "symbol": "InventoryTests.test_empty"
+    },
+    {
+      "detail": "missing return",
+      "line": 39,
+      "path": "scripts/test_dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "InventoryTests.test_invalid_coordinate"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 39,
+      "path": "scripts/test_dependency_inventory.py",
+      "rule": "docstring",
+      "symbol": "InventoryTests.test_invalid_coordinate"
+    },
+    {
+      "detail": "missing return",
+      "line": 11,
+      "path": "scripts/test_dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "InventoryTests.test_maven"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 11,
+      "path": "scripts/test_dependency_inventory.py",
+      "rule": "docstring",
+      "symbol": "InventoryTests.test_maven"
+    },
+    {
+      "detail": "missing return",
+      "line": 26,
+      "path": "scripts/test_dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "InventoryTests.test_missing_target"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 26,
+      "path": "scripts/test_dependency_inventory.py",
+      "rule": "docstring",
+      "symbol": "InventoryTests.test_missing_target"
+    },
+    {
+      "detail": "missing return",
+      "line": 18,
+      "path": "scripts/test_dependency_inventory.py",
+      "rule": "annotation",
+      "symbol": "InventoryTests.test_nuget"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 18,
+      "path": "scripts/test_dependency_inventory.py",
+      "rule": "docstring",
+      "symbol": "InventoryTests.test_nuget"
+    },
+    {
+      "detail": "missing return",
+      "line": 86,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "LicenseEvidenceTests.test_cache_mismatch"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 86,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "docstring",
+      "symbol": "LicenseEvidenceTests.test_cache_mismatch"
+    },
+    {
+      "detail": "missing return",
+      "line": 23,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "LicenseEvidenceTests.test_missing_pom_license"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 23,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "docstring",
+      "symbol": "LicenseEvidenceTests.test_missing_pom_license"
+    },
+    {
+      "detail": "missing return",
+      "line": 80,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "LicenseEvidenceTests.test_native_missing_hash"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 80,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "docstring",
+      "symbol": "LicenseEvidenceTests.test_native_missing_hash"
+    },
+    {
+      "detail": "missing return",
+      "line": 67,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "LicenseEvidenceTests.test_native_signed_hash"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 67,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "docstring",
+      "symbol": "LicenseEvidenceTests.test_native_signed_hash"
+    },
+    {
+      "detail": "missing return",
+      "line": 74,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "LicenseEvidenceTests.test_native_verify_failure"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 74,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "docstring",
+      "symbol": "LicenseEvidenceTests.test_native_verify_failure"
+    },
+    {
+      "detail": "missing return",
+      "line": 34,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "LicenseEvidenceTests.test_notice_hash"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 34,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "docstring",
+      "symbol": "LicenseEvidenceTests.test_notice_hash"
+    },
+    {
+      "detail": "missing return",
+      "line": 45,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "LicenseEvidenceTests.test_nuget_locked_archive"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 45,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "docstring",
+      "symbol": "LicenseEvidenceTests.test_nuget_locked_archive"
+    },
+    {
+      "detail": "missing return",
+      "line": 26,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "LicenseEvidenceTests.test_nuspec"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 26,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "docstring",
+      "symbol": "LicenseEvidenceTests.test_nuspec"
+    },
+    {
+      "detail": "missing return",
+      "line": 19,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "LicenseEvidenceTests.test_pom"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 19,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "docstring",
+      "symbol": "LicenseEvidenceTests.test_pom"
+    },
+    {
+      "detail": "missing return",
+      "line": 30,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "annotation",
+      "symbol": "LicenseEvidenceTests.test_unsafe_xml"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 30,
+      "path": "scripts/test_dependency_license_evidence.py",
+      "rule": "docstring",
+      "symbol": "LicenseEvidenceTests.test_unsafe_xml"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 19,
+      "path": "scripts/test_normalize_static_endpoints.py",
+      "rule": "docstring",
+      "symbol": "NormalizeTests"
+    },
+    {
+      "detail": "missing return",
+      "line": 34,
+      "path": "scripts/test_normalize_static_endpoints.py",
+      "rule": "annotation",
+      "symbol": "NormalizeTests.test_duplicate_header"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 34,
+      "path": "scripts/test_normalize_static_endpoints.py",
+      "rule": "docstring",
+      "symbol": "NormalizeTests.test_duplicate_header"
+    },
+    {
+      "detail": "missing return",
+      "line": 27,
+      "path": "scripts/test_normalize_static_endpoints.py",
+      "rule": "annotation",
+      "symbol": "NormalizeTests.test_idempotent"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 27,
+      "path": "scripts/test_normalize_static_endpoints.py",
+      "rule": "docstring",
+      "symbol": "NormalizeTests.test_idempotent"
+    },
+    {
+      "detail": "missing return",
+      "line": 53,
+      "path": "scripts/test_normalize_static_endpoints.py",
+      "rule": "annotation",
+      "symbol": "NormalizeTests.test_invalid_epoch"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 53,
+      "path": "scripts/test_normalize_static_endpoints.py",
+      "rule": "docstring",
+      "symbol": "NormalizeTests.test_invalid_epoch"
+    },
+    {
+      "detail": "missing return",
+      "line": 41,
+      "path": "scripts/test_normalize_static_endpoints.py",
+      "rule": "annotation",
+      "symbol": "NormalizeTests.test_missing_header"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 41,
+      "path": "scripts/test_normalize_static_endpoints.py",
+      "rule": "docstring",
+      "symbol": "NormalizeTests.test_missing_header"
+    },
+    {
+      "detail": "missing return",
+      "line": 20,
+      "path": "scripts/test_normalize_static_endpoints.py",
+      "rule": "annotation",
+      "symbol": "NormalizeTests.test_only_timestamp_changes"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 20,
+      "path": "scripts/test_normalize_static_endpoints.py",
+      "rule": "docstring",
+      "symbol": "NormalizeTests.test_only_timestamp_changes"
+    },
+    {
+      "detail": "missing return",
+      "line": 47,
+      "path": "scripts/test_normalize_static_endpoints.py",
+      "rule": "annotation",
+      "symbol": "NormalizeTests.test_wrong_manifest"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 47,
+      "path": "scripts/test_normalize_static_endpoints.py",
+      "rule": "docstring",
+      "symbol": "NormalizeTests.test_wrong_manifest"
+    },
+    {
+      "detail": "missing return",
+      "line": 9,
+      "path": "scripts/test_normalize_static_endpoints.py",
+      "rule": "annotation",
+      "symbol": "fixture"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 9,
+      "path": "scripts/test_normalize_static_endpoints.py",
+      "rule": "docstring",
+      "symbol": "fixture"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 13,
+      "path": "scripts/test_portable_zip.py",
+      "rule": "docstring",
+      "symbol": "PortableZipTests"
+    },
+    {
+      "detail": "missing return",
+      "line": 14,
+      "path": "scripts/test_portable_zip.py",
+      "rule": "annotation",
+      "symbol": "PortableZipTests.setUp"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 14,
+      "path": "scripts/test_portable_zip.py",
+      "rule": "docstring",
+      "symbol": "PortableZipTests.setUp"
+    },
+    {
+      "detail": "missing return",
+      "line": 53,
+      "path": "scripts/test_portable_zip.py",
+      "rule": "annotation",
+      "symbol": "PortableZipTests.test_bad_member_hash"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 53,
+      "path": "scripts/test_portable_zip.py",
+      "rule": "docstring",
+      "symbol": "PortableZipTests.test_bad_member_hash"
+    },
+    {
+      "detail": "missing return",
+      "line": 70,
+      "path": "scripts/test_portable_zip.py",
+      "rule": "annotation",
+      "symbol": "PortableZipTests.test_case_collision"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 70,
+      "path": "scripts/test_portable_zip.py",
+      "rule": "docstring",
+      "symbol": "PortableZipTests.test_case_collision"
+    },
+    {
+      "detail": "missing return",
+      "line": 32,
+      "path": "scripts/test_portable_zip.py",
+      "rule": "annotation",
+      "symbol": "PortableZipTests.test_no_overwrite"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 32,
+      "path": "scripts/test_portable_zip.py",
+      "rule": "docstring",
+      "symbol": "PortableZipTests.test_no_overwrite"
+    },
+    {
+      "detail": "missing return",
+      "line": 44,
+      "path": "scripts/test_portable_zip.py",
+      "rule": "annotation",
+      "symbol": "PortableZipTests.test_output_inside_source"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 44,
+      "path": "scripts/test_portable_zip.py",
+      "rule": "docstring",
+      "symbol": "PortableZipTests.test_output_inside_source"
+    },
+    {
+      "detail": "missing return",
+      "line": 25,
+      "path": "scripts/test_portable_zip.py",
+      "rule": "annotation",
+      "symbol": "PortableZipTests.test_reproducible"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 25,
+      "path": "scripts/test_portable_zip.py",
+      "rule": "docstring",
+      "symbol": "PortableZipTests.test_reproducible"
+    },
+    {
+      "detail": "missing return",
+      "line": 38,
+      "path": "scripts/test_portable_zip.py",
+      "rule": "annotation",
+      "symbol": "PortableZipTests.test_tampered_source"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 38,
+      "path": "scripts/test_portable_zip.py",
+      "rule": "docstring",
+      "symbol": "PortableZipTests.test_tampered_source"
+    },
+    {
+      "detail": "missing return",
+      "line": 61,
+      "path": "scripts/test_portable_zip.py",
+      "rule": "annotation",
+      "symbol": "PortableZipTests.test_unlisted_member"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 61,
+      "path": "scripts/test_portable_zip.py",
+      "rule": "docstring",
+      "symbol": "PortableZipTests.test_unlisted_member"
+    },
+    {
+      "detail": "missing return",
+      "line": 48,
+      "path": "scripts/test_portable_zip.py",
+      "rule": "annotation",
+      "symbol": "PortableZipTests.test_windows_names"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 48,
+      "path": "scripts/test_portable_zip.py",
+      "rule": "docstring",
+      "symbol": "PortableZipTests.test_windows_names"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 18,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "docstring",
+      "symbol": "StagingTests"
+    },
+    {
+      "detail": "missing return",
+      "line": 38,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "StagingTests.pack"
+    },
+    {
+      "detail": "missing return",
+      "line": 19,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "StagingTests.setUp"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 19,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "docstring",
+      "symbol": "StagingTests.setUp"
+    },
+    {
+      "detail": "missing return",
+      "line": 50,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "StagingTests.test_apply"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 50,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "docstring",
+      "symbol": "StagingTests.test_apply"
+    },
+    {
+      "detail": "missing return",
+      "line": 84,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "StagingTests.test_destination_traversal"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 84,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "docstring",
+      "symbol": "StagingTests.test_destination_traversal"
+    },
+    {
+      "detail": "missing return",
+      "line": 46,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "StagingTests.test_dry_run"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 46,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "docstring",
+      "symbol": "StagingTests.test_dry_run"
+    },
+    {
+      "detail": "missing return",
+      "line": 59,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "StagingTests.test_existing"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 59,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "docstring",
+      "symbol": "StagingTests.test_existing"
+    },
+    {
+      "detail": "missing return",
+      "line": 77,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "StagingTests.test_invalid_source_evidence"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 77,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "docstring",
+      "symbol": "StagingTests.test_invalid_source_evidence"
+    },
+    {
+      "detail": "missing return",
+      "line": 67,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "StagingTests.test_missing_parent"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 67,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "docstring",
+      "symbol": "StagingTests.test_missing_parent"
+    },
+    {
+      "detail": "missing return",
+      "line": 71,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "StagingTests.test_mixed_sources"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 71,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "docstring",
+      "symbol": "StagingTests.test_mixed_sources"
+    },
+    {
+      "detail": "missing return",
+      "line": 54,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "StagingTests.test_wrong_digest"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 54,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "docstring",
+      "symbol": "StagingTests.test_wrong_digest"
+    },
+    {
+      "detail": "missing return",
+      "line": 88,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "StagingTests.test_wrong_nested_manifest"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 88,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "docstring",
+      "symbol": "StagingTests.test_wrong_nested_manifest"
+    },
+    {
+      "detail": "missing parameter: root",
+      "line": 13,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "manifest"
+    },
+    {
+      "detail": "missing return",
+      "line": 13,
+      "path": "scripts/test_stage_windows_package.py",
+      "rule": "annotation",
+      "symbol": "manifest"
+    },
+    {
+      "detail": "missing parameter: names",
+      "line": 23,
+      "path": "scripts/test_verify_android_apk.py",
+      "rule": "annotation",
+      "symbol": "ApkVerifyTests.make_archive"
+    },
+    {
+      "detail": "missing parameter: notices",
+      "line": 23,
+      "path": "scripts/test_verify_android_apk.py",
+      "rule": "annotation",
+      "symbol": "ApkVerifyTests.make_archive"
+    },
+    {
+      "detail": "missing return",
+      "line": 23,
+      "path": "scripts/test_verify_android_apk.py",
+      "rule": "annotation",
+      "symbol": "ApkVerifyTests.make_archive"
+    },
+    {
+      "detail": "missing return",
+      "line": 14,
+      "path": "scripts/test_verify_android_apk.py",
+      "rule": "annotation",
+      "symbol": "ApkVerifyTests.setUp"
+    },
+    {
+      "detail": "missing return",
+      "line": 19,
+      "path": "scripts/test_verify_android_apk.py",
+      "rule": "annotation",
+      "symbol": "ApkVerifyTests.tearDown"
+    },
+    {
+      "detail": "missing return",
+      "line": 73,
+      "path": "scripts/test_verify_android_apk.py",
+      "rule": "annotation",
+      "symbol": "ApkVerifyTests.test_ambiguous_separator"
+    },
+    {
+      "detail": "missing return",
+      "line": 65,
+      "path": "scripts/test_verify_android_apk.py",
+      "rule": "annotation",
+      "symbol": "ApkVerifyTests.test_backslash_path"
+    },
+    {
+      "detail": "missing return",
+      "line": 101,
+      "path": "scripts/test_verify_android_apk.py",
+      "rule": "annotation",
+      "symbol": "ApkVerifyTests.test_colon_in_entry"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 101,
+      "path": "scripts/test_verify_android_apk.py",
+      "rule": "docstring",
+      "symbol": "ApkVerifyTests.test_colon_in_entry"
+    },
+    {
+      "detail": "missing return",
+      "line": 58,
+      "path": "scripts/test_verify_android_apk.py",
+      "rule": "annotation",
+      "symbol": "ApkVerifyTests.test_duplicate_casefold"
+    },
+    {
+      "detail": "missing return",
+      "line": 37,
+      "path": "scripts/test_verify_android_apk.py",
+      "rule": "annotation",
+      "symbol": "ApkVerifyTests.test_missing_manifest"
+    },
+    {
+      "detail": "missing return",
+      "line": 43,
+      "path": "scripts/test_verify_android_apk.py",
+      "rule": "annotation",
+      "symbol": "ApkVerifyTests.test_missing_notices"
+    },
+    {
+      "detail": "missing return",
+      "line": 51,
+      "path": "scripts/test_verify_android_apk.py",
+      "rule": "annotation",
+      "symbol": "ApkVerifyTests.test_path_traversal"
+    },
+    {
+      "detail": "missing return",
+      "line": 107,
+      "path": "scripts/test_verify_android_apk.py",
+      "rule": "annotation",
+      "symbol": "ApkVerifyTests.test_repeated_trailing_separator"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 107,
+      "path": "scripts/test_verify_android_apk.py",
+      "rule": "docstring",
+      "symbol": "ApkVerifyTests.test_repeated_trailing_separator"
+    },
+    {
+      "detail": "missing return",
+      "line": 87,
+      "path": "scripts/test_verify_android_apk.py",
+      "rule": "annotation",
+      "symbol": "ApkVerifyTests.test_symlink_rejected"
+    },
+    {
+      "detail": "missing return",
+      "line": 81,
+      "path": "scripts/test_verify_android_apk.py",
+      "rule": "annotation",
+      "symbol": "ApkVerifyTests.test_truncated"
+    },
+    {
+      "detail": "missing return",
+      "line": 30,
+      "path": "scripts/test_verify_android_apk.py",
+      "rule": "annotation",
+      "symbol": "ApkVerifyTests.test_valid_zip"
+    },
+    {
+      "detail": "missing return",
+      "line": 36,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "SelectionTests.setUp"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 36,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "docstring",
+      "symbol": "SelectionTests.setUp"
+    },
+    {
+      "detail": "missing return",
+      "line": 70,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "SelectionTests.test_bad_update_digest"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 70,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "docstring",
+      "symbol": "SelectionTests.test_bad_update_digest"
+    },
+    {
+      "detail": "missing return",
+      "line": 76,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "SelectionTests.test_commit_failure_preserves_old_selection"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 76,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "docstring",
+      "symbol": "SelectionTests.test_commit_failure_preserves_old_selection"
+    },
+    {
+      "detail": "missing return",
+      "line": 44,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "SelectionTests.test_dry_run"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 44,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "docstring",
+      "symbol": "SelectionTests.test_dry_run"
+    },
+    {
+      "detail": "missing return",
+      "line": 86,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "SelectionTests.test_first_commit_failure_requires_inspection"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 86,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "docstring",
+      "symbol": "SelectionTests.test_first_commit_failure_requires_inspection"
+    },
+    {
+      "detail": "missing return",
+      "line": 94,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "SelectionTests.test_idempotent_wrong_archive"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 94,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "docstring",
+      "symbol": "SelectionTests.test_idempotent_wrong_archive"
+    },
+    {
+      "detail": "missing return",
+      "line": 127,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "SelectionTests.test_invalid_state"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 127,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "docstring",
+      "symbol": "SelectionTests.test_invalid_state"
+    },
+    {
+      "detail": "missing return",
+      "line": 120,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "SelectionTests.test_locked"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 120,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "docstring",
+      "symbol": "SelectionTests.test_locked"
+    },
+    {
+      "detail": "missing return",
+      "line": 114,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "SelectionTests.test_manifest_tampering"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 114,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "docstring",
+      "symbol": "SelectionTests.test_manifest_tampering"
+    },
+    {
+      "detail": "missing return",
+      "line": 65,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "SelectionTests.test_no_previous"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 65,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "docstring",
+      "symbol": "SelectionTests.test_no_previous"
+    },
+    {
+      "detail": "missing return",
+      "line": 108,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "SelectionTests.test_rollback_from_damaged_active"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 108,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "docstring",
+      "symbol": "SelectionTests.test_rollback_from_damaged_active"
+    },
+    {
+      "detail": "missing return",
+      "line": 48,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "SelectionTests.test_select_and_idempotence"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 48,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "docstring",
+      "symbol": "SelectionTests.test_select_and_idempotence"
+    },
+    {
+      "detail": "missing return",
+      "line": 100,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "SelectionTests.test_tampered_previous_refused"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 100,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "docstring",
+      "symbol": "SelectionTests.test_tampered_previous_refused"
+    },
+    {
+      "detail": "missing return",
+      "line": 55,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "SelectionTests.test_update_and_rollback"
+    },
+    {
+      "detail": "missing public docstring",
+      "line": 55,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "docstring",
+      "symbol": "SelectionTests.test_update_and_rollback"
+    },
+    {
+      "detail": "missing parameter: contents",
+      "line": 14,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "fixture"
+    },
+    {
+      "detail": "missing parameter: name",
+      "line": 14,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "fixture"
+    },
+    {
+      "detail": "missing parameter: root",
+      "line": 14,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "fixture"
+    },
+    {
+      "detail": "missing return",
+      "line": 14,
+      "path": "scripts/test_windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "fixture"
+    },
+    {
+      "detail": "missing return",
+      "line": 198,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "main"
+    },
+    {
+      "detail": "missing parameter: directory",
+      "line": 24,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "plain"
+    },
+    {
+      "detail": "missing parameter: path",
+      "line": 24,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "plain"
+    },
+    {
+      "detail": "missing return",
+      "line": 24,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "plain"
+    },
+    {
+      "detail": "missing parameter: path",
+      "line": 32,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "present"
+    },
+    {
+      "detail": "missing return",
+      "line": 32,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "present"
+    },
+    {
+      "detail": "missing parameter: root",
+      "line": 55,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "read_state"
+    },
+    {
+      "detail": "missing return",
+      "line": 55,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "read_state"
+    },
+    {
+      "detail": "missing parameter: record",
+      "line": 47,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "record_valid"
+    },
+    {
+      "detail": "missing return",
+      "line": 47,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "record_valid"
+    },
+    {
+      "detail": "missing parameter: apply",
+      "line": 173,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "rollback"
+    },
+    {
+      "detail": "missing parameter: root",
+      "line": 173,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "rollback"
+    },
+    {
+      "detail": "missing return",
+      "line": 173,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "rollback"
+    },
+    {
+      "detail": "missing parameter: root",
+      "line": 37,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "root_path"
+    },
+    {
+      "detail": "missing return",
+      "line": 37,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "root_path"
+    },
+    {
+      "detail": "missing parameter: apply",
+      "line": 140,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "select"
+    },
+    {
+      "detail": "missing parameter: expected",
+      "line": 140,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "select"
+    },
+    {
+      "detail": "missing parameter: package",
+      "line": 140,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "select"
+    },
+    {
+      "detail": "missing parameter: root",
+      "line": 140,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "select"
+    },
+    {
+      "detail": "missing return",
+      "line": 140,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "select"
+    },
+    {
+      "detail": "missing parameter: apply",
+      "line": 105,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "selection_lock"
+    },
+    {
+      "detail": "missing parameter: root",
+      "line": 105,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "selection_lock"
+    },
+    {
+      "detail": "missing return",
+      "line": 105,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "selection_lock"
+    },
+    {
+      "detail": "missing parameter: root",
+      "line": 188,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "status"
+    },
+    {
+      "detail": "missing return",
+      "line": 188,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "status"
+    },
+    {
+      "detail": "missing parameter: record",
+      "line": 86,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "verify_record"
+    },
+    {
+      "detail": "missing parameter: root",
+      "line": 86,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "verify_record"
+    },
+    {
+      "detail": "missing return",
+      "line": 86,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "verify_record"
+    },
+    {
+      "detail": "missing parameter: package_sha",
+      "line": 79,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "version_path"
+    },
+    {
+      "detail": "missing parameter: root",
+      "line": 79,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "version_path"
+    },
+    {
+      "detail": "missing return",
+      "line": 79,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "version_path"
+    },
+    {
+      "detail": "missing parameter: root",
+      "line": 123,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "write_state"
+    },
+    {
+      "detail": "missing parameter: state",
+      "line": 123,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "write_state"
+    },
+    {
+      "detail": "missing return",
+      "line": 123,
+      "path": "scripts/windows_package_selection.py",
+      "rule": "annotation",
+      "symbol": "write_state"
+    }
+  ],
+  "schema": 1
+}

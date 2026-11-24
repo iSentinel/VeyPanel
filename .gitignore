@@ -10,3 +10,8 @@ publish/
 /android/.gradle/
 /android/**/build/
 /android/local.properties
+
+# Generated local QA output
+__pycache__/
+*.pyc
+/artifacts/

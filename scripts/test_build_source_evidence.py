@@ -9,7 +9,9 @@ from build_source_evidence import evidence, git
 
 
 class SourceEvidenceTests(unittest.TestCase):
-    def setUp(self):
+    """Check source identity and tracked cleanliness in disposable repositories."""
+    def setUp(self) -> None:
+        """Create a clean disposable Git repository."""
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
@@ -20,31 +22,37 @@ class SourceEvidenceTests(unittest.TestCase):
             "user.email=fixture@example.invalid", "commit", "-qm", "fixture")
         self.sha = git(self.root, "rev-parse", "HEAD")
 
-    def test_matching_checkout(self):
+    def test_matching_checkout(self) -> None:
+        """Accept the exact clean commit."""
         report = evidence(self.root, self.sha)
         self.assertEqual(report["git_commit"], self.sha)
         self.assertTrue(report["tracked_checkout_clean"])
 
-    def test_wrong_sha(self):
+    def test_wrong_sha(self) -> None:
+        """Reject a different full commit identity."""
         with self.assertRaisesRegex(ValueError, "does not match"):
             evidence(self.root, "0" * 40)
 
-    def test_short_sha(self):
+    def test_short_sha(self) -> None:
+        """Reject abbreviated commit identities."""
         with self.assertRaisesRegex(ValueError, "complete"):
             evidence(self.root, self.sha[:7])
 
-    def test_dirty_tracked(self):
+    def test_dirty_tracked(self) -> None:
+        """Reject unstaged tracked changes."""
         (self.root / "source.txt").write_text("changed", encoding="utf-8")
         with self.assertRaisesRegex(ValueError, "uncommitted"):
             evidence(self.root, self.sha)
 
-    def test_staged_change(self):
+    def test_staged_change(self) -> None:
+        """Reject staged changes."""
         (self.root / "source.txt").write_text("changed", encoding="utf-8")
         git(self.root, "add", "source.txt")
         with self.assertRaisesRegex(ValueError, "uncommitted"):
             evidence(self.root, self.sha)
 
-    def test_generated_untracked_output(self):
+    def test_generated_untracked_output(self) -> None:
+        """Permit untracked generated outputs."""
         (self.root / "generated.txt").write_text("artifact", encoding="utf-8")
         self.assertEqual(evidence(self.root, self.sha)["git_commit"], self.sha)
 

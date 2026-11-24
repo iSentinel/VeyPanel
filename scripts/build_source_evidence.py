@@ -13,7 +13,7 @@ SHA = re.compile(r"[0-9a-f]{40}")
 MAX_EPOCH = 253402300799
 
 
-def git(root, *args):
+def git(root: Path, *args: str) -> str:
     """Read Git metadata without changing the repository."""
     result = subprocess.run(
         ["git", "-C", str(root), *args], capture_output=True, text=True,
@@ -21,7 +21,7 @@ def git(root, *args):
     return result.stdout.strip()
 
 
-def evidence(root, expected):
+def evidence(root: Path, expected: str) -> dict[str, str | int | bool]:
     """Require the actual checkout and tracked source state to match policy."""
     if not SHA.fullmatch(expected):
         raise ValueError("Expected a complete Git SHA-1 checkout ID")
@@ -43,7 +43,7 @@ def evidence(root, expected):
     }
 
 
-def main():
+def main() -> int:
     """Capture deterministic source metadata or compare it to an earlier capture."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("output", type=Path)
