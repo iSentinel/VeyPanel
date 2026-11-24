@@ -83,3 +83,5 @@
 - [x] Android Surface-output AVC instrumentation with original local clip and frame-available callback ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45329953560), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45329948361); PR #13 merged as 6034990). Actual tablet display/hardware acceptance pending.
 
 - [x] Android alpha.17 on-device TextureView AVC preview from original local clip, gated on actual decoded output and TextureView callback ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45331269259), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45331261314); PR #14 merged). Physical Lenovo and Windows streaming acceptance pending.
+
+- [ ] Android alpha.18 on-device local AVC preview touch probe (single-pointer, letterbox-safe, no network/injection), JVM and Activity instrumentation CI pending; physical Lenovo touch acceptance open.

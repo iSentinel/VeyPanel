@@ -79,3 +79,12 @@ and observe the embedded red test picture. It reports PASS only after a
 TextureView update and decoded frame. Record actual codec status and preview
 behavior on Lenovo. Do not interpret an emulator PASS as actual streaming,
 hardware acceleration, stable 60 FPS or production signing.
+
+## Alpha.18 local touch probe (candidate)
+
+After loading the verified alpha.18 APK, tap **Preview local AVC frame** and
+then tap the center and corners of its test image. The UI should display local
+64x64 coordinates without connecting to the PC. Try a multi-finger touch:
+it should say **multi-touch rejected**. Confirm the label **not sent to Windows**.
+This is purely local motion-event validation; actual remote touchscreen control,
+display rotation, accuracy and gesture policy are still unimplemented.

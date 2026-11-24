@@ -41,7 +41,7 @@ public final class StoreInstrumentation extends Instrumentation {
             results.append("PASS: Android Host history codec fixture\n");
             stage = "Activity UI";
             ActivitySmoke.run(this);
-            results.append("PASS: Android Activity diagnostics, local AVC decode and visible Surface preview\n");
+            results.append("PASS: Android Activity diagnostics, AVC Surface preview and local touch probe\n");
             stage = "Android video decoder inventory";
             VideoDecoderSmoke.run();
             results.append("PASS: read-only Android video decoder API survey (no hardware guarantee)\n");
