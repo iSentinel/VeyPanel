@@ -57,3 +57,12 @@ configurations.matching { it.name == 'debugRuntimeClasspath' }.configureEach {
 dependencyLocking {
     lockMode = org.gradle.api.artifacts.dsl.LockMode.STRICT
 }
+
+// Resolve the original runtime artifacts, without assembling or installing an APK.
+tasks.register('resolveDebugRuntimeArtifacts') {
+    doLast {
+        def files = configurations.debugRuntimeClasspath.files
+        if (files.empty) throw new GradleException('No runtime artifacts resolved')
+        println 'PASS: resolved ' + files.size() + ' debug runtime artifacts'
+    }
+}

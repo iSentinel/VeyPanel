@@ -101,3 +101,5 @@
 - [ ] 0.9: Enforce native NuGet locked mode for Windows Host using actual CI-generated package hashes; Windows restore/build/publish CI pending.
 
 - [x] 0.9: Enforce native NuGet locked mode for Windows Host with SDK-generated win-x64 lock and package SHA-512 hashes ([Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45370338307), [second CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45370350526); PR #22 merged). SDK/runtime packs and Desktop scope remain open.
+
+- [ ] 0.9: Enforce Gradle SHA-256 dependency verification for observed build, lint and debug runtime artifacts; deliberate incorrect-checksum rejection and full CI pending. Upstream provenance review remains open.

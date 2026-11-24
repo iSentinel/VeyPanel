@@ -1,5 +1,9 @@
 # Changelog
 
+## Gradle dependency artifact verification (CI pending)
+
+- Commit matching CI-generated SHA-256 metadata, require strict Gradle verification and test intentional checksum mismatch. Upstream provenance review remains separate.
+
 ## Native Windows NuGet lock (CI PASS)
 
 - Enforce Windows Host locked restore with the SDK-generated win-x64 lock and package SHA-512 hashes. Self-contained publication and integration tests passed.
