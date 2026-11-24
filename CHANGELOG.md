@@ -1,6 +1,6 @@
 # Changelog
 
-## Touch geometry preflight (CI pending on combined branch)
+## Touch geometry preflight (Windows and Android CI PASS; no input forwarding)
 
 - Add matching pure Android and Windows tablet-to-desktop touch coordinate math and synthetic tests. No input forwarding or display changes.
 

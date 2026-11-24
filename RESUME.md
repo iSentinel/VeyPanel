@@ -109,3 +109,7 @@
 - No native pointer injection, network control, paired input authorization, display mutation or physical tablet acceptance. A fresh target identity and owner-confirmed input channel are prerequisites.
 
 - Added matching Android TouchMath and JVM fixture suite for the same 17 Windows synthetic vectors; CI pending. No touch listeners or input forwarding.
+
+## Verified touch geometry checkpoint (2026-11-24)
+- PR #11 head b171a02: Windows 45328777756 and 45328771499 PASS, Android 45328777846 and 45328771419 PASS, Android runtime 45328771479 PASS. Merged as dbde6d4.
+- 17 matching synthetic cases in C# TouchMapping and pure Java TouchMath; no actual input listeners/network, target revalidation or Lenovo acceptance. Next safe stage: session-bound identity/freshness gate before any prospective control channel.
