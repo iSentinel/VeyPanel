@@ -1,5 +1,9 @@
 # Changelog
 
+## Resolved component inventories (CI and emulator runtime PASS)
+
+- Publish scoped Android debug Maven and Windows Host win-x64 NuGet component inventories alongside build artifacts. No complete SBOM or native lockfile claim.
+
 ## Android APK identity and permission policy (CI PASS; debug package)
 
 - Validate built package ID/version/SDK and permissions against Gradle and a reviewed allowlist; publish badging report with APK. No extra runtime permissions.

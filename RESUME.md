@@ -180,3 +180,8 @@
 
 ## Resolved dependency inventory candidate
 - Gradle selected debug runtime modules and restored Windows Host win-x64 NuGet package target converted to sorted CycloneDX 1.5 component inventories; six offline fixtures PASS. CI pending. No claim of exhaustive SBOM, trusted build or dependency lock.
+
+## Verified resolved component inventory (2026-11-24)
+- PR #19 head 5da1856, Android CI 45363577089/45363566720 PASS, Windows CI 45363577252/45363566718 PASS, Android runtime 45363566687 PASS; merged as 8a2e239.
+- Actual artifacts inspected: 10 Maven components in Android runtime; two NuGet packages in Windows Host win-x64 restore target. CycloneDX component-only inventory is not a complete release SBOM.
+- Next: enforce post-resolution component coordinate baselines copied from these successful artifacts; native lockfiles, artifact hashes, complete license and advisory review remain separate tasks.

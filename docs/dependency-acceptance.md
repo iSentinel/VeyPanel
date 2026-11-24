@@ -37,7 +37,7 @@ complete release dependency audit.
 No library version, device setting, driver or runtime permission changes were
 made by this preflight.
 
-## Scoped resolved component inventories (CI pending)
+## Scoped resolved component inventories (CI PASS)
 
 Android CI records the selected debugRuntimeClasspath modules. Windows CI
 reads the restored win-x64 Host package target after publish. Both produce
