@@ -23,6 +23,14 @@ jobs:
           node --check src/VeyPanel.Host/wwwroot/app.js
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           node --check src/VeyPanel.Host/wwwroot/enroll.js
+      # Temporary candidate generation on this PR; remove after capturing exact lock.
+      - name: Generate win-x64-aware lock candidate
+        run: dotnet restore src/VeyPanel.Host -p:RestoreLockedMode=false --force-evaluate
+      - uses: actions/upload-artifact@v4
+        with:
+          name: veypanel-host-rid-lock-candidate
+          path: src/VeyPanel.Host/packages.lock.json
+          if-no-files-found: error
       - run: dotnet build src/VeyPanel.Host -c Release
       - run: dotnet run --project tests/VeyPanel.Smoke -c Release
       - run: dotnet publish src/VeyPanel.Host -c Release -r win-x64 --self-contained true -o publish
@@ -30,7 +38,7 @@ jobs:
         run: |
           dotnet restore src/VeyPanel.Host -r win-x64 --locked-mode
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          git diff --exit-code -- src/VeyPanel.Host/packages.lock.json
+          # Candidate generation intentionally changes the tracked lock in this run.
       - name: Record restored Windows Host package inventory
         run: python scripts/dependency_inventory.py nuget src/VeyPanel.Host/obj/project.assets.json publish/runtime-components.cdx.json --label VeyPanel-Host-win-x64
       - name: Reject unreviewed Windows Host dependency drift

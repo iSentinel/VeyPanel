@@ -204,3 +204,5 @@
 
 ## NuGet locked mode candidate
 - Original lockfile from run 45364754053 artifact 14905543319 is committed. Host enables RestorePackagesWithLockFile and RestoreLockedMode. CI explicitly restores win-x64 with --locked-mode and checks the lockfile remains unchanged. CI pending; no complete reproducible release claim.
+
+- Initial PR #22 Windows runs 45365416506/45365405289 failed NU1004 during self-contained win-x64 publish: the generated lock represented only net10.0. Declare Host RuntimeIdentifiers=win-x64 and generate a candidate explicitly on the Windows runner. Temporary unlocked generation is not eligible for merge and must be removed after capturing the candidate.
