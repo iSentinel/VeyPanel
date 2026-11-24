@@ -77,3 +77,5 @@
 
 - [x] Android alpha.16 owner-accessible AVC decoder self-test using original bundled clip, decoder classification and two-run emulator / Activity UI acceptance ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45328031303), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45328022894); PR #10 merged). Physical Lenovo and sustained decode still pending.
 - [x] Pure normalized touch mapping on Windows and Android (letterbox, rotation, negative origins, fail-closed bounds), [Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45328777756), [Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45328777846), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45328771479); PR #11 merged. No input forwarding or hardware acceptance.
+
+- [ ] Add session/target-identity/freshness gate before any future touch injection; Windows synthetic CI pending, no real input forwarded.

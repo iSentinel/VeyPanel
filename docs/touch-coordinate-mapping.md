@@ -48,3 +48,18 @@ including negative origins, contain-fit letterbox rejection and 90-degree
 transforms. The JVM and Windows CI both assert the fixtures before any
 input-forwarding feature can be considered. There is no touch listener,
 gesture capture, network transport or OS input injection yet.
+
+## Session-bound target verification
+
+The next read-only guard, `TouchBindingGuard.TryMap`, additionally requires
+a nonzero, matching foreground session generation and two fresh (at most
+10-second-old) complete topologies that are equivalent in all paths, identities
+and modes. It reuses the existing conservative recovery policy and selects
+exactly one requested adapter LUID/target ID. The destination rectangle is
+derived from the **observed active source mode**, not supplied by a remote
+touch event. A missing/changed identity, source motion, duplicate target,
+stale snapshot, overflow or black-bar touch produces no coordinate.
+
+No OS events are emitted. Even a valid coordinate is not permission to inject:
+a later input channel must require independent owner approval, per-session
+authorization, revocation and physical display acceptance.
