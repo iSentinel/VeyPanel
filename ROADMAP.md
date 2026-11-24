@@ -111,4 +111,4 @@
 
 - [x] 0.9: Publish and verify exact SHA-256 file manifests for Android, Host and Desktop artifacts ([Android CI](https://github.com/iSentinel/VeyPanel/actions/runs/45378711150), [Windows CI](https://github.com/iSentinel/VeyPanel/actions/runs/45378711008) PASS; PR #27 merged). Downloaded artifacts verified independently: 8/360/834 files. Exact-checkout reproducibility remains pending.
 
-- [ ] 0.9: Verify Android exact-checkout reproduction on independent CI runners, requiring valid debug signatures and exact APK bytes outside validated same-size signing blocks. Full signed APK equality remains separate.
+- [x] 0.9: Verify Android exact-checkout reproduction on two independent CI runners ([runtime reproduction PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45403501445); PR #28 merged); both v2 signatures verify, bytes outside signing block identical. Full signed APK equality remains open.

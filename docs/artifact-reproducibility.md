@@ -48,7 +48,7 @@ Further inspection found 1027 different APK bytes, all within the identical
 the blocks matched exactly. Signature validity is a separate apksigner gate.
 Windows static asset endpoint differences include Last-Modified timestamps.
 
-## Exact-checkout Android experiment (candidate)
+## Exact-checkout Android experiment (CI PASS)
 
 The dedicated Android reproduction workflow builds two clean debug APKs on
 separate runners, with Gradle build/cache reuse disabled and strict dependency
@@ -63,3 +63,12 @@ separately and does not claim that the comparison validates a signature.
 
 Six synthetic structural fixtures and the actual PR #25 pair pass locally.
 A reproducible debug payload is not a reproducible signed release APK.
+
+### Verified result
+
+Run 45403501445: both builds and comparison PASS. Actual checkout
+0c70d781e4dea4e547b2de5ea728ec50800c536e, tree
+03b1d9eebedd65606ed081fcea124938c08bf966 matched. The complete APK hashes
+were different, while bytes outside the validated signing blocks at
+[1782490,1786586) matched exactly. Both APK v2 signatures independently
+passed apksigner. Comparison artifact 14924837063.

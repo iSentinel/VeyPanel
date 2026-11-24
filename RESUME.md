@@ -262,3 +262,8 @@
 
 ## APK exact-checkout reproduction candidate
 - Six structural comparator fixtures PASS. Actual PR #25 APKs match exactly outside validated signing blocks (not signature authentication). New isolated two-runner Android workflow explicitly checks out the same github.sha, verifies both APK signatures and compares checkout SHA/tree and outside-block bytes; CI pending.
+
+## Verified Android exact-checkout reproduction (2026-11-24)
+- PR #28 head 485c020; exact reproduction run 45403501445 (build a, build b, compare all PASS), Windows CI 45403485262/45403501661 PASS; merged as 96fb3b9.
+- Both APKs built from actual checkout 0c70d781e4dea4e547b2de5ea728ec50800c536e, tree 03b1d9eebedd65606ed081fcea124938c08bf966. Both APK v2 signatures verified by apksigner. Equal bytes outside signing blocks; complete hashes differ. Comparison artifact 14924837063, build artifacts 14924343368/14923579078.
+- Six new comparator fixtures, 67/67 local Python tests. Windows exact-checkout reproduction is PR #29; preserve raw differences and validate experimental normalized output separately.
