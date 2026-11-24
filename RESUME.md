@@ -232,5 +232,16 @@
 - Exact .NET 10.0.404, Temurin JDK 17.0.21+9, Gradle 8.9 and Windows Python 3.12.10 enforced. Actual Android artifact 14909028136 confirms API35 revision 2, build-tools 35.0.0 and platform-tools 37.0.3. Runner image and SDK distribution are not immutable.
 - Next: collect literal license declarations and notice hashes from verified runtime packages, then review missing/transitive notice obligations and release provenance.
 
+## Runtime license evidence candidate
+- Added checksum-gated Maven/NuGet archive inspection and seven offline fixtures, including tampered package rejection. CI publishes dependency-license-evidence.json with literal declarations and notice hashes. No inferred SPDX conclusion or legal approval; full license review pending.
+
+- Initial PR #25 Android CI 45372580810/45372571558 PASS; Windows 45372580801/45372571530 failed because raw signed nupkg SHA-512 differs from NuGet contentHash. Use pinned SDK dotnet nuget verify for signed packages (native content hash and signature validation), keep raw archive hash separately, and preserve strict lock comparison. CI retry pending.
+
+## Verified runtime license evidence (2026-11-24)
+- PR #25 head 8ddb734, Android 45377626137/45377614152 and Windows 45377626247/45377613953 PASS; merged as 27472b8. 45/45 local Python fixtures PASS.
+- Initial raw nupkg hash failure corrected with native dotnet nuget verify for signed packages and strict contentHash comparison. Actual Windows report confirms signature verification for both packages and MIT declarations; ProtectedData includes THIRD-PARTY-NOTICES.TXT. Android report covers ten Maven components.
+- Supplemental exact Maven POM sources resolve missing declarations for ZXing Core (parent POM matches Gradle metadata), OkHttp and both Okio modules (external POM hashes not in existing metadata). All ten Maven components declare Apache 2.0 directly or via ZXing parent; two NuGet components declare MIT. No conclusion of complete license or redistribution compliance.
+- Android artifact 14912750984, Host artifact 14912666175. PR #26 independently captures time-stamped OSV runtime advisory snapshots.
+
 ## Runtime advisory audit candidate
 - Public OSV querybatch collector with bounded response/pagination validation, six offline tests PASS. First live query 2026-11-24 covered 12 runtime package coordinates and returned zero matches. CI workflow and artifact publication pending; no full security approval or app networking changes.

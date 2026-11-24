@@ -1,0 +1,66 @@
+{
+  "collected_on": "2026-11-24",
+  "scope": "Supplemental POM declarations; no redistribution approval",
+  "sources": [
+    {
+      "coordinate": "com.google.zxing:core:3.5.3",
+      "declared_licenses": [],
+      "gradle_metadata_match": true,
+      "parent": "zxing-parent",
+      "sha256": "d8a12e8bf69054e2add23d7953414eaefddacec930140a8d144d1fac9e62b7df",
+      "url": "https://repo.maven.apache.org/maven2/com/google/zxing/core/3.5.3/core-3.5.3.pom"
+    },
+    {
+      "coordinate": "com.google.zxing:zxing-parent:3.5.3",
+      "declared_licenses": [
+        {
+          "name": "The Apache Software License, Version 2.0",
+          "url": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        }
+      ],
+      "gradle_metadata_match": true,
+      "parent": null,
+      "sha256": "5bb8a5a43981c4dc1097a414cbfb4c1d4bcfe42f722d23a003c45d8b1b8d4def",
+      "url": "https://repo.maven.apache.org/maven2/com/google/zxing/zxing-parent/3.5.3/zxing-parent-3.5.3.pom"
+    },
+    {
+      "coordinate": "com.squareup.okhttp3:okhttp:4.12.1",
+      "declared_licenses": [
+        {
+          "name": "The Apache Software License, Version 2.0",
+          "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        }
+      ],
+      "gradle_metadata_match": false,
+      "parent": null,
+      "sha256": "d38ed8f1a69f36dd0338a0565c2c26474ee100c9f83d8d9e01af4df77847c339",
+      "url": "https://repo.maven.apache.org/maven2/com/squareup/okhttp3/okhttp/4.12.1/okhttp-4.12.1.pom"
+    },
+    {
+      "coordinate": "com.squareup.okio:okio:3.6.0",
+      "declared_licenses": [
+        {
+          "name": "The Apache Software License, Version 2.0",
+          "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        }
+      ],
+      "gradle_metadata_match": false,
+      "parent": null,
+      "sha256": "aeb3b70a24c103ed0c54541f35f5c511d27ce60cae376a596d7d653697f8cc95",
+      "url": "https://repo.maven.apache.org/maven2/com/squareup/okio/okio/3.6.0/okio-3.6.0.pom"
+    },
+    {
+      "coordinate": "com.squareup.okio:okio-jvm:3.6.0",
+      "declared_licenses": [
+        {
+          "name": "The Apache Software License, Version 2.0",
+          "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        }
+      ],
+      "gradle_metadata_match": false,
+      "parent": null,
+      "sha256": "61b4d7c515a0894ffad925fd7052620c1425a86433fd35113b5fab0de890a57f",
+      "url": "https://repo.maven.apache.org/maven2/com/squareup/okio/okio-jvm/3.6.0/okio-jvm-3.6.0.pom"
+    }
+  ]
+}
