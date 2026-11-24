@@ -11,6 +11,13 @@ MAX_ARCHIVE = 128 * 1024 * 1024
 MAX_UNPACKED = 512 * 1024 * 1024
 MAX_ENTRIES = 20000
 REQUIRED = {"AndroidManifest.xml", "classes.dex", "resources.arsc"}
+NOTICES = {
+    "assets/third-party/OkHttp-LICENSE.txt",
+    "assets/third-party/README.txt",
+    "assets/third-party/ZXing-Android-Embedded-COPYING.txt",
+    "assets/third-party/ZXing-Core-LICENSE.txt",
+    "assets/third-party/ZXing-Core-NOTICE.txt",
+}
 
 
 def safe_name(name: str) -> bool:
@@ -33,6 +40,8 @@ def inspect_archive(archive: zipfile.ZipFile) -> tuple[int, int]:
         raise ValueError("Duplicate APK archive entry")
     if not REQUIRED.issubset(names):
         raise ValueError("APK is missing essential Android entries")
+    if not NOTICES.issubset(names):
+        raise ValueError("APK is missing third-party license notices")
     total = 0
     for item in entries:
         if not safe_name(item.filename.rstrip("/")):

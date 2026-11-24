@@ -169,3 +169,7 @@
 - Verified packaged ID com.veypanel.client, version 0.1.0-alpha.18, minSdk 26, targetSdk 35, exactly CAMERA and INTERNET permissions; allowlist tightened to those two. APK v2 debug signature verified, not production signed.
 - GitHub debug APK artifact 14892847988 from run 45333601381 includes APK, ZIP/SHA256/signing/badging/identity reports. No actual Lenovo installation or hardware streaming acceptance.
 - Next critical gates: actual Windows Host/Intel Quick Sync and Lenovo tablet connection, owner-trusted CA, camera/touch/decoder/sleep/rotation, safe display mutation with independent rollback, release signing and dependency audit. Gateway access currently only Proxmox, so hardware PASS cannot be claimed.
+
+## Android third-party license packaging guard (CI pending)
+- Source audit: Android ZXing Embedded 4.3.0, ZXing Core 3.5.3, OkHttp 4.12.1 pinned; app license/NOTICE assets exist and were present in actual alpha.18 debug APK. Windows Host packages pinned, Codecrete MIT license bundled, NuGetAudit enabled.
+- APK verifier now requires five known Android third-party license/notice assets; updated fixtures include missing-notice negative. CI pending. This does not establish transitive lockfiles/SBOM or production redistribution acceptance.

@@ -89,3 +89,5 @@
 - [x] 0.9: Verify Android debug APK ZIP/CRC/SHA256 and APK signature with artifact reports ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45332888028), [Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45332888086), PR #16 merged). Debug signing is not production release signing.
 
 - [x] 0.9: Verify compiled APK ID/version/min/target SDK and exactly CAMERA+INTERNET permissions ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45333601381), [Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45333601475), PR #17 merged). Production signing, reproducible releases and physical acceptance pending.
+
+- [ ] 0.9: Verify bundled ZXing/OkHttp license and notice assets survive Android APK publication. CI pending; full transitive SBOM/license review remains open.
