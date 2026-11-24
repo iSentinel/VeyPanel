@@ -118,3 +118,5 @@
 - [x] 0.9: Record and revalidate actual clean tracked Git checkout commit/tree/epoch in ordinary Android, Host and Desktop artifacts ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45404957532), [Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45404957357); PR #30 merged). Downloaded all three artifact manifests verified; signed attestation remains open.
 
 - [x] 0.9: Adopt verified deterministic Host CI publication settings (ContinuousIntegrationBuild and source-epoch endpoint normalization); both Windows CI runs 45411446910/45411465466 PASS, PR #31 merged. Raw/normalized evidence independently verified. Local publish and signed release reproducibility remain separate.
+
+- [ ] 0.9: Run independent same-checkout Desktop bundle reproduction with embedded normalized Host, exact full file-set/hash comparison and Host runtime smoke. CI pending; interactive Desktop hardware acceptance separate.
