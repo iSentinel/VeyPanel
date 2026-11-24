@@ -1,6 +1,6 @@
 # Fail-closed release verification
 
-Status: candidate, CI pending.
+Status: PR #36 merged; all 14 CI jobs passed, including mandatory negative verification and fresh reproduction experiments.
 
 Implicit GitHub Actions Linux shell invocations used bash -e without
 pipefail. A failing verifier followed by tee could therefore return

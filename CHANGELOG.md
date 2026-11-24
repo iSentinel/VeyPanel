@@ -1,5 +1,9 @@
 # Changelog
 
+## Fail-closed CI verification (CI PASS)
+
+- Enforce pipeline failure propagation, exact Android permissions and unambiguous APK entry paths. Verify negative gate outcomes in Android CI.
+
 ## Side-by-side package selection (CI PASS)
 
 - Verify atomic selection metadata, idempotence and rollback without launching applications.

@@ -326,3 +326,8 @@
 
 ## Fail-closed release gate correction candidate
 - Audit found implicit bash -e report pipelines without pipefail in Android CI/runtime and Android/Windows reproduction. Explicit bash shell policy now used in five relevant workflows; intentional negative step requires failure outcome. Exact unconditional CAMERA/INTERNET permissions required, duplicate/unsupported declarations and colon/trailing-separator APK paths rejected. Seven added fixtures, 116 total tests PASS; actual downloaded APK and badging PASS. Real negative archive and identity commands through tee rejected locally; apksigner negative case requires CI. Previously downloaded Android and Windows reproduction evidence independently rechecked. No claim that old CI statuses alone established failure propagation. Launcher/recovery remain next.
+
+## Verified fail-closed CI correction
+- PR #36 head a29feaf, merged e35bf8c; all 14 jobs across eight workflow runs PASS. Android CI 45433922627/45433944680 includes mandatory negative pipeline outcome and archive/identity/signing rejection step; job step conclusions independently checked, raw negative log unavailable on latest query.
+- Runtime 45433922633, Android reproduction 45433945066, Host reproduction 45433944945, Desktop/ZIP reproduction 45433944815 and Windows CI 45433922629/45433944858 PASS.
+- Next: publish locally prepared verified-package launcher, then interrupted-state recovery. Full physical acceptance and signing remain open.
