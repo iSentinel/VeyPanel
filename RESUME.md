@@ -250,3 +250,6 @@
 - PR #26 exact HEAD 8353025: OSV CI 45378191048/45378182750, Android CI 45378182940 and Windows CI 45378191025/45378182772 PASS; merged as 5643653.
 - Actual time-stamped CI artifact 14911593443 contains 12 exact runtime package coordinates and zero advisory matches at collection time. No full vulnerability coverage or security approval; findings require review. Combined local Python tests 51/51 PASS.
 - Next: record exact artifact file membership and SHA-256, independently compare two builds of the same commit, and investigate reproducibility differences before release signing.
+
+## Artifact reproducibility preflight candidate
+- Ten artifact-manifest fixtures PASS. Actual downloaded Host (360 files) and Android (8 files) inventory verification PASS. Same-HEAD PR #25 builds show all 25 decompressed APK entries match but full APK hashes differ; 356/360 Host files match, four differ. Evidence JSON saved; CI staging/manifest publication pending, no byte-identical release claim.

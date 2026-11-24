@@ -108,3 +108,5 @@
 - [x] 0.9: Capture literal license declarations and LICENSE/NOTICE hashes from verified Android/Host runtime packages ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45377626137), [Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45377626247); PR #25 merged). Supplemental Maven POM evidence recorded; full redistribution review remains open.
 
 - [x] 0.9: Publish scoped OSV advisory snapshots for reviewed Android/Host runtime coordinates ([OSV CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45378191048), [Android PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45378182940), [Windows PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45378191025); PR #26 merged). Initial 12-package snapshot returned zero matches; full security audit remains open.
+
+- [ ] 0.9: Publish and verify exact SHA-256 file manifests for Android, Host and Desktop artifacts; initial same-head APK/Host comparisons recorded; CI and byte-identical reproduction remain pending.
