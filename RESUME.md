@@ -163,3 +163,9 @@
 - Strict permission allowlist begins with INTERNET, CAMERA, VIBRATE, FLASHLIGHT and ACCESS_NETWORK_STATE; unreviewed permissions cause CI failure, not silent trust escalation. APK badging/identity reports are bundled with integrity and debug signature reports. CI pending; Android permissions are not production signed or physically tested.
 
 - Confirmed from actual PR #17 debug artifact 14892926089 / Android run 45333371769: app ID com.veypanel.client, alpha.18, only CAMERA and INTERNET permissions, APK v2 debug signature PASS. Tightened allowlist to these two; other permission requests require explicit future approval. CI retry pending.
+
+## Verified Android APK identity and permissions (2026-11-24)
+- PR #17 head b07c41a, Android CI 45333601381/45333593892 PASS, Windows CI 45333601475/45333593891 PASS; merged as c056d8d.
+- Verified packaged ID com.veypanel.client, version 0.1.0-alpha.18, minSdk 26, targetSdk 35, exactly CAMERA and INTERNET permissions; allowlist tightened to those two. APK v2 debug signature verified, not production signed.
+- GitHub debug APK artifact 14892847988 from run 45333601381 includes APK, ZIP/SHA256/signing/badging/identity reports. No actual Lenovo installation or hardware streaming acceptance.
+- Next critical gates: actual Windows Host/Intel Quick Sync and Lenovo tablet connection, owner-trusted CA, camera/touch/decoder/sleep/rotation, safe display mutation with independent rollback, release signing and dependency audit. Gateway access currently only Proxmox, so hardware PASS cannot be claimed.

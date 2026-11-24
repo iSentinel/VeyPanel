@@ -1,6 +1,6 @@
 # Changelog
 
-## Android APK identity and permission policy (CI pending)
+## Android APK identity and permission policy (CI PASS; debug package)
 
 - Validate built package ID/version/SDK and permissions against Gradle and a reviewed allowlist; publish badging report with APK. No extra runtime permissions.
 

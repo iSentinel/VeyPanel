@@ -48,3 +48,18 @@ Any unexpected merged-manifest permission rejects the build pending human
 review. APK badging and identity reports accompany the existing ZIP/SHA256
 and signature reports. This does not request device privileges, enable input
 injection, grant network exposure or establish trusted release signing.
+
+## Verified package policy (2026-11-24)
+
+Android CI 45333601381 and Windows CI 45333601475 PASS. The actual debug APK
+reports package com.veypanel.client, alpha.18, minSdk 26, targetSdk 35 and
+exactly CAMERA and INTERNET permissions. Only those two permissions are
+allowed; any addition requires an explicit future policy review. PR #17 merged.
+
+Fetch the exact artifact and verify without installing it:
+
+    gh run download 45333601381 -R iSentinel/VeyPanel -n veypanel-android-monitor-debug -D veypanel-alpha18-verified
+    python3 scripts/verify_android_apk.py veypanel-alpha18-verified/app-debug.apk
+    python3 scripts/check_android_badging.py veypanel-alpha18-verified/apk-badging.txt android/app/build.gradle
+
+No release signing keys or sensitive host credentials were used.
