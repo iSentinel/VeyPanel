@@ -98,3 +98,4 @@
 - Actual 64x64 AVC decode instrumentation under PR #8 remains pending. Lenovo tablet, Windows Quick Sync, Apollo and display acceptance unverified.
 
 - Alpha.16 initial Android CI 45327692507 failed at javac: invalid `VideoCapabilities.areSizeSupported`; corrected to public `areSizeAndRateSupported(64,64,30)` and rerun required.
+- Alpha.16 Activity instrumentation now clicks the local AVC self-test button and waits for a bounded on-screen PASS and re-enabled button. This is separate from direct repeated decode fixture. CI pending.

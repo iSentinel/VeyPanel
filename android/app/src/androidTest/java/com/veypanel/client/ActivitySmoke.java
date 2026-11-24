@@ -35,10 +35,35 @@ final class ActivitySmoke {
                 passed.set(visible && diagnostics.getVisibility() == View.GONE);
             });
             if (!passed.get()) throw new IllegalStateException("Activity diagnostics gate");
+            verifyLocalDecoderButton(runner, activity);
         } finally {
             runner.runOnMainSync(activity::finish);
             runner.waitForIdleSync();
         }
+    }
+
+    private static void verifyLocalDecoderButton(Instrumentation runner, Activity activity) {
+        runner.runOnMainSync(() -> {
+            TextView button = find(activity.getWindow().getDecorView(),
+                "Run local AVC decode test", true);
+            if (button == null || !button.performClick())
+                throw new IllegalStateException("Local decode action unavailable");
+        });
+        java.util.concurrent.atomic.AtomicBoolean complete = new java.util.concurrent.atomic.AtomicBoolean();
+        for (int attempt = 0; attempt < 120 && !complete.get(); attempt++) {
+            runner.waitForIdleSync();
+            runner.runOnMainSync(() -> {
+                TextView status = find(activity.getWindow().getDecorView(), "Local AVC decode: PASS", false);
+                TextView button = find(activity.getWindow().getDecorView(), "Run local AVC decode test", true);
+                complete.set(status != null && button != null && button.isEnabled()
+                    && status.getText().toString().contains("Decoded buffers:"));
+            });
+            if (!complete.get()) {
+                try { Thread.sleep(100); }
+                catch (InterruptedException ex) { Thread.currentThread().interrupt(); break; }
+            }
+        }
+        if (!complete.get()) throw new IllegalStateException("Activity local AVC decode result missing");
     }
 
     private static TextView find(View view, String text, boolean button) {
