@@ -65,3 +65,8 @@ The emulator gate clicks the actual preview button and requires a completed
 in-app status in addition to the isolated frame-available test. This does NOT
 prove HDMI/display duplication, network streaming, sustained 60 FPS, hardware
 acceleration on Lenovo, acceptable thermals, or input/control support.
+
+The visible Activity reports PASS only after both MediaCodec surface buffers
+and at least one Android TextureView update callback. A decode without
+compositor acknowledgement is reported as FAILED, not a successful preview.
+The emulator UI gate scrolls the preview into view and checks that result.

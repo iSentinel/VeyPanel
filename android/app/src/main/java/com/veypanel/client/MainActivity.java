@@ -55,6 +55,8 @@ public final class MainActivity extends Activity {
     private TextureView videoPreview;
     private boolean previewRequested;
     private boolean previewStarted;
+    private int previewUpdatedFrames;
+    private int previewDecodedFrames;
     private int videoRevision;
     private TextView videoStatus;
     private boolean videoBusy;
@@ -171,7 +173,11 @@ public final class MainActivity extends Activity {
                 startLocalPreview(texture, videoRevision);
             }
             @Override public void onSurfaceTextureSizeChanged(SurfaceTexture texture, int w, int h) { }
-            @Override public void onSurfaceTextureUpdated(SurfaceTexture texture) { }
+            @Override public void onSurfaceTextureUpdated(SurfaceTexture texture) {
+                if (!previewRequested) return;
+                previewUpdatedFrames++;
+                completeLocalPreview(videoRevision);
+            }
             @Override public boolean onSurfaceTextureDestroyed(SurfaceTexture texture) {
                 cancelLostPreview();
                 return true;
@@ -185,6 +191,8 @@ public final class MainActivity extends Activity {
         setVideoButtons(false);
         previewRequested = true;
         previewStarted = false;
+        previewUpdatedFrames = 0;
+        previewDecodedFrames = 0;
         int revision = ++videoRevision;
         videoStatus.setText("Decoding original local AVC into a visible Surface…");
         videoPreview.setVisibility(android.view.View.VISIBLE);
@@ -201,20 +209,35 @@ public final class MainActivity extends Activity {
         previewStarted = true;
         Surface surface = new Surface(texture);
         videoRequest = videoWorker.submit(() -> {
-            String report;
             try {
                 int rendered = LocalAvcSurfacePreview.run(getApplicationContext(), surface);
-                report = "Local AVC preview: PASS · " + rendered
-                    + " frame buffers sent to Surface. Not a Windows video stream.";
+                main.post(() -> previewDecoded(revision, rendered));
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
-                return;
             } catch (Exception ex) {
-                report = "Local AVC preview FAILED: Decoder or Surface unavailable.";
+                main.post(() -> finishVideoJob(revision,
+                    "Local AVC preview FAILED: Decoder or Surface unavailable."));
             } finally { surface.release(); }
-            String result = report;
-            main.post(() -> finishVideoJob(revision, result));
         });
+    }
+
+    private void previewDecoded(int revision, int decoded) {
+        if (!resumed || revision != videoRevision || !previewRequested) return;
+        previewDecodedFrames = decoded;
+        completeLocalPreview(revision);
+        main.postDelayed(() -> {
+            if (resumed && revision == videoRevision && previewRequested
+                && previewDecodedFrames > 0 && previewUpdatedFrames == 0)
+                finishVideoJob(revision, "Local AVC preview FAILED: No TextureView frame update.");
+        }, 2000);
+    }
+
+    private void completeLocalPreview(int revision) {
+        if (!resumed || revision != videoRevision || !previewRequested
+            || previewDecodedFrames <= 0 || previewUpdatedFrames <= 0) return;
+        finishVideoJob(revision, "Local AVC preview: PASS · " + previewDecodedFrames
+            + " Surface buffers · " + previewUpdatedFrames
+            + " TextureView updates. Not a Windows video stream.");
     }
 
     private void cancelLostPreview() {
