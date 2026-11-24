@@ -1,6 +1,6 @@
 # Unsigned portable Windows package
 
-Status: candidate; CI pending.
+Status: PR #33 merged; Windows CI and independent ZIP reproduction PASS.
 
 The portable ZIP includes the exact verified Desktop publication and nested
 Host. It has sorted file names, fixed DOS timestamps, regular-file metadata
@@ -27,3 +27,5 @@ portable ZIP including its actual evidence reports, whose contents may
 differ across runner environments. Installation, upgrade, uninstall,
 production signing, interactive WPF and physical device acceptance remain
 separate.
+
+Actual ordinary package artifact 14931435132 independently verified (836 files). Experimental same-checkout ZIP hashes match in run 45412991876. Ordinary package SHA-256: 58ea65c2093f2af20924c77250e619d17d464a1f3108da21f83732019d3ef2ce.

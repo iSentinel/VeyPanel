@@ -305,3 +305,8 @@
 
 ## Portable Windows ZIP candidate
 - Eight new ZIP fixtures PASS (87/87 total). Two local packages of downloaded PR #30 Desktop artifact match all 836 manifest files and exact archive SHA-256 1b2b42cea8899257b967c8ad24c631cd0b22c2bfc11a51c2b006c29182434e88. CI adds independent archive reproduction, Windows extraction and ordinary portable artifact publication. Unsigned; no installer or hardware acceptance claim.
+
+## Verified portable Windows ZIP
+- PR #33 head 0879d46, Desktop reproduction 45412991876 and Windows CI 45412992120/45412976488 PASS, merged as de36627.
+- Independent experimental ZIP SHA-256 17e9ea417213dda5aa1d56c237df4baa9db3d1b247192f960d341d2c11c6aebc matches on both runners. Actual ordinary portable artifact 14931435132 downloaded and independently verified: 836 files, SHA-256 58ea65c2093f2af20924c77250e619d17d464a1f3108da21f83732019d3ef2ce.
+- Next: digest-pinned package preflight and isolated side-by-side staging with dry-run; no system mutation or execution.

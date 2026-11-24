@@ -1,5 +1,9 @@
 # Changelog
 
+## Portable Windows ZIP (CI PASS)
+
+- Publish manifest-verified unsigned portable Windows package and verify independent experimental ZIP reproduction and Windows extraction.
+
 ## Desktop exact-checkout reproduction (CI PASS)
 
 - Two independent experimental Desktop bundles with normalized Host match all 832 files; Host smoke passed. No interactive WPF or signed release claim.
