@@ -40,3 +40,11 @@ Acceptance gates before any real touch support:
 
 Windows CI tests use only synthetic rectangles; a PASS does not mean physical
 input or Display/Monitor/Hybrid acceptance.
+
+## Android parity
+
+`TouchMath` mirrors `TouchMapping` for the same 17 synthetic vectors,
+including negative origins, contain-fit letterbox rejection and 90-degree
+transforms. The JVM and Windows CI both assert the fixtures before any
+input-forwarding feature can be considered. There is no touch listener,
+gesture capture, network transport or OS input injection yet.

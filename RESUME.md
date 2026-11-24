@@ -107,3 +107,5 @@
 ## Touch geometry preparation
 - Added pure TouchMapping for stage 0.6: contain-fit letterbox checks, 0/90/180/270 inverse transforms, negative-origin Windows desktop and fail-closed invalid dimensions. Initial Windows CI 45328378092 PASS; combined CI after main sync pending.
 - No native pointer injection, network control, paired input authorization, display mutation or physical tablet acceptance. A fresh target identity and owner-confirmed input channel are prerequisites.
+
+- Added matching Android TouchMath and JVM fixture suite for the same 17 Windows synthetic vectors; CI pending. No touch listeners or input forwarding.

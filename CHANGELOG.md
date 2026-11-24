@@ -2,7 +2,7 @@
 
 ## Touch geometry preflight (CI pending on combined branch)
 
-- Add pure, side-effect-free tablet-to-desktop touch coordinate math and synthetic tests. No input forwarding or display changes.
+- Add matching pure Android and Windows tablet-to-desktop touch coordinate math and synthetic tests. No input forwarding or display changes.
 
 ## Android 0.1.0-alpha.16 (emulator CI PASS; physical device pending)
 

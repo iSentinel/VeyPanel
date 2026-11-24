@@ -67,6 +67,7 @@ public final class ClientPolicySmoke {
         FrameHeaderSmoke.run();
         MessageReaderSmoke.run();
         UpgradeSmoke.run();
+        TouchMathSmoke.run();
         System.out.println("PASS: native client policy fixtures");
     }
     private static void reject(String link) {
