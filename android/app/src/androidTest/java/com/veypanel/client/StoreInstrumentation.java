@@ -48,6 +48,9 @@ public final class StoreInstrumentation extends Instrumentation {
             stage = "Synthetic AVC decoding";
             VideoDecodeSmoke.run(getTargetContext());
             results.append("PASS: Android local AVC self-test decodes original clip twice (emulator only)\n");
+            stage = "AVC Surface rendering";
+            SurfaceDecodeSmoke.run(getTargetContext());
+            results.append("PASS: Android MediaCodec delivered original AVC frame to test Surface (emulator only)\n");
             stage = "HTTPS/WSS transport";
             if (fixtureCa != null) {
                 TransportSmoke transport = new TransportSmoke(fixtureCa);
