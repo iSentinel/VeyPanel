@@ -317,3 +317,6 @@
 ## Verified Windows package staging
 - PR #34 head acdac46, Windows CI 45426452023/45426432998 PASS, merged as eb5d51c. Actual CI log confirms dry-run and staging of 836 files, both extracted manifests match.
 - Next: side-by-side verified package selection with an atomic state record, explicit rollback and no process launch or system mutation. Power-loss recovery and uninstall remain separate.
+
+## Side-by-side package selection candidate
+- Digest-derived version directories, atomic selection.json with active/previous records and pinned manifest hashes, exclusive cooperating writer lock, dry-run default. Thirteen fixtures, 109/109 total local tests PASS. Real PR #30 repack and PR #33 portable ZIP selected in sequence and rolled back; both versions and ZIPs retained. Windows CI tests real first selection/idempotence and synthetic upgrade/rollback. No process launch, migration, automatic orphan deletion or physical power-loss guarantee.
