@@ -1,5 +1,9 @@
 # Changelog
 
+## Android APK identity and permission policy (CI pending)
+
+- Validate built package ID/version/SDK and permissions against Gradle and a reviewed allowlist; publish badging report with APK. No extra runtime permissions.
+
 ## Android APK integrity preflight (CI PASS; debug signing only)
 
 - Validate debug APK ZIP and Android signing in CI, retain SHA256 and signature reports with artifact. No production signing claim.

@@ -157,3 +157,9 @@
 - PR #16 head 249d3fb: Android CI 45332888028/45332880903 PASS; Windows CI 45332888086/45332880902 PASS; merged as 2e30498.
 - Offline verifier policy includes eight positive/negative fixtures and bounded ZIP/CRC/SHA256. CI requires Android apksigner verification (debug APK v2 signature, one signer), publishes apk-integrity.txt and apk-signing.txt with app-debug.apk. Artifact 14893015165 from 45332888028.
 - This is not trusted release signing, physical install, actual Lenovo decode or reproducible release acceptance. Next release preflight: compare APK manifest package, min/target SDK, version and permissions to reviewed Gradle configuration.
+
+## Android APK identity/permission preflight (CI pending)
+- Added check_android_badging.py, six synthetic package/SDK/permission tests (14 combined verifier fixtures PASS locally), and Android CI aapt dump badging gate comparing packaged package ID/version/min/target SDK to source build.gradle.
+- Strict permission allowlist begins with INTERNET, CAMERA, VIBRATE, FLASHLIGHT and ACCESS_NETWORK_STATE; unreviewed permissions cause CI failure, not silent trust escalation. APK badging/identity reports are bundled with integrity and debug signature reports. CI pending; Android permissions are not production signed or physically tested.
+
+- Confirmed from actual PR #17 debug artifact 14892926089 / Android run 45333371769: app ID com.veypanel.client, alpha.18, only CAMERA and INTERNET permissions, APK v2 debug signature PASS. Tightened allowlist to these two; other permission requests require explicit future approval. CI retry pending.
