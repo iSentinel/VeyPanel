@@ -1,5 +1,9 @@
 # Changelog
 
+## Local Android AVC Surface-output smoke (CI pending)
+
+- Add Android test-only MediaCodec-to-Surface frame-available fixture. No new video stream or display changes.
+
 ## Touch target identity guard (Windows CI PASS)
 
 - Fail closed on stale display snapshots, changed target identity or session generation, without forwarding any input.

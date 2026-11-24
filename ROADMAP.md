@@ -79,3 +79,5 @@
 - [x] Pure normalized touch mapping on Windows and Android (letterbox, rotation, negative origins, fail-closed bounds), [Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45328777756), [Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45328777846), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45328771479); PR #11 merged. No input forwarding or hardware acceptance.
 
 - [x] Add session/target-identity/freshness gate before any future touch injection ([Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45329353667), PR #12 merged). No real input forwarded.
+
+- [ ] Android Surface-output AVC instrumentation using original local clip and frame-available callback; emulator CI pending, physical rendering unverified.

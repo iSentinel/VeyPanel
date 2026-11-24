@@ -34,3 +34,15 @@ sustained 60 FPS throughput, display latency, hardware encoder interoperability
 or physical Lenovo acceptance. No third-party video material is included.
 
 Fixture SHA-256: f5817649d60c70b99db2c54cffcacf0bbe23c5384515165b9b1e71f4d8bb81a6.
+
+## Native Surface output smoke (test-only)
+
+The next instrumentation gate configures MediaCodec with a local Android
+`Surface` backed by a `SurfaceTexture`. It feeds the original two-frame
+AVC asset, requires end-of-stream and at least one released rendered frame,
+then waits for an Android frame-available callback. The surface is never
+attached to a remote monitor or external network and is fully released.
+
+The test does not prove that a frame reached the tablet display, was read
+from the GPU, met a latency deadline, or used hardware acceleration.
+Those are separate physical device acceptance criteria.

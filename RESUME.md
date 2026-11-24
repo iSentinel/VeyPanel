@@ -121,3 +121,6 @@
 ## Verified touch target binding checkpoint (2026-11-24)
 - PR #12 head bb4e9bb: Windows CI 45329353667 and 45329347615 PASS, merged as 0b0ca24. TouchBindingGuard validates fresh and equivalent complete CCD snapshots, exact LUID/target identity, source geometry, session generation and letterboxing; still no input injection.
 - Hardware streaming, touch control, virtual display and driver rollback remain untested and disabled.
+
+## Android AVC Surface-output stage (CI pending)
+- Isolated Android instrumentation creates a local SurfaceTexture/Surface, configures a MediaCodec AVC decoder against the original bundled two-frame clip, waits for at least one Surface frame-available callback and verifies clean EOS/resource disposal. CI/runtime pending. No main app video renderer or Windows streaming enabled.
