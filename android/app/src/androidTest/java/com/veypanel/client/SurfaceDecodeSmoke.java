@@ -22,7 +22,8 @@ final class SurfaceDecodeSmoke {
     private SurfaceDecodeSmoke() { }
 
     static void run(Context context) throws Exception {
-        SurfaceTexture texture = new SurfaceTexture(0);
+        // API 26 detached mode avoids requiring a current OpenGL texture/context.
+        SurfaceTexture texture = new SurfaceTexture(false);
         CountDownLatch available = new CountDownLatch(1);
         texture.setDefaultBufferSize(64, 64);
         texture.setOnFrameAvailableListener(t -> available.countDown(),

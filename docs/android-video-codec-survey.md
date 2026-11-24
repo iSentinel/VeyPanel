@@ -46,3 +46,8 @@ attached to a remote monitor or external network and is fully released.
 The test does not prove that a frame reached the tablet display, was read
 from the GPU, met a latency deadline, or used hardware acceleration.
 Those are separate physical device acceptance criteria.
+
+The test intentionally uses the API-26+ detached `SurfaceTexture(false)`
+constructor; unlike a GL texture-name constructor, it does not require a
+pre-existing EGL texture binding. See the official Android SurfaceTexture API:
+https://developer.android.com/reference/android/graphics/SurfaceTexture .
