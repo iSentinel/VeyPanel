@@ -26,8 +26,8 @@ complete release dependency audit.
 
 ## Remaining blockers
 
-- No Gradle dependency lockfile or fully resolved SBOM is committed.
-- No NuGet packages.lock.json or complete transitive SBOM is committed.
+- Native Gradle debug runtime lock and observed artifact checksums are committed; a complete release SBOM is still absent.
+- Windows Host NuGet lock with SHA-512 is committed; complete release SBOM/runtime-pack coverage remains open.
 - Review actual transitive component licenses/notices and vulnerability
   advisory snapshots for the target release.
 - Establish reproducible production dependency resolution and independently
@@ -96,11 +96,11 @@ original metadata. No dependency versions are changed by the test.
 A future intentional dependency update needs review of upstream artifacts,
 provenance, license and security advisories before committing new hashes.
 
-## Exact build toolchain candidate
+## Exact build toolchain (CI and runtime PASS)
 
 The .NET SDK (10.0.404) and Temurin JDK (17.0.21+9) versions are taken from
 successful Windows and Android CI logs. Gradle remains pinned to 8.9 and
 Windows Python is pinned to 3.12.10. The workflows assert selected versions
 and publish actual toolchain evidence. This does not establish byte-identical
 release output or freeze GitHub runner images, Android SDK revisions,
-Windows runtime packs or every external build tool. CI pending.
+Windows runtime packs or every external build tool. PR #24 verified in CI and emulator.

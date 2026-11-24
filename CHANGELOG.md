@@ -1,5 +1,9 @@
 # Changelog
 
+## Pinned build toolchain (CI and runtime PASS)
+
+- Pin exact observed .NET SDK, Temurin JDK, Gradle and Windows Python versions; include actual SDK and toolchain evidence with build artifacts.
+
 ## Gradle dependency artifact verification (CI and runtime PASS)
 
 - Commit matching CI-generated SHA-256 metadata, require strict Gradle verification and test intentional checksum mismatch. Upstream provenance review remains separate.

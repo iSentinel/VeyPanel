@@ -226,3 +226,8 @@
 
 ## Exact build toolchain candidate
 - Successful CI logs confirm .NET SDK 10.0.404 (45370338307), Temurin 17.0.21+9 (45370100108), Gradle 8.9 and Windows Python 3.12.10. Pin exact .NET SDK in global.json, disable roll-forward, require exact JDK and Gradle and Windows Python in workflows; publish build-toolchain.txt. CI pending. Toolchain pins do not make runner images or Android SDK/platform-tools immutable.
+
+## Verified exact build toolchain (2026-11-24)
+- PR #24 head 52de029, Android CI 45371848490/45371834687, Windows CI 45371848232/45371834360 and runtime 45371834290 PASS; merged as b81dedb.
+- Exact .NET 10.0.404, Temurin JDK 17.0.21+9, Gradle 8.9 and Windows Python 3.12.10 enforced. Actual Android artifact 14909028136 confirms API35 revision 2, build-tools 35.0.0 and platform-tools 37.0.3. Runner image and SDK distribution are not immutable.
+- Next: collect literal license declarations and notice hashes from verified runtime packages, then review missing/transitive notice obligations and release provenance.
