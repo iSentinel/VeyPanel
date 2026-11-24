@@ -117,3 +117,7 @@
 ## Touch target binding gate (CI pending)
 - Separate pure TouchBindingGuard rejects absent/expired or changed topologies, changed session generation, monitor identity mismatch, black-bar hits, duplicate targets and coordinate overflow; derives desktop rect from active CCD source mode. Synthetic Windows CI pending.
 - No touch injection, input network endpoint, remote authorization or display topology change. Target PC/tablet hardware acceptance pending.
+
+## Verified touch target binding checkpoint (2026-11-24)
+- PR #12 head bb4e9bb: Windows CI 45329353667 and 45329347615 PASS, merged as 0b0ca24. TouchBindingGuard validates fresh and equivalent complete CCD snapshots, exact LUID/target identity, source geometry, session generation and letterboxing; still no input injection.
+- Hardware streaming, touch control, virtual display and driver rollback remain untested and disabled.

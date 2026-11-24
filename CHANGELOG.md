@@ -1,6 +1,6 @@
 # Changelog
 
-## Touch target identity guard (CI pending)
+## Touch target identity guard (Windows CI PASS)
 
 - Fail closed on stale display snapshots, changed target identity or session generation, without forwarding any input.
 
