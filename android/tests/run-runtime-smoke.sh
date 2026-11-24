@@ -41,9 +41,9 @@ grep -Fq 'PASS: synthetic offline QR decode' runtime-smoke.log
 grep -Fq 'PASS: Android extended telemetry fixture' runtime-smoke.log
 grep -Fq 'PASS: Android bounded history fixture' runtime-smoke.log
 grep -Fq 'PASS: Android Host history codec fixture' runtime-smoke.log
-grep -Fq 'PASS: Android Activity diagnostics visibility and disconnected history gate' runtime-smoke.log
+grep -Fq 'PASS: Android Activity diagnostics, disconnected history and local AVC button' runtime-smoke.log
 grep -Fq 'PASS: read-only Android video decoder API survey (no hardware guarantee)' runtime-smoke.log
-grep -Fq 'PASS: Android MediaCodec decoded synthetic 64x64 AVC fixture (emulator only)' runtime-smoke.log
+grep -Fq 'PASS: Android local AVC self-test decodes original clip twice (emulator only)' runtime-smoke.log
 grep -Fq 'PASS: bounded TLS and persistent stream reject unknown CA and oversized frame; ping/pong, two samples, close, cancellation and drip-feed deadline' runtime-smoke.log
 grep -Fq 'PASS: isolated HTTPS/WSS transport, TLS denial, fallback and revocation' runtime-smoke.log
 grep -Eq '^INSTRUMENTATION_CODE: -1[[:space:]]*$' runtime-smoke.log

@@ -47,6 +47,8 @@ public final class MainActivity extends Activity {
     private final ExecutorService videoWorker = Executors.newSingleThreadExecutor();
     private Future<?> videoRequest;
     private Button videoButton;
+    private Button videoDecodeButton;
+    private int videoRevision;
     private TextView videoStatus;
     private boolean videoBusy;
     private Future<?> historyRequest;
@@ -129,27 +131,50 @@ public final class MainActivity extends Activity {
         videoButton.setText("Inspect video decoders");
         videoButton.setOnClickListener(v -> inspectVideoDecoders());
         column.addView(videoButton);
+        videoDecodeButton = new Button(this);
+        videoDecodeButton.setText("Run local AVC decode test");
+        videoDecodeButton.setOnClickListener(v -> runLocalVideoTest());
+        column.addView(videoDecodeButton);
         videoStatus = new TextView(this); videoStatus.setText("No decoder inspection run");
         videoStatus.setTextSize(13); column.addView(videoStatus);
         setContentView(scroll);
     }
 
     private void inspectVideoDecoders() {
+        runVideoJob(false);
+    }
+
+    private void runLocalVideoTest() {
+        runVideoJob(true);
+    }
+
+    private void runVideoJob(boolean decode) {
         if (!resumed || videoBusy) return;
-        videoBusy = true; videoButton.setEnabled(false);
-        videoStatus.setText("Inspecting local Android decoders…");
-        int current = generation;
+        videoBusy = true; videoButton.setEnabled(false); videoDecodeButton.setEnabled(false);
+        videoStatus.setText(decode ? "Decoding bundled synthetic AVC clip…" : "Inspecting decoders…");
+        int revision = ++videoRevision;
         videoRequest = videoWorker.submit(() -> {
-            String result;
-            try { result = VideoDecoderSurvey.report(VideoDecoderSurvey.collect()); }
-            catch (RuntimeException ex) { result = "Decoder inventory unavailable"; }
-            String message = result;
-            main.post(() -> {
-                if (!resumed || current != generation) return;
-                videoBusy = false; videoButton.setEnabled(true);
-                videoStatus.setText(message);
-            });
+            String report;
+            try {
+                report = decode ? LocalAvcSelfTest.run(getApplicationContext()).report()
+                    : VideoDecoderSurvey.report(VideoDecoderSurvey.collect());
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+                return;
+            } catch (Exception ex) {
+                report = decode ? "Local AVC test FAILED or decoder unavailable."
+                    : "Decoder inventory unavailable.";
+            }
+            String message = report;
+            main.post(() -> finishVideoJob(revision, message));
         });
+    }
+
+    private void finishVideoJob(int revision, String report) {
+        if (!resumed || revision != videoRevision) return;
+        videoBusy = false;
+        videoButton.setEnabled(true); videoDecodeButton.setEnabled(true);
+        videoStatus.setText(report);
     }
 
     private void scanInvitation() {
@@ -495,7 +520,8 @@ public final class MainActivity extends Activity {
     @Override protected void onResume() { super.onResume(); resumed = true; if (session != null) main.post(poll); else if (claim != null) showClaim(); }
     @Override protected void onPause() {
         if (videoRequest != null) videoRequest.cancel(true);
-        videoBusy = false; videoButton.setEnabled(true);
+        videoRevision++;
+        videoBusy = false; videoButton.setEnabled(true); videoDecodeButton.setEnabled(true);
         resumed = false; stopPoll(); diagnostics.mark(ConnectionDiagnostics.Event.PAUSED); offline("Paused"); super.onPause(); }
     @Override protected void onDestroy() { stopPoll(); session = null; clearClaim(); worker.shutdownNow(); historyWorker.shutdownNow(); videoWorker.shutdownNow(); super.onDestroy(); }
 }
