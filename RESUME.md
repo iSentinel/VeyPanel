@@ -242,3 +242,6 @@
 - Initial raw nupkg hash failure corrected with native dotnet nuget verify for signed packages and strict contentHash comparison. Actual Windows report confirms signature verification for both packages and MIT declarations; ProtectedData includes THIRD-PARTY-NOTICES.TXT. Android report covers ten Maven components.
 - Supplemental exact Maven POM sources resolve missing declarations for ZXing Core (parent POM matches Gradle metadata), OkHttp and both Okio modules (external POM hashes not in existing metadata). All ten Maven components declare Apache 2.0 directly or via ZXing parent; two NuGet components declare MIT. No conclusion of complete license or redistribution compliance.
 - Android artifact 14912750984, Host artifact 14912666175. PR #26 independently captures time-stamped OSV runtime advisory snapshots.
+
+## Runtime advisory audit candidate
+- Public OSV querybatch collector with bounded response/pagination validation, six offline tests PASS. First live query 2026-11-24 covered 12 runtime package coordinates and returned zero matches. CI workflow and artifact publication pending; no full security approval or app networking changes.

@@ -1,0 +1,34 @@
+name: Runtime dependency advisory audit
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'third-party/baselines/**'
+      - 'scripts/audit_runtime_advisories.py'
+      - 'scripts/test_audit_runtime_advisories.py'
+      - '.github/workflows/runtime-advisories.yml'
+  push:
+    paths:
+      - 'third-party/baselines/**'
+      - 'scripts/audit_runtime_advisories.py'
+      - 'scripts/test_audit_runtime_advisories.py'
+      - '.github/workflows/runtime-advisories.yml'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test advisory collection policy
+        run: python3 -m unittest discover -s scripts -p test_audit_runtime_advisories.py -v
+      - name: Query known advisories for reviewed public dependency versions
+        run: |
+          mkdir -p evidence
+          python3 scripts/audit_runtime_advisories.py third-party/baselines/android-debug.cdx.json third-party/baselines/host-win-x64.cdx.json --output evidence/runtime-advisories.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: veypanel-runtime-advisories
+          path: evidence/runtime-advisories.json
+          if-no-files-found: error
