@@ -103,3 +103,5 @@
 - [x] 0.9: Enforce Gradle SHA-256 verification for 395 observed artifact records, reject deliberate incorrect ZXing checksum ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45371001724), [Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45371001725), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45371079169); PR #23 merged). Upstream provenance review remains open.
 
 - [x] 0.9: Pin observed .NET SDK 10.0.404, JDK 17.0.21+9, Gradle 8.9 and Windows Python 3.12.10; publish actual toolchain evidence ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45371848490), [Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45371848232), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45371834290); PR #24 merged). SDK image/runtime-pack reproducibility remains separate.
+
+- [ ] 0.9: Publish scoped OSV advisory snapshots for exact reviewed Android/Host runtime coordinates; first live query and offline tests passed, CI pending. Findings need manual triage; full security audit remains open.
