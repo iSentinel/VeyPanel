@@ -10,6 +10,7 @@ import android.text.InputType;
 import android.view.WindowManager;
 import android.view.Surface;
 import android.view.TextureView;
+import android.view.MotionEvent;
 import android.graphics.SurfaceTexture;
 import android.widget.*;
 import java.util.concurrent.ExecutorService;
@@ -53,6 +54,8 @@ public final class MainActivity extends Activity {
     private Button videoDecodeButton;
     private Button videoPreviewButton;
     private TextureView videoPreview;
+    private TextView localTouchStatus;
+    private boolean touchHadMultiplePointers;
     private boolean previewRequested;
     private boolean previewStarted;
     private int previewUpdatedFrames;
@@ -153,10 +156,46 @@ public final class MainActivity extends Activity {
         videoPreview.setLayoutParams(new LinearLayout.LayoutParams(previewSize, previewSize));
         videoPreview.setVisibility(android.view.View.GONE);
         videoPreview.setSurfaceTextureListener(previewListener());
+        videoPreview.setContentDescription("Local AVC touch diagnostics only");
+        videoPreview.setOnTouchListener((view, event) -> probeLocalTouch(view, event));
+        videoPreview.setOnClickListener(v -> {
+            localTouchStatus.setText("Local preview touch: tap one point · not sent to Windows");
+        });
         column.addView(videoPreview);
+        localTouchStatus = new TextView(this);
+        localTouchStatus.setText("Local preview touch: N/A · not sent to Windows");
+        localTouchStatus.setTextSize(13);
+        column.addView(localTouchStatus);
         videoStatus = new TextView(this); videoStatus.setText("No decoder inspection run");
         videoStatus.setTextSize(13); column.addView(videoStatus);
         setContentView(scroll);
+    }
+
+    private boolean probeLocalTouch(android.view.View view, MotionEvent event) {
+        if (!resumed || videoPreview.getVisibility() != android.view.View.VISIBLE) return false;
+        int action = event.getActionMasked();
+        if (action == MotionEvent.ACTION_DOWN) {
+            touchHadMultiplePointers = false;
+            return true;
+        }
+        if (action == MotionEvent.ACTION_POINTER_DOWN) {
+            touchHadMultiplePointers = true;
+            localTouchStatus.setText(LocalTouchProbe.describe(0, 0,
+                view.getWidth(), view.getHeight(), 2));
+            return true;
+        }
+        if (action == MotionEvent.ACTION_CANCEL) {
+            touchHadMultiplePointers = false;
+            return true;
+        }
+        if (action == MotionEvent.ACTION_UP) {
+            view.performClick();
+            int pointers = touchHadMultiplePointers ? 2 : event.getPointerCount();
+            touchHadMultiplePointers = false;
+            localTouchStatus.setText(LocalTouchProbe.describe(event.getX(), event.getY(),
+                view.getWidth(), view.getHeight(), pointers));
+        }
+        return true;
     }
 
     private void inspectVideoDecoders() {
@@ -196,6 +235,7 @@ public final class MainActivity extends Activity {
         int revision = ++videoRevision;
         videoStatus.setText("Decoding original local AVC into a visible Surface…");
         videoPreview.setVisibility(android.view.View.VISIBLE);
+        localTouchStatus.setText("Local preview touch: tap one point · not sent to Windows");
         if (videoPreview.isAvailable()) startLocalPreview(videoPreview.getSurfaceTexture(), revision);
         main.postDelayed(() -> {
             if (resumed && revision == videoRevision && previewRequested && !previewStarted)
@@ -632,6 +672,7 @@ public final class MainActivity extends Activity {
     @Override protected void onPause() {
         previewRequested = false;
         previewStarted = false;
+        touchHadMultiplePointers = false;
         if (videoRequest != null) videoRequest.cancel(true);
         videoRevision++;
         videoBusy = false;

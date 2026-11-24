@@ -63,3 +63,14 @@ stale snapshot, overflow or black-bar touch produces no coordinate.
 No OS events are emitted. Even a valid coordinate is not permission to inject:
 a later input channel must require independent owner approval, per-session
 authorization, revocation and physical display acceptance.
+
+## Owner-facing local preview touch probe (alpha.18 candidate)
+
+After **Preview local AVC frame** renders the bundled red clip, the owner may
+tap the TextureView. The application uses the same pure Java TouchMath to
+show a synthetic 64x64 pixel coordinate for single-touch release. Black-bar
+touches and multi-touch gestures are rejected, and the label explicitly says
+**not sent to Windows**. No input leaves the tablet or enters the Android OS
+input-injection APIs. These coordinates are *not* bound to a real Windows
+display; real desktop control still requires owner-approved pairing and
+fresh target identity.

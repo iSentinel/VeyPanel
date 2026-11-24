@@ -140,3 +140,7 @@
 - PR #14 head f5c0802: Android CI 45331269259/45331261006 PASS, Windows CI 45331269544/45331261072 PASS and runtime 45331261314 PASS. Raw instrumentation includes visible Surface preview gate and final INSTRUMENTATION_CODE:-1. Merged as 9b8ba93.
 - Debug APK artifact 14892161712 from run 45331269259. Android version 0.1.0-alpha.17. Local preview requires both AVC Surface output and an actual TextureView update; cancels on foreground pause or Surface loss.
 - The original local red clip is not a Windows stream. Lenovo visual, camera, Apollo/Quick Sync, display mode and hardware latency acceptance remain pending.
+
+## Android alpha.18 local preview touch diagnostics (CI pending)
+- LocalTouchProbe projects touch-up coordinates on synthetic 64x64 preview via existing TouchMath; multi-pointer, letterbox/outside and invalid inputs rejected. Text stays on-device in RAM and explicitly states not sent to Windows.
+- MainActivity attaches a listener only to the local TextureView. JVM and Activity tests cover center touch, bounds and nonforwarding. No input network protocol, Windows injection, privileges or display mutations. Physical Lenovo acceptance remains open.

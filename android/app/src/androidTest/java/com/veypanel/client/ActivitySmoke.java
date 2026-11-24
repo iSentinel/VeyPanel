@@ -2,6 +2,9 @@ package com.veypanel.client;
 
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.os.SystemClock;
+import android.view.MotionEvent;
+import android.view.TextureView;
 import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +41,7 @@ final class ActivitySmoke {
             if (!passed.get()) throw new IllegalStateException("Activity diagnostics gate");
             verifyLocalDecoderButton(runner, activity);
             verifyLocalPreview(runner, activity);
+            verifyLocalTouch(runner, activity);
         } finally {
             runner.runOnMainSync(activity::finish);
             runner.waitForIdleSync();
@@ -92,6 +96,40 @@ final class ActivitySmoke {
             }
         }
         if (!complete.get()) throw new IllegalStateException("Visible AVC preview did not complete");
+    }
+
+    private static void verifyLocalTouch(Instrumentation runner, Activity activity) {
+        runner.runOnMainSync(() -> {
+            View root = activity.getWindow().getDecorView();
+            TextureView preview = findTexture(root);
+            if (preview == null || !preview.isAvailable()
+                || preview.getVisibility() != View.VISIBLE)
+                throw new IllegalStateException("Local preview touch target missing");
+            long when = SystemClock.uptimeMillis();
+            float x = preview.getWidth() / 2f, y = preview.getHeight() / 2f;
+            MotionEvent down = MotionEvent.obtain(when, when, MotionEvent.ACTION_DOWN, x, y, 0);
+            MotionEvent up = MotionEvent.obtain(when, when + 30, MotionEvent.ACTION_UP, x, y, 0);
+            try {
+                if (!preview.dispatchTouchEvent(down) || !preview.dispatchTouchEvent(up))
+                    throw new IllegalStateException("Local touch rejected");
+            } finally { down.recycle(); up.recycle(); }
+            TextView status = find(root, "Local preview touch:", false);
+            if (status == null || !status.getText().toString().contains("(32, 32)")
+                || !status.getText().toString().contains("not sent to Windows"))
+                throw new IllegalStateException("Local synthetic touch output missing");
+        });
+    }
+
+    private static TextureView findTexture(View view) {
+        if (view instanceof TextureView) return (TextureView)view;
+        if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup)view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                TextureView result = findTexture(group.getChildAt(i));
+                if (result != null) return result;
+            }
+        }
+        return null;
     }
 
     private static void revealBottom(View root) {
