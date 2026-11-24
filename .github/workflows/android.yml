@@ -1,9 +1,9 @@
 name: Android CI
 on:
   push:
-    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json', 'scripts/check_gradle_verification.py', 'scripts/test_check_gradle_verification.py', 'scripts/test_gradle_checksum_gate.sh', 'scripts/dependency_license_evidence.py', 'scripts/test_dependency_license_evidence.py']
+    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json', 'scripts/check_gradle_verification.py', 'scripts/test_check_gradle_verification.py', 'scripts/test_gradle_checksum_gate.sh', 'scripts/dependency_license_evidence.py', 'scripts/test_dependency_license_evidence.py', 'scripts/artifact_manifest.py', 'scripts/test_artifact_manifest.py']
   pull_request:
-    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json', 'scripts/check_gradle_verification.py', 'scripts/test_check_gradle_verification.py', 'scripts/test_gradle_checksum_gate.sh', 'scripts/dependency_license_evidence.py', 'scripts/test_dependency_license_evidence.py']
+    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json', 'scripts/check_gradle_verification.py', 'scripts/test_check_gradle_verification.py', 'scripts/test_gradle_checksum_gate.sh', 'scripts/dependency_license_evidence.py', 'scripts/test_dependency_license_evidence.py', 'scripts/artifact_manifest.py', 'scripts/test_artifact_manifest.py']
   workflow_dispatch:
 permissions:
   contents: read
@@ -90,18 +90,17 @@ jobs:
           "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose android/app/build/outputs/apk/debug/app-debug.apk | tee android/app/build/outputs/apk/debug/apk-signing.txt
           "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging android/app/build/outputs/apk/debug/app-debug.apk > android/app/build/outputs/apk/debug/apk-badging.txt
           python3 scripts/check_android_badging.py android/app/build/outputs/apk/debug/apk-badging.txt android/app/build.gradle | tee android/app/build/outputs/apk/debug/apk-identity.txt
+      - name: Stage and verify exact Android artifact file set
+        run: |
+          python3 -m unittest discover -s scripts -p test_artifact_manifest.py -v
+          mkdir -p android-artifact
+          cp android/app/build/outputs/apk/debug/{app-debug.apk,apk-integrity.txt,apk-signing.txt,apk-badging.txt,apk-identity.txt,runtime-components.cdx.json,build-toolchain.txt,dependency-license-evidence.json} android-artifact/
+          python3 scripts/artifact_manifest.py write android-artifact
+          python3 scripts/artifact_manifest.py verify android-artifact
       - uses: actions/upload-artifact@v4
         with:
           name: veypanel-android-monitor-debug
-          path: |
-            android/app/build/outputs/apk/debug/app-debug.apk
-            android/app/build/outputs/apk/debug/apk-integrity.txt
-            android/app/build/outputs/apk/debug/apk-signing.txt
-            android/app/build/outputs/apk/debug/apk-badging.txt
-            android/app/build/outputs/apk/debug/apk-identity.txt
-            android/app/build/outputs/apk/debug/runtime-components.cdx.json
-            android/app/build/outputs/apk/debug/build-toolchain.txt
-            android/app/build/outputs/apk/debug/dependency-license-evidence.json
+          path: android-artifact/
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:
