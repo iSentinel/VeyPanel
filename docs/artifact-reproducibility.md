@@ -1,6 +1,6 @@
 # Artifact file manifest and reproducibility preflight
 
-Status: candidate. Ten offline fixtures pass; CI publication not yet accepted.
+Status: PR #27 merged, both Android and Windows CI pairs passed. Downloaded artifacts independently verified (8 Android, 360 Host, 834 Desktop files).
 
 Android debug, Windows Host and Windows Desktop artifacts will carry
 artifact-files.sha256.json: relative file names, byte sizes and SHA-256
@@ -34,3 +34,16 @@ Source commit 8ddb734e87a3bffcc49e2a71750e4068674a7828 (PR #25):
 
 Machine-readable observations are in docs/evidence/pr25-*-repro-comparison.json.
 No production signing keys, device installation or display mutation are used.
+
+## Follow-up scope correction
+
+The original PR #25 comparison used matching GitHub workflow headSha values,
+not verified checkout SHAs. The PR Windows job 45377626247 actually checked
+out synthetic merge abd2c66. Push and PR jobs may therefore compile different
+source revision IDs even when trees match. Do not interpret those samples
+as a strict same-checkout experiment.
+
+Further inspection found 1027 different APK bytes, all within the identical
+4096-byte APK signing blocks at offsets [1782490,1786586). Bytes outside
+the blocks matched exactly. Signature validity is a separate apksigner gate.
+Windows static asset endpoint differences include Last-Modified timestamps.

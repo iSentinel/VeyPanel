@@ -253,3 +253,9 @@
 
 ## Artifact reproducibility preflight candidate
 - Ten artifact-manifest fixtures PASS. Actual downloaded Host (360 files) and Android (8 files) inventory verification PASS. Same-HEAD PR #25 builds show all 25 decompressed APK entries match but full APK hashes differ; 356/360 Host files match, four differ. Evidence JSON saved; CI staging/manifest publication pending, no byte-identical release claim.
+
+## Verified artifact manifests (2026-11-24)
+- PR #27 head 4441e8e; Android CI 45378711150/45378700597, Windows CI 45378711008/45378700546 PASS; merged as 6584fa9.
+- Downloaded Android/Host/Desktop artifacts independently verified all 8/360/834 files against published SHA-256 manifests. All 1202 file entries match.
+- Follow-up inspection of PR #25 APKs: 1027 different raw bytes, all within identical-sized APK signing blocks [1782490,1786586); all bytes outside match. This does not verify signer identity or establish byte-identical APKs.
+- Prior comparison used PR and push workflow headSha; Windows PR checkout log identifies synthetic merge abd2c66, so exact source commit equality is not established. Static web assets Last-Modified varies between runs. Next: explicit checkout SHA/tree evidence and independent same-checkout Windows reproduction; separate APK signing block comparison.

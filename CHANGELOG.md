@@ -1,5 +1,9 @@
 # Changelog
 
+## Artifact file integrity manifests (CI PASS)
+
+- Publish SHA-256 file manifests for Android, Host and Desktop. Independent download verification passed for 1202 entries across the three artifacts. Exact checkout reproducibility is separate.
+
 ## Scoped runtime advisory audit (CI PASS)
 
 - Collect time-stamped OSV advisory snapshots for the 12 reviewed Maven/NuGet runtime coordinates using independent CI. Do not equate zero matches with complete security acceptance.
