@@ -1,5 +1,9 @@
 # Changelog
 
+## Touch target identity guard (CI pending)
+
+- Fail closed on stale display snapshots, changed target identity or session generation, without forwarding any input.
+
 ## Touch geometry preflight (Windows and Android CI PASS; no input forwarding)
 
 - Add matching pure Android and Windows tablet-to-desktop touch coordinate math and synthetic tests. No input forwarding or display changes.

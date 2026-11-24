@@ -113,3 +113,7 @@
 ## Verified touch geometry checkpoint (2026-11-24)
 - PR #11 head b171a02: Windows 45328777756 and 45328771499 PASS, Android 45328777846 and 45328771419 PASS, Android runtime 45328771479 PASS. Merged as dbde6d4.
 - 17 matching synthetic cases in C# TouchMapping and pure Java TouchMath; no actual input listeners/network, target revalidation or Lenovo acceptance. Next safe stage: session-bound identity/freshness gate before any prospective control channel.
+
+## Touch target binding gate (CI pending)
+- Separate pure TouchBindingGuard rejects absent/expired or changed topologies, changed session generation, monitor identity mismatch, black-bar hits, duplicate targets and coordinate overflow; derives desktop rect from active CCD source mode. Synthetic Windows CI pending.
+- No touch injection, input network endpoint, remote authorization or display topology change. Target PC/tablet hardware acceptance pending.
