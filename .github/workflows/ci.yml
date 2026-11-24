@@ -9,10 +9,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.0.x'
+          global-json-file: global.json
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.12.10'
+      - name: Verify exact build tool versions
+        run: |
+          if ((dotnet --version).Trim() -ne '10.0.404') { throw 'Unexpected .NET SDK' }
+          if ((python --version).Trim() -ne 'Python 3.12.10') { throw 'Unexpected Python version' }
       - name: Dependency inventory fixtures
         run: |
           python -m unittest discover -s scripts -p test_dependency_inventory.py -v
@@ -26,6 +30,12 @@ jobs:
       - run: dotnet build src/VeyPanel.Host -c Release
       - run: dotnet run --project tests/VeyPanel.Smoke -c Release
       - run: dotnet publish src/VeyPanel.Host -c Release -r win-x64 --self-contained true -o publish
+      - name: Record Windows build toolchain evidence
+        shell: pwsh
+        run: |
+          @("dotnet SDK: $(dotnet --version)", "Python: $(python --version)",
+            "Runner image: $env:ImageOS / $env:ImageVersion") |
+            Set-Content -Encoding utf8 publish/build-toolchain.txt
       - name: Verify Windows Host NuGet locked restore
         run: |
           dotnet restore src/VeyPanel.Host -r win-x64 --locked-mode

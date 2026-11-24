@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: '17.0.21+9'
       - name: Native client policy fixtures
         run: |
           mkdir -p /tmp/veypanel-client-tests
@@ -31,6 +31,13 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
+      - name: Verify selected JDK and Gradle versions
+        run: |
+          java -version 2>&1 | tee /tmp/veypanel-java-version.txt
+          grep -F '17.0.21' /tmp/veypanel-java-version.txt
+          grep -F '+9' /tmp/veypanel-java-version.txt
+          gradle --version | tee /tmp/veypanel-gradle-version.txt
+          grep -Fx 'Gradle 8.9' /tmp/veypanel-gradle-version.txt
       - name: Prepare Android SDK
         uses: android-actions/setup-android@7731365548f3f81c15d4c49c8f1d29101e02cdcf # v4.0.2
         with:
@@ -62,6 +69,17 @@ jobs:
         run: python3 scripts/dependency_inventory.py maven android/app/build/reports/dependencies/debug-runtime.json android/app/build/outputs/apk/debug/runtime-components.cdx.json --label VeyPanel-Android-debug
       - name: Reject unreviewed Android dependency drift
         run: python3 scripts/check_dependency_baseline.py third-party/baselines/android-debug.cdx.json android/app/build/outputs/apk/debug/runtime-components.cdx.json
+      - name: Record build toolchain evidence
+        run: |
+          out=android/app/build/outputs/apk/debug/build-toolchain.txt
+          {
+            java -version 2>&1
+            gradle --version
+            for package in platforms/android-35 build-tools/35.0.0 platform-tools; do
+              echo "=== Android SDK $package ==="
+              grep -E '^(Pkg.Desc|Pkg.Revision|AndroidVersion.ApiLevel)=' "$ANDROID_HOME/$package/source.properties"
+            done
+          } > "$out"
       - name: Verify built APK structure and debug signing
         run: |
           python3 scripts/verify_android_apk.py android/app/build/outputs/apk/debug/app-debug.apk | tee android/app/build/outputs/apk/debug/apk-integrity.txt
@@ -78,6 +96,7 @@ jobs:
             android/app/build/outputs/apk/debug/apk-badging.txt
             android/app/build/outputs/apk/debug/apk-identity.txt
             android/app/build/outputs/apk/debug/runtime-components.cdx.json
+            android/app/build/outputs/apk/debug/build-toolchain.txt
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:
