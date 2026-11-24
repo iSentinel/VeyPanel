@@ -104,3 +104,21 @@ Windows Python is pinned to 3.12.10. The workflows assert selected versions
 and publish actual toolchain evidence. This does not establish byte-identical
 release output or freeze GitHub runner images, Android SDK revisions,
 Windows runtime packs or every external build tool. PR #24 verified in CI and emulator.
+
+
+## Runtime license evidence candidate
+
+Both build workflows capture package-declared license metadata and hashes of
+candidate LICENSE/NOTICE documents inside the actual verified dependency
+archives. The Maven scanner uses committed SHA-256 metadata; the NuGet scanner
+requires the package SHA-512 from the native lockfile. The report explicitly
+records absent declarations and unavailable cache artifacts; it never infers
+an SPDX conclusion or approval to redistribute. Maven parent inheritance,
+nested AAR archives, SDK/runtime packs, plugins, full license text review and
+advisory review remain outside this stage. CI and manual review pending.
+
+Signed NuGet archives use the SDK's native content hash (excluding the
+signature), not raw archive SHA-512. The scanner runs dotnet nuget verify
+and checks its content hash against the lockfile; the raw archive digest
+is separately recorded. See https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-nuget-verify
+and https://source.dot.net/NuGet.Packaging/PackageArchiveReader.cs.html.

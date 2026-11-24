@@ -1,9 +1,9 @@
 name: Android CI
 on:
   push:
-    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json', 'scripts/check_gradle_verification.py', 'scripts/test_check_gradle_verification.py', 'scripts/test_gradle_checksum_gate.sh']
+    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json', 'scripts/check_gradle_verification.py', 'scripts/test_check_gradle_verification.py', 'scripts/test_gradle_checksum_gate.sh', 'scripts/dependency_license_evidence.py', 'scripts/test_dependency_license_evidence.py']
   pull_request:
-    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json', 'scripts/check_gradle_verification.py', 'scripts/test_check_gradle_verification.py', 'scripts/test_gradle_checksum_gate.sh']
+    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json', 'scripts/check_gradle_verification.py', 'scripts/test_check_gradle_verification.py', 'scripts/test_gradle_checksum_gate.sh', 'scripts/dependency_license_evidence.py', 'scripts/test_dependency_license_evidence.py']
   workflow_dispatch:
 permissions:
   contents: read
@@ -69,6 +69,10 @@ jobs:
         run: python3 scripts/dependency_inventory.py maven android/app/build/reports/dependencies/debug-runtime.json android/app/build/outputs/apk/debug/runtime-components.cdx.json --label VeyPanel-Android-debug
       - name: Reject unreviewed Android dependency drift
         run: python3 scripts/check_dependency_baseline.py third-party/baselines/android-debug.cdx.json android/app/build/outputs/apk/debug/runtime-components.cdx.json
+      - name: Capture license evidence from verified Android runtime artifacts
+        run: |
+          python3 -m unittest discover -s scripts -p test_dependency_license_evidence.py -v
+          python3 scripts/dependency_license_evidence.py maven third-party/baselines/android-debug.cdx.json android/gradle/verification-metadata.xml android/app/build/outputs/apk/debug/dependency-license-evidence.json
       - name: Record build toolchain evidence
         run: |
           out=android/app/build/outputs/apk/debug/build-toolchain.txt
@@ -97,6 +101,7 @@ jobs:
             android/app/build/outputs/apk/debug/apk-identity.txt
             android/app/build/outputs/apk/debug/runtime-components.cdx.json
             android/app/build/outputs/apk/debug/build-toolchain.txt
+            android/app/build/outputs/apk/debug/dependency-license-evidence.json
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:

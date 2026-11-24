@@ -231,3 +231,8 @@
 - PR #24 head 52de029, Android CI 45371848490/45371834687, Windows CI 45371848232/45371834360 and runtime 45371834290 PASS; merged as b81dedb.
 - Exact .NET 10.0.404, Temurin JDK 17.0.21+9, Gradle 8.9 and Windows Python 3.12.10 enforced. Actual Android artifact 14909028136 confirms API35 revision 2, build-tools 35.0.0 and platform-tools 37.0.3. Runner image and SDK distribution are not immutable.
 - Next: collect literal license declarations and notice hashes from verified runtime packages, then review missing/transitive notice obligations and release provenance.
+
+## Runtime license evidence candidate
+- Added checksum-gated Maven/NuGet archive inspection and seven offline fixtures, including tampered package rejection. CI publishes dependency-license-evidence.json with literal declarations and notice hashes. No inferred SPDX conclusion or legal approval; full license review pending.
+
+- Initial PR #25 Android CI 45372580810/45372571558 PASS; Windows 45372580801/45372571530 failed because raw signed nupkg SHA-512 differs from NuGet contentHash. Use pinned SDK dotnet nuget verify for signed packages (native content hash and signature validation), keep raw archive hash separately, and preserve strict lock comparison. CI retry pending.
