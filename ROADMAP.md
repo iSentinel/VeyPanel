@@ -95,3 +95,5 @@
 - [x] 0.9: Publish resolved Android debug runtime (10 Maven modules) and Windows Host win-x64 NuGet (2 packages) CycloneDX component inventories ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45363577089), [Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45363577252), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45363566687); PR #19 merged). Full dependency graph, runtime packs, licenses and native locks remain open.
 
 - [x] 0.9: Enforce post-resolution component version/membership baselines in Android and Windows CI ([Android PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45364210959), [Windows PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45364210957); PR #20 merged). Native lockfiles and package hashes remain open.
+
+- [ ] 0.9: Enforce Gradle debug runtime native lock and capture NuGet win-x64 native lock candidate; CI pending.

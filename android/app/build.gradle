@@ -49,3 +49,11 @@ tasks.register('writeDebugDependencyInventory') {
         if (modules.empty) throw new GradleException('Runtime inventory is empty')
     }
 }
+
+// Lock only the resolved debug runtime graph already reviewed in CI.
+configurations.matching { it.name == 'debugRuntimeClasspath' }.configureEach {
+    resolutionStrategy.activateDependencyLocking()
+}
+dependencyLocking {
+    lockMode = org.gradle.api.artifacts.dsl.LockMode.STRICT
+}

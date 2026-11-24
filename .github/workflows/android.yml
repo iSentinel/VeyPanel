@@ -45,6 +45,11 @@ jobs:
       - name: Build debug APK and lint
         working-directory: android
         run: gradle --no-daemon :app:assembleDebug :app:assembleDebugAndroidTest :app:lintDebug :app:writeDebugDependencyInventory
+      - name: Confirm Gradle can reproduce the committed runtime lock
+        working-directory: android
+        run: |
+          gradle --no-daemon :app:writeDebugDependencyInventory --write-locks
+          git diff --exit-code -- app/gradle.lockfile
       - name: Record resolved Android runtime component inventory
         run: python3 scripts/dependency_inventory.py maven android/app/build/reports/dependencies/debug-runtime.json android/app/build/outputs/apk/debug/runtime-components.cdx.json --label VeyPanel-Android-debug
       - name: Reject unreviewed Android dependency drift
