@@ -97,9 +97,15 @@
 - Debug APK artifact 14806213555 from Android CI 45151764750 (app-debug.apk). Local codec report checks declared AVC/HEVC/AV1 and 720p/1080p/2560x1600 at 60 FPS; does not start a decoder and does not establish real hardware performance.
 - Actual 64x64 AVC decode instrumentation under PR #8 remains pending. Lenovo tablet, Windows Quick Sync, Apollo and display acceptance unverified.
 
-- Alpha.16 initial Android CI 45327692507 failed at javac: invalid `VideoCapabilities.areSizeSupported`; corrected to public `areSizeAndRateSupported(64,64,30)` and rerun required.
-- Alpha.16 Activity instrumentation now clicks the local AVC self-test button and waits for a bounded on-screen PASS and re-enabled button. This is separate from direct repeated decode fixture. CI pending.
+- Alpha.16 initial Android CI 45327692507 failed at javac: invalid `VideoCapabilities.areSizeSupported`; corrected to public `areSizeAndRateSupported(64,64,30)`; later full CI PASS.
+- Alpha.16 Activity instrumentation clicks the local AVC self-test button and waits for an on-screen PASS and re-enabled button, in addition to direct repeated decode.
 
 ## Verified alpha.16 local video self-test (2026-11-24)
-- PR #10 head c7f44d2: Android build/lint 45328031303 PASS, Windows 45328031480 PASS, Android runtime 45328022894 PASS including user-visible button, decoded output, two decoder openings, and cancellation lifecycle checks. Merged as f7a9af8.
-- Debug APK from Android run 45328031303, artifact 14890334063; version 0.1.0-alpha.16. Hardware result only from actual Lenovo self-test can qualify. No measured 60 FPS, Surface rendering, Apollo/Quick Sync or tablet acceptance.
+- PR #10 head c7f44d2: Android build/lint 45328031303 PASS, Windows 45328031480 PASS, Android runtime 45328022894 PASS. Merged as f7a9af8.
+- Debug APK 45328031303 artifact 14890334063. No 60 FPS, Surface rendering, Apollo/Quick Sync or physical tablet acceptance.
+
+## Touch geometry preparation
+- Added pure TouchMapping for stage 0.6: contain-fit letterbox checks, 0/90/180/270 inverse transforms, negative-origin Windows desktop and fail-closed invalid dimensions. Initial Windows CI 45328378092 PASS; combined CI after main sync pending.
+- No native pointer injection, network control, paired input authorization, display mutation or physical tablet acceptance. A fresh target identity and owner-confirmed input channel are prerequisites.
+
+- Added matching Android TouchMath and JVM fixture suite for the same 17 Windows synthetic vectors; CI pending. No touch listeners or input forwarding.

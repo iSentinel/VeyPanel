@@ -1,5 +1,9 @@
 # Changelog
 
+## Touch geometry preflight (CI pending on combined branch)
+
+- Add matching pure Android and Windows tablet-to-desktop touch coordinate math and synthetic tests. No input forwarding or display changes.
+
 ## Android 0.1.0-alpha.16 (emulator CI PASS; physical device pending)
 
 - Add on-demand original local AVC decode self-test to the native app, reporting actual decoder, Android hardware classification, decoded output buffers and duration without streaming or display changes.
