@@ -159,6 +159,30 @@ jobs:
           python scripts/artifact_manifest.py verify staged-package
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python scripts/artifact_manifest.py verify staged-package/host
+      - name: Verify atomic side-by-side package selection
+        shell: pwsh
+        run: |
+          python -m unittest discover -s scripts -p test_windows_package_selection.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $package = 'portable/VeyPanel-win-x64-portable.zip'
+          $digest = (Get-FileHash $package -Algorithm SHA256).Hash.ToLowerInvariant()
+          New-Item -ItemType Directory -Path selection-test | Out-Null
+          python scripts/windows_package_selection.py --root selection-test select $package --sha256 $digest --dry-run
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if (@(Get-ChildItem selection-test -Force).Count -ne 0) { throw 'Dry-run mutated root' }
+          python scripts/windows_package_selection.py --root selection-test select $package --sha256 $digest --apply
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $before = (Get-FileHash selection-test/selection.json).Hash
+          python scripts/windows_package_selection.py --root selection-test select $package --sha256 $digest --apply
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if ((Get-FileHash selection-test/selection.json).Hash -ne $before) { throw 'Idempotent selection modified state' }
+          python scripts/windows_package_selection.py --root selection-test status
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $state = Get-Content selection-test/selection.json -Raw | ConvertFrom-Json
+          if ($state.active.package_sha256 -ne $digest -or $null -ne $state.previous) { throw 'Unexpected first selection' }
+          python scripts/artifact_manifest.py verify "selection-test/versions/$digest"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/artifact_manifest.py verify "selection-test/versions/$digest/host"
       - uses: actions/upload-artifact@v4
         with:
           name: veypanel-win-x64-portable-unsigned
