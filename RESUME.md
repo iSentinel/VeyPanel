@@ -310,3 +310,6 @@
 - PR #33 head 0879d46, Desktop reproduction 45412991876 and Windows CI 45412992120/45412976488 PASS, merged as de36627.
 - Independent experimental ZIP SHA-256 17e9ea417213dda5aa1d56c237df4baa9db3d1b247192f960d341d2c11c6aebc matches on both runners. Actual ordinary portable artifact 14931435132 downloaded and independently verified: 836 files, SHA-256 58ea65c2093f2af20924c77250e619d17d464a1f3108da21f83732019d3ef2ce.
 - Next: digest-pinned package preflight and isolated side-by-side staging with dry-run; no system mutation or execution.
+
+## Digest-pinned Windows staging candidate
+- Default read-only package preflight, explicit --apply into a new directory below an existing non-reparse parent. Verify full archive digest, file hashes, nested Host manifest, matching valid source evidence, disk space and extracted tree. Nine offline fixtures; no activation, overwrite, registry or service changes. Windows CI pending.
