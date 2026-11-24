@@ -1,5 +1,9 @@
 # Changelog
 
+## Runtime dependency license evidence (CI PASS)
+
+- Publish checksum-verified package license declarations and notice hashes; use native NuGet signature and content hash verification for signed packages. Record supplemental exact Maven POM declarations without treating them as complete redistribution approval.
+
 ## Pinned build toolchain (CI and runtime PASS)
 
 - Pin exact observed .NET SDK, Temurin JDK, Gradle and Windows Python versions; include actual SDK and toolchain evidence with build artifacts.

@@ -105,4 +105,4 @@
 - [x] 0.9: Pin observed .NET SDK 10.0.404, JDK 17.0.21+9, Gradle 8.9 and Windows Python 3.12.10; publish actual toolchain evidence ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45371848490), [Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45371848232), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45371834290); PR #24 merged). SDK image/runtime-pack reproducibility remains separate.
 
 
-- [ ] 0.9: Capture literal license declarations and LICENSE/NOTICE hashes from verified Android and Windows runtime packages; CI and human review pending.
+- [x] 0.9: Capture literal license declarations and LICENSE/NOTICE hashes from verified Android/Host runtime packages ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45377626137), [Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45377626247); PR #25 merged). Supplemental Maven POM evidence recorded; full redistribution review remains open.

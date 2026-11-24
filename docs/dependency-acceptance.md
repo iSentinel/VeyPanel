@@ -106,7 +106,7 @@ release output or freeze GitHub runner images, Android SDK revisions,
 Windows runtime packs or every external build tool. PR #24 verified in CI and emulator.
 
 
-## Runtime license evidence candidate
+## Runtime license evidence (CI PASS)
 
 Both build workflows capture package-declared license metadata and hashes of
 candidate LICENSE/NOTICE documents inside the actual verified dependency
@@ -115,10 +115,27 @@ requires the package SHA-512 from the native lockfile. The report explicitly
 records absent declarations and unavailable cache artifacts; it never infers
 an SPDX conclusion or approval to redistribute. Maven parent inheritance,
 nested AAR archives, SDK/runtime packs, plugins, full license text review and
-advisory review remain outside this stage. CI and manual review pending.
+advisory review remain outside this stage. CI passed; manual review remains pending.
 
 Signed NuGet archives use the SDK's native content hash (excluding the
 signature), not raw archive SHA-512. The scanner runs dotnet nuget verify
 and checks its content hash against the lockfile; the raw archive digest
 is separately recorded. See https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-nuget-verify
 and https://source.dot.net/NuGet.Packaging/PackageArchiveReader.cs.html.
+
+### Observed declarations (2026-11-24)
+
+PR #25 passed Android CI 45377626137 and Windows CI 45377626247.
+Both NuGet package signatures and lock content hashes were verified by
+the pinned SDK. Both declare MIT; ProtectedData contains a third-party
+notices file. The Android runtime report has six explicit Apache 2.0
+declarations. Supplemental exact Maven Central POMs close the remaining
+four declaration gaps: ZXing Core inherits its parent declaration;
+OkHttp and both Okio modules explicitly declare Apache 2.0.
+
+See third-party/baselines/maven-license-supplement.json for exact URLs,
+observed SHA-256 hashes and whether each POM matched committed Gradle
+verification metadata. The three OkHttp/Okio POMs were not previously
+covered by that metadata and are separately recorded external evidence.
+These declarations do not resolve all copyright/notice redistribution
+requirements, runtime packs, toolchain or build-plugin license obligations.
