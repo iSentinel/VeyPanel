@@ -27,7 +27,10 @@ class StagingTests(unittest.TestCase):
                                 (self.host, "VeyPanel.Host")):
             for ext in (".exe", ".dll"):
                 (directory / (name + ext)).write_bytes(b"fixture")
-            (directory / "build-source.json").write_text("{}", encoding="utf-8")
+            (directory / "build-source.json").write_text(json.dumps({
+                "schema": 1, "tracked_checkout_clean": True,
+                "git_commit": "a" * 40, "git_tree": "b" * 40,
+                "source_commit_epoch_utc": 1700000000}), encoding="utf-8")
         self.package = self.root / "package.zip"
         self.dest = self.root / "stage"
         self.pack()
@@ -70,6 +73,17 @@ class StagingTests(unittest.TestCase):
         self.pack()
         with self.assertRaisesRegex(ValueError, "source evidence differs"):
             stage(self.package, self.sha, self.dest, False)
+
+    def test_invalid_source_evidence(self):
+        for directory in (self.source, self.host):
+            (directory / "build-source.json").write_text("{}")
+        self.pack()
+        with self.assertRaisesRegex(ValueError, "Invalid package source"):
+            stage(self.package, self.sha, self.dest, False)
+
+    def test_destination_traversal(self):
+        with self.assertRaisesRegex(ValueError, "parent traversal"):
+            stage(self.package, self.sha, self.root / ".." / "target", False)
 
     def test_wrong_nested_manifest(self):
         (self.host / "VeyPanel.Host.dll").write_bytes(b"modified")

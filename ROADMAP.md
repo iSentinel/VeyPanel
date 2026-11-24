@@ -122,3 +122,5 @@
 - [x] 0.9: Run independent same-checkout Desktop bundle reproduction ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45412111245), PR #32 merged). All 832 experimental bundle files identical; both Host smoke tests PASS. Interactive Desktop acceptance separate.
 
 - [x] 0.9: Publish unsigned portable Windows ZIP, verify Windows extraction and compare exact independent archive SHA-256 ([reproduction PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45412991876), PR #33 merged). Actual downloaded ordinary ZIP verifies 836 files. Installation and signing separate.
+
+- [ ] 0.9: Require trusted external SHA-256 and verified nested Host/source identity before dry-run or isolated package staging; real Windows CI staging pending. Activation, upgrade/rollback and uninstall separate.

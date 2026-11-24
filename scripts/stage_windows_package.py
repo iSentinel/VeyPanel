@@ -35,6 +35,26 @@ def checked_manifest(archive, name):
     return entries(json.loads(archive.read(name)))
 
 
+def verify_source_evidence(archive):
+    """Require valid, matching build identity records for both applications."""
+    raw = []
+    for name in ("build-source.json", "host/build-source.json"):
+        if archive.getinfo(name).file_size > 65536:
+            raise ValueError("Oversized source evidence")
+        raw.append(archive.read(name))
+    if raw[0] != raw[1]:
+        raise ValueError("Host and Desktop source evidence differs")
+    evidence = json.loads(raw[0])
+    if (evidence.get("schema") != 1
+            or evidence.get("tracked_checkout_clean") is not True
+            or not all(isinstance(evidence.get(key), str)
+                       and re.fullmatch("[0-9a-f]{40}", evidence[key])
+                       for key in ("git_commit", "git_tree"))
+            or type(evidence.get("source_commit_epoch_utc")) is not int
+            or not 0 < evidence["source_commit_epoch_utc"] < 253402300799):
+        raise ValueError("Invalid package source evidence")
+
+
 def preflight(archive):
     """Validate archive layout, nested Host identity and every payload hash."""
     names = validate_members(archive)
@@ -47,11 +67,7 @@ def preflight(archive):
                 if name.startswith("host/") and name != "host/" + MANIFEST}
     if host != expected:
         raise ValueError("Nested Host manifest mismatch")
-    for name in ("build-source.json", "host/build-source.json"):
-        if archive.getinfo(name).file_size > 65536:
-            raise ValueError("Oversized source evidence")
-    if archive.read("build-source.json") != archive.read("host/build-source.json"):
-        raise ValueError("Host and Desktop source evidence differs")
+    verify_source_evidence(archive)
     directories = {}
     for name in names:
         parts = name.split("/")
@@ -73,6 +89,8 @@ def preflight(archive):
 
 def check_destination(destination):
     """Only allow a new directory below an existing non-reparse parent."""
+    if ".." in destination.parts:
+        raise ValueError("Destination must not contain parent traversal")
     destination = destination.absolute()
     if destination.exists() or destination.is_symlink():
         raise ValueError("Destination already exists")
@@ -137,7 +155,7 @@ def main():
     try:
         count = stage(args.package, args.sha256, args.destination, not args.apply)
     except (OSError, ValueError, KeyError, TypeError, RuntimeError,
-            zipfile.BadZipFile) as error:
+            zipfile.BadZipFile, AttributeError) as error:
         print(f"FAIL: package staging: {error}", file=sys.stderr)
         return 1
     print(f"PASS: {'staged' if args.apply else 'dry-run'}; {count} verified files")
