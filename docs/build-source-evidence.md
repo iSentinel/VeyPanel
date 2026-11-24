@@ -1,6 +1,6 @@
 # Build source evidence
 
-Status: candidate. Record deterministic, factual source metadata with the
+Status: PR #30 merged, Android and Windows CI PASS; downloaded artifacts verified. Record deterministic, factual source metadata with the
 ordinary Android, Host and Desktop artifacts. Before compilation the
 workflow reads actual Git HEAD, tree ID, source commit UTC epoch and
 tracked cleanliness, requiring the actual checkout to match GITHUB_SHA.
@@ -22,3 +22,5 @@ This evidence records Git state at two points. It is not a signed
 attestation, sandbox enforcement, proof that every compiler input was
 tracked, or proof of byte-identical builds. No secrets or device data
 are collected.
+
+Verified PR #30 artifacts from runs 45404957532 and 45404957357 record identical actual checkout 7c4d5a67940fbbc97144500b0d72d334dd93d3de and tree c8df57d8256d3b2c2afa87f0e411b4dcac632fef.

@@ -1,5 +1,9 @@
 # Changelog
 
+## Artifact source evidence (CI PASS)
+
+- Record and revalidate actual tracked Git checkout before ordinary Android, Host and Desktop artifact publication. All three downloaded manifests independently verified.
+
 ## Windows exact-checkout Host reproduction (CI PASS)
 
 - Independently build the same checkout twice with locked dependencies and continuous integration mode. Raw 356/357 files match; experimental Last-Modified normalization gives 357/357 matching files and both Host smoke tests pass. Ordinary publication unchanged.

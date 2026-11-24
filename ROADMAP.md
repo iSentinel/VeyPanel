@@ -115,4 +115,4 @@
 
 - [x] 0.9: Run independent Windows exact-checkout Host reproduction ([comparison PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45404314553); PR #29 merged). Raw 356/357 identical; normalized 357/357 identical; both Host smoke tests PASS. Normal publication unchanged.
 
-- [ ] 0.9: Record and revalidate actual clean tracked Git checkout commit/tree/epoch in ordinary Android, Host and Desktop artifacts; CI pending. Signed build attestation remains open.
+- [x] 0.9: Record and revalidate actual clean tracked Git checkout commit/tree/epoch in ordinary Android, Host and Desktop artifacts ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45404957532), [Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45404957357); PR #30 merged). Downloaded all three artifact manifests verified; signed attestation remains open.
