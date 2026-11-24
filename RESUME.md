@@ -135,3 +135,8 @@
 - On-demand TextureView in the native Activity, original bundled red 64x64 two-frame AVC. LocalAvcSurfacePreview shares the implementation with isolated SurfaceDecodeSmoke; Activity instrumentation clicks preview and checks the visible in-app result.
 - Worker is cancelled on pause or Surface loss; generation/revision guards drop stale completions. MainActivity still uses OkHttp WSS; no Windows capture, Apollo pairing, display mutation or touch input. CI and actual Lenovo preview acceptance pending.
 - Preview completion is now gated on both decoded Surface output and an actual TextureView update callback (2 s bounded post-decode wait), while Android UI smoke scrolls it into view. CI required.
+
+## Verified Android alpha.17 local Surface preview (2026-11-24)
+- PR #14 head f5c0802: Android CI 45331269259/45331261006 PASS, Windows CI 45331269544/45331261072 PASS and runtime 45331261314 PASS. Raw instrumentation includes visible Surface preview gate and final INSTRUMENTATION_CODE:-1. Merged as 9b8ba93.
+- Debug APK artifact 14892161712 from run 45331269259. Android version 0.1.0-alpha.17. Local preview requires both AVC Surface output and an actual TextureView update; cancels on foreground pause or Surface loss.
+- The original local red clip is not a Windows stream. Lenovo visual, camera, Apollo/Quick Sync, display mode and hardware latency acceptance remain pending.

@@ -64,3 +64,18 @@ tap **Preview local AVC frame** on Lenovo and verify a red 64x64 test picture
 appears in the embedded preview area. Record the displayed status and any
 orientation, clipping or flicker. The original synthetic clip requires no PC
 connection. Keep the test separate from real Windows video hardware acceptance.
+
+## Verified alpha.17 local preview installation
+
+Run on a trusted workstation with GitHub CLI and Android platform-tools:
+
+    gh run download 45331269259 -R iSentinel/VeyPanel -n veypanel-android-monitor-debug -D veypanel-alpha17
+    adb devices -l
+    adb -s DEVICE_SERIAL install -r veypanel-alpha17/app-debug.apk
+    adb -s DEVICE_SERIAL shell am start -n com.veypanel.client/.MainActivity
+
+Use a real serial from `adb devices -l`. Tap **Preview local AVC frame**
+and observe the embedded red test picture. It reports PASS only after a
+TextureView update and decoded frame. Record actual codec status and preview
+behavior on Lenovo. Do not interpret an emulator PASS as actual streaming,
+hardware acceleration, stable 60 FPS or production signing.
