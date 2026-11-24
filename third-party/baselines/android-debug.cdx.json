@@ -1,0 +1,93 @@
+{
+  "bomFormat": "CycloneDX",
+  "components": [
+    {
+      "bom-ref": "pkg:maven/com.google.zxing/core@3.5.3",
+      "group": "com.google.zxing",
+      "name": "core",
+      "purl": "pkg:maven/com.google.zxing/core@3.5.3",
+      "type": "library",
+      "version": "3.5.3"
+    },
+    {
+      "bom-ref": "pkg:maven/com.journeyapps/zxing-android-embedded@4.3.0",
+      "group": "com.journeyapps",
+      "name": "zxing-android-embedded",
+      "purl": "pkg:maven/com.journeyapps/zxing-android-embedded@4.3.0",
+      "type": "library",
+      "version": "4.3.0"
+    },
+    {
+      "bom-ref": "pkg:maven/com.squareup.okhttp3/okhttp@4.12.1",
+      "group": "com.squareup.okhttp3",
+      "name": "okhttp",
+      "purl": "pkg:maven/com.squareup.okhttp3/okhttp@4.12.1",
+      "type": "library",
+      "version": "4.12.1"
+    },
+    {
+      "bom-ref": "pkg:maven/com.squareup.okio/okio-jvm@3.6.0",
+      "group": "com.squareup.okio",
+      "name": "okio-jvm",
+      "purl": "pkg:maven/com.squareup.okio/okio-jvm@3.6.0",
+      "type": "library",
+      "version": "3.6.0"
+    },
+    {
+      "bom-ref": "pkg:maven/com.squareup.okio/okio@3.6.0",
+      "group": "com.squareup.okio",
+      "name": "okio",
+      "purl": "pkg:maven/com.squareup.okio/okio@3.6.0",
+      "type": "library",
+      "version": "3.6.0"
+    },
+    {
+      "bom-ref": "pkg:maven/org.jetbrains.kotlin/kotlin-stdlib-common@1.9.10",
+      "group": "org.jetbrains.kotlin",
+      "name": "kotlin-stdlib-common",
+      "purl": "pkg:maven/org.jetbrains.kotlin/kotlin-stdlib-common@1.9.10",
+      "type": "library",
+      "version": "1.9.10"
+    },
+    {
+      "bom-ref": "pkg:maven/org.jetbrains.kotlin/kotlin-stdlib-jdk7@1.9.10",
+      "group": "org.jetbrains.kotlin",
+      "name": "kotlin-stdlib-jdk7",
+      "purl": "pkg:maven/org.jetbrains.kotlin/kotlin-stdlib-jdk7@1.9.10",
+      "type": "library",
+      "version": "1.9.10"
+    },
+    {
+      "bom-ref": "pkg:maven/org.jetbrains.kotlin/kotlin-stdlib-jdk8@1.9.10",
+      "group": "org.jetbrains.kotlin",
+      "name": "kotlin-stdlib-jdk8",
+      "purl": "pkg:maven/org.jetbrains.kotlin/kotlin-stdlib-jdk8@1.9.10",
+      "type": "library",
+      "version": "1.9.10"
+    },
+    {
+      "bom-ref": "pkg:maven/org.jetbrains.kotlin/kotlin-stdlib@1.9.10",
+      "group": "org.jetbrains.kotlin",
+      "name": "kotlin-stdlib",
+      "purl": "pkg:maven/org.jetbrains.kotlin/kotlin-stdlib@1.9.10",
+      "type": "library",
+      "version": "1.9.10"
+    },
+    {
+      "bom-ref": "pkg:maven/org.jetbrains/annotations@13.0",
+      "group": "org.jetbrains",
+      "name": "annotations",
+      "purl": "pkg:maven/org.jetbrains/annotations@13.0",
+      "type": "library",
+      "version": "13.0"
+    }
+  ],
+  "metadata": {
+    "component": {
+      "name": "VeyPanel-Android-debug",
+      "type": "application"
+    }
+  },
+  "specVersion": "1.5",
+  "version": 1
+}

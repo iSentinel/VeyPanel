@@ -14,7 +14,10 @@ jobs:
         with:
           python-version: '3.12'
       - name: Dependency inventory fixtures
-        run: python -m unittest discover -s scripts -p test_dependency_inventory.py -v
+        run: |
+          python -m unittest discover -s scripts -p test_dependency_inventory.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s scripts -p test_check_dependency_baseline.py -v
       - name: Check dashboard JavaScript syntax
         run: |
           node --check src/VeyPanel.Host/wwwroot/app.js
@@ -25,6 +28,8 @@ jobs:
       - run: dotnet publish src/VeyPanel.Host -c Release -r win-x64 --self-contained true -o publish
       - name: Record restored Windows Host package inventory
         run: python scripts/dependency_inventory.py nuget src/VeyPanel.Host/obj/project.assets.json publish/runtime-components.cdx.json --label VeyPanel-Host-win-x64
+      - name: Reject unreviewed Windows Host dependency drift
+        run: python scripts/check_dependency_baseline.py third-party/baselines/host-win-x64.cdx.json publish/runtime-components.cdx.json
       - name: Test storage provider diagnostic fixtures
         shell: pwsh
         run: ./scripts/Test-StorageHealth.ps1
