@@ -1,9 +1,9 @@
 name: Android CI
 on:
   push:
-    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json']
+    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json', 'scripts/check_gradle_verification.py', 'scripts/test_check_gradle_verification.py']
   pull_request:
-    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json']
+    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json', 'scripts/check_gradle_verification.py', 'scripts/test_check_gradle_verification.py']
   workflow_dispatch:
 permissions:
   contents: read
@@ -42,19 +42,18 @@ jobs:
           test -x "$ANDROID_HOME/build-tools/35.0.0/aapt2"
           test -x "$ANDROID_HOME/build-tools/35.0.0/apksigner"
           test -x "$ANDROID_HOME/build-tools/35.0.0/aapt"
-      - name: Generate candidate Gradle SHA-256 verification metadata (not for merge)
+      - name: Verify committed Gradle checksum metadata policy
+        run: |
+          python3 -m unittest discover -s scripts -p test_check_gradle_verification.py -v
+          python3 scripts/check_gradle_verification.py android/gradle/verification-metadata.xml third-party/baselines/android-debug.cdx.json
+      - name: Build debug APK and lint with strict dependency verification
         working-directory: android
-        run: gradle --no-daemon --write-verification-metadata sha256 :app:assembleDebug :app:assembleDebugAndroidTest :app:lintDebug :app:writeDebugDependencyInventory
-      - uses: actions/upload-artifact@v4
-        with:
-          name: gradle-verification-metadata-candidate
-          path: android/gradle/verification-metadata.xml
-          if-no-files-found: error
+        run: gradle --no-daemon --dependency-verification strict :app:assembleDebug :app:assembleDebugAndroidTest :app:lintDebug :app:writeDebugDependencyInventory
       - name: Confirm Gradle can reproduce the committed runtime lock
         working-directory: android
         run: |
-          gradle --no-daemon :app:writeDebugDependencyInventory --write-locks
-          git diff --exit-code -- app/gradle.lockfile
+          gradle --no-daemon --dependency-verification strict :app:writeDebugDependencyInventory --write-locks
+          git diff --exit-code -- app/gradle.lockfile gradle/verification-metadata.xml
       - name: Record resolved Android runtime component inventory
         run: python3 scripts/dependency_inventory.py maven android/app/build/reports/dependencies/debug-runtime.json android/app/build/outputs/apk/debug/runtime-components.cdx.json --label VeyPanel-Android-debug
       - name: Reject unreviewed Android dependency drift

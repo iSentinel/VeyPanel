@@ -41,7 +41,7 @@ jobs:
           python3 -m py_compile android/tests/transport_fixture.py
       - name: Build isolated test packages
         working-directory: android
-        run: gradle --no-daemon :app:assembleDebug :app:assembleDebugAndroidTest
+        run: gradle --no-daemon --dependency-verification strict :app:assembleDebug :app:assembleDebugAndroidTest
       - name: Execute AndroidKeyStore, QR, history and local TLS transport smoke
         uses: ReactiveCircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.38.0
         with:
