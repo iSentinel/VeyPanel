@@ -35,3 +35,12 @@ measured, including frame loss, latency, rotation, battery and thermals.
 
 The Activity uses Android FLAG_SECURE, so a screenshot may be unavailable;
 transcribe the decoder report instead. Do not share pairing tokens or QR links.
+
+## Alpha.16 decoder self-test (candidate)
+
+Once alpha.16 CI produces an approved debug APK, open VeyPanel on Lenovo and
+press **Run local AVC decode test**. Record the full codec name, whether Android
+reports hardware acceleration, actual decoded buffer count and elapsed time.
+This test uses only the bundled original two-frame clip; it does not establish
+60 FPS performance or Windows streaming. The UI is protected by FLAG_SECURE;
+transcribe displayed results rather than disabling screen security.

@@ -57,7 +57,7 @@
 - [x] Add isolated actual native HTTPS/WSS transport fixture with ephemeral IP-SAN TLS, denial and manual REST-after-close checks ([corrected runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45090572041); not Windows Host or Activity end-to-end).
 - [x] Confirm actual Android Keystore, synthetic QR and extended telemetry instrumentation with strict final result gate ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45083538875)).
 - [ ] 0.5: Android QR camera acceptance, native WSS transport acceptance and native video.
-- [ ] Verify original 64x64 two-frame AVC via Android MediaCodec in emulator; CI and physical hardware decode acceptance pending.
+- [x] Verify original 64x64 two-frame AVC via Android MediaCodec in emulator ([Android Build PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45154163226), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45154152887); PR #8 merged as c97d3d8). Physical hardware decode acceptance pending.
 - [ ] Add read-only Android AVC/HEVC/AV1 decoder capability inventory; CI and physical tablet evidence pending (survey is not decoding acceptance).
 - [x] Implement adaptive 1/2/3-column native monitor, collapsible controls, memory/IOPS, network/volumes and age-gated thermal/storage health details ([CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45081976468); visual tablet acceptance pending).
 - [ ] 0.6: Display / Monitor / Hybrid modes; touchscreen coordinates and orientation.
@@ -74,3 +74,5 @@
 - [ ] 1.0: physical device acceptance and stable release.
 - [x] Add isolated cancellable Android bounded WSS stream with platform TLS and pre-read limits; validate against synthetic valid, malformed, stalled and revoked flows ([Android Build PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45150815811), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45150808675); PR #6 merged as deb7982). Not selected in production MainActivity.
 - [x] Add read-only Android AVC/HEVC/AV1 decoder inventory and guarded local UI ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45151764750), [emulator runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45151759925); PR #7 merged as 65338d8). Declared capabilities do not establish hardware decoding.
+
+- [ ] Android alpha.16 owner-accessible AVC decoder self-test using original bundled clip, hardware classification and two-run emulator regression; CI and physical Lenovo acceptance pending.

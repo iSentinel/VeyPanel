@@ -41,13 +41,13 @@ public final class StoreInstrumentation extends Instrumentation {
             results.append("PASS: Android Host history codec fixture\n");
             stage = "Activity UI";
             ActivitySmoke.run(this);
-            results.append("PASS: Android Activity diagnostics visibility and disconnected history gate\n");
+            results.append("PASS: Android Activity diagnostics, disconnected history and local AVC button\n");
             stage = "Android video decoder inventory";
             VideoDecoderSmoke.run();
             results.append("PASS: read-only Android video decoder API survey (no hardware guarantee)\n");
             stage = "Synthetic AVC decoding";
-            VideoDecodeSmoke.run(getContext());
-            results.append("PASS: Android MediaCodec decoded synthetic 64x64 AVC fixture (emulator only)\n");
+            VideoDecodeSmoke.run(getTargetContext());
+            results.append("PASS: Android local AVC self-test decodes original clip twice (emulator only)\n");
             stage = "HTTPS/WSS transport";
             if (fixtureCa != null) {
                 TransportSmoke transport = new TransportSmoke(fixtureCa);
