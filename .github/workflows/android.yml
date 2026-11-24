@@ -42,9 +42,14 @@ jobs:
           test -x "$ANDROID_HOME/build-tools/35.0.0/aapt2"
           test -x "$ANDROID_HOME/build-tools/35.0.0/apksigner"
           test -x "$ANDROID_HOME/build-tools/35.0.0/aapt"
-      - name: Build debug APK and lint
+      - name: Generate candidate Gradle SHA-256 verification metadata (not for merge)
         working-directory: android
-        run: gradle --no-daemon :app:assembleDebug :app:assembleDebugAndroidTest :app:lintDebug :app:writeDebugDependencyInventory
+        run: gradle --no-daemon --write-verification-metadata sha256 :app:assembleDebug :app:assembleDebugAndroidTest :app:lintDebug :app:writeDebugDependencyInventory
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gradle-verification-metadata-candidate
+          path: android/gradle/verification-metadata.xml
+          if-no-files-found: error
       - name: Confirm Gradle can reproduce the committed runtime lock
         working-directory: android
         run: |
