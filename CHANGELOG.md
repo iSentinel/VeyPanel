@@ -1,6 +1,6 @@
 # Changelog
 
-## Gradle dependency artifact verification (CI pending)
+## Gradle dependency artifact verification (CI and runtime PASS)
 
 - Commit matching CI-generated SHA-256 metadata, require strict Gradle verification and test intentional checksum mismatch. Upstream provenance review remains separate.
 

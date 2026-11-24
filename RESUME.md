@@ -218,3 +218,8 @@
 - PR #23 captures from Android runs 45370100108 and 45370108991 are byte-identical (metadata SHA-256 895024f250298a8b6be73c214f50546e442a9fb7d2d8440e09a5eaa2520f26c0); 395 SHA-256 artifact records, all ten runtime component coordinates covered, no trust exemptions.
 - Strict mode replaces temporary metadata generation in Android CI and runtime workflow. Five offline policy fixtures pass. A Gradle negative test changes only the expected ZXing core JAR checksum temporarily, requires the correct artifact verification failure, restores metadata and verifies no Git diff.
 - Combined CI pending. The capture is trust-on-first-use, not independent upstream attestation or complete production SBOM.
+
+## Verified Gradle SHA-256 verification (2026-11-24)
+- PR #23 head 6fd97f1; Android CI 45371001724, Windows CI 45371001725/45370988170 and exact-head Android runtime 45371079169 PASS; merged as 690f679.
+- 395 matching CI-captured artifact hashes committed, strict Gradle verification enabled in ordinary Android build and runtime. Actual incorrect ZXing core digest rejected in CI; metadata restored. Local Python fixtures 35/35 PASS. This is trust-on-first-use, not upstream publisher attestation.
+- Next: pin observed SDK/JDK/Gradle versions and publish toolchain evidence; complete release signing, transitive license audit and physical hardware gates remain open.
