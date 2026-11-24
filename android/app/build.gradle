@@ -30,3 +30,22 @@ dependencies {
         version { strictly '4.12.1' }
     }
 }
+
+// Record the actual selected runtime graph without changing dependency resolution.
+tasks.register('writeDebugDependencyInventory') {
+    doLast {
+        def result = configurations.debugRuntimeClasspath.incoming.resolutionResult
+        def unresolved = result.allDependencies.findAll {
+            it instanceof org.gradle.api.artifacts.result.UnresolvedDependencyResult
+        }
+        if (!unresolved.empty) throw new GradleException('Unresolved runtime dependencies')
+        def modules = result.allComponents.collect { it.id }.findAll {
+            it instanceof org.gradle.api.artifacts.component.ModuleComponentIdentifier
+        }.collect { [group: it.group, name: it.module, version: it.version] }
+        modules.sort { a, b -> (a.group + ':' + a.name) <=> (b.group + ':' + b.name) }
+        def output = layout.buildDirectory.file('reports/dependencies/debug-runtime.json').get().asFile
+        output.parentFile.mkdirs()
+        output.text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(modules)) + '\n'
+        if (modules.empty) throw new GradleException('Runtime inventory is empty')
+    }
+}

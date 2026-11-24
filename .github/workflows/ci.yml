@@ -10,6 +10,11 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Dependency inventory fixtures
+        run: python -m unittest discover -s scripts -p test_dependency_inventory.py -v
       - name: Check dashboard JavaScript syntax
         run: |
           node --check src/VeyPanel.Host/wwwroot/app.js
@@ -18,6 +23,8 @@ jobs:
       - run: dotnet build src/VeyPanel.Host -c Release
       - run: dotnet run --project tests/VeyPanel.Smoke -c Release
       - run: dotnet publish src/VeyPanel.Host -c Release -r win-x64 --self-contained true -o publish
+      - name: Record restored Windows Host package inventory
+        run: python scripts/dependency_inventory.py nuget src/VeyPanel.Host/obj/project.assets.json publish/runtime-components.cdx.json --label VeyPanel-Host-win-x64
       - name: Test storage provider diagnostic fixtures
         shell: pwsh
         run: ./scripts/Test-StorageHealth.ps1

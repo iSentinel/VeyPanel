@@ -1,9 +1,9 @@
 name: Android CI
 on:
   push:
-    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py']
+    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py']
   pull_request:
-    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py']
+    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py']
   workflow_dispatch:
 permissions:
   contents: read
@@ -24,6 +24,8 @@ jobs:
           java -cp /tmp/veypanel-client-tests com.veypanel.client.ClientPolicySmoke
       - name: Verify offline APK integrity policy fixtures
         run: python3 -m unittest discover -s scripts -p 'test_*android*.py' -v
+      - name: Dependency inventory fixtures
+        run: python3 -m unittest discover -s scripts -p test_dependency_inventory.py -v
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
@@ -40,7 +42,9 @@ jobs:
           test -x "$ANDROID_HOME/build-tools/35.0.0/aapt"
       - name: Build debug APK and lint
         working-directory: android
-        run: gradle --no-daemon :app:assembleDebug :app:assembleDebugAndroidTest :app:lintDebug
+        run: gradle --no-daemon :app:assembleDebug :app:assembleDebugAndroidTest :app:lintDebug :app:writeDebugDependencyInventory
+      - name: Record resolved Android runtime component inventory
+        run: python3 scripts/dependency_inventory.py maven android/app/build/reports/dependencies/debug-runtime.json android/app/build/outputs/apk/debug/runtime-components.cdx.json --label VeyPanel-Android-debug
       - name: Verify built APK structure and debug signing
         run: |
           python3 scripts/verify_android_apk.py android/app/build/outputs/apk/debug/app-debug.apk | tee android/app/build/outputs/apk/debug/apk-integrity.txt
@@ -56,6 +60,7 @@ jobs:
             android/app/build/outputs/apk/debug/apk-signing.txt
             android/app/build/outputs/apk/debug/apk-badging.txt
             android/app/build/outputs/apk/debug/apk-identity.txt
+            android/app/build/outputs/apk/debug/runtime-components.cdx.json
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:
