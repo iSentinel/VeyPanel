@@ -25,8 +25,9 @@ final class ActivitySmoke {
                 TextView diagnostics = find(root, "Connection diagnostics", false);
                 TextView history = find(root, "Refresh Host history", true);
                 TextView codecs = find(root, "Inspect video decoders", true);
+                TextView local = find(root, "Run local AVC decode test", true);
                 if (toggle == null || diagnostics == null || history == null
-                    || diagnostics.getVisibility() != View.GONE || history.isEnabled() || codecs == null) return;
+                    || diagnostics.getVisibility() != View.GONE || history.isEnabled() || codecs == null || local == null) return;
                 toggle.performClick();
                 boolean visible = diagnostics.getVisibility() == View.VISIBLE
                     && diagnostics.getText().toString().contains("IDLE");
