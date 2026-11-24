@@ -12,6 +12,7 @@ import tempfile
 import zipfile
 
 from artifact_manifest import MANIFEST, collect, compare, hash_file
+from portable_zip import MAX_MANIFEST
 from stage_windows_package import stage
 
 STATE = "selection.json"
@@ -91,6 +92,8 @@ def verify_record(root, record):
     plain(path, directory=True)
     manifest = path / MANIFEST
     plain(manifest)
+    if manifest.stat().st_size > MAX_MANIFEST:
+        raise ValueError("Selected manifest exceeds size budget")
     if hash_file(manifest) != record["manifest_sha256"]:
         raise ValueError("Selected manifest digest mismatch")
     if any(compare(json.loads(manifest.read_bytes()), collect(path)).values()):

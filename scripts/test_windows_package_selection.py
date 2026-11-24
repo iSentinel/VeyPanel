@@ -83,6 +83,20 @@ class SelectionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "already exists"):
             select(self.root, *self.b, True)
 
+    def test_first_commit_failure_requires_inspection(self):
+        with patch("windows_package_selection.os.replace", side_effect=OSError("fixture")):
+            with self.assertRaises(OSError):
+                select(self.root, *self.a, True)
+        self.assertFalse((self.root / STATE).exists())
+        with self.assertRaisesRegex(ValueError, "Unreferenced versions"):
+            status(self.root)
+
+    def test_idempotent_wrong_archive(self):
+        first = select(self.root, *self.a, True)
+        with self.assertRaisesRegex(ValueError, "SHA-256 mismatch"):
+            select(self.root, self.b[0], self.a[1], True)
+        self.assertEqual(status(self.root), first)
+
     def test_tampered_previous_refused(self):
         select(self.root, *self.a, True)
         second = select(self.root, *self.b, True)
