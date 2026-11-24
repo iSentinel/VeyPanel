@@ -86,4 +86,4 @@
 
 - [x] Android alpha.18 local AVC preview touch diagnostics (single pointer, fail-closed, no network/injection) ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45331898798), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45331893810); PR #15 merged). Physical Lenovo touch acceptance still pending.
 
-- [ ] 0.9: Verify each Android debug APK ZIP structure/CRC/SHA256 and Android APK signature in CI; self-tests and Android CI pending. Debug signing does not satisfy production release signing.
+- [x] 0.9: Verify Android debug APK ZIP/CRC/SHA256 and APK signature with artifact reports ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45332888028), [Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45332888086), PR #16 merged). Debug signing is not production release signing.

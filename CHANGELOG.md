@@ -1,6 +1,6 @@
 # Changelog
 
-## Android APK integrity preflight (CI pending)
+## Android APK integrity preflight (CI PASS; debug signing only)
 
 - Validate debug APK ZIP and Android signing in CI, retain SHA256 and signature reports with artifact. No production signing claim.
 

@@ -153,3 +153,7 @@
 - Introduced offline stdlib verify_android_apk.py: bounded ZIP file/entry counts, no traversal/duplicates/encryption/symlinks, required Android manifest/DEX/resources, CRC and SHA256. Six fixtures PASS locally; earlier saved debug APK also PASS (not a signature guarantee).
 - Android CI now runs verifier tests, validates built APK and requires apksigner verification, publishing text evidence beside debug APK. No release signing or physical device install attempted. CI pending.
 - Added explicit Android CI path triggers for both APK verifier scripts and negative fixtures for Windows-style and double-slash archive paths. Runtime still unchanged.\n
+## Verified Android APK artifact gate (2026-11-24)
+- PR #16 head 249d3fb: Android CI 45332888028/45332880903 PASS; Windows CI 45332888086/45332880902 PASS; merged as 2e30498.
+- Offline verifier policy includes eight positive/negative fixtures and bounded ZIP/CRC/SHA256. CI requires Android apksigner verification (debug APK v2 signature, one signer), publishes apk-integrity.txt and apk-signing.txt with app-debug.apk. Artifact 14893015165 from 45332888028.
+- This is not trusted release signing, physical install, actual Lenovo decode or reproducible release acceptance. Next release preflight: compare APK manifest package, min/target SDK, version and permissions to reviewed Gradle configuration.

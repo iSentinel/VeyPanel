@@ -1,6 +1,6 @@
 # Android APK artifact integrity preflight
 
-Status: CI gate and local fixture tests. The APK remains a **debug-signed**
+Status: Android CI 45332888028 PASS; Windows CI 45332888086 PASS. The APK remains a **debug-signed**
 development artifact, not a production release or an authorized device install.
 
 Each Android CI build must:
@@ -30,3 +30,9 @@ Download an artifact from the exact GitHub CI run before installation.
 Always check the expected package and origin manually, and install only on an
 owned Android device. Do not infer hardware capability or app store readiness
 from a passing archive/signature check.
+
+
+Verified debug artifact example: GitHub Actions run 45332888028,
+artifact 14893015165. It contains the APK and two text verification reports.
+The signature report demonstrates APK Signature Scheme v2 with one signer,
+which remains a development/debug signer.
