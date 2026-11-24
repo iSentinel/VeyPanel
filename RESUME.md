@@ -185,3 +185,6 @@
 - PR #19 head 5da1856, Android CI 45363577089/45363566720 PASS, Windows CI 45363577252/45363566718 PASS, Android runtime 45363566687 PASS; merged as 8a2e239.
 - Actual artifacts inspected: 10 Maven components in Android runtime; two NuGet packages in Windows Host win-x64 restore target. CycloneDX component-only inventory is not a complete release SBOM.
 - Next: enforce post-resolution component coordinate baselines copied from these successful artifacts; native lockfiles, artifact hashes, complete license and advisory review remain separate tasks.
+
+## Dependency drift gate candidate
+- Captured 10 Android and 2 Windows package URLs from actual passing PR #19 build artifacts. Eight local drift fixtures PASS; CI pending. This rejects post-resolution coordinate changes without pretending to be a native package lock.
