@@ -48,3 +48,18 @@ matched all 357 files exactly; both Host runtime smoke tests passed.
 Comparison artifact 14923894198. Ordinary Windows CI 45404301160 and
 45404314462 passed. PR #29 merged as b186b92. No production signing or
 normal publication change has been made.
+
+## Ordinary CI adoption candidate
+
+The normal Windows CI Host publish now explicitly enables
+ContinuousIntegrationBuild and applies the previously validated endpoint
+Last-Modified normalization using the recorded source commit epoch.
+The raw and normalized generated JSON and source metadata are preserved in
+a separate veypanel-host-publication-evidence artifact with its own file
+manifest. The normal Host artifact contains the normalized generated JSON,
+not the raw diagnostic copy. Existing integration tests run on that output,
+which is also bundled into Desktop. Ordinary local dotnet publish commands
+are unchanged.
+
+This is not a claim that all published evidence or signed packages are
+byte-identical across runner revisions. CI acceptance is pending.

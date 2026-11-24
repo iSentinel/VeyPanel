@@ -34,7 +34,27 @@ jobs:
           node --check src/VeyPanel.Host/wwwroot/enroll.js
       - run: dotnet build src/VeyPanel.Host -c Release
       - run: dotnet run --project tests/VeyPanel.Smoke -c Release
-      - run: dotnet publish src/VeyPanel.Host -c Release -r win-x64 --self-contained true -o publish
+      - run: dotnet publish src/VeyPanel.Host -c Release -r win-x64 --self-contained true -p:ContinuousIntegrationBuild=true -o publish
+      - name: Apply verified deterministic Host endpoint metadata
+        shell: pwsh
+        run: |
+          python -m unittest discover -s scripts -p test_normalize_static_endpoints.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          New-Item -ItemType Directory -Path publication-evidence -Force | Out-Null
+          Copy-Item publish/VeyPanel.Host.staticwebassets.endpoints.json publication-evidence/raw-static-endpoints.json
+          $source = Get-Content build-source.json -Raw | ConvertFrom-Json
+          python scripts/normalize_static_endpoints.py publish/VeyPanel.Host.staticwebassets.endpoints.json --epoch $source.source_commit_epoch_utc
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Copy-Item publish/VeyPanel.Host.staticwebassets.endpoints.json publication-evidence/normalized-static-endpoints.json
+          Copy-Item build-source.json publication-evidence/build-source.json
+          python scripts/artifact_manifest.py write publication-evidence
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/artifact_manifest.py verify publication-evidence
+      - uses: actions/upload-artifact@v4
+        with:
+          name: veypanel-host-publication-evidence
+          path: publication-evidence/
+          if-no-files-found: error
       - name: Record Windows build toolchain evidence
         shell: pwsh
         run: |
