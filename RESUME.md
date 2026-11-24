@@ -302,3 +302,6 @@
 - PR #32 head 5cfe007, reproduction 45412111245 and Windows CI 45412093869/45412111080 PASS, merged as 4a3612d.
 - Actual checkout 65f5cfc1082bc2deb4c6ef083806ec59c45ab625, tree e0df7e6d91729adcb6abea6b6aef958a8a33b2b2. Both independent experimental Desktop bundles contain 832 identical files. Downloaded inventories and comparison artifact 14928461490 confirm equality. Host smoke passed; no interactive WPF acceptance.
 - Next: portable deterministic Windows ZIP packaging with file verification and independent archive reproduction. Installer and signing remain separate.
+
+## Portable Windows ZIP candidate
+- Eight new ZIP fixtures PASS (87/87 total). Two local packages of downloaded PR #30 Desktop artifact match all 836 manifest files and exact archive SHA-256 1b2b42cea8899257b967c8ad24c631cd0b22c2bfc11a51c2b006c29182434e88. CI adds independent archive reproduction, Windows extraction and ordinary portable artifact publication. Unsigned; no installer or hardware acceptance claim.

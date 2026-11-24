@@ -111,7 +111,7 @@ jobs:
           path: src/VeyPanel.Host/packages.lock.json
           if-no-files-found: error
       - name: Publish desktop diagnostic UI
-        run: dotnet publish src/VeyPanel.Desktop -c Release -r win-x64 --self-contained true -o publish-desktop
+        run: dotnet publish src/VeyPanel.Desktop -c Release -r win-x64 --self-contained true -p:ContinuousIntegrationBuild=true -o publish-desktop
       - name: Bundle Host with Desktop
         shell: pwsh
         run: Copy-Item -Path publish -Destination publish-desktop/host -Recurse
@@ -127,3 +127,25 @@ jobs:
         with:
           name: veypanel-desktop-win-x64-alpha
           path: publish-desktop/
+
+      - name: Package and verify unsigned portable Desktop ZIP
+        shell: pwsh
+        run: |
+          python -m unittest discover -s scripts -p test_portable_zip.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          New-Item -ItemType Directory -Path portable | Out-Null
+          python scripts/artifact_manifest.py verify publish-desktop/host
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/portable_zip.py write publish-desktop portable/VeyPanel-win-x64-portable.zip
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $digest = (Get-FileHash portable/VeyPanel-win-x64-portable.zip -Algorithm SHA256).Hash.ToLowerInvariant()
+          Set-Content -Path portable/SHA256SUMS.txt -Encoding ascii -Value "$digest  VeyPanel-win-x64-portable.zip"
+          Expand-Archive -LiteralPath portable/VeyPanel-win-x64-portable.zip -DestinationPath extracted
+          python scripts/artifact_manifest.py verify extracted
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/artifact_manifest.py verify extracted/host
+      - uses: actions/upload-artifact@v4
+        with:
+          name: veypanel-win-x64-portable-unsigned
+          path: portable/
+          if-no-files-found: error
