@@ -286,3 +286,6 @@
 - PR #30 head 64784fe; Android CI 45404957532/45404941001, Windows CI 45404957357/45404941193 PASS; merged as 138695e.
 - Downloaded Android, Host and Desktop artifacts independently verified. All record actual checkout 7c4d5a67940fbbc97144500b0d72d334dd93d3de and tree c8df57d8256d3b2c2afa87f0e411b4dcac632fef. No signed attestation claim.
 - Next: adopt tested CI deterministic Host publish settings, keep raw static endpoint evidence separate, validate actual ordinary publication and its integration tests.
+
+## Deterministic Host ordinary publication candidate
+- Apply prior verified experimental settings to ordinary Windows Host CI publish. Preserve raw and normalized endpoint JSON with checkout evidence in a separate manifest-protected artifact. Existing Host integrations and Desktop bundling exercise normalized output. CI pending; no local installer, Desktop reproduction, or signing claim.
