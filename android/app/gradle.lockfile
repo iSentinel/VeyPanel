@@ -1,0 +1,14 @@
+# This is a Gradle generated file for dependency locking.
+# Manual edits can break the build and are not advised.
+# This file is expected to be part of source control.
+com.google.zxing:core:3.5.3=debugRuntimeClasspath
+com.journeyapps:zxing-android-embedded:4.3.0=debugRuntimeClasspath
+com.squareup.okhttp3:okhttp:4.12.1=debugRuntimeClasspath
+com.squareup.okio:okio-jvm:3.6.0=debugRuntimeClasspath
+com.squareup.okio:okio:3.6.0=debugRuntimeClasspath
+org.jetbrains.kotlin:kotlin-stdlib-common:1.9.10=debugRuntimeClasspath
+org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.10=debugRuntimeClasspath
+org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.10=debugRuntimeClasspath
+org.jetbrains.kotlin:kotlin-stdlib:1.9.10=debugRuntimeClasspath
+org.jetbrains:annotations:13.0=debugRuntimeClasspath
+empty=

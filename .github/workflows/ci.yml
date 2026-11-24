@@ -26,6 +26,8 @@ jobs:
       - run: dotnet build src/VeyPanel.Host -c Release
       - run: dotnet run --project tests/VeyPanel.Smoke -c Release
       - run: dotnet publish src/VeyPanel.Host -c Release -r win-x64 --self-contained true -o publish
+      - name: Capture native NuGet lockfile for review (not enforced yet)
+        run: dotnet restore src/VeyPanel.Host -r win-x64 --use-lock-file
       - name: Record restored Windows Host package inventory
         run: python scripts/dependency_inventory.py nuget src/VeyPanel.Host/obj/project.assets.json publish/runtime-components.cdx.json --label VeyPanel-Host-win-x64
       - name: Reject unreviewed Windows Host dependency drift
@@ -50,6 +52,11 @@ jobs:
         with:
           name: veypanel-host-win-x64-alpha
           path: publish/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: veypanel-host-nuget-lock-candidate
+          path: src/VeyPanel.Host/packages.lock.json
+          if-no-files-found: error
       - name: Publish desktop diagnostic UI
         run: dotnet publish src/VeyPanel.Desktop -c Release -r win-x64 --self-contained true -o publish-desktop
       - name: Bundle Host with Desktop
