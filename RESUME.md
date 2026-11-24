@@ -259,3 +259,6 @@
 - Downloaded Android/Host/Desktop artifacts independently verified all 8/360/834 files against published SHA-256 manifests. All 1202 file entries match.
 - Follow-up inspection of PR #25 APKs: 1027 different raw bytes, all within identical-sized APK signing blocks [1782490,1786586); all bytes outside match. This does not verify signer identity or establish byte-identical APKs.
 - Prior comparison used PR and push workflow headSha; Windows PR checkout log identifies synthetic merge abd2c66, so exact source commit equality is not established. Static web assets Last-Modified varies between runs. Next: explicit checkout SHA/tree evidence and independent same-checkout Windows reproduction; separate APK signing block comparison.
+
+## APK exact-checkout reproduction candidate
+- Six structural comparator fixtures PASS. Actual PR #25 APKs match exactly outside validated signing blocks (not signature authentication). New isolated two-runner Android workflow explicitly checks out the same github.sha, verifies both APK signatures and compares checkout SHA/tree and outside-block bytes; CI pending.

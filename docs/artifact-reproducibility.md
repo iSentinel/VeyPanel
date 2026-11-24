@@ -47,3 +47,19 @@ Further inspection found 1027 different APK bytes, all within the identical
 4096-byte APK signing blocks at offsets [1782490,1786586). Bytes outside
 the blocks matched exactly. Signature validity is a separate apksigner gate.
 Windows static asset endpoint differences include Last-Modified timestamps.
+
+## Exact-checkout Android experiment (candidate)
+
+The dedicated Android reproduction workflow builds two clean debug APKs on
+separate runners, with Gradle build/cache reuse disabled and strict dependency
+verification. Both jobs check out the exact workflow SHA, record the actual
+commit and tree, and require Android SDK apksigner verification. The comparison
+checks those checkout records and then requires exact bytes outside the
+validated APK v2 signing blocks, including ZIP headers and central directory.
+The signing block boundaries must be equal. It reports full APK equality
+separately and does not claim that the comparison validates a signature.
+
+    python3 scripts/compare_apk_payload.py first/app-debug.apk second/app-debug.apk
+
+Six synthetic structural fixtures and the actual PR #25 pair pass locally.
+A reproducible debug payload is not a reproducible signed release APK.

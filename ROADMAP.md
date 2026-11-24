@@ -110,3 +110,5 @@
 - [x] 0.9: Publish scoped OSV advisory snapshots for reviewed Android/Host runtime coordinates ([OSV CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45378191048), [Android PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45378182940), [Windows PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45378191025); PR #26 merged). Initial 12-package snapshot returned zero matches; full security audit remains open.
 
 - [x] 0.9: Publish and verify exact SHA-256 file manifests for Android, Host and Desktop artifacts ([Android CI](https://github.com/iSentinel/VeyPanel/actions/runs/45378711150), [Windows CI](https://github.com/iSentinel/VeyPanel/actions/runs/45378711008) PASS; PR #27 merged). Downloaded artifacts verified independently: 8/360/834 files. Exact-checkout reproducibility remains pending.
+
+- [ ] 0.9: Verify Android exact-checkout reproduction on independent CI runners, requiring valid debug signatures and exact APK bytes outside validated same-size signing blocks. Full signed APK equality remains separate.
