@@ -35,8 +35,8 @@ jobs:
           New-Item -ItemType Directory evidence | Out-Null
           $sha = (git rev-parse HEAD).Trim()
           if ($sha -ne $env:GITHUB_SHA) { throw 'Checkout mismatch' }
-          @($sha, (git rev-parse 'HEAD^{tree}').Trim()) |
-            Set-Content -Encoding utf8 evidence/checkout.txt
+          $tree = (git rev-parse 'HEAD^{tree}').Trim()
+          Set-Content -Path evidence/checkout.txt -Encoding utf8 -NoNewline -Value ($sha + "`n" + $tree + "`n")
           if ((dotnet --version).Trim() -ne '10.0.404') { throw 'SDK mismatch' }
       - name: Locked deterministic Host publish
         run: |
