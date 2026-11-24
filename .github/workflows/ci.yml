@@ -66,6 +66,13 @@ jobs:
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --persistent-smoke publish
       - name: Test managed Host lifecycle
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --lifecycle-smoke publish
+      - name: Verify published Host artifact file manifest
+        run: |
+          python -m unittest discover -s scripts -p test_artifact_manifest.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/artifact_manifest.py write publish
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/artifact_manifest.py verify publish
       - uses: actions/upload-artifact@v4
         with:
           name: veypanel-host-win-x64-alpha
@@ -80,6 +87,11 @@ jobs:
       - name: Bundle Host with Desktop
         shell: pwsh
         run: Copy-Item -Path publish -Destination publish-desktop/host -Recurse
+      - name: Verify published Desktop artifact file manifest
+        run: |
+          python scripts/artifact_manifest.py write publish-desktop
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/artifact_manifest.py verify publish-desktop
       - uses: actions/upload-artifact@v4
         with:
           name: veypanel-desktop-win-x64-alpha

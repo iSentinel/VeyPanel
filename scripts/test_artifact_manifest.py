@@ -44,6 +44,26 @@ class ManifestTests(unittest.TestCase):
             self.assertFalse(safe_entry(name))
         self.assertTrue(safe_entry("a/binary.dll"))
 
+    def test_removed(self):
+        before = collect(self.root)
+        (self.root / "extra.txt").write_text("keep")
+        after = collect(self.root)
+        (self.root / "binary.dll").unlink()
+        self.assertEqual(compare(after, collect(self.root))["removed"], ["binary.dll"])
+        self.assertEqual(len(before["files"]), 1)
+
+    def test_malformed_manifest(self):
+        before = collect(self.root)
+        bad = collect(self.root)
+        bad["files"][0]["sha256"] = "invalid"
+        with self.assertRaisesRegex(ValueError, "Invalid"):
+            compare(before, bad)
+
+    def test_hidden_file(self):
+        (self.root / ".hidden").write_text("not uploaded")
+        with self.assertRaisesRegex(ValueError, "Unsafe"):
+            collect(self.root)
+
     def test_symlink(self):
         try:
             (self.root / "link").symlink_to(self.root / "binary.dll")

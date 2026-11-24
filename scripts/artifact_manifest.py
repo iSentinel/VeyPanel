@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import stat
 import sys
@@ -25,14 +26,16 @@ def hash_file(path):
 
 def safe_entry(path):
     """Refuse ambiguous cross-platform paths, links and control characters."""
-    return all(part not in ("", ".", "..") and not part.endswith((".", " "))
+    return all(part not in ("", ".", "..") and not part.startswith(".")
+               and not part.endswith((".", " "))
                and not any(ord(char) < 32 or char in '\\:*?"<>|' for char in part)
                for part in path.split("/"))
 
 
 def collect(root):
     """Inventory regular files only; do not follow symlinks/reparse points."""
-    if not root.is_dir() or root.is_symlink():
+    if (not root.is_dir() or root.is_symlink()
+            or getattr(root.lstat(), "st_file_attributes", 0) & 0x400):
         raise ValueError("Expected regular artifact directory")
     rows, names, total = [], set(), 0
     for directory, dirs, files in os.walk(root, followlinks=False):
@@ -66,16 +69,33 @@ def collect(root):
             "files": sorted(rows, key=lambda row: row["path"])}
 
 
+def entries(manifest):
+    """Validate a manifest before accepting or comparing its declarations."""
+    if manifest.get("schema") != 1 or manifest.get("algorithm") != "SHA-256":
+        raise ValueError("Unknown manifest schema or hash algorithm")
+    rows = manifest["files"]
+    if not isinstance(rows, list) or not 0 < len(rows) <= MAX_FILES:
+        raise ValueError("Empty or excessive manifest entries")
+    result, names = {}, set()
+    total = 0
+    for row in rows:
+        path, size, digest = row["path"], row["bytes"], row["sha256"]
+        if (not isinstance(path, str) or not safe_entry(path)
+                or path == MANIFEST or path.casefold() in names
+                or type(size) is not int or size < 0
+                or not isinstance(digest, str) or not re.fullmatch("[0-9a-f]{64}", digest)):
+            raise ValueError("Invalid or duplicate manifest entry")
+        names.add(path.casefold())
+        total += size
+        if total > MAX_BYTES:
+            raise ValueError("Manifest exceeds byte budget")
+        result[path] = row
+    return result
+
+
 def compare(first, second):
     """Compare exact file membership, sizes and hashes."""
-    if first.get("schema") != 1 or second.get("schema") != 1:
-        raise ValueError("Unknown manifest schema")
-    if first.get("algorithm") != "SHA-256" or second.get("algorithm") != "SHA-256":
-        raise ValueError("Unknown hash algorithm")
-    a = {row["path"]: row for row in first["files"]}
-    b = {row["path"]: row for row in second["files"]}
-    if not a or not b or len(a) != len(first["files"]) or len(b) != len(second["files"]):
-        raise ValueError("Empty or duplicate manifest entries")
+    a, b = entries(first), entries(second)
     return {"added": sorted(b.keys() - a.keys()),
             "removed": sorted(a.keys() - b.keys()),
             "changed": sorted(key for key in a.keys() & b.keys() if a[key] != b[key])}
