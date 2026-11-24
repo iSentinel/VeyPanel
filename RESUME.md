@@ -125,3 +125,8 @@
 ## Android AVC Surface-output stage (CI pending)
 - Isolated Android instrumentation creates a local SurfaceTexture/Surface, configures a MediaCodec AVC decoder against the original bundled two-frame clip, waits for at least one Surface frame-available callback and verifies clean EOS/resource disposal. CI/runtime pending. No main app video renderer or Windows streaming enabled.
 - Surface smoke uses API26 detached SurfaceTexture(false) rather than texture name 0; Android SDK API reference confirms no initial GL attachment is required. CI pending.
+
+## Verified Android Surface-output smoke (2026-11-24)
+- PR #13 head 8206814: Windows CI 45329953682/45329948364, Android build 45329953560/45329948294, Android runtime 45329948361 PASS. Merged as 6034990.
+- Test-only MediaCodec decodes local AVC clip into detached SurfaceTexture and verifies frame-available callback and EOS. No production SurfaceView, Windows desktop stream or physical Lenovo hardware test yet.
+- Next: owner-visible local preview with lifecycle cancellation, then physical tablet/Intel Quick Sync and Apollo pairing acceptance.

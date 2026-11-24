@@ -1,6 +1,6 @@
 # Changelog
 
-## Local Android AVC Surface-output smoke (CI pending)
+## Local Android AVC Surface-output smoke (Android emulator runtime PASS)
 
 - Add Android test-only MediaCodec-to-Surface frame-available fixture. No new video stream or display changes.
 

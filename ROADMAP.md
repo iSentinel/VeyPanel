@@ -80,4 +80,4 @@
 
 - [x] Add session/target-identity/freshness gate before any future touch injection ([Windows CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45329353667), PR #12 merged). No real input forwarded.
 
-- [ ] Android Surface-output AVC instrumentation using original local clip and frame-available callback; emulator CI pending, physical rendering unverified.
+- [x] Android Surface-output AVC instrumentation with original local clip and frame-available callback ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45329953560), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45329948361); PR #13 merged as 6034990). Actual tablet display/hardware acceptance pending.
