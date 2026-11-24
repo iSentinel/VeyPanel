@@ -259,3 +259,6 @@
 - Downloaded Android/Host/Desktop artifacts independently verified all 8/360/834 files against published SHA-256 manifests. All 1202 file entries match.
 - Follow-up inspection of PR #25 APKs: 1027 different raw bytes, all within identical-sized APK signing blocks [1782490,1786586); all bytes outside match. This does not verify signer identity or establish byte-identical APKs.
 - Prior comparison used PR and push workflow headSha; Windows PR checkout log identifies synthetic merge abd2c66, so exact source commit equality is not established. Static web assets Last-Modified varies between runs. Next: explicit checkout SHA/tree evidence and independent same-checkout Windows reproduction; separate APK signing block comparison.
+
+## Windows exact-checkout reproduction candidate
+- Prior static asset JSON differs only in 50 Last-Modified values; diagnostic normalization produces identical JSON, six local fixtures PASS. New dedicated Windows CI builds identical checkout twice with locked packages and pinned SDK, captures raw and normalized inventories, smoke tests normalized output, and compares all normalized files without excluding binaries. Ordinary Windows CI unchanged. CI pending.
