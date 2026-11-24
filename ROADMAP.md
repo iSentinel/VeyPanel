@@ -85,3 +85,5 @@
 - [x] Android alpha.17 on-device TextureView AVC preview from original local clip, gated on actual decoded output and TextureView callback ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45331269259), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45331261314); PR #14 merged). Physical Lenovo and Windows streaming acceptance pending.
 
 - [x] Android alpha.18 local AVC preview touch diagnostics (single pointer, fail-closed, no network/injection) ([Android CI PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45331898798), [runtime PASS](https://github.com/iSentinel/VeyPanel/actions/runs/45331893810); PR #15 merged). Physical Lenovo touch acceptance still pending.
+
+- [ ] 0.9: Verify each Android debug APK ZIP structure/CRC/SHA256 and Android APK signature in CI; self-tests and Android CI pending. Debug signing does not satisfy production release signing.

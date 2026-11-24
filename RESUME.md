@@ -148,3 +148,8 @@
 ## Verified Android alpha.18 local touch probe (2026-11-24)
 - PR #15 head 11f6eda: Android CI 45331898798/45331893717 PASS, Windows CI 45331898833/45331893745 PASS, Android runtime 45331893810 PASS with Activity local touch probe and prior TLS/history/AVC gates. Merged as 683e5b7.
 - Debug APK artifact 14892476862 from run 45331898798; version 0.1.0-alpha.18. All touch readings are local synthetic 64x64 values, no network input or Windows injection. Actual Lenovo gestures, rotations and physical video remain pending.
+
+## Android debug APK integrity gate (CI pending)
+- Introduced offline stdlib verify_android_apk.py: bounded ZIP file/entry counts, no traversal/duplicates/encryption/symlinks, required Android manifest/DEX/resources, CRC and SHA256. Six fixtures PASS locally; earlier saved debug APK also PASS (not a signature guarantee).
+- Android CI now runs verifier tests, validates built APK and requires apksigner verification, publishing text evidence beside debug APK. No release signing or physical device install attempted. CI pending.
+- Added explicit Android CI path triggers for both APK verifier scripts and negative fixtures for Windows-style and double-slash archive paths. Runtime still unchanged.\n

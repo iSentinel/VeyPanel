@@ -1,9 +1,9 @@
 name: Android CI
 on:
   push:
-    paths: ['android/**', '.github/workflows/android.yml']
+    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py']
   pull_request:
-    paths: ['android/**', '.github/workflows/android.yml']
+    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py']
   workflow_dispatch:
 permissions:
   contents: read
@@ -22,6 +22,8 @@ jobs:
           mkdir -p /tmp/veypanel-client-tests
           javac -d /tmp/veypanel-client-tests android/app/src/main/java/com/veypanel/client/{ReaderSession,SampleRules,InvitationLink,SavedReader,ConnectionDiagnostics,BoundedFrameHeader,BoundedMessageReader,BoundedUpgrade,MaskedClientFrame,WssControl,TouchMath,LocalTouchProbe}.java android/tests/ClientPolicySmoke.java android/tests/FrameHeaderSmoke.java android/tests/MessageReaderSmoke.java android/tests/UpgradeSmoke.java android/tests/TouchMathSmoke.java android/tests/LocalTouchProbeSmoke.java
           java -cp /tmp/veypanel-client-tests com.veypanel.client.ClientPolicySmoke
+      - name: Verify offline APK integrity policy fixtures
+        run: python3 -m unittest discover -s scripts -p test_verify_android_apk.py -v
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
@@ -34,13 +36,21 @@ jobs:
         run: |
           test -f "$ANDROID_HOME/platforms/android-35/android.jar"
           test -x "$ANDROID_HOME/build-tools/35.0.0/aapt2"
+          test -x "$ANDROID_HOME/build-tools/35.0.0/apksigner"
       - name: Build debug APK and lint
         working-directory: android
         run: gradle --no-daemon :app:assembleDebug :app:assembleDebugAndroidTest :app:lintDebug
+      - name: Verify built APK structure and debug signing
+        run: |
+          python3 scripts/verify_android_apk.py android/app/build/outputs/apk/debug/app-debug.apk | tee android/app/build/outputs/apk/debug/apk-integrity.txt
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose android/app/build/outputs/apk/debug/app-debug.apk | tee android/app/build/outputs/apk/debug/apk-signing.txt
       - uses: actions/upload-artifact@v4
         with:
           name: veypanel-android-monitor-debug
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: |
+            android/app/build/outputs/apk/debug/app-debug.apk
+            android/app/build/outputs/apk/debug/apk-integrity.txt
+            android/app/build/outputs/apk/debug/apk-signing.txt
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:

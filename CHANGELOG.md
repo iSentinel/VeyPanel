@@ -1,5 +1,9 @@
 # Changelog
 
+## Android APK integrity preflight (CI pending)
+
+- Validate debug APK ZIP and Android signing in CI, retain SHA256 and signature reports with artifact. No production signing claim.
+
 ## Android 0.1.0-alpha.18 (CI and emulator runtime PASS; physical pending)
 
 - Add local diagnostic touch coordinates on the embedded synthetic AVC preview. Uses shared fail-closed TouchMath, rejects multi-touch and touches outside the image. No touch events forwarded to Windows or OS injected.
