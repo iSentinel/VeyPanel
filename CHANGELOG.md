@@ -1,5 +1,9 @@
 # Changelog
 
+## Desktop exact-checkout reproduction (CI PASS)
+
+- Two independent experimental Desktop bundles with normalized Host match all 832 files; Host smoke passed. No interactive WPF or signed release claim.
+
 ## Deterministic Host CI publication (CI PASS)
 
 - Apply verified CI build settings and source-epoch static endpoint normalization to ordinary Host artifact. Preserve raw metadata separately and retain existing integration tests.

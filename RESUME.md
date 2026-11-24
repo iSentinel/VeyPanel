@@ -297,3 +297,8 @@
 
 ## Desktop exact-checkout reproduction candidate
 - Two independent Windows runners build Desktop and normalized Host with pinned SDK and ContinuousIntegrationBuild, verify nested Host manifest and run Host smoke. Compare the complete experimental bundle inventory without masking any differing files. Interactive WPF, physical display/touch and signing acceptance remain separate.
+
+## Verified Desktop exact-checkout reproduction
+- PR #32 head 5cfe007, reproduction 45412111245 and Windows CI 45412093869/45412111080 PASS, merged as 4a3612d.
+- Actual checkout 65f5cfc1082bc2deb4c6ef083806ec59c45ab625, tree e0df7e6d91729adcb6abea6b6aef958a8a33b2b2. Both independent experimental Desktop bundles contain 832 identical files. Downloaded inventories and comparison artifact 14928461490 confirm equality. Host smoke passed; no interactive WPF acceptance.
+- Next: portable deterministic Windows ZIP packaging with file verification and independent archive reproduction. Installer and signing remain separate.
