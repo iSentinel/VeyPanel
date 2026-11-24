@@ -130,3 +130,8 @@
 - PR #13 head 8206814: Windows CI 45329953682/45329948364, Android build 45329953560/45329948294, Android runtime 45329948361 PASS. Merged as 6034990.
 - Test-only MediaCodec decodes local AVC clip into detached SurfaceTexture and verifies frame-available callback and EOS. No production SurfaceView, Windows desktop stream or physical Lenovo hardware test yet.
 - Next: owner-visible local preview with lifecycle cancellation, then physical tablet/Intel Quick Sync and Apollo pairing acceptance.
+
+## Android alpha.17 local Surface preview (PR candidate)
+- On-demand TextureView in the native Activity, original bundled red 64x64 two-frame AVC. LocalAvcSurfacePreview shares the implementation with isolated SurfaceDecodeSmoke; Activity instrumentation clicks preview and checks the visible in-app result.
+- Worker is cancelled on pause or Surface loss; generation/revision guards drop stale completions. MainActivity still uses OkHttp WSS; no Windows capture, Apollo pairing, display mutation or touch input. CI and actual Lenovo preview acceptance pending.
+- Preview completion is now gated on both decoded Surface output and an actual TextureView update callback (2 s bounded post-decode wait), while Android UI smoke scrolls it into view. CI required.

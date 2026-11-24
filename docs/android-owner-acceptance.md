@@ -56,3 +56,11 @@ record the codec name, whether Android reports it as hardware-accelerated,
 decoded buffers and elapsed time. The prior alpha.15 instructions remain
 historical. The alpha.16 debug APK is not release-signed and has not been
 installed or validated on Lenovo TB-J607Z.
+
+## Alpha.17 local picture preview (candidate)
+
+Once the alpha.17 debug artifact passes Build, Lint and Android Runtime,
+tap **Preview local AVC frame** on Lenovo and verify a red 64x64 test picture
+appears in the embedded preview area. Record the displayed status and any
+orientation, clipping or flicker. The original synthetic clip requires no PC
+connection. Keep the test separate from real Windows video hardware acceptance.
