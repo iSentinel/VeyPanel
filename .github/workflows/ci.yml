@@ -45,6 +45,11 @@ jobs:
         run: python scripts/dependency_inventory.py nuget src/VeyPanel.Host/obj/project.assets.json publish/runtime-components.cdx.json --label VeyPanel-Host-win-x64
       - name: Reject unreviewed Windows Host dependency drift
         run: python scripts/check_dependency_baseline.py third-party/baselines/host-win-x64.cdx.json publish/runtime-components.cdx.json
+      - name: Capture license evidence from verified NuGet packages
+        run: |
+          python -m unittest discover -s scripts -p test_dependency_license_evidence.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/dependency_license_evidence.py nuget third-party/baselines/host-win-x64.cdx.json src/VeyPanel.Host/packages.lock.json publish/dependency-license-evidence.json
       - name: Test storage provider diagnostic fixtures
         shell: pwsh
         run: ./scripts/Test-StorageHealth.ps1
