@@ -267,3 +267,8 @@
 - PR #28 head 485c020; exact reproduction run 45403501445 (build a, build b, compare all PASS), Windows CI 45403485262/45403501661 PASS; merged as 96fb3b9.
 - Both APKs built from actual checkout 0c70d781e4dea4e547b2de5ea728ec50800c536e, tree 03b1d9eebedd65606ed081fcea124938c08bf966. Both APK v2 signatures verified by apksigner. Equal bytes outside signing blocks; complete hashes differ. Comparison artifact 14924837063, build artifacts 14924343368/14923579078.
 - Six new comparator fixtures, 67/67 local Python tests. Windows exact-checkout reproduction is PR #29; preserve raw differences and validate experimental normalized output separately.
+
+## Windows exact-checkout reproduction candidate
+- Prior static asset JSON differs only in 50 Last-Modified values; diagnostic normalization produces identical JSON, six local fixtures PASS. New dedicated Windows CI builds identical checkout twice with locked packages and pinned SDK, captures raw and normalized inventories, smoke tests normalized output, and compares all normalized files without excluding binaries. Ordinary Windows CI unchanged. CI pending.
+
+- Initial experiment 45403857956 failed checkout text comparison due CRLF, corrected in b59102b. Run 45403914865 PASS: both independent builds used checkout 66bffb0772aa75d7928c5e66366274456d36f890, tree 66556a5676f414d26588adb0db5bb2eef84b2ce0; raw 356/357 identical, only static endpoint JSON differs; normalized 357/357 identical, both runtime smoke tests passed. Comparison artifact 14922904731. Final combined HEAD CI pending.

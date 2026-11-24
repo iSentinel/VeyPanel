@@ -1,0 +1,103 @@
+name: Windows exact-checkout reproduction
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'src/VeyPanel.Host/**'
+      - 'global.json'
+      - 'scripts/artifact_manifest.py'
+      - 'scripts/normalize_static_endpoints.py'
+      - 'scripts/test_normalize_static_endpoints.py'
+      - '.github/workflows/windows-reproducibility.yml'
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: windows-2025
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        copy: [a, b]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.10'
+      - name: Record exact checkout
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory evidence | Out-Null
+          $sha = (git rev-parse HEAD).Trim()
+          if ($sha -ne $env:GITHUB_SHA) { throw 'Checkout mismatch' }
+          $tree = (git rev-parse 'HEAD^{tree}').Trim()
+          Set-Content -Path evidence/checkout.txt -Encoding utf8 -NoNewline -Value ($sha + "`n" + $tree + "`n")
+          if ((dotnet --version).Trim() -ne '10.0.404') { throw 'SDK mismatch' }
+      - name: Locked deterministic Host publish
+        run: |
+          dotnet publish src/VeyPanel.Host -c Release -r win-x64 --self-contained true -p:ContinuousIntegrationBuild=true -o publish
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          git diff --exit-code -- src/VeyPanel.Host/packages.lock.json
+      - name: Capture raw and experimental normalized inventories
+        shell: pwsh
+        run: |
+          python -m unittest discover -s scripts -p test_normalize_static_endpoints.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/artifact_manifest.py write publish
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Copy-Item publish/artifact-files.sha256.json evidence/raw.json
+          Copy-Item publish/VeyPanel.Host.staticwebassets.endpoints.json evidence/raw-static-endpoints.json
+          $epoch = (git log -1 --format=%ct HEAD).Trim()
+          python scripts/normalize_static_endpoints.py publish/VeyPanel.Host.staticwebassets.endpoints.json --epoch $epoch
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/artifact_manifest.py write publish
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Copy-Item publish/artifact-files.sha256.json evidence/normalized.json
+      - name: Smoke test normalized experimental publication
+        shell: pwsh
+        run: ./scripts/Test-Host.ps1 -PublishDirectory publish
+      - name: Verify files after runtime smoke
+        run: python scripts/artifact_manifest.py verify publish
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-reproduction-${{ matrix.copy }}
+          path: evidence/
+          if-no-files-found: error
+  compare:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: windows-reproduction-*
+          path: reproduction
+      - name: Compare raw and normalized exact-checkout outputs
+        run: |
+          a=reproduction/windows-reproduction-a
+          b=reproduction/windows-reproduction-b
+          diff -u "$a/checkout.txt" "$b/checkout.txt"
+          test "$(head -n 1 "$a/checkout.txt")" = "$GITHUB_SHA"
+          PYTHONPATH=scripts python3 - "$a/raw.json" "$b/raw.json" <<'PY' | tee raw-comparison.json
+          import json, sys
+          from pathlib import Path
+          from artifact_manifest import compare
+          print(json.dumps(compare(*(json.loads(Path(p).read_text()) for p in sys.argv[1:])), indent=2))
+          PY
+          python3 scripts/artifact_manifest.py compare "$a/normalized.json" "$b/normalized.json" | tee normalized-comparison.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-reproduction-comparison
+          path: |
+            raw-comparison.json
+            normalized-comparison.txt
+          if-no-files-found: warn
