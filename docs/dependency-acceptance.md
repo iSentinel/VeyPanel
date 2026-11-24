@@ -116,3 +116,9 @@ records absent declarations and unavailable cache artifacts; it never infers
 an SPDX conclusion or approval to redistribute. Maven parent inheritance,
 nested AAR archives, SDK/runtime packs, plugins, full license text review and
 advisory review remain outside this stage. CI and manual review pending.
+
+Signed NuGet archives use the SDK's native content hash (excluding the
+signature), not raw archive SHA-512. The scanner runs dotnet nuget verify
+and checks its content hash against the lockfile; the raw archive digest
+is separately recorded. See https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-nuget-verify
+and https://source.dot.net/NuGet.Packaging/PackageArchiveReader.cs.html.

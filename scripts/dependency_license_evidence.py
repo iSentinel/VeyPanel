@@ -6,6 +6,8 @@ import base64
 import hashlib
 import json
 import os
+import re
+import subprocess
 import sys
 import xml.etree.ElementTree as ET
 import zipfile
@@ -121,6 +123,32 @@ def maven_record(component, records, cache):
     return {"purl": component["purl"], "artifacts": files}
 
 
+def signed_content_hash(path):
+    """Use the pinned SDK to verify the signature and compute NuGet contentHash."""
+    env = dict(os.environ, DOTNET_CLI_UI_LANGUAGE="en-US")
+    result = subprocess.run(
+        ["dotnet", "nuget", "verify", str(path), "--verbosity", "normal"],
+        capture_output=True, text=True, encoding="utf-8", errors="replace",
+        env=env, timeout=120, check=False)
+    if result.returncode != 0:
+        raise ValueError("NuGet signature verification failed: " + path.name)
+    values = re.findall(r"(?m)^[ \t]*Content hash:[ \t]*([A-Za-z0-9+/]+={0,2})[ \t]*$", result.stdout)
+    if len(values) != 1 or len(base64.b64decode(values[0], validate=True)) != 64:
+        raise ValueError("Missing or ambiguous NuGet content hash: " + path.name)
+    return values[0]
+
+
+def nuget_content_hash(path):
+    """Distinguish signed package content hash from raw archive SHA-512."""
+    raw = digest(path, "sha512").digest()
+    with zipfile.ZipFile(path) as archive:
+        signed = ".signature.p7s" in archive.namelist()
+    value = signed_content_hash(path) if signed else base64.b64encode(raw).decode("ascii")
+    if raw != digest(path, "sha512").digest():
+        raise ValueError("NuGet archive changed during verification")
+    return value, base64.b64encode(raw).decode("ascii"), signed
+
+
 def nuget_record(component, lock, cache):
     """Inspect actual NuGet archive only after matching the lock content hash."""
     name, version = component["name"], component["version"]
@@ -129,10 +157,13 @@ def nuget_record(component, lock, cache):
         raise ValueError("NuGet lock version differs from baseline")
     stem = name.lower() + "." + version.lower()
     path = cache / name.lower() / version.lower() / (stem + ".nupkg")
-    actual = base64.b64encode(digest(path, "sha512").digest()).decode("ascii")
+    actual, raw_hash, signed = nuget_content_hash(path)
     if actual != entry["contentHash"]:
         raise ValueError("NuGet package SHA-512 mismatch: " + name)
-    item = {"name": path.name, "state": "verified", "sha512_base64": actual}
+    item = {"name": path.name, "state": "verified",
+            "nuget_content_hash_sha512_base64": actual,
+            "archive_sha512_base64": raw_hash,
+            "signature_verified": signed}
     item.update(archive_evidence(path, read_nuspec=True))
     return {"purl": component["purl"], "artifacts": [item]}
 
@@ -165,7 +196,7 @@ def main():
         args.output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n",
                                encoding="utf-8")
     except (OSError, ValueError, KeyError, TypeError, ET.ParseError,
-            zipfile.BadZipFile, RuntimeError) as error:
+            zipfile.BadZipFile, RuntimeError, subprocess.SubprocessError) as error:
         print(f"FAIL: dependency license evidence: {error}", file=sys.stderr)
         return 1
     print(f"PASS: captured license evidence for {len(rows)} components; review pending")

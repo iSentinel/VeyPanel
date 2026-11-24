@@ -4,11 +4,13 @@ import base64
 import hashlib
 import tempfile
 import unittest
+from unittest.mock import patch
+from types import SimpleNamespace
 import zipfile
 from pathlib import Path
 
 from dependency_license_evidence import (archive_evidence, maven_licenses,
-                                         maven_record, nuget_licenses, nuget_record, parse_xml)
+                                         maven_record, nuget_licenses, nuget_record, parse_xml, signed_content_hash)
 
 
 class LicenseEvidenceTests(unittest.TestCase):
@@ -61,6 +63,25 @@ class LicenseEvidenceTests(unittest.TestCase):
                 output.write(b"tampered")
             with self.assertRaisesRegex(ValueError, "SHA-512 mismatch"):
                 nuget_record(component, lock, root)
+
+    def test_native_signed_hash(self):
+        expected = base64.b64encode(b"a" * 64).decode()
+        result = SimpleNamespace(returncode=0,
+                                 stdout="  Content hash: " + expected + "\n")
+        with patch("dependency_license_evidence.subprocess.run", return_value=result):
+            self.assertEqual(signed_content_hash(Path("signed.nupkg")), expected)
+
+    def test_native_verify_failure(self):
+        result = SimpleNamespace(returncode=1, stdout="")
+        with patch("dependency_license_evidence.subprocess.run", return_value=result):
+            with self.assertRaisesRegex(ValueError, "signature verification failed"):
+                signed_content_hash(Path("signed.nupkg"))
+
+    def test_native_missing_hash(self):
+        result = SimpleNamespace(returncode=0, stdout="Verified")
+        with patch("dependency_license_evidence.subprocess.run", return_value=result):
+            with self.assertRaisesRegex(ValueError, "Missing or ambiguous"):
+                signed_content_hash(Path("signed.nupkg"))
 
     def test_cache_mismatch(self):
         with tempfile.TemporaryDirectory() as folder:

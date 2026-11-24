@@ -234,3 +234,5 @@
 
 ## Runtime license evidence candidate
 - Added checksum-gated Maven/NuGet archive inspection and seven offline fixtures, including tampered package rejection. CI publishes dependency-license-evidence.json with literal declarations and notice hashes. No inferred SPDX conclusion or legal approval; full license review pending.
+
+- Initial PR #25 Android CI 45372580810/45372571558 PASS; Windows 45372580801/45372571530 failed because raw signed nupkg SHA-512 differs from NuGet contentHash. Use pinned SDK dotnet nuget verify for signed packages (native content hash and signature validation), keep raw archive hash separately, and preserve strict lock comparison. CI retry pending.
