@@ -241,3 +241,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-10/05: Restore verified package-source backup into nonexistent private destination with explicit destination-bound plan, stage all pinned versions, preserve exact selection bytes and verify final inventory; seven new regressions (243 required), actual 838-file single-version restore and Launcher dry-run PASS. Native Windows CI required. No activation, overwrite, deletion or exclusive maintenance.
 
 - [x] PR #61 merged d73d5f0; three integrated jobs PASS, verified Windows 243/243 and actual isolated restore. No activation or replacement.
+
+- [ ] ENG-10/05: Smoke-only cooperative Windows maintenance sharing lease: multiple runtime read handles versus exclusive maintenance handle, exact sharing-violation busy classification, missing/unsafe path refusal, cross-process contention/release/owner-exit regression. Native CI required. Production file provisioning/ACL/identity, Desktop/Host/Launcher integration and exclusive mutation protocol remain separate.
