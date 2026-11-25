@@ -11,8 +11,10 @@ import sys
 import time
 import unittest
 import xml.etree.ElementTree as ET
+from typing import TextIO
 
 from code_audit import differences, load_baseline, scan
+from qa_events import emit
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -106,16 +108,18 @@ def write_json(path: Path, data: dict) -> None:
         output.write("\n")
 
 
-def run(output: Path) -> bool:
+def run(output: Path, events: TextIO | None = None) -> bool:
     """Run source gate and tests, preserving both independent results."""
     output.mkdir(mode=0o700, exist_ok=False)
     start = time.monotonic()
     utc = datetime.now(timezone.utc).isoformat()
+    audit_start = time.monotonic()
     rows = scan(ROOT)
     delta = differences(rows, load_baseline(ROOT / "config/code-audit-baseline.json"))
     audit_ok = not any(delta.values())
     write_json(output / "code-audit.json", {"schema": 1, "findings": rows,
                                           **delta, "status": "PASS" if audit_ok else "FAIL"})
+    emit(events, "audit", "PASS" if audit_ok else "FAIL", time.monotonic() - audit_start)
     suite = unittest.defaultTestLoader.discover(str(ROOT / "scripts"), pattern="test_*.py")
     result = EvidenceResult()
     test_start = time.monotonic()
@@ -124,7 +128,9 @@ def run(output: Path) -> bool:
     passed = sum(status == "PASS" for status, _ in result.rows.values())
     tests_ok = (result.wasSuccessful() and passed > 0
                 and len(result.rows) == result.testsRun)
+    emit(events, "tests", "PASS" if tests_ok else "FAIL", time.monotonic() - test_start)
     ok = audit_ok and tests_ok
+    report_start = time.monotonic()
     write_json(output / "summary.json", {
         "schema": 1, "scope": "python-offline", "status": "PASS" if ok else "FAIL",
         "started_utc": utc, "duration_seconds": time.monotonic() - start,
@@ -137,6 +143,7 @@ def run(output: Path) -> bool:
         "expected_failures": len(result.expectedFailures), "unexpected_successes": len(result.unexpectedSuccesses),
         "native_windows": "NOT_RUN", "native_android": "NOT_RUN", "hardware": "NOT_RUN",
     })
+    emit(events, "report", "PASS", time.monotonic() - report_start)
     return ok
 
 
@@ -144,13 +151,20 @@ def main() -> int:
     """Require a fresh private output directory and return nonzero on failure."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--log-events", action="store_true", help="Write closed JSONL stage events to stderr")
     args = parser.parse_args()
+    events = sys.stderr if args.log_events else None
+    started = time.monotonic()
     try:
-        ok = run(args.output)
+        ok = run(args.output, events)
     except (OSError, ValueError, SyntaxError, KeyError, TypeError,
             AttributeError, subprocess.SubprocessError) as error:
-        print("FAIL: offline QA: " + type(error).__name__, file=sys.stderr)
+        if events is not None:
+            emit(events, "run", "ERROR", time.monotonic() - started)
+        else:
+            print("FAIL: offline QA: " + type(error).__name__, file=sys.stderr)
         return 1
+    emit(events, "run", "PASS" if ok else "FAIL", time.monotonic() - started)
     print("PASS: scoped Python offline QA" if ok else "FAIL: scoped Python offline QA")
     return 0 if ok else 2
 

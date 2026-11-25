@@ -360,3 +360,6 @@
 - PR #39 head 2065821abd160d4684a0afd970ba3045b6c4bc5c merged 3565f75. All ten CI jobs PASS; Windows 45516193643/45516181304, Android 45516193786/45516181388, Host reproduction 45516194018, Desktop/ZIP reproduction 45516193647.
 - Independently downloaded Windows QA artifact 14978715316: 133/133, zero skips, exact debt 395, no new/stale findings, clean checkout 684ccdf389c025c89393419dde47231bbb96ca8d tree 6900ee7c0a91d622f30714d3a4492da2100df2f4. Normalized Host comparison downloaded and verified. First failing attempt and CPython cross-API correction retained above.
 - Next: safe QA event branch, then Host smoke secret capture and request logging review. Launcher PR #37 must be verified against current main; no physical activation or release approval.
+
+## Scoped safe QA event candidate
+- Branch dev/safe-qa-events based on manifest PR #39. Optional --log-events produces allowlisted audit/tests/report/run JSONL on stderr, no arbitrary text/path fields, existing exit contracts preserved. Eight new regressions cover invalid fields/duration, secret canaries, failure/error exit semantics. Full local Python QA pending clean committed rerun; no new AST debt. Targeted logging audit recorded in docs/qa-event-logging.md. No general secret redaction or Host logging acceptance.
