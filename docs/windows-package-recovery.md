@@ -77,3 +77,31 @@ fixed categories. This is not a snapshot of an entire mutable tree, nor
 does it remove the exclusive owner/private quiescent root requirement.
 Six new fixtures and prior actual roots/artifacts PASS locally; native
 Windows CI required.
+
+## Constrained corrupt selection reconciliation (candidate)
+
+This tool accepts only a bounded regular existing selection.json that
+fails strict JSON/schema validation, a sole digest-named version, and
+an externally trusted ZIP outside the installation root. It refuses valid
+metadata, oversized/unreadable files, existing backups, locks, additional
+versions and unexpected root entries. Dry-run binds the exact corrupt bytes,
+root identity and proposed verified state to a deterministic plan digest.
+
+    python scripts/recover_corrupt_selection.py --root C:\VeyPanel-test --package VeyPanel-win-x64-portable.zip --sha256 EXPECTED_SHA256 --dry-run
+    python scripts/recover_corrupt_selection.py --root C:\VeyPanel-test --package VeyPanel-win-x64-portable.zip --sha256 EXPECTED_SHA256 --apply --plan-sha256 REVIEWED_PLAN_SHA256
+
+Apply requires the private exclusive maintenance window and cooperating lock.
+It creates .selection-corrupt-backup exclusively, flushes and verifies the
+original bytes before replacing only selection.json. An existing or partial
+backup is never overwritten or removed. Failed replacement retains the old
+state and backup; inspect manually before retry. Readback and complete
+staged tree verification are mandatory. The inspector intentionally reports
+manual review while this backup remains. Do not upload the backup: corrupt
+bytes may include private information. No automatic disposal or retention
+policy is implied. No application is started, stopped or removed.
+No multi-version recovery, hostile writer resistance, Windows ACL
+qualification, physical durability or publisher authentication claim.
+
+Twelve isolated regression tests and real 836-file package reconciliation
+passed locally. Native Windows CI is required before merge. No user
+installation modified.
