@@ -646,3 +646,7 @@
 
 ## Integrated owner-only ACL
 - #70 original 9ab32c6 five CI jobs PASS, independently verified exact push Windows 45556792184 255/255 and native owner-only DACL, unexpected ACE and unprotected ACL refusal, restoration/unchanged bytes. Integrate main 8cc48cb after #69 acceptance; retain all expected identity, reverse lease, ACL and readiness smoke steps and 270 required Python cases. Fresh native CI required. No installed ACL change or production admission.
+
+## Verified owner-only ACL
+- PR #70 integrated d3ff57d84a1e0b8d2eedb82ad13f1ebfc64da0b8 merged 2879a4760c4a2e22b885571b11aea95a8b00b108. Windows 45560480076/45560490598, Android 45560479962, reproduction 45560490620 (three jobs): six PASS. Independently fetched synthetic merge 03c257189af5d62498daaa318a3584b1d0ce7c5e tree 483dbf702d0bff33e2066126be4f0f733e971d66 parents 8cc48cb and d3ff57d. Downloaded PR Windows 270/270 debt329, independent verifier/manifest PASS; native ACL step success.
+- #71 f2739e1 original four jobs PASS; push Windows 45560890552 independently verified exact head/tree c78e6087ca418d84bd6ce60d4db104a51932a5bd and 278/278. Integrate current main. Next: explicit fifth Artemis membership and independent report comparison. No changes to unfinished blocked identity-record candidate, installed ACLs, runtime admission or deployment.

@@ -278,4 +278,6 @@ scoped local acceptance with full policy compliance.
 
 - [x] PR #69 merged adcc976; four integrated jobs PASS, independently verified Windows 270/270 and actual expected identity/alias/replacement smoke.
 
-- [ ] ENG-10/05: Isolated owner-only Windows lease DACL qualification aligned with ProtectedGrantStore policy, exact raw ACE and owner checks on protected directory and held-file descriptor, reject unexpected ACE and unprotected DACL, restore fixture and verify unchanged bytes. Native CI required; no installed ACL changes, cross-user effective access, persistent enrollment or runtime wiring.
+- [x] ENG-10/05: Isolated owner-only Windows lease DACL qualification aligned with ProtectedGrantStore policy, exact raw ACE and owner checks on protected directory and held-file descriptor, reject unexpected ACE and unprotected DACL, restore fixture and verify unchanged bytes. Native CI required; no installed ACL changes, cross-user effective access, persistent enrollment or runtime wiring.
+
+- [x] PR #70 merged 2879a47; six integrated CI jobs PASS, independently verified Windows 270/270 and native ACL fixture. Production admission and effective cross-user access remain open.

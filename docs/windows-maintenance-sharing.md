@@ -163,3 +163,5 @@ ACL changes on installed data, persistent identity enrollment, ancestor
 race defense, privilege manipulation or maintenance authorization.
 Only a fresh temporary fixture is provisioned and modified. Native CI
 is mandatory; local common QA alone does not qualify ACL behavior.
+
+Verified PR #70 merged 2879a47: six integrated CI jobs PASS, independently verified Windows 270/270 and native ACL step. This is same-user fixture policy, not effective cross-user access or production admission.
