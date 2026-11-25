@@ -1,5 +1,9 @@
 # Changelog
 
+## Private Host smoke bootstrap capture (CI PASS)
+
+- Use owned anonymous pipes instead of raw temporary logs, preserve assertions, and bound process cleanup. Windows capture fixtures, native integration and independent reproduction passed.
+
 ## Scoped QA stage logging (CI PASS)
 
 - Add closed-schema optional JSONL stage diagnostics, fixed failure reasons and canary fixtures; preserve existing exit and stdout contracts.

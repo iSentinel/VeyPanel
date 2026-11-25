@@ -1,6 +1,6 @@
 # Host smoke process privacy
 
-Status: candidate; Windows CI required.
+Status: PR #41 merged; all nine combined-source CI jobs passed.
 
 ENG-04 targeted audit: the published Host smoke previously redirected raw
 stdout/stderr to temporary files, including the ephemeral owner bootstrap
