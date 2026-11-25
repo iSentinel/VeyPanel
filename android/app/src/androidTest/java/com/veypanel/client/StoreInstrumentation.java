@@ -54,6 +54,9 @@ public final class StoreInstrumentation extends Instrumentation {
             results.append("PASS: Android Host history codec fixture\n");
             stage = "Activity UI";
             ActivitySmoke.run(this);
+            stage = "Activity history terminal fence";
+            ActivityHistoryFenceSmoke.run(this);
+            results.append("PASS: Activity history and telemetry terminal callback fencing\n");
             results.append("PASS: Android Activity diagnostics, AVC Surface preview and local touch probe\n");
             stage = "Android video decoder inventory";
             VideoDecoderSmoke.run();

@@ -470,3 +470,6 @@
 
 ## Activity terminal TLS candidate
 - On dev/qa-report-verification after 7c0d90d, add androidTest-only reflection admission of synthetic loopback session to actual MainActivity polling. No production changes. Negative phase uses production trust (unknown CA or wrong identity), require terminal UI, one WSS attempt, no fallback/REST errors/samples, cleared session/stream, disabled history, and stable state after 3.5s. Existing trusted wrong-SAN and server no-request checks remain mandatory. Native emulator NOT_RUN locally; no owner CA or concurrent history qualification.
+
+## Activity history terminal fencing candidate
+- Base PR #53 ef0495c, dev/activity-history-terminal-fence. Add androidTest-only deterministic ordered callbacks on actual Activity, two fresh instances, positive history delivery, terminal history vs terminal telemetry with both FutureTask fixtures pending, close/cancel and old-generation refusal after same-access synthetic session. Mandatory runtime PASS marker. No production change or network use by this fixture; no live cancellation latency, physical or user CA claim. Native CI pending integration after PR #53.

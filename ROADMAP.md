@@ -199,3 +199,5 @@ scoped local acceptance with full policy compliance.
 - [ ] ENG-07/08: Independently verify common QA JSON/JUnit against required case identities, exact debt and tested Git checkout; manifest successful evidence before CI upload. Eight explicit negative/positive fixtures added (215 required). Native CI required; native report adapters and authenticity separate.
 
 - [ ] ENG-09: Isolated actual Activity terminal TLS regression using production trust and synthetic loopback session; require one attempt, zero fallback/retry/samples, cleared active session and disabled history; negative server observer retained. Native emulator required; concurrent history and owner-installed CA separate.
+
+- [ ] ENG-09: Qualify both ordered history/telemetry terminal callback interleavings on actual Activity, including pending future cancellation, feed close, generation invalidation, history clear and same-access subsequent session fencing. Synthetic callbacks only; actual emulator CI required. Live concurrent network cancellation remains separate.
