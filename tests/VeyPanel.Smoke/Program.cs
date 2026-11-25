@@ -19,6 +19,12 @@ if (args.Length == 2 && args[0] == "--device-smoke")
 if (args.Length == 2 && args[0] == "--ws-smoke")
     return await WebSocketSmoke.RunAsync(args[1]);
 
+if (args.Length == 2 && args[0] == "--host-owner-exit-probe")
+    return await HostOwnerExitSmoke.ProbeAsync(args[1]);
+
+if (args.Length == 2 && args[0] == "--host-owner-exit-smoke")
+    return await HostOwnerExitSmoke.RunAsync(args[1]);
+
 if (args.Length == 2 && args[0] == "--lifecycle-smoke")
     return await LifecycleSmoke.RunAsync(args[1]);
 

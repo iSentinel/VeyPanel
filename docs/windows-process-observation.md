@@ -74,3 +74,38 @@ mutex behavior is not a general admission API guarantee; App acquires
 once on its UI thread. No proof of prior Host exit follows from abandonment.
 
 Verified PR #57 merged b6b772d, seven integrated CI jobs PASS, native thread/process contention and abandonment fixture PASS. Actual WPF activation and maintenance exclusion remain unqualified.
+
+## Owned Host cleanup-required state (candidate)
+
+A failed owned Host stop clears its dashboard token before exit is
+confirmed. Previously the ready-state boolean made this appear stopped
+and disabled Stop in Desktop. Distinguish Stopped, Ready and
+CleanupRequired under the existing controller gate. A retained live
+process without readiness, or an unavailable owned-process observation,
+requires explicit Stop; Start and dashboard are denied. Keep the Stop
+button enabled and report the state. Failed Dispose does not finalize
+the controller, so the window can request explicit cleanup again.
+No changes to existing graceful stop/owned-child escalation timeouts.
+
+The existing isolated real Host lifecycle smoke simulates only the
+cleared-token state, using test reflection on its own controller after
+readiness. Verify cleanup status, rejected Start without replacement,
+denied dashboard and existing explicit Stop/restart. This is not an
+injected OS stop failure, actual WPF button acceptance, crash recovery,
+or cross-session/exclusive maintenance qualification.
+
+## Managed Host owner-exit fixture (candidate)
+
+The existing managed Host waits for stdin EOF and requests graceful
+application stop. Add an isolated Windows smoke owner process which
+starts the real published Host through HostController, reports only a
+private pipe identity to the supervisor, then exits without Dispose
+after an explicit fixture handshake. The supervisor holds an observed
+process handle before the owner exits and checks image path/start time
+against that private identity. Require successful owner exit, bounded
+Host exit with code zero, and subsequent fixed-name clear observation.
+No PID or private pipe identity is printed to shared evidence. On failure
+only the directly started smoke owner may be terminated; the observed
+Host is never killed by PID. This tests owner disappearance and stdin EOF
+in an isolated runner, not arbitrary power failure, live user processes,
+a general process ownership proof, or system-wide maintenance exclusion.
