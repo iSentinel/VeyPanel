@@ -1,5 +1,9 @@
 # Changelog
 
+## Shared TLS failure classification and mandatory case registry (CI PASS)
+
+- Unify foreground TLS classification; reject incomplete or skipped required Python test inventories. Native CI and actual Windows/Android case evidence passed.
+
 ## Trusted wrong-SAN denial (CI PASS)
 
 - Qualify REST, OkHttp WSS and bounded WSS against a trusted test CA with an incorrect leaf IP SAN. Emulator and server-side request observation passed.

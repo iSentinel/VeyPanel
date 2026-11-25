@@ -63,3 +63,5 @@ A TLS cause beyond eight entries is not recognized by this classifier;
 this is not comprehensive arbitrary exception graph classification.
 Native and Activity-level acceptance remain separate. No trust or
 production transport selection change.
+
+Verified PR #52 merged 35bfe9c: eight CI jobs PASS, actual Windows and Android common QA each 207/207 with exact case identities; shared TLS classifier JVM and existing runtime gates passed. Scope remains offline/emulator only.
