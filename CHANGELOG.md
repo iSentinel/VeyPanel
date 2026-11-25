@@ -1,5 +1,9 @@
 # Changelog
 
+## Managed Host readiness budget (CI PASS)
+
+- Read authenticated status headers without draining response bodies; remove inherited managed persistence configuration.
+
 ## Strict JUnit evidence (CI PASS)
 
 - Reject unreviewed attributes, inter-element text and unsupported XML processing instructions in independently verified offline QA reports.

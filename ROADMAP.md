@@ -266,4 +266,10 @@ scoped local acceptance with full policy compliance.
 
 - [x] PR #67 merged 4db1f5b; four integrated CI jobs PASS, independently verified Windows 264/264 against exact synthetic Git merge.
 
-- [ ] ENG-09/10: Limit managed Host readiness to authenticated response headers (16 KiB, no response drain) and strip inherited persistence alongside LAN/TLS settings. Native isolated withheld-body 200/403 and synthetic environment smoke required. No production endpoint or user process used by the new fixture.
+- [x] ENG-09/10: Limit managed Host readiness to authenticated response headers (16 KiB, no response drain) and strip inherited persistence alongside LAN/TLS settings. Native isolated withheld-body 200/403 and synthetic environment smoke required. No production endpoint or user process used by the new fixture.
+
+- [x] PR #68 merged 8086173; six integrated CI jobs PASS, independently verified Windows 264/264, native readiness step PASS.
+
+- [x] ENG-12: Initial review-only metadata baseline for four architecture upstream repositories, exact HEAD and release commit identities in docs/upstream-review.md. No dependency adoption.
+- [ ] ENG-12: Automate repeat observation and validate REVIEW/UNCHANGED/ERROR evidence, resolve Artemis reference and review relevant upstream code/license deltas.
+- [ ] ENG-05/12: Design Windows display mirroring reconnect/restore regression informed by Screen Spawner v0.3.2. Actual topology mutation/hardware approval separate.
