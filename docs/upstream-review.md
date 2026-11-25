@@ -47,3 +47,51 @@ ERROR for incomplete or failed required queries. Missing latest release
 does not prove absence of tags. Do not automatically update pins, adopt
 code/assets or install packages. Automated periodic watch and structured
 report validation are separate unfinished work.
+
+## Structured comparison candidate
+
+The reviewed baseline is now also represented by
+config/upstream-review-baseline.json. The offline classifier accepts a
+separately collected JSON observation with the same schema (version 1,
+repositories keyed by the four reviewed names, exact seven metadata
+fields per complete row). Missing or invalid rows yield ERROR; unknown
+repositories, invalid baseline and invalid document schema fail closed.
+Compare default branch, HEAD, published release ID/tag, exact release
+commit, reported license and archived flag. A changed field yields REVIEW,
+and a complete exact match yields UNCHANGED. ERROR dominates REVIEW.
+Output includes the SHA-256 of each exact input snapshot and fixed
+repository/status/changed-field values, not raw unexpected data.
+
+    python scripts/check_upstream_review.py --baseline config/upstream-review-baseline.json --observed observed.json
+
+Exit 0 means all supplied rows match; 2 means review required; 1 means
+invalid or incomplete evidence. These are review statuses, not product
+QA or release approval. Input files are read-only, bounded to 64 KiB and
+strictly parsed; no network access, dependency mutation or automatic
+baseline replacement is performed by this classifier.
+
+A fresh separate GitHub metadata observation of all four repositories
+on 2026-11-25 (06:26 UTC) returned four UNCHANGED rows. Baseline SHA-256
+fc6ed7746386ce3754c9cbbf715023e1ca4cc1295e38d26762a8a8920bab4344;
+observed SHA-256
+fb118a69c3c41731bfc2b264d5ea03107d34e515c22fffcb360777637c0d94e0.
+The observation used the metadata, default-branch commit, release, tag-ref
+and resolved-commit API endpoints. Each tag was a direct commit, and
+its SHA matched the resolved commit. The raw observation/report remains
+in a unique local directory; no credentials or raw API responses are
+committed. The classifier cannot attest input freshness or origin.
+Automated live collection, scheduling and independent report verification
+remain unfinished.
+
+## Artemis reference resolved
+
+The Apollo upstream README explicitly links Artemis (Moonlight Noir) to
+https://github.com/ClassicOldSong/moonlight-android. At 2026-11-25 06:27
+UTC the repository reported nonarchived, GPL-3.0, default branch
+moonlight-noir, HEAD c5cf27f4dc822db0e863c4691e7a70c74bea977a, latest
+published release v20.2.6 (ID 238650766, published 2025-08-08),
+direct tag commit 4de0227fb6ae5c9ad9f7cc486aed7c3571f5f62f, corroborated
+by the commits endpoint. The reference is resolved; its initial metadata
+status is REVIEW. It is not yet included in the four-repository structured
+baseline. Extend membership and tests explicitly in a later reviewed
+change. No client update, license conclusion or adoption is implied.

@@ -281,3 +281,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-10/05: Isolated owner-only Windows lease DACL qualification aligned with ProtectedGrantStore policy, exact raw ACE and owner checks on protected directory and held-file descriptor, reject unexpected ACE and unprotected DACL, restore fixture and verify unchanged bytes. Native CI required; no installed ACL changes, cross-user effective access, persistent enrollment or runtime wiring.
 
 - [x] PR #70 merged 2879a47; six integrated CI jobs PASS, independently verified Windows 270/270 and native ACL fixture. Production admission and effective cross-user access remain open.
+
+- [ ] ENG-12: Offline structured upstream evidence classifier with exact reviewed membership and metadata schema, bounded strict JSON, REVIEW/UNCHANGED/ERROR precedence and input digests. Eight new regressions (278 required), separate actual four-repository observation all UNCHANGED. Artemis repository identified and exact metadata recorded separately. Native CI required; live collector, freshness verification, fifth-repository integration and scheduling remain open.
