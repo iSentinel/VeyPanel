@@ -91,3 +91,19 @@ readiness. Verify cleanup status, rejected Start without replacement,
 denied dashboard and existing explicit Stop/restart. This is not an
 injected OS stop failure, actual WPF button acceptance, crash recovery,
 or cross-session/exclusive maintenance qualification.
+
+## Managed Host owner-exit fixture (candidate)
+
+The existing managed Host waits for stdin EOF and requests graceful
+application stop. Add an isolated Windows smoke owner process which
+starts the real published Host through HostController, reports only a
+private pipe identity to the supervisor, then exits without Dispose
+after an explicit fixture handshake. The supervisor holds an observed
+process handle before the owner exits and checks image path/start time
+against that private identity. Require successful owner exit, bounded
+Host exit with code zero, and subsequent fixed-name clear observation.
+No PID or private pipe identity is printed to shared evidence. On failure
+only the directly started smoke owner may be terminated; the observed
+Host is never killed by PID. This tests owner disappearance and stdin EOF
+in an isolated runner, not arbitrary power failure, live user processes,
+a general process ownership proof, or system-wide maintenance exclusion.

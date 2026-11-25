@@ -219,3 +219,5 @@ scoped local acceptance with full policy compliance.
 - [ ] ENG-10/05: Extend cooperative Desktop admission native fixture to separate owned smoke processes, release and abandoned-owner reacquisition, with bounded fixture cleanup and unique test names. No WPF or Host activation; native CI required.
 
 - [ ] ENG-10/05: Distinguish ready Host from owned process requiring cleanup; refuse Start/dashboard in uncertain cleanup state, keep Stop available, finalize Dispose only after successful cleanup. Extend owned real Host lifecycle smoke with simulated token loss and explicit Stop. Native CI required; actual OS stop failure and WPF acceptance separate.
+
+- [ ] ENG-10/05: Qualify actual managed Host graceful exit after isolated owning smoke process exits without Dispose, using private fixture handshake, retained observed handle and bounded waits. No termination by observed PID; subsequent read-only process observation required. Native Windows CI only; general crash and maintenance qualification separate.
