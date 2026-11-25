@@ -290,3 +290,6 @@ scoped local acceptance with full policy compliance.
 - [ ] PR #72 retargeted to main after initial four jobs PASS and independently verified Windows/Android QA 286/286 on stacked base. Fresh integrated CI required before acceptance.
 
 - [ ] ENG-12: Offline GitHub API snapshot normalization boundary (repository identity, latest stable release, direct tag ref and corroborating commit); eight regression cases. Live bounded transport, freshness, scheduling and native CI remain separate.
+
+- [x] PR #72 merged fff1cfa; four integrated CI jobs PASS and independently verified Windows/Android 286/286 against exact merge tree. Artemis membership and report recomputation accepted.
+- [ ] ENG-12: Fixed-origin public HTTPS metadata collector with bounded worker processes and incomplete-row refusal; eight offline regressions. Live observation, native integration, freshness and scheduling require separate evidence.

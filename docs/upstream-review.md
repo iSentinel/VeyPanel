@@ -145,3 +145,22 @@ Snapshots are sequential observations, not an atomic remote transaction;
 identity and corroboration checks do not establish freshness or origin
 attestation. No scheduled workflow, network collector or baseline updates
 are implemented by this adapter.
+
+## Bounded public HTTPS collector candidate
+
+Run explicitly, in a new private directory, without a token:
+
+    python scripts/collect_upstream_review.py > observed.json
+    python scripts/check_upstream_review.py --baseline config/upstream-review-baseline.json --observed observed.json
+
+The collector uses fixed api.github.com HTTPS, standard certificate validation,
+no redirects/proxy configuration/credentials/retries, five reviewed repositories,
+up to 25 sequential GETs, 1 MiB response cap, 12-second worker timeout and
+180-second run budget. Process startup/cleanup can add overhead. A worker
+contains blocking DNS, TLS and HTTP reads; the parent enforces a timeout.
+Output contains only normalized rows, no raw response or credentials. Exit 1
+means missing rows or collection failure; classify incomplete observations as
+ERROR, never substitute baseline. Rate limits and annotated tags fail closed.
+This is public unauthenticated collection; GitHub may impose shared-IP limits.
+No freshness attestation, atomic upstream snapshot, scheduled run, automatic
+baseline mutation or dependency adoption is implied.

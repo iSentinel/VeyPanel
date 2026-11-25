@@ -668,3 +668,7 @@
 
 ## Upstream API normalization candidate
 - Base Artemis checkpoint 18dc191, separate dev/upstream-live-collector. Pure extraction of reviewed GitHub API snapshots to existing row schema, stable release and exact repository/direct-tag/commit corroboration; eight offline cases, expected registry 294. No network transport, scheduler, dependency mutation or release. Native integrated CI required after local gates.
+
+## Bounded public HTTPS collector candidate
+- #72 merged fff1cfa3e7642a875832141ca2e1de94c5d0111e; actual tree 700712da898744ce7db5c7f290a700fddc63e10e equals verified synthetic 1520e457bb80f160b8d72aca9991aada675ac4c1. PR Windows 45563461358 and Android 45563461386 downloaded independently, 286/286 each, exact manifest and verifier PASS. Push checks also PASS. Gateway reported internal error after merge; GitHub API reconciled actual merge and PR #73 base main.
+- Separate collector candidate on #73 70cf3fa. Fixed public origin, reviewed endpoint shapes, bounded process/response and omitted failed rows; eight offline cases, registry302. No credentials, retries, baseline updates, release or deployment. Native integration and live qualification pending.
