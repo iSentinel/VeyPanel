@@ -293,3 +293,5 @@ scoped local acceptance with full policy compliance.
 
 - [x] PR #72 merged fff1cfa; four integrated CI jobs PASS and independently verified Windows/Android 286/286 against exact merge tree. Artemis membership and report recomputation accepted.
 - [ ] ENG-12: Fixed-origin public HTTPS metadata collector with bounded worker processes and incomplete-row refusal; eight offline regressions. Live observation, native integration, freshness and scheduling require separate evidence.
+- [ ] ENG-12: Collector real public HTTPS qualification: five reviewed repositories UNCHANGED, exact detached source 1f7aeae and report verification PASS; 302 required local QA PASS. Native integrated CI required.
+- [ ] ENG-12: Separate versioned freshness receipt, exact observation digest and bounded clock validation; no change to classifier contract or automatic adoption.
