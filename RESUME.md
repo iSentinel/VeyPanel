@@ -636,3 +636,7 @@
 
 ## Integrated expected lease identity candidate
 - #69 original eb7d0be four CI jobs PASS; exact push Windows 45556522347 artifact verified 261/261 against head tree c6375924bd64477258dea1a2c35168df8fa7b0bb, actual expected identity/alias/replacement marker PASS. Integrate main 9346c5b after #68 acceptance, preserve all mandatory native smoke commands and exact 270-case union. Fresh native CI required. #70 original five jobs PASS, integrate after #69. Unfinished local identity-record candidate unchanged. No production admission or deployment.
+
+## Verified expected lease identity
+- PR #69 integrated eb38c4e9cd41db652cb317c320dcbaebd7b60d66 merged adcc9768f5254de698d64c5eb5e788ec609b850b. Windows 45558738864/45558744851, Android 45558738761/45558744869 all PASS. Independent fetched synthetic merge 653a92be72f51af3c0f50490c3b58a0daa79e737 tree 1b88745ddae0001434c4629ae8e8396e867843f0 parents 9346c5b and eb38c4e. Downloaded Windows 270/270 debt329, exact verifier and manifest PASS. Actual log confirms cross-language expected identity, alias and replacement refusal.
+- Integrate #70 original native PASS next. Independent upstream watch evidence classifier can proceed without production changes. Unfinished local identity-record candidate remains unchanged following prior blocked call. No runtime admission, installed ACL mutation or deployment.

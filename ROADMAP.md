@@ -274,4 +274,6 @@ scoped local acceptance with full policy compliance.
 - [ ] ENG-12: Automate repeat observation and validate REVIEW/UNCHANGED/ERROR evidence, resolve Artemis reference and review relevant upstream code/license deltas.
 - [ ] ENG-05/12: Design Windows display mirroring reconnect/restore regression informed by Screen Spawner v0.3.2. Actual topology mutation/hardware approval separate.
 
-- [ ] ENG-10/05: Cross-language expected lease handle identity comparison before admission, with Python fixed-width native structure, strict identity values, failure cleanup and native C# comparison/alias/replacement refusal. Six new offline cases (261 required on current main base); native Windows CI required. Persistent trusted enrollment and ACLs remain open.
+- [x] ENG-10/05: Cross-language expected lease handle identity comparison before admission, with Python fixed-width native structure, strict identity values, failure cleanup and native C# comparison/alias/replacement refusal. Six new offline cases (261 required on current main base); native Windows CI required. Persistent trusted enrollment and ACLs remain open.
+
+- [x] PR #69 merged adcc976; four integrated jobs PASS, independently verified Windows 270/270 and actual expected identity/alias/replacement smoke.

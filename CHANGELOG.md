@@ -1,5 +1,9 @@
 # Changelog
 
+## Expected lease identity (CI PASS)
+
+- Compare acquired native handle identities across Python and C# and reject unexpected identities and aliases in isolated fixtures.
+
 ## Managed Host readiness budget (CI PASS)
 
 - Read authenticated status headers without draining response bodies; remove inherited managed persistence configuration.
