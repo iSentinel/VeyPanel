@@ -235,3 +235,5 @@ scoped local acceptance with full policy compliance.
 - [x] PR #59 merged 81d65ed; three integrated jobs PASS, verified Windows 229/229 and actual recovered package inventory. No maintenance admission.
 
 - [ ] ENG-10/05: Smoke-only cooperative Windows maintenance sharing lease: multiple runtime read handles versus exclusive maintenance handle, exact sharing-violation busy classification, missing/unsafe path refusal, cross-process contention/release/owner-exit regression. Native CI required. Production file provisioning/ACL/identity, Desktop/Host/Launcher integration and exclusive mutation protocol remain separate.
+
+- [ ] ENG-10/05: Prototype Python CreateFileW lease interoperability with C# isolated contender, exact busy-only classification and exception-safe close; four offline adapter regressions, mandatory Windows cross-language smoke. No activation/mutation wiring; stable identity, ACL and cross-session qualification separate.
