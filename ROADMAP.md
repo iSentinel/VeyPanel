@@ -246,4 +246,6 @@ scoped local acceptance with full policy compliance.
 
 - [x] PR #62 merged 234ba2e; six integrated CI jobs PASS, Windows 243/243 and native sharing smoke verified. Production admission remains open.
 
-- [ ] ENG-08/10: Reject ambiguous portable ZIP and nested Host manifests/source evidence using bounded same-byte strict JSON, exact source evidence schema and extracted manifest validation. Reproduced duplicate-schema acceptance before fix; eight new regressions (251 required), real pinned archive/staging dry-run and prior verified backup PASS. Native CI required; archive payload mutation/hostile writers and full ZIP parser resource limits remain separate.
+- [x] ENG-08/10: Reject ambiguous portable ZIP and nested Host manifests/source evidence using bounded same-byte strict JSON, exact source evidence schema and extracted manifest validation. Reproduced duplicate-schema acceptance before fix; eight new regressions (251 required), real pinned archive/staging dry-run and prior verified backup PASS. Native CI required; archive payload mutation/hostile writers and full ZIP parser resource limits remain separate.
+
+- [x] PR #65 merged 6c58953, seven CI jobs PASS, independently verified 251/251 Windows QA against actual synthetic merge Git identity.
