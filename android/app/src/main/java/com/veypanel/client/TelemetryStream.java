@@ -2,7 +2,6 @@ package com.veypanel.client;
 
 import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
-import javax.net.ssl.SSLException;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -63,9 +62,7 @@ final class TelemetryStream implements TelemetryFeed {
     private void end(WebSocket ws) { mailbox.close(false); ws.cancel(); }
 
     static boolean isTlsError(Throwable value) {
-        for (int i = 0; value != null && i < 8; i++, value = value.getCause())
-            if (value instanceof SSLException || value instanceof java.security.cert.CertificateException) return true;
-        return false;
+        return TransportFailure.isTls(value);
     }
 
     @Override public void close() { end(socket); }

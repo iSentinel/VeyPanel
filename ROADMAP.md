@@ -189,3 +189,7 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-09: Qualify trusted wrong-IP SAN denial across HTTPS REST, OkHttp WSS and bounded WSS; preserve positive/unknown-CA runtime gates, require TLS-classified failure and no parsed HTTP request. Certificate and observer controls PASS locally; Android emulator required. User-installed CA and Activity fallback acceptance separate.
 
 - [x] PR #51 merged 73d97b6; eight CI jobs PASS, actual wrong-SAN denial across three Android transports and no parsed HTTP request confirmed. Physical owner CA acceptance remains open.
+
+- [ ] ENG-09: Share bounded TLS failure classification across WSS construction/read, REST polling and Host history. Wrapped recognized TLS errors terminal, existing network retry/fallback preserved; JVM fixture and native Android checks required. End-to-end Activity fallback acceptance and owner-installed CA remain open.
+
+- [ ] ENG-07/08: Require independent exact Python case registry, fail closed on discovery omissions/duplicates/extra IDs and all non-PASS mandatory outcomes. Initial 199 reviewed Windows IDs plus eight explicit fixtures; actual Windows/Android common QA required. Native report adapters and isolation separate.

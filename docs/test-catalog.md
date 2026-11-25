@@ -27,3 +27,23 @@ is incomplete evidence, never PASS. The existing native CI jobs retain
 their own checks and exit contracts. Actual CI import of JUnit, full
 provider-independent native orchestration and private evidence storage
 qualification remain open.
+
+## Required Python case inventory (candidate)
+
+QA-PY-02 now uses the reviewed, versioned config/python-qa-cases.json
+registry. The initial 199 identities were independently reconciled with
+accepted Windows JUnit from PR #50, then eight new inventory fixtures
+were explicitly added. Discovery must match the entire registry, without
+missing, extra or duplicate cases, before execution. Every required case
+must execute and PASS; a skipped or expected-failure mandatory case fails
+the gate. No automatic catalog regeneration in CI. Add or remove identities
+only with a reviewed test-scope change and its evidence in the same commit.
+
+case-inventory.json records discovery counts, missing reviewed identities
+and execution verdict; unexpected raw identities are not exported in
+that report. On discovery mismatch the runner emits an empty actual JUnit,
+zero executed tests and a failed gate; it does not synthesize results.
+An unreadable/invalid registry is an execution error, not success. Existing
+summary/JUnit fields and exit contracts remain, with additive inventory
+fields. Native suites, actual CI import, subprocess isolation and deadlines
+remain separate. No native or hardware acceptance follows from Python PASS.
