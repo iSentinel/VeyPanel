@@ -3,9 +3,13 @@
 from pathlib import Path
 import tempfile
 import unittest
+from contextlib import redirect_stdout, redirect_stderr
+from io import StringIO
+import json
+from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
-from run_offline_qa import EvidenceResult, write_junit
+from run_offline_qa import EvidenceResult, main, write_junit
 
 
 class EvidenceTests(unittest.TestCase):
@@ -42,6 +46,27 @@ class EvidenceTests(unittest.TestCase):
         unittest.defaultTestLoader.loadTestsFromTestCase(Fixture).run(result)
         self.assertEqual(result.testsRun, 1)
         self.assertEqual([value[0] for value in result.rows.values()], ["SKIPPED"])
+
+    def test_cli_error_event(self) -> None:
+        """Emit a safe execution error without exception text or stdout."""
+        out, err = StringIO(), StringIO()
+        with patch("sys.argv", ["qa", "--output", "unused", "--log-events"]):
+            with patch("run_offline_qa.run", side_effect=OSError("secret-canary")):
+                with redirect_stdout(out), redirect_stderr(err):
+                    self.assertEqual(main(), 1)
+        self.assertEqual(out.getvalue(), "")
+        self.assertEqual(json.loads(err.getvalue())["reason"], "EXECUTION_ERROR")
+        self.assertNotIn("secret-canary", err.getvalue())
+
+    def test_cli_failed_gate_event(self) -> None:
+        """A failed gate keeps its exit code and separates human/JSON output."""
+        out, err = StringIO(), StringIO()
+        with patch("sys.argv", ["qa", "--output", "unused", "--log-events"]):
+            with patch("run_offline_qa.run", return_value=False):
+                with redirect_stdout(out), redirect_stderr(err):
+                    self.assertEqual(main(), 2)
+        self.assertEqual(out.getvalue(), "FAIL: scoped Python offline QA\n")
+        self.assertEqual(json.loads(err.getvalue())["reason"], "RUN_FAILED")
 
 
 if __name__ == "__main__":
