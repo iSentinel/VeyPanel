@@ -158,3 +158,8 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-04: Remove raw Host smoke temporary logs; owned pipes, exact bootstrap, bounded cleanup, fixed diagnostics. PR #41 merged; all nine combined-source CI jobs PASS, including PowerShell capture and published Host smoke.
 
 - [x] ENG-10/05: Verify Launcher PR #37 with current main including private Host capture and safe QA events; all three exact-source CI jobs PASS, merged 2262808. WPF readiness remains open.
+
+- [ ] ENG-04: Integrate reviewed PR #42 framework request privacy with Launcher and require combined native Windows and reproduction CI.
+- [ ] ENG-09: Integrate reviewed PR #43 bounded WSS lifecycle with PR #44 local preview tap gating; require both JVM fixtures, actual Android emulator and APK reproduction on combined source. Production OkHttp unchanged.
+- [ ] ENG-10/05: Integrate read-only Recovery candidate 8f456da with Launcher; require real package inspection and manual-review exit/unchanged state in Windows CI. Explicit recovery, process fencing and uninstall remain separate.
+- [ ] ENG-06: Fence SurfaceTexture destruction versus active codec ownership; prevent stale generation callbacks, test repeated preview and lifecycle cancellation.

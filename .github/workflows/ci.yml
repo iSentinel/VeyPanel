@@ -93,6 +93,8 @@ jobs:
       - name: Run published Windows host integration smoke
         shell: pwsh
         run: ./scripts/Test-Host.ps1
+      - name: Verify Host request log privacy
+        run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --request-log-smoke publish
       - name: Run HTTPS LAN integration smoke
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --lan-smoke publish
       - name: Test WebSocket telemetry
@@ -207,6 +209,21 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           if ((Get-FileHash selection-test/selection.json).Hash -ne $before) { throw 'Launch dry-run modified selection' }
           if (Test-Path selection-test/.selection-lock) { throw 'Launch dry-run left a lock' }
+      - name: Verify read-only recovery inspection
+        shell: pwsh
+        run: |
+          python -m unittest discover -s scripts -p test_inspect_package_recovery.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $before = (Get-FileHash selection-test/selection.json).Hash
+          python scripts/inspect_package_recovery.py --root selection-test
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          New-Item -ItemType Directory -Path selection-test/.selection-lock | Out-Null
+          python scripts/inspect_package_recovery.py --root selection-test
+          if ($LASTEXITCODE -ne 2) { throw 'Expected manual review exit code 2' }
+          if (-not (Test-Path selection-test/.selection-lock)) { throw 'Recovery inspection removed lock' }
+          if ((Get-FileHash selection-test/selection.json).Hash -ne $before) { throw 'Recovery inspection modified state' }
+          Remove-Item -LiteralPath selection-test/.selection-lock
+          exit 0
       - uses: actions/upload-artifact@v4
         with:
           name: veypanel-win-x64-portable-unsigned
