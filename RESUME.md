@@ -349,6 +349,18 @@
 - Downloaded Windows and Android common QA evidence from 45515007864 and 45515015606 independently checked: 125/125 executed PASS, zero skips, exact debt baseline 429, no new/stale findings, clean actual checkouts e8f1acd and 523b1f2, identical tree 3cec1b97688d439917fcfbbba811a98e038d49d0, Python 3.12.10.
 - Next: manifest integrity hardening; rebase candidate f7fe6a5 and validate before review. PR #37 launcher and local recovery candidate must pass the new debt gate without increasing the baseline.
 
-## Launcher adoption integration candidate
-- PR #37 previous head 0df6f83 had both Windows CI PASS, but predates the mandatory engineering gate. Merge current main 62d079e into the development branch without rewriting published history. Add typed public signatures, test docstrings and safe CLI exception category. No baseline increase.
-- Existing nine launch policy fixtures plus a safe CLI failure canary; actual dry-run remains separate from mock process creation. No actual interactive WPF launch or process readiness acceptance. Publish after verifying current branch against the adopted gate.
+## Manifest integrity hardening candidate
+- Branch dev/manifest-integrity-hardening based on adoption PR #38. Six new tests for unreadable subtree, same-size mutation, entry count, manifest read bound, strict schema and atomic replacement failure; 34 exact debt identities removed, 395 remaining. Prior Android/Host/Desktop manifests and ordinary portable ZIP verify with hardened code. Existing staging manifest replacement remains supported; accepted artifacts must not be overwritten. No hostile concurrent tree, independent inventory or physical durability claim. Windows CI pending; do not merge before adoption gate.
+
+### Manifest Windows portability correction
+- PR #39 initial Windows 45515644679/45515652582 failed, 31 errors in common QA; downloaded JUnit confirms 100/131 PASS and no new/stale AST findings. Windows/ Desktop reproduction 45515652447/45515652277 logs explicitly report File changed before hashing, comparisons NOT_RUN.
+- CPython v3.12.10 source Modules/posixmodule.c (win32_xstat/update_st_mode_from_path) and Python/fileutils.c (_Py_fstat_noraise) reviewed: path stat adds executable extension mode bits and aliases deprecated ctime to birthtime. Cross-API Windows comparison uses exact device/file identity, size, mtime, birthtime, common mode bits; full before/after comparisons remain within each API. No timestamp tolerance or blanket fallback. New cross-API and actual executable/manifest reopen fixtures. Local QA PASS; corrected Windows CI required.
+
+## Verified manifest hardening checkpoint
+- PR #39 head 2065821abd160d4684a0afd970ba3045b6c4bc5c merged 3565f75. All ten CI jobs PASS; Windows 45516193643/45516181304, Android 45516193786/45516181388, Host reproduction 45516194018, Desktop/ZIP reproduction 45516193647.
+- Independently downloaded Windows QA artifact 14978715316: 133/133, zero skips, exact debt 395, no new/stale findings, clean checkout 684ccdf389c025c89393419dde47231bbb96ca8d tree 6900ee7c0a91d622f30714d3a4492da2100df2f4. Normalized Host comparison downloaded and verified. First failing attempt and CPython cross-API correction retained above.
+- Next: safe QA event branch, then Host smoke secret capture and request logging review. Launcher PR #37 must be verified against current main; no physical activation or release approval.
+
+## Launcher integration with manifest hardening
+- PR #37 f48098d passed Android 45516393427 and Windows 45516393526/45516398360, including adopted QA and private dry-run. Main advanced to a864dc9 after PR #39 merged. Resolve only ROADMAP/RESUME conflicts, preserve both verified checkpoints; combined-source CI required before merge.
+- Launcher retains typed public signatures, safe CLI failure category and ten regressions. No actual WPF launch. Exact debt baseline must remain 395.

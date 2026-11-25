@@ -1,5 +1,9 @@
 # Changelog
 
+## Manifest integrity hardening (CI PASS)
+
+- Bound traversal and manifest reads, detect observed mutations, reject invalid schema and atomically replace staging manifests; qualify Windows cross-API file identity comparisons. Eight regressions and 34 exact debt identities resolved.
+
 ## Engineering policy adoption (CI PASS)
 
 - Adopt canonical engineering standards, exact Python debt gate and common Python QA/JUnit reports. Fix cross-platform raw ZIP name rejection. Native and physical qualification remain separate.
