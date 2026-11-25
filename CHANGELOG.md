@@ -1,5 +1,9 @@
 # Changelog
 
+## Owner-only maintenance ACL (CI PASS)
+
+- Qualify protected owner-only directory and held-file DACLs in an isolated Windows fixture; refuse unexpected rules and unprotected ACLs.
+
 ## Expected lease identity (CI PASS)
 
 - Compare acquired native handle identities across Python and C# and reject unexpected identities and aliases in isolated fixtures.

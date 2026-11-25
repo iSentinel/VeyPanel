@@ -140,3 +140,28 @@ expected values and busy handling. Windows CI must qualify real handles.
 The expected identity is supplied by the fixture only. There is no
 persistent trusted enrollment, ACL policy, protection against ID reuse,
 hostile pathname races, production activation or maintenance operation.
+
+## Owner-only DACL qualification candidate
+
+Following the existing ProtectedGrantStore private owner-only policy,
+the isolated fixture provisions a fresh directory with a protected DACL
+and exactly one explicit FullControl allow rule for the current Windows
+user SID (inheritable to children). Its inert lease file has its own
+protected DACL with one explicit owner FullControl rule, no inheritance.
+No separate SYSTEM exception is added by this candidate. This is a
+same-user test policy, not a final multi-user installation ACL design.
+
+Validate the owner and protected/present DACL, canonical ordering, exact
+raw ACE count, CommonAce type, access qualifier, no callback, SID, mask
+and inheritance flags. Check the file descriptor through the already
+opened shared FileStream; check the directory descriptor by path.
+The native fixture requires positive readback, rejection of an additional
+Everyone read ACE on the file or directory, rejection of an unprotected
+file DACL, restoration of the original fixture policy and unchanged file
+bytes. No actual other-user access test or effective-access evaluation,
+ACL changes on installed data, persistent identity enrollment, ancestor
+race defense, privilege manipulation or maintenance authorization.
+Only a fresh temporary fixture is provisioned and modified. Native CI
+is mandatory; local common QA alone does not qualify ACL behavior.
+
+Verified PR #70 merged 2879a47: six integrated CI jobs PASS, independently verified Windows 270/270 and native ACL step. This is same-user fixture policy, not effective cross-user access or production admission.
