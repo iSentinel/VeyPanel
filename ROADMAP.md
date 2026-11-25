@@ -295,3 +295,4 @@ scoped local acceptance with full policy compliance.
 - [ ] ENG-12: Fixed-origin public HTTPS metadata collector with bounded worker processes and incomplete-row refusal; eight offline regressions. Live observation, native integration, freshness and scheduling require separate evidence.
 - [ ] ENG-12: Collector real public HTTPS qualification: five reviewed repositories UNCHANGED, exact detached source 1f7aeae and report verification PASS; 302 required local QA PASS. Native integrated CI required.
 - [ ] ENG-12: Separate versioned freshness receipt, exact observation digest and bounded clock validation; no change to classifier contract or automatic adoption.
+- [ ] ENG-12: Implement strict local freshness receipt and pure verification with eight offline regressions (310 required). CLI integration, actual receipt collection and native CI separate.
