@@ -217,3 +217,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-09: Bound REST body reads before/after every read and EOF, enforce remaining byte budget and interrupt checks; JVM deterministic fixtures and isolated TLS drip-body runtime required. Whole-request absolute deadline and active socket cancellation remain open.
 
 - [x] PR #55 merged 5534f42, exact integrated head 9b89fa8 seven automatic jobs plus manually dispatched Runtime 45546707362 PASS. Actual REST drip deadline and prior runtime gates verified.
+
+- [ ] ENG-10/05: Read-only maintenance inventory plan for exact active/previous archive set and staged trees, reject unknown roots/orphans/locks/tampering; bind original metadata bytes and root identity. Nine local regressions and real single-version 838-file unchanged PASS. Older two-version fixture correctly refused mismatched previous ZIP. Native Windows CI required. No maintenance admission or removal.

@@ -261,6 +261,19 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python scripts/inspect_package_recovery.py --root recovery-test
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Verify read-only maintenance inventory of recovered real package
+        shell: pwsh
+        run: |
+          $package = 'portable/VeyPanel-win-x64-portable.zip'
+          $digest = (Get-FileHash $package -Algorithm SHA256).Hash.ToLowerInvariant()
+          $before = (Get-FileHash recovery-test/selection.json).Hash
+          $lines = python scripts/plan_windows_maintenance.py --root recovery-test --archive $digest $package
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $plan = ($lines | Where-Object { $_ -notmatch '^PASS:' } | Out-String) | ConvertFrom-Json
+          if ($plan.status -ne 'INVENTORY_VERIFIED' -or -not $plan.read_only -or $plan.maintenance_admitted -or $plan.removed -or $plan.process_state -ne 'NOT_CHECKED') { throw 'Unexpected maintenance inventory result' }
+          if ((Get-FileHash recovery-test/selection.json).Hash -ne $before) { throw 'Maintenance inventory modified selection' }
+          python scripts/artifact_manifest.py verify "recovery-test/versions/$digest"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Verify explicit corrupt selection repair with retained backup
         shell: pwsh
         run: |
