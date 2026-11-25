@@ -292,8 +292,8 @@ scoped local acceptance with full policy compliance.
 - [ ] ENG-12: Offline GitHub API snapshot normalization boundary (repository identity, latest stable release, direct tag ref and corroborating commit); eight regression cases. Live bounded transport, freshness, scheduling and native CI remain separate.
 
 - [x] PR #72 merged fff1cfa; four integrated CI jobs PASS and independently verified Windows/Android 286/286 against exact merge tree. Artemis membership and report recomputation accepted.
-- [ ] ENG-12: Fixed-origin public HTTPS metadata collector with bounded worker processes and incomplete-row refusal; eight offline regressions. Live observation, native integration, freshness and scheduling require separate evidence.
-- [ ] ENG-12: Collector real public HTTPS qualification: five reviewed repositories UNCHANGED, exact detached source 1f7aeae and report verification PASS; 302 required local QA PASS. Native integrated CI required.
+- [x] ENG-12: Fixed-origin public HTTPS collector merged in PR #74, Windows and Android 302/302 independently verified; freshness and scheduling separate.
+- [x] ENG-12: Collector real public HTTPS qualification: five reviewed repositories UNCHANGED, exact detached source 1f7aeae and report verification PASS; PR #74 merged 6619906 with native integrated CI PASS.
 - [ ] ENG-12: Separate versioned freshness receipt, exact observation digest and bounded clock validation; no change to classifier contract or automatic adoption.
 - [ ] ENG-12: Implement strict local freshness receipt and pure verification with eight offline regressions (310 required). CLI integration, actual receipt collection and native CI separate.
 - [ ] ENG-12: Source-bound watch CLI, fresh exclusive evidence directory and strict bundle verification; eight additional offline cases (318 required). Live qualification and native CI required.
