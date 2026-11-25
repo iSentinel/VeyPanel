@@ -1,6 +1,12 @@
 using VeyPanel.Host;
 using System.Net;
 
+if (args.Length == 3 && args[0] == "--desktop-admission-probe")
+    return DesktopAdmissionSmoke.Probe(args[1], args[2]);
+
+if (args.Length == 1 && args[0] == "--desktop-admission-smoke")
+    return DesktopAdmissionSmoke.Run();
+
 if (args.Length == 2 && args[0] == "--request-log-smoke")
     return await RequestLogPrivacySmoke.RunAsync(args[1]);
 
