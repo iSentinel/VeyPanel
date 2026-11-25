@@ -47,3 +47,26 @@ An unreadable/invalid registry is an execution error, not success. Existing
 summary/JUnit fields and exit contracts remain, with additive inventory
 fields. Native suites, actual CI import, subprocess isolation and deadlines
 remain separate. No native or hardware acceptance follows from Python PASS.
+
+## Independent offline evidence verification (candidate)
+
+After successful offline execution, verify the four actual reports against
+the current clean tracked Git checkout, exact reviewed case registry and
+exact debt identities. Require zero nonpassing cases and consistent counts,
+reject missing or duplicate JUnit identities, unsupported XML declarations,
+invalid JSON, oversized files and nonfinite durations. The validator is
+read-only and never reports raw exception contents. CI then creates and
+reopens the artifact manifest before uploading the successful report set.
+
+    python scripts/run_offline_qa.py --output artifacts/qa-unique
+    python scripts/verify_offline_qa.py --report artifacts/qa-unique
+    python scripts/artifact_manifest.py write artifacts/qa-unique
+    python scripts/artifact_manifest.py verify artifacts/qa-unique
+
+A failed original gate still fails CI; its partial evidence may be uploaded
+for investigation but is not a qualified report. A consistent manifest
+does not authenticate the producer or prove that test logic was executed
+truthfully. The validator expects the exact tested checkout (including a
+synthetic PR merge checkout when used by CI). Trusted quiescent report
+directory and reviewed repository remain prerequisites. Native JUnit
+adapters, test isolation and external evidence authentication are separate.

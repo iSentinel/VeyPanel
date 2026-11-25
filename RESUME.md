@@ -459,3 +459,6 @@
 ## Combined TLS classification and required QA candidate
 - Base main be41a44, integrate 248360911acdb741fa904e4775fdd4005f85e125 and 43e624b79f4746ff94cffd09c87d85edd0d5b44d with merge ancestry. Resolve only documentation conflicts, preserve mandatory TLS SAN and runtime gates, all prior JVM fixtures and new inventory workflow triggers. Combined 207 required cases; fresh native Windows, Android, emulator and APK reproduction CI mandatory.
 - Next: verify exact combined CI/JUnit inventory and shared TLS JVM fixture. User CA, Activity-level fallback, pre-allocation WSS memory bound, process fencing and safe uninstall remain open. No deployment, release or physical approval.
+
+## Independent offline QA verification candidate
+- Base PR #52 d31eaf8, dev/qa-report-verification. Read-only bounded verifier cross-checks summary, inventory, audit and JUnit with current clean tracked Git commit/tree, reviewed cases and exact baseline. Reject missing/nonpassing/duplicate cases, wrong source, boolean counts, mismatched debt and XML DTD. Eight new explicit fixtures, registry 215. Both Windows/Android common gates verify then write/reopen artifact manifest before successful upload; failed gate evidence remains diagnostic. No native evidence or publisher authentication claim. Hold local pending #52; actual CI required after integration.

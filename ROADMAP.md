@@ -193,3 +193,5 @@ scoped local acceptance with full policy compliance.
 - [ ] ENG-09: Share bounded TLS failure classification across WSS construction/read, REST polling and Host history. Wrapped recognized TLS errors terminal, existing network retry/fallback preserved; JVM fixture and native Android checks required. End-to-end Activity fallback acceptance and owner-installed CA remain open.
 
 - [ ] ENG-07/08: Require independent exact Python case registry, fail closed on discovery omissions/duplicates/extra IDs and all non-PASS mandatory outcomes. Initial 199 reviewed Windows IDs plus eight explicit fixtures; actual Windows/Android common QA required. Native report adapters and isolation separate.
+
+- [ ] ENG-07/08: Independently verify common QA JSON/JUnit against required case identities, exact debt and tested Git checkout; manifest successful evidence before CI upload. Eight explicit negative/positive fixtures added (215 required). Native CI required; native report adapters and authenticity separate.
