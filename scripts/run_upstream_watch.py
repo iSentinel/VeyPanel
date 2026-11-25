@@ -70,8 +70,16 @@ def verify_bundle(directory: Path, expected_commit: str, expected_tree: str,
                   now: datetime) -> str:
     """Require exact files, approved baseline, fresh observation and valid report."""
     expected = {"baseline.json", "observed.json", "report.json", "receipt.json"}
-    if directory.is_symlink() or not directory.is_dir() or {p.name for p in directory.iterdir()} != expected:
-        raise ValueError("Unexpected upstream evidence files")
+    if (directory.is_symlink() or not directory.is_dir()
+            or getattr(directory.lstat(), "st_file_attributes", 0) & 0x400):
+        raise ValueError("Unsafe upstream evidence directory")
+    names = set()
+    for item in directory.iterdir():
+        if item.name not in expected or item.name in names:
+            raise ValueError("Unexpected upstream evidence files")
+        names.add(item.name)
+    if names != expected:
+        raise ValueError("Incomplete upstream evidence files")
     baseline, observed, claimed, receipt = (read_bounded(directory / name, MAX_REPORT)
         for name in ("baseline.json", "observed.json", "report.json", "receipt.json"))
     source = evidence(ROOT, expected_commit)

@@ -83,6 +83,8 @@
     "test_collect_upstream_review.CollectorTests.test_http_failure_and_oversize",
     "test_collect_upstream_review.CollectorTests.test_https_success_and_cleanup",
     "test_collect_upstream_review.CollectorTests.test_missing_rows",
+    "test_collect_upstream_review.CollectorTests.test_rate_limit_http_classification",
+    "test_collect_upstream_review.CollectorTests.test_rate_limit_stops_all",
     "test_collect_upstream_review.CollectorTests.test_reference_encoding",
     "test_collect_upstream_review.CollectorTests.test_worker_budget_and_strict_json",
     "test_collect_upstream_review.CollectorTests.test_wrong_identity_stops_requests",

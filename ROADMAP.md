@@ -297,3 +297,4 @@ scoped local acceptance with full policy compliance.
 - [ ] ENG-12: Separate versioned freshness receipt, exact observation digest and bounded clock validation; no change to classifier contract or automatic adoption.
 - [ ] ENG-12: Implement strict local freshness receipt and pure verification with eight offline regressions (310 required). CLI integration, actual receipt collection and native CI separate.
 - [ ] ENG-12: Source-bound watch CLI, fresh exclusive evidence directory and strict bundle verification; eight additional offline cases (318 required). Live qualification and native CI required.
+- [ ] ENG-12: Live negative source-bound receipt run: rate limit exhausted, one observed/four missing, collection and verification ERROR as designed. Stop-on-throttle regression added; complete real bundle remains pending quota recovery and native CI.
