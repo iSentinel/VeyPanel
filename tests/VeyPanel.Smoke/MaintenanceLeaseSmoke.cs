@@ -87,11 +87,17 @@ internal static class MaintenanceLeaseSmoke
         if (parent is null || !parent.Name.StartsWith(Prefix, StringComparison.Ordinal)
             || !string.Equals(parent.Parent?.FullName,
                 Path.TrimEndingDirectorySeparator(Path.GetFullPath(Path.GetTempPath())),
-                StringComparison.OrdinalIgnoreCase)) return 1;
-        using var lease = MaintenanceLease.TryOpen(path, mode != "shared");
-        if (lease is null) return 2;
-        if (mode == "exclusive-exit") Environment.Exit(0);
-        return 0;
+                StringComparison.OrdinalIgnoreCase)) return 6;
+        try
+        {
+            using var lease = MaintenanceLease.TryOpen(path, mode != "shared");
+            if (lease is null) return 2;
+            if (mode == "exclusive-exit") Environment.Exit(0);
+            return 0;
+        }
+        catch (UnauthorizedAccessException) { return 3; }
+        catch (IOException) { return 4; }
+        catch (ArgumentException) { return 5; }
     }
 
     private static int RunChild(string path, string mode)
