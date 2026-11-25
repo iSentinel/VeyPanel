@@ -351,3 +351,7 @@
 
 ## Manifest integrity hardening candidate
 - Branch dev/manifest-integrity-hardening based on adoption PR #38. Six new tests for unreadable subtree, same-size mutation, entry count, manifest read bound, strict schema and atomic replacement failure; 34 exact debt identities removed, 395 remaining. Prior Android/Host/Desktop manifests and ordinary portable ZIP verify with hardened code. Existing staging manifest replacement remains supported; accepted artifacts must not be overwritten. No hostile concurrent tree, independent inventory or physical durability claim. Windows CI pending; do not merge before adoption gate.
+
+### Manifest Windows portability correction
+- PR #39 initial Windows 45515644679/45515652582 failed, 31 errors in common QA; downloaded JUnit confirms 100/131 PASS and no new/stale AST findings. Windows/ Desktop reproduction 45515652447/45515652277 logs explicitly report File changed before hashing, comparisons NOT_RUN.
+- CPython v3.12.10 source Modules/posixmodule.c (win32_xstat/update_st_mode_from_path) and Python/fileutils.c (_Py_fstat_noraise) reviewed: path stat adds executable extension mode bits and aliases deprecated ctime to birthtime. Cross-API Windows comparison uses exact device/file identity, size, mtime, birthtime, common mode bits; full before/after comparisons remain within each API. No timestamp tolerance or blanket fallback. New cross-API and actual executable/manifest reopen fixtures. Local QA PASS; corrected Windows CI required.

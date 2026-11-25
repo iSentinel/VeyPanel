@@ -150,3 +150,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-15: Main Android runtime run 45509804749 initial attempt blocked by Maven Central HTTP 429 before instrumentation; one rerun completed PASS. Preserve failed attempt; no dependency or TLS bypass.
 
 - [ ] ENG-08/02: Fail closed on unreadable artifact subtrees, bound file/directory and manifest reads, detect observed same-size changes, require exact schema and atomically replace staging manifests. Six new regressions; 34 exact debt identities removed (429 -> 395). Actual prior Android/Host/Desktop/portable artifacts verified locally; Windows CI pending. Trusted quiescent tree assumption remains.
+
+- [ ] ENG-08: Resolve PR #39 Windows cross-API stat regression without dropping mutation detection. Exact source reviewed, two new regression fixtures PASS locally; Windows and reproduction CI required.

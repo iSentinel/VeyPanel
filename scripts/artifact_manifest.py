@@ -31,6 +31,26 @@ def regular(info: os.stat_result) -> bool:
     return stat.S_ISREG(info.st_mode) and not getattr(info, "st_file_attributes", 0) & 0x400
 
 
+def same_open_file(path_info: os.stat_result, handle_info: os.stat_result) -> bool:
+    """Compare identities across APIs, accounting for documented Win32 differences."""
+    if not regular(path_info) or not regular(handle_info):
+        return False
+    if os.name != "nt":
+        return file_identity(path_info) == file_identity(handle_info)
+    # CPython 3.12 path stat adds executable-extension bits and aliases
+    # ctime to birthtime. Compare the explicit creation time and common bits.
+    # Keep full identity checks within each API before/after the read.
+    return (
+        path_info.st_dev, path_info.st_ino, path_info.st_size,
+        path_info.st_mtime_ns, path_info.st_birthtime_ns,
+        path_info.st_mode & ~0o111,
+    ) == (
+        handle_info.st_dev, handle_info.st_ino, handle_info.st_size,
+        handle_info.st_mtime_ns, handle_info.st_birthtime_ns,
+        handle_info.st_mode & ~0o111,
+    )
+
+
 def hash_file(path: Path) -> str:
     """Hash a bounded regular file and detect observed mutation or replacement."""
     initial = path.lstat()
@@ -38,7 +58,8 @@ def hash_file(path: Path) -> str:
         raise ValueError("Unsafe or oversized hash input")
     digest = hashlib.sha256()
     with path.open("rb") as source:
-        if file_identity(os.fstat(source.fileno())) != file_identity(initial):
+        opened = os.fstat(source.fileno())
+        if not same_open_file(initial, opened):
             raise ValueError("File changed before hashing")
         remaining = initial.st_size
         while remaining:
@@ -47,7 +68,7 @@ def hash_file(path: Path) -> str:
                 raise ValueError("File truncated during hashing")
             digest.update(block)
             remaining -= len(block)
-        if source.read(1) or file_identity(os.fstat(source.fileno())) != file_identity(initial):
+        if source.read(1) or file_identity(os.fstat(source.fileno())) != file_identity(opened):
             raise ValueError("File changed while hashing")
     if file_identity(path.lstat()) != file_identity(initial):
         raise ValueError("File replaced or changed while hashing")
@@ -148,11 +169,12 @@ def load_manifest(path: Path) -> dict[str, Any]:
     if not regular(info) or info.st_size > MAX_MANIFEST:
         raise ValueError("Unsafe or oversized manifest")
     with path.open("rb") as source:
-        if file_identity(os.fstat(source.fileno())) != file_identity(info):
+        opened = os.fstat(source.fileno())
+        if not same_open_file(info, opened):
             raise ValueError("Manifest changed before reading")
         raw = source.read(MAX_MANIFEST + 1)
         if (len(raw) != info.st_size
-                or file_identity(os.fstat(source.fileno())) != file_identity(info)):
+                or file_identity(os.fstat(source.fileno())) != file_identity(opened)):
             raise ValueError("Manifest changed while reading")
     if file_identity(path.lstat()) != file_identity(info):
         raise ValueError("Manifest changed after reading")

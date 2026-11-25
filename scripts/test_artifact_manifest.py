@@ -1,12 +1,14 @@
 """Offline artifact manifest membership, mutation and path fixtures."""
 
 import os
+import stat
+from types import SimpleNamespace
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from artifact_manifest import MANIFEST, collect, compare, hash_file, load_manifest, safe_entry, write_manifest
+from artifact_manifest import MANIFEST, collect, compare, hash_file, load_manifest, safe_entry, same_open_file, write_manifest
 
 
 class ManifestTests(unittest.TestCase):
@@ -142,6 +144,30 @@ class ManifestTests(unittest.TestCase):
         self.assertEqual((self.root / MANIFEST).read_bytes(), previous)
         self.assertEqual(load_manifest(self.root / MANIFEST), report)
         self.assertEqual(len(list(self.root.iterdir())), 2)
+
+    def test_windows_cross_api_metadata(self) -> None:
+        """Permit only Windows cross-API ctime and extension mode differences."""
+        path = dict(st_dev=11, st_ino=23, st_size=7, st_mtime_ns=100,
+                    st_ctime_ns=10, st_birthtime_ns=10, st_mode=stat.S_IFREG | 0o777)
+        handle = {**path, "st_ctime_ns": 50, "st_mode": stat.S_IFREG | 0o666}
+        with patch("artifact_manifest.os.name", "nt"):
+            self.assertTrue(same_open_file(SimpleNamespace(**path), SimpleNamespace(**handle)))
+            for key in ("st_dev", "st_ino", "st_size", "st_mtime_ns", "st_birthtime_ns"):
+                changed = {**handle, key: handle[key] + 1}
+                self.assertFalse(same_open_file(SimpleNamespace(**path), SimpleNamespace(**changed)))
+            changed = {**handle, "st_mode": stat.S_IFREG | 0o444}
+            self.assertFalse(same_open_file(SimpleNamespace(**path), SimpleNamespace(**changed)))
+        with patch("artifact_manifest.os.name", "posix"):
+            self.assertFalse(same_open_file(SimpleNamespace(**path), SimpleNamespace(**handle)))
+
+    def test_hash_executable_and_manifest(self) -> None:
+        """Hash a real executable-named fixture and reopen its manifest."""
+        (self.root / "fixture.exe").write_bytes(b"inert fixture")
+        report = collect(self.root)
+        write_manifest(self.root, report)
+        self.assertEqual(load_manifest(self.root / MANIFEST), report)
+        self.assertEqual(hash_file(self.root / "fixture.exe"),
+                         next(x["sha256"] for x in report["files"] if x["path"] == "fixture.exe"))
 
 
 if __name__ == "__main__":
