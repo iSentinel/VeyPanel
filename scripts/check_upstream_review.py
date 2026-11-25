@@ -13,7 +13,8 @@ from artifact_manifest import read_bounded, strict_json
 
 MAX_REPORT = 65536
 REPOSITORIES = frozenset({
-    "ClassicOldSong/Apollo", "moonlight-stream/moonlight-android",
+    "ClassicOldSong/Apollo", "ClassicOldSong/moonlight-android",
+    "moonlight-stream/moonlight-android",
     "itkawa/screen-spawner", "LibreHardwareMonitor/LibreHardwareMonitor",
 })
 FIELDS = {"branch", "head", "release_id", "tag", "release_commit", "license",

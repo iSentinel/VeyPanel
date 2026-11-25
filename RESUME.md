@@ -657,3 +657,7 @@
 
 ## Integrated upstream review evidence
 - #71 original f2739e1 four jobs PASS; push Windows 45560890552 independently verified exact commit/tree c78e6087ca418d84bd6ce60d4db104a51932a5bd and 278/278. Integrate current main 46fe323 after #70 acceptance; preserve all native ACL and identity steps and 278 reviewed Python cases. Fresh integrated CI required.
+
+## Artemis and upstream report verifier candidate
+- Base integrated #71 5020188, dev/upstream-artemis-verifier. Explicit fifth member ClassicOldSong/moonlight-android using previously verified metadata, original four unchanged. New verify_upstream_review.py recomputes report from exact bounded snapshots, requires exact types/fields/row order/input SHA. Shared classifier implementation, not an independent algorithm or authenticity/freshness attestation. Eight additional cases, registry286, focused 16/16 PASS. Live five-repository observation /tmp/veypanel-upstream-five.MfI4aa at 06:39 UTC all UNCHANGED, baseline 081a6064bb23da17307defd61e17fd3ea274c9a529f8125edab5540fd6cb5ac1 observed ecf0ad55f3700bb90952ccd06d07451eed54f967b81e808b3cffb54832b03578, actual report verified, separate missing-row copy refused. Native CI mandatory; automated collector/freshness/scheduling open.
+- #70 merged 2879a47, main checkpoint 46fe323. #71 original four jobs PASS with exact push Windows 278/278, integrated 5020188 local common QA and manifest PASS, fresh CI pending. Unfinished blocked lease identity-record worktree unchanged. No installed ACL change, production admission or deployment.

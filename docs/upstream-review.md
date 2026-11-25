@@ -95,3 +95,34 @@ by the commits endpoint. The reference is resolved; its initial metadata
 status is REVIEW. It is not yet included in the four-repository structured
 baseline. Extend membership and tests explicitly in a later reviewed
 change. No client update, license conclusion or adoption is implied.
+
+## Five-repository membership and report verification candidate
+
+The structured inventory now explicitly includes the previously observed
+Artemis metadata (ClassicOldSong/moonlight-android) as a fifth required
+repository. This is an explicit membership migration, not a pin update;
+the original four entries are unchanged. A four-repository observation
+now yields ERROR for the missing Artemis row.
+
+    python scripts/verify_upstream_review.py --baseline config/upstream-review-baseline.json --observed observed.json --report report.json
+
+The read-only verifier bounds and strictly parses all three snapshots,
+recomputes the expected report from the two input byte sequences and
+requires exact JSON types, fields, ordered rows, statuses and SHA-256
+bindings. Exit 0 means the claimed report matches the inputs, including
+a correctly reported ERROR; exit 1 means invalid or unavailable evidence.
+The verifier shares classification logic with the producer; it is an
+independent invocation, not an independently implemented classifier.
+It does not verify freshness, source authenticity or upstream safety.
+
+A separate live metadata observation of all five repositories at
+2026-11-25 06:39 UTC returned five UNCHANGED rows. Baseline SHA-256
+081a6064bb23da17307defd61e17fd3ea274c9a529f8125edab5540fd6cb5ac1;
+observed SHA-256
+ecf0ad55f3700bb90952ccd06d07451eed54f967b81e808b3cffb54832b03578.
+All tag references were direct commit targets corroborated by the
+resolved commit endpoint. The actual report passed verification; a
+separate modified copy with one missing row was rejected. Eight new
+offline regressions cover mandatory Artemis membership and report
+recomputation. Automated live collection, freshness and scheduling
+remain separate. No dependency or installation changes.

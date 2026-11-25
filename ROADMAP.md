@@ -283,3 +283,5 @@ scoped local acceptance with full policy compliance.
 - [x] PR #70 merged 2879a47; six integrated CI jobs PASS, independently verified Windows 270/270 and native ACL fixture. Production admission and effective cross-user access remain open.
 
 - [ ] ENG-12: Offline structured upstream evidence classifier with exact reviewed membership and metadata schema, bounded strict JSON, REVIEW/UNCHANGED/ERROR precedence and input digests. Eight new regressions (278 required), separate actual four-repository observation all UNCHANGED. Artemis repository identified and exact metadata recorded separately. Native CI required; live collector, freshness verification, fifth-repository integration and scheduling remain open.
+
+- [ ] ENG-12: Explicitly extend upstream watch membership to Artemis and recompute/verify exact report against bounded source snapshots; eight additional regressions (286 required), real five-repository observation all UNCHANGED, tampered missing-row report refused. Shared classifier logic; independent implementation, origin/freshness and automated live collection remain separate. Native CI required.
