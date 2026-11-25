@@ -233,3 +233,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-10/05: Read-only maintenance inventory plan for exact active/previous archive set and staged trees, reject unknown roots/orphans/locks/tampering; bind original metadata bytes and root identity. Nine local regressions and real single-version 838-file unchanged PASS. Older two-version fixture correctly refused mismatched previous ZIP. Native Windows CI required. No maintenance admission or removal.
 
 - [x] PR #59 merged 81d65ed; three integrated jobs PASS, verified Windows 229/229 and actual recovered package inventory. No maintenance admission.
+
+- [ ] ENG-10/05: Smoke-only cooperative Windows maintenance sharing lease: multiple runtime read handles versus exclusive maintenance handle, exact sharing-violation busy classification, missing/unsafe path refusal, cross-process contention/release/owner-exit regression. Native CI required. Production file provisioning/ACL/identity, Desktop/Host/Launcher integration and exclusive mutation protocol remain separate.
