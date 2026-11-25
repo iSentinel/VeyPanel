@@ -444,3 +444,8 @@
 
 ## Trusted wrong-SAN transport candidate
 - Base 0feac5e, dev/transport-wrong-san. Add second isolated emulator phase with same CA, matching CN and wrong IP SAN; three client transports must reject with TLS classification. Negative fixture marks any parsed request, gate requires none. Existing positive/unknown-CA, oversized frame, cancellation and fallback assertions retained. Local OpenSSL identity and observer controls, Bash syntax, Python compilation and exact AST PASS; native emulator mandatory. No production switch, trust bypass or user CA acceptance.
+
+## Verified trusted wrong-SAN transport acceptance
+- PR #51 head 1a718dcea58daf6613751cce24430f02268e9f29 merged 73d97b62d8f0b9d2daab5675455fef09ee8bbb02. Windows 45542683025/45542689760, Android 45542682976/45542689764, runtime 45542682969 and reproduction 45542689769, all eight jobs PASS.
+- Downloaded actual Windows QA/JUnit: 199/199, zero skips, debt 329, clean checkout a9f74c75b01ffa012bcfd4a534e0c8a12bc614cf tree 1e2aab8aacab45ff8e354f857704b111a72dbe3e, no new/stale entries. Runtime log confirms three trusted wrong-SAN rejections and no application request reached negative fixture.
+- Next: integrate TLS classification candidate 2483609 and required Python inventory 43e624b. The registry reconciles prior 199 actual Windows IDs plus eight explicit fixtures; local 207/207. Fresh combined CI mandatory. User-installed CA, Activity-level terminal behavior and preallocation memory mitigation remain open. No production transport change or hardware approval.

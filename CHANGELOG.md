@@ -1,5 +1,9 @@
 # Changelog
 
+## Trusted wrong-SAN denial (CI PASS)
+
+- Qualify REST, OkHttp WSS and bounded WSS against a trusted test CA with an incorrect leaf IP SAN. Emulator and server-side request observation passed.
+
 ## Corrupt selection reconciliation (CI PASS)
 
 - Require an explicit plan and verified sole staged package; preserve exact corrupt metadata in an exclusive backup before state replacement. Native Windows integration passed.

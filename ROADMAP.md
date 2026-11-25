@@ -186,4 +186,6 @@ scoped local acceptance with full policy compliance.
 
 - [x] PR #50 merged 788d7a6; both Windows jobs PASS, actual 199/199 common QA, retained-backup recovery step PASS. Multi-version reconciliation and process fencing remain open.
 
-- [ ] ENG-09: Qualify trusted wrong-IP SAN denial across HTTPS REST, OkHttp WSS and bounded WSS; preserve positive/unknown-CA runtime gates, require TLS-classified failure and no parsed HTTP request. Certificate and observer controls PASS locally; Android emulator required. User-installed CA and Activity fallback acceptance separate.
+- [x] ENG-09: Qualify trusted wrong-IP SAN denial across HTTPS REST, OkHttp WSS and bounded WSS; preserve positive/unknown-CA runtime gates, require TLS-classified failure and no parsed HTTP request. Certificate and observer controls PASS locally; Android emulator required. User-installed CA and Activity fallback acceptance separate.
+
+- [x] PR #51 merged 73d97b6; eight CI jobs PASS, actual wrong-SAN denial across three Android transports and no parsed HTTP request confirmed. Physical owner CA acceptance remains open.

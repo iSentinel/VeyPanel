@@ -45,3 +45,5 @@ acceptance remains required. Fixture CA injection is test-only and does
 not establish Android owner-installed user CA behavior, physical device
 trust, or end-to-end Activity fallback behavior. Production code, pins,
 network binding, trust policy and transport selection are unchanged.
+
+Verified PR #51 merged 73d97b6, all eight CI jobs PASS. Runtime 45542682969 confirmed three trusted wrong-SAN refusals and no parsed HTTP request. This is isolated fixture trust, not physical owner-installed CA acceptance.
