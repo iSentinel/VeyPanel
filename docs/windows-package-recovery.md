@@ -33,3 +33,5 @@ process shutdown, uninstall or interactive WPF acceptance is implied.
 Public Python APIs and test fixtures meet the exact AST gate. CLI errors use
 fixed reason categories, not exception text. This stage is independent of
 Launcher execution and retains the private, quiescent root assumption.
+
+Verified combined acceptance: PR #45 merged 5bb5505, all fourteen CI jobs passed. Native scope only; physical and production acceptance remain separate.

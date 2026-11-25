@@ -28,3 +28,5 @@ reverse proxies or external tracing. Not a general secret-redaction claim.
 No actual historical credential leak is asserted. No TLS, grant or
 network binding policy is changed. Native CI and broader native logging
 review remain mandatory.
+
+Verified combined acceptance: PR #45 merged 5bb5505, all fourteen CI jobs passed. Native scope only; physical and production acceptance remain separate.

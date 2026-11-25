@@ -1,5 +1,9 @@
 # Changelog
 
+## Combined privacy, Android lifecycle and recovery inspection (CI PASS)
+
+- Integrate framework log privacy, experimental WSS lifecycle fencing, local tap gating and read-only package recovery. Combined native, reproduction and offline QA passed; no production transport switch or automatic recovery mutation.
+
 ## Verified package Launcher (CI PASS)
 
 - Bind selected Desktop launch plan to the trusted archive and exact installed manifest; explicit Windows apply, safe failure diagnostics and dry-run verified. Interactive activation remains separate.
