@@ -48,6 +48,8 @@ summary/JUnit fields and exit contracts remain, with additive inventory
 fields. Native suites, actual CI import, subprocess isolation and deadlines
 remain separate. No native or hardware acceptance follows from Python PASS.
 
+Verified PR #52 merged 35bfe9c: eight CI jobs PASS, actual Windows and Android common QA each 207/207 with exact case identities; shared TLS classifier JVM and existing runtime gates passed. Scope remains offline/emulator only.
+
 ## Independent offline evidence verification (candidate)
 
 After successful offline execution, verify the four actual reports against

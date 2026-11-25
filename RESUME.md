@@ -460,6 +460,11 @@
 - Base main be41a44, integrate 248360911acdb741fa904e4775fdd4005f85e125 and 43e624b79f4746ff94cffd09c87d85edd0d5b44d with merge ancestry. Resolve only documentation conflicts, preserve mandatory TLS SAN and runtime gates, all prior JVM fixtures and new inventory workflow triggers. Combined 207 required cases; fresh native Windows, Android, emulator and APK reproduction CI mandatory.
 - Next: verify exact combined CI/JUnit inventory and shared TLS JVM fixture. User CA, Activity-level fallback, pre-allocation WSS memory bound, process fencing and safe uninstall remain open. No deployment, release or physical approval.
 
+## Verified shared TLS classification and required cases
+- PR #52 head d31eaf8262c83c3f64413545dd98e31d874430cb merged 35bfe9ca1a529e2ea3836f0a4e751142a07f829f. Windows 45543260057/45543267158, Android 45543259959/45543267283, runtime 45543260051, reproduction 45543267230, all eight CI jobs PASS.
+- Independently downloaded Android and Windows QA reports: each 207/207, zero skips, exact required JUnit identities, inventory PASS, debt 329, clean checkout 1d32fcad9a0e34c44bd9aa47c33a7d56671021c8 tree 079b9d92915ad64837b3f134d54c4ffbebac4417. Native client policy fixture step PASS, runtime log confirms trusted wrong-SAN denial and no parsed HTTP requests.
+- Next candidate dev/qa-report-verification f250d7f includes 7c0d90d independent report verification and Activity TLS smoke. Local 215/215, verifier and four-file manifest PASS; native CI required. No owner CA, concurrent history, preallocation mitigation, deployment or hardware claim.
+
 ## Independent offline QA verification candidate
 - Base PR #52 d31eaf8, dev/qa-report-verification. Read-only bounded verifier cross-checks summary, inventory, audit and JUnit with current clean tracked Git commit/tree, reviewed cases and exact baseline. Reject missing/nonpassing/duplicate cases, wrong source, boolean counts, mismatched debt and XML DTD. Eight new explicit fixtures, registry 215. Both Windows/Android common gates verify then write/reopen artifact manifest before successful upload; failed gate evidence remains diagnostic. No native evidence or publisher authentication claim. Hold local pending #52; actual CI required after integration.
 

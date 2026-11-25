@@ -64,6 +64,8 @@ this is not comprehensive arbitrary exception graph classification.
 Native and Activity-level acceptance remain separate. No trust or
 production transport selection change.
 
+Verified PR #52 merged 35bfe9c: eight CI jobs PASS, actual Windows and Android common QA each 207/207 with exact case identities; shared TLS classifier JVM and existing runtime gates passed. Scope remains offline/emulator only.
+
 ## Activity terminal TLS candidate
 
 In the isolated negative TLS phase, exercise MainActivity's actual
