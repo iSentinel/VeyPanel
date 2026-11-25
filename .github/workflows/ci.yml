@@ -93,6 +93,8 @@ jobs:
       - name: Run published Windows host integration smoke
         shell: pwsh
         run: ./scripts/Test-Host.ps1
+      - name: Verify Host request log privacy
+        run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --request-log-smoke publish
       - name: Run HTTPS LAN integration smoke
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --lan-smoke publish
       - name: Test WebSocket telemetry

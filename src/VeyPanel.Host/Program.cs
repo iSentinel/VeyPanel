@@ -67,6 +67,10 @@ if (args.Contains("--help") || args.Contains("-h"))
 }
 var managed = args.Length == 1 && args[0] == "--managed-local";
 var builder = WebApplication.CreateBuilder(managed ? [] : args);
+// Framework request/exception messages can contain untrusted paths, queries
+// or other private values before authorization. Do not publish them through
+// default console/debug/event providers, including configuration overrides.
+builder.Logging.ClearProviders();
 var lan = managed ? null : Environment.GetEnvironmentVariable("VEYPANEL_LAN_IP");
 var pfx = Environment.GetEnvironmentVariable("VEYPANEL_PFX");
 var password = Environment.GetEnvironmentVariable("VEYPANEL_PFX_PASSWORD");
