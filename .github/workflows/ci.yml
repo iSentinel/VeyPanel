@@ -50,6 +50,8 @@ jobs:
           node --check src/VeyPanel.Host/wwwroot/enroll.js
       - run: dotnet build src/VeyPanel.Host -c Release
       - run: dotnet run --project tests/VeyPanel.Smoke -c Release
+      - name: Verify cooperative Desktop session admission
+        run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --desktop-admission-smoke
       - run: dotnet publish src/VeyPanel.Host -c Release -r win-x64 --self-contained true -p:ContinuousIntegrationBuild=true -o publish
       - name: Apply verified deterministic Host endpoint metadata
         shell: pwsh
@@ -118,6 +120,11 @@ jobs:
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --persistent-smoke publish
       - name: Test managed Host lifecycle
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --lifecycle-smoke publish
+      - name: Verify managed Host exit after isolated owner process exits
+        run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --host-owner-exit-smoke publish
+      - name: Verify process observation after managed owner exit
+        shell: pwsh
+        run: ./scripts/Get-PackageProcessObservation.ps1
       - name: Verify published Host artifact file manifest
         run: |
           python -m unittest discover -s scripts -p test_artifact_manifest.py -v

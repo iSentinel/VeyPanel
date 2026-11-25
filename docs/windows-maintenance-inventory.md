@@ -31,6 +31,8 @@ Do not rewrite that selection or treat the missing archive as verified.
 Two-version positive coverage currently uses inert fixture archives.
 Native CI requires a real single-version recovered package inventory.
 
+Verified PR #59 merged 81d65ed, three integrated CI jobs PASS; Windows 229/229 and real recovered package inventory independently checked. No maintenance exclusion claim.
+
 ## Verified package-source backup candidate
 
 Use only a private, pre-existing destination parent with suitable ACLs

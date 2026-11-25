@@ -218,6 +218,20 @@ scoped local acceptance with full policy compliance.
 
 - [x] PR #55 merged 5534f42, exact integrated head 9b89fa8 seven automatic jobs plus manually dispatched Runtime 45546707362 PASS. Actual REST drip deadline and prior runtime gates verified.
 
-- [ ] ENG-10/05: Read-only maintenance inventory plan for exact active/previous archive set and staged trees, reject unknown roots/orphans/locks/tampering; bind original metadata bytes and root identity. Nine local regressions and real single-version 838-file unchanged PASS. Older two-version fixture correctly refused mismatched previous ZIP. Native Windows CI required. No maintenance admission or removal.
+- [x] ENG-10/05: Cooperative Desktop session-local admission before WPF window construction; retain UI-thread mutex until exit, refuse competing participating instance. Native contention/foreign-release fixture required. Cross-process, interactive WPF, crash/Host and maintenance fencing remain open.
+
+- [x] ENG-10/05: Extend cooperative Desktop admission native fixture to separate owned smoke processes, release and abandoned-owner reacquisition, with bounded fixture cleanup and unique test names. No WPF or Host activation; native CI required.
+
+- [x] PR #57 merged b6b772d; seven integrated CI jobs PASS, verified Windows 220/220 and native mutex thread/process/abandonment checks. Actual WPF and maintenance exclusion remain open.
+
+- [x] ENG-10/05: Distinguish ready Host from owned process requiring cleanup; refuse Start/dashboard in uncertain cleanup state, keep Stop available, finalize Dispose only after successful cleanup. Extend owned real Host lifecycle smoke with simulated token loss and explicit Stop. Native CI required; actual OS stop failure and WPF acceptance separate.
+
+- [x] ENG-10/05: Qualify actual managed Host graceful exit after isolated owning smoke process exits without Dispose, using private fixture handshake, retained observed handle and bounded waits. No termination by observed PID; subsequent read-only process observation required. Native Windows CI only; general crash and maintenance qualification separate.
+
+- [x] PR #58 merged 1d6e454; seven integrated CI jobs PASS, verified Windows 220/220 and actual owned Host cleanup/owner-exit markers. Actual WPF and exclusive maintenance remain open.
+
+- [x] ENG-10/05: Read-only maintenance inventory plan for exact active/previous archive set and staged trees, reject unknown roots/orphans/locks/tampering; bind original metadata bytes and root identity. Nine local regressions and real single-version 838-file unchanged PASS. Older two-version fixture correctly refused mismatched previous ZIP. Native Windows CI required. No maintenance admission or removal.
+
+- [x] PR #59 merged 81d65ed; three integrated jobs PASS, verified Windows 229/229 and actual recovered package inventory. No maintenance admission.
 
 - [ ] ENG-10/05: Explicit plan-bound package-source backup to fresh private destination, exact selection bytes, original pinned ZIPs, bounded exclusive streaming, source recheck and independent receipt binding/manifest verification. Seven new regressions (236 required), real isolated 291091352-byte ZIP backup PASS, source 838 files unchanged. Native Windows CI required; restore, runtime user-data backup and maintenance exclusion separate.
