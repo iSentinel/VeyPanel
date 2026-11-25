@@ -249,3 +249,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-08/10: Reject ambiguous portable ZIP and nested Host manifests/source evidence using bounded same-byte strict JSON, exact source evidence schema and extracted manifest validation. Reproduced duplicate-schema acceptance before fix; eight new regressions (251 required), real pinned archive/staging dry-run and prior verified backup PASS. Native CI required; archive payload mutation/hostile writers and full ZIP parser resource limits remain separate.
 
 - [x] PR #65 merged 6c58953, seven CI jobs PASS, independently verified 251/251 Windows QA against actual synthetic merge Git identity.
+
+- [ ] ENG-08: Close JUnit evidence grammar to reviewed suite/case attributes and whitespace-only inter-element content; reject unreviewed XML declarations/instructions. Six new regressions (257 required on main base), real 251-case report accepted, tampered copy refused even after manifest reseal. Native CI required. Hashes and grammar are not evidence authenticity.
