@@ -224,3 +224,18 @@ qualification, not a complete freshness PASS. Do not retry until quota
 recovers. The collector now terminates the remaining run on HTTP 429 or
 403 with explicit quota exhaustion or Retry-After. Other failures retain
 existing incomplete-row behavior. No authentication or automatic retries.
+
+## CI evidence admission candidate
+
+    python scripts/run_upstream_watch_ci.py collect --output NEW_ARCHIVE --expected-commit FULL_COMMIT --expected-tree FULL_TREE
+    python scripts/run_upstream_watch_ci.py verify --output NEW_ARCHIVE --expected-commit FULL_COMMIT --expected-tree FULL_TREE
+
+The CI wrapper requires the intended source tree before any collection,
+creates a unique private root, and verifies the complete bundle before
+writing a separate root-level file manifest. It verifies the manifest and
+bundle again on readback. An incomplete or inconsistent run is not sealed;
+failed directories may contain partial evidence and must not be reused.
+The exact accepted archive contains bundle/ with four files and a root
+manifest. Exit 0 is unchanged, 2 is review required, 1 is a failed gate.
+A valid manifest cannot substitute for receipt or report verification.
+No signing, publication, automatic updates or schedule is implied.
