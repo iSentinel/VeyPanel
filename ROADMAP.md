@@ -155,4 +155,6 @@ scoped local acceptance with full policy compliance.
 
 - [x] ENG-04: Add optional closed-schema QA JSONL events, bounded monotonic durations, safe reason codes, stdout/stderr separation and canary/exit regressions; PR #40 merged, all four CI jobs PASS. Audit Host token capture and legacy CLI exception messages next; no general redaction claim.
 
-- [ ] ENG-04: Disable default free-form framework log providers; test actual published Host with synthetic request canaries, authorization and managed shutdown. Native CI required; safe native event replacement and other diagnostic sinks remain open.
+- [x] ENG-04: Remove raw Host smoke temporary logs; owned pipes, exact bootstrap, bounded cleanup, fixed diagnostics. PR #41 merged; all nine combined-source CI jobs PASS, including PowerShell capture and published Host smoke.
+
+- [ ] ENG-04: Disable default free-form framework log providers and verify published Host request canaries. PR #42 initial eight jobs PASS; combined-source CI with private Host capture required. Safe native event replacement remains open.

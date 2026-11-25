@@ -368,5 +368,13 @@
 - PR #40 head 34c05a868b62b8c258cd66cba0b9b12f9ab23f3c merged e0c1c3b. Windows 45516846055/45516854427 and Android 45516846052/45516854500 PASS. Downloaded Windows report confirms 141/141, zero skips, clean checkout a9ed009de2fc1c7fc38e8e66c3a358b1a81eb21a, tree 4b723ed640bb65715950a6142f3c5c3203a8d066, debt 395, exact delta empty.
 - PR #41 77dc4ce and PR #37 cf59419 previously passed all eight/three jobs respectively; integrate current main and recheck before merge. Next independent P0: framework request logging and synthetic credential canary.
 
-## Framework request logging candidate
-- Source 2f4b7a9, dev/host-framework-log-privacy. Clear default ASP.NET Core providers to avoid free-form request/exception text; intentional loss of framework startup/request log output, explicit private bootstrap unchanged. New actual-process smoke observes synthetic canary and owner token after bootstrap, checks rejection and authenticated telemetry, verifies shutdown and never prints raw child output. Local Python gate only; no .NET on Proxmox. Native CI required; no historic leak or comprehensive logging claim.
+## Host smoke capture integration
+- PR #41 head 77dc4ce: Windows 45517055826/45517062834, Host reproduction 45517062962, Desktop reproduction 45517063056, all eight jobs PASS. Merge current main 2f4b7a9 with QA events, preserve documentation checkpoints. Combined-source CI required.
+- No raw temporary logs, owned pipe capture and fixed errors; all telemetry assertions retained. Synthetic fixture and actual Windows smoke ran in prior CI. No historical public leak established.
+
+## Verified Host smoke capture
+- PR #41 head 78bc723a9fc486159705677830019fdff7789a55 merged b3d4ebf. All nine combined-source jobs PASS: Windows 45518031667/45518021242, Android 45518021295, Host reproduction 45518031645, Desktop reproduction 45518031818. GitHub API confirms both private bootstrap fixture and actual published Host smoke steps succeeded.
+- Pending independent candidates: PR #42 8ebbc1b default framework log privacy, PR #43 e506c6a experimental WSS state with JVM/emulator checks. Both clean local Python QA 141/141; native CI required. PR #37 cf59419 passed three jobs against older main; integrate current main before merge. No release or hardware approval.
+
+## Framework logging integration
+- PR #42 head 8ebbc1b passed Windows 45518204233/45518213152, Host reproduction 45518212979 and Desktop reproduction 45518212929 (eight jobs). API confirms mandatory request log privacy step success. Integrate main bf88748; documentation conflicts resolved, new exact-source CI required. PR #43 e506c6a eight jobs PASS including Android runtime 45518421728; not merged. Launcher c2d16ba successfully pushed after earlier HTTP 500; fresh CI required. No hardware or release approval.
