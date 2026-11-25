@@ -471,6 +471,11 @@
 ## Activity terminal TLS candidate
 - On dev/qa-report-verification after 7c0d90d, add androidTest-only reflection admission of synthetic loopback session to actual MainActivity polling. No production changes. Negative phase uses production trust (unknown CA or wrong identity), require terminal UI, one WSS attempt, no fallback/REST errors/samples, cleared session/stream, disabled history, and stable state after 3.5s. Existing trusted wrong-SAN and server no-request checks remain mandatory. Native emulator NOT_RUN locally; no owner CA or concurrent history qualification.
 
+## Verified QA reports and Activity terminal TLS
+- PR #53 head ef0495c1a4d7a1e909dfd3eb53f93f725035a9cd merged f473688d3409e69615567a8cfa28605ee9e1679c. Windows 45543711121/45543716791, Android 45543711045/45543716776, runtime 45543711027, reproduction 45543716782; all eight jobs PASS.
+- Downloaded actual Android and Windows QA evidence: both four-file manifests verify, independent report verifier PASS, 215/215, exact debt 329, checkout 67ab755b210064177f15d496a5a9b09ad98f6309 tree 2f12b3767592e638d85d3b4d8266fee77396b2a6. Runtime log confirms Activity TLS terminal state with no fallback/retry, three trusted wrong-SAN refusals and no application request on negative fixture.
+- Next dev/activity-history-terminal-fence 2f6e18d includes 5d84192 synthetic ordered history/telemetry callback tests and QA subtest identity privacy. Local 219/219, independent validator and manifest PASS, zero unattributed outcomes. Native CI required; no live concurrent socket cancellation or physical user CA claim.
+
 ## Activity history terminal fencing candidate
 - Base PR #53 ef0495c, dev/activity-history-terminal-fence. Add androidTest-only deterministic ordered callbacks on actual Activity, two fresh instances, positive history delivery, terminal history vs terminal telemetry with both FutureTask fixtures pending, close/cancel and old-generation refusal after same-access synthetic session. Mandatory runtime PASS marker. No production change or network use by this fixture; no live cancellation latency, physical or user CA claim. Native CI pending integration after PR #53.
 

@@ -73,6 +73,8 @@ synthetic PR merge checkout when used by CI). Trusted quiescent report
 directory and reviewed repository remain prerequisites. Native JUnit
 adapters, test isolation and external evidence authentication are separate.
 
+Verified PR #53 merged f473688, all eight CI jobs PASS. Downloaded Windows/Android reports each 215/215 with independent validator and manifest verification. Runtime 45543711027 confirmed actual Activity terminal TLS with no fallback/retry and negative fixture no-request gate. Physical trust and concurrent network cancellation remain separate.
+
 ## Mandatory result identity privacy (candidate)
 
 A skipped unittest subTest previously exposed its parameter repr through

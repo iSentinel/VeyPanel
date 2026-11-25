@@ -1,5 +1,9 @@
 # Changelog
 
+## Independent QA evidence and terminal Activity TLS (CI PASS)
+
+- Verify exact common QA reports and their manifest before publication; qualify terminal foreground TLS failure without automatic fallback or polling on an isolated emulator.
+
 ## Shared TLS failure classification and mandatory case registry (CI PASS)
 
 - Unify foreground TLS classification; reject incomplete or skipped required Python test inventories. Native CI and actual Windows/Android case evidence passed.
