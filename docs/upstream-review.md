@@ -198,3 +198,20 @@ Incomplete observations can be recorded but never pass freshness validation.
 No remote attestation or trusted time source is implied; a party able to
 rewrite observations and receipts can recompute hashes. The pure schema
 and verifier precede CLI collection integration and scheduling.
+
+## Source-bound watch CLI candidate
+
+From the intended clean tracked Git checkout, create a new private bundle:
+
+    python scripts/run_upstream_watch.py collect --output NEW_DIRECTORY --expected-commit FULL_COMMIT
+    python scripts/run_upstream_watch.py verify --directory NEW_DIRECTORY --expected-commit FULL_COMMIT --expected-tree FULL_TREE
+
+The CLI reads the approved baseline and checks actual source identity before
+and after collection. It writes four exclusive files (baseline, observation,
+report, receipt), refuses existing output directories, and verifies readback
+against the current approved baseline and expected source. Exit 0 unchanged,
+2 review, 1 error/incomplete. Verification refuses incomplete, stale, extra,
+or mismatched evidence. Failed runs can leave a partial directory; do not
+reuse it. Use a private owner-controlled parent. Windows directory mode is
+not an ACL guarantee. No atomic directory publication, authenticity or remote
+clock attestation is implied. Scheduled workflow remains separate.

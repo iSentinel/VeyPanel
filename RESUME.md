@@ -677,3 +677,4 @@
 
 ## Local upstream freshness receipt candidate
 - Base collector dbefce1, separate dev/upstream-freshness-receipt. Exact observation digest, source commit/tree, canonical UTC, monotonic duration, exact schema and membership; fail closed for stale/future/incomplete evidence. Provisional 24h age, 5s skew, 185s duration cap. Eight offline cases, registry310. CLI/live and native CI pending; no remote attestation, scheduling, release or dependency updates.
+- Receipt pure implementation c222024 local common QA 310/310, source audit and independent manifest/verifier PASS. Added source-bound CLI with clean checkout before/after, exact baseline, explicit expected source, exclusive four-file output and readback; eight cases (318 required). Actual live bundle and native integration pending.

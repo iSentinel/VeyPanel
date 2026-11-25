@@ -296,3 +296,4 @@ scoped local acceptance with full policy compliance.
 - [ ] ENG-12: Collector real public HTTPS qualification: five reviewed repositories UNCHANGED, exact detached source 1f7aeae and report verification PASS; 302 required local QA PASS. Native integrated CI required.
 - [ ] ENG-12: Separate versioned freshness receipt, exact observation digest and bounded clock validation; no change to classifier contract or automatic adoption.
 - [ ] ENG-12: Implement strict local freshness receipt and pure verification with eight offline regressions (310 required). CLI integration, actual receipt collection and native CI separate.
+- [ ] ENG-12: Source-bound watch CLI, fresh exclusive evidence directory and strict bundle verification; eight additional offline cases (318 required). Live qualification and native CI required.
