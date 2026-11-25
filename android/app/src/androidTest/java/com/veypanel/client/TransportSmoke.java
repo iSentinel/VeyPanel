@@ -80,7 +80,21 @@ final class TransportSmoke {
         }
         expectDenied(revoke);
         expectHistoryDenied(revoke);
+        restDeadline();
         // The test fixture accepts only known artificial credentials.
+    }
+
+    private void restDeadline() throws Exception {
+        long start = android.os.SystemClock.elapsedRealtime();
+        try {
+            TelemetryClient.fetch(ReaderSession.fixture('E'), context.getSocketFactory());
+        } catch (IOException failure) {
+            long elapsed = android.os.SystemClock.elapsedRealtime() - start;
+            check("REST response deadline".equals(failure.getMessage()), "REST absolute body budget");
+            check(elapsed >= 4800 && elapsed < 9000, "REST deadline window");
+            return;
+        }
+        throw new IllegalStateException("Drip REST body accepted");
     }
 
     private void expectTls(ReaderSession s) throws Exception {
