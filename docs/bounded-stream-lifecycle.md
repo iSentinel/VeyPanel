@@ -82,3 +82,20 @@ This is not a test of all possible delayed callbacks, concurrent history
 completion or owner-installed CA behavior. Emulator CI required.
 
 Verified PR #53 merged f473688, all eight CI jobs PASS. Downloaded Windows/Android reports each 215/215 with independent validator and manifest verification. Runtime 45543711027 confirmed actual Activity terminal TLS with no fallback/retry and negative fixture no-request gate. Physical trust and concurrent network cancellation remain separate.
+
+## Ordered Activity history/telemetry terminal fencing candidate
+
+The real Activity receives deterministic synthetic callbacks on its UI
+thread, without any network I/O, actual credentials or production changes.
+Two independent Activity instances exercise terminal telemetry failure with
+history pending, and terminal history failure with telemetry pending.
+A positive synthetic history snapshot first confirms callback delivery.
+The terminal callback must cancel both pending FutureTask fixtures, close
+the synthetic feed exactly once, invalidate the generation, clear active
+session, live data and history, and disable history refresh. Late sample,
+history success and denial callbacks from the old generation must not
+alter the terminal state or affect a subsequent same-access session.
+The synthetic reconnect tests callback fencing, not credential admission
+or an actual connection. The existing real negative TLS phase remains
+mandatory. This is ordered interleaving coverage, not concurrent network
+cancellation latency or actual socket closure qualification.

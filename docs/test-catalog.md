@@ -74,3 +74,15 @@ directory and reviewed repository remain prerequisites. Native JUnit
 adapters, test isolation and external evidence authentication are separate.
 
 Verified PR #53 merged f473688, all eight CI jobs PASS. Downloaded Windows/Android reports each 215/215 with independent validator and manifest verification. Runtime 45543711027 confirmed actual Activity terminal TLS with no fallback/retry and negative fixture no-request gate. Physical trust and concurrent network cancellation remain separate.
+
+## Mandatory result identity privacy (candidate)
+
+A skipped unittest subTest previously exposed its parameter repr through
+the JUnit case identity. Attribute results to the admitted parent test
+object and its reviewed ID, never to an arbitrary subtest or fixture
+holder ID. Keep the strongest nonpassing outcome and clear admission at
+stopTest. Fixture-level failures without an admitted case remain counted
+in summary errors/skips and unattributed_outcomes; they do not fabricate
+a JUnit case. The acceptance gate and verifier require zero unattributed
+outcomes. Four explicit regressions added (219 required cases). This is
+report identity sanitization, not general stdout/stderr isolation.

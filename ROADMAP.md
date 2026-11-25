@@ -201,3 +201,7 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-09: Isolated actual Activity terminal TLS regression using production trust and synthetic loopback session; require one attempt, zero fallback/retry/samples, cleared active session and disabled history; negative server observer retained. Native emulator required; concurrent history and owner-installed CA separate.
 
 - [x] PR #53 merged f473688; eight CI jobs PASS, actual Windows/Android 215/215 with manifest and independent verification. Runtime confirms terminal Activity TLS, no fallback/retry and no negative fixture HTTP request.
+
+- [ ] ENG-09: Qualify both ordered history/telemetry terminal callback interleavings on actual Activity, including pending future cancellation, feed close, generation invalidation, history clear and same-access subsequent session fencing. Synthetic callbacks only; actual emulator CI required. Live concurrent network cancellation remains separate.
+
+- [ ] ENG-04/08: Prevent subtest parameter and unreviewed identity export in QA JUnit; attribute to admitted parent, preserve nonpassing priority, count unattributed fixture outcomes and fail closed. Four regressions (219 required); native common QA pending.

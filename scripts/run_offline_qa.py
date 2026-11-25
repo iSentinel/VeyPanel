@@ -23,21 +23,41 @@ ROOT = Path(__file__).resolve().parent.parent
 class EvidenceResult(unittest.TestResult):
     """Capture sanitized outcomes; do not publish exception variables."""
 
-    def __init__(self) -> None:
-        """Initialize a single execution record per test."""
+    def __init__(self, expected: tuple[str, ...] | None = None) -> None:
+        """Initialize records restricted to reviewed case identities when supplied."""
         super().__init__()
         self.rows: dict[str, tuple[str, float]] = {}
-        self.started: dict[str, float] = {}
+        self.started: dict[int, tuple[str, float]] = {}
+        self.expected = None if expected is None else set(expected)
+        self.unattributed = 0
 
     def startTest(self, test: unittest.TestCase) -> None:
         """Start monotonic timing."""
         super().startTest(test)
-        self.started[test.id()] = time.monotonic()
+        key = test.id()
+        if self.expected is None or key in self.expected:
+            self.started[id(test)] = (key, time.monotonic())
+
+    def stopTest(self, test: unittest.TestCase) -> None:
+        """Remove the completed case from active admission."""
+        self.started.pop(id(test), None)
+        super().stopTest(test)
 
     def record(self, test: unittest.TestCase, status: str) -> None:
         """Record only case identity, status and elapsed seconds."""
-        key = test.id()
-        self.rows[key] = (status, time.monotonic() - self.started.get(key, time.monotonic()))
+        # unittest passes a _SubTest to addSkip; its id includes arbitrary
+        # parameter reprs. Only the admitted parent identity may be exported.
+        parent = getattr(test, "test_case", test)
+        admitted = self.started.get(id(parent))
+        if admitted is None:
+            self.unattributed += 1
+            return
+        key, started = admitted
+        priority = {"PASS": 0, "SKIPPED": 1, "FAIL": 2, "ERROR": 3}
+        previous = self.rows.get(key)
+        if previous is not None and priority[previous[0]] > priority[status]:
+            status = previous[0]
+        self.rows[key] = (status, time.monotonic() - started)
 
     def addSuccess(self, test: unittest.TestCase) -> None:
         """Record success."""
@@ -114,12 +134,12 @@ def run_required_tests(output: Path) -> tuple[EvidenceResult, dict[str, object],
     expected = load_cases(ROOT / "config/python-qa-cases.json")
     suite = unittest.defaultTestLoader.discover(str(ROOT / "scripts"), pattern="test_*.py")
     inventory = compare_cases(expected, discovered_cases(suite))
-    result = EvidenceResult()
+    result = EvidenceResult(expected)
     start = time.monotonic()
     if inventory["status"] == "PASS":
         suite.run(result)
     write_junit(output / "python-results.xml", result, time.monotonic() - start)
-    ok = inventory["status"] == "PASS" and execution_passed(
+    ok = inventory["status"] == "PASS" and result.unattributed == 0 and execution_passed(
         expected, result.rows, result.testsRun, result.wasSuccessful())
     write_json(output / "case-inventory.json", {"schema": 1, **inventory,
                "execution_status": "PASS" if ok else "FAIL"})
@@ -155,6 +175,7 @@ def run(output: Path, events: TextIO | None = None) -> bool:
         "tests_run": result.testsRun, "passed": passed, "failures": len(result.failures),
         "errors": len(result.errors), "skipped": len(result.skipped),
         "expected_failures": len(result.expectedFailures), "unexpected_successes": len(result.unexpectedSuccesses),
+        "unattributed_outcomes": result.unattributed,
         "native_windows": "NOT_RUN", "native_android": "NOT_RUN", "hardware": "NOT_RUN",
     })
     emit(events, "report", "PASS", time.monotonic() - report_start)

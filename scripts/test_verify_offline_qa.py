@@ -26,7 +26,7 @@ class VerifyEvidenceTests(unittest.TestCase):
             "git_commit": COMMIT, "git_tree": TREE, "tracked_checkout_clean": True,
             "debt_count": 0, "required_cases": 2, "tests_run": 2, "passed": 2,
             "errors": 0, "failures": 0, "skipped": 0, "expected_failures": 0,
-            "unexpected_successes": 0, "native_windows": "NOT_RUN",
+            "unexpected_successes": 0, "unattributed_outcomes": 0, "native_windows": "NOT_RUN",
             "native_android": "NOT_RUN", "hardware": "NOT_RUN", "duration_seconds": 1.0}
         self.write("summary.json", self.summary)
         self.write("case-inventory.json", {"schema": 1, "status": "PASS",

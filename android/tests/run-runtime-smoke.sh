@@ -42,6 +42,7 @@ grep -Fq 'PASS: Android extended telemetry fixture' runtime-smoke.log
 grep -Fq 'PASS: Android bounded history fixture' runtime-smoke.log
 grep -Fq 'PASS: Android Host history codec fixture' runtime-smoke.log
 grep -Fq 'PASS: Android Activity diagnostics, AVC Surface preview and local touch probe' runtime-smoke.log
+grep -Fq 'PASS: Activity history and telemetry terminal callback fencing' runtime-smoke.log
 grep -Fq 'PASS: read-only Android video decoder API survey (no hardware guarantee)' runtime-smoke.log
 grep -Fq 'PASS: Android local AVC self-test decodes original clip twice (emulator only)' runtime-smoke.log
 grep -Fq 'PASS: Android MediaCodec delivered original AVC frame to test Surface (emulator only)' runtime-smoke.log
