@@ -167,3 +167,5 @@ scoped local acceptance with full policy compliance.
 - [x] Combined PR #45 merged 5bb5505: all fourteen CI jobs PASS, independently downloaded Windows report 162/162, exact debt 395. Scope does not establish physical acceptance or release readiness.
 
 - [ ] ENG-09: Make production OkHttp latest-sample publication and terminal state atomic; bound local sample age, wake cancelled reader, reject concurrent reads. JVM and real TLS runtime regression required. Pre-allocation message bound remains open.
+
+- [ ] ENG-09/12: Confirm OkHttp 4.12.1 source-to-binary provenance and pre-allocation receive limits; observed GitHub repository redirect and unsigned tag need reconciliation. Retain exact pinned artifact; no automatic dependency changes. Experimental upgrade strict CRLF negatives added; native CI required.

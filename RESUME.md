@@ -400,3 +400,6 @@
 
 ## Production WSS mailbox candidate
 - Base main 94a97f7, dev/production-stream-mailbox. Audit of TelemetryStream found post-close publication race. One-slot synchronized mailbox preserves first terminal cause, local 5s receipt-age and 5.5s wait, immediate cancellation notification and single-reader admission. JVM fixture and actual closed-stream instrumentation added; native CI required. Existing text limit remains post-OkHttp-allocation, production transport unchanged; no memory-bound or physical acceptance claim. Hold locally while PR #46 runs.
+
+## WSS provenance and upgrade parser review
+- Pinned OkHttp 4.12.1 SHA-256 retained. Previously captured POM SCM points to square/okhttp; GitHub API returned lysine-dev/okhttp and unsigned parent-4.12.1 tag. Candidate source hashes and target commit recorded in docs/production-stream-mailbox.md; no proven source-to-JAR correspondence or compromise. Candidate reader accumulates frames before delivery and may inflate before callback. Production post-allocation limit remains open. Experimental BoundedUpgrade rejects bare CR/LF, four added negatives; no native execution locally. Hold branch for combined CI after #46.

@@ -27,6 +27,10 @@ final class UpgradeSmoke {
             reject(GOOD + "Sec-WebSocket-Extensions: permessage-deflate\r\n\r\n");
             reject(GOOD + "Upgrade: websocket\r\n\r\n");
             reject(GOOD + "Content-Length: 0\r\n\r\n");
+            reject(GOOD + "X-Note: first\rsecond\r\n\r\n");
+            reject(GOOD + "X-Note: first\nsecond\r\n\r\n");
+            reject(GOOD.replace("Switching Protocols", "Switching\rProtocols") + "\r\n");
+            reject(GOOD + "X-Note: first\r\r\n\r\n");
             reject(GOOD + "X-Large: " + "a".repeat(8192) + "\r\n\r\n");
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             byte[] token = session.token.getBytes(StandardCharsets.US_ASCII);
