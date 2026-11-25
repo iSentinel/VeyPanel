@@ -452,3 +452,6 @@
 
 ## Shared TLS failure classification candidate
 - Base 0feac5e, dev/transport-tls-classification. Audit found direct-only SSLException catches in REST/history and unconditional fallback on synchronous WSS constructor RuntimeException. Share existing eight-cause classifier; recognized TLS errors terminal in all four paths, existing denial and ordinary network retry behavior retained. JVM fixture covers wrapped/direct and non-TLS/null/cyclic/depth cases; no message inspection. Hold locally pending PR #51 integration. No native acceptance yet, no production transport switch. Deeper causes and end-to-end Activity fallback/user CA remain open.
+
+## Required Python case inventory candidate
+- Base 0feac5e, dev/required-python-case-inventory. Previous gate accepted any nonempty successful discovered subset. Reconcile initial 199 identities with accepted PR #50 Windows JUnit, explicitly add eight registry fixtures (207 required). Strict bounded registry, exact discovery before execution, exact executed PASS verdict, no auto regeneration. case-inventory.json and additive summary fields; missing suite not executed, skip fails. Android workflow triggers updated. Native common QA required; no new AST debt expected. Hold independent candidate while PR #51 runs.
