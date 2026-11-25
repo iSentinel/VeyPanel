@@ -31,3 +31,5 @@ retains release responsibility. Stale view callbacks cannot affect the
 new target. JVM ordered-interleaving fixtures and repeated Activity
 preview test added. Native CI remains mandatory. This is not proof of
 codec native call deadlines, pixel correctness, or physical GPU lifecycle.
+
+Verified texture ownership: PR #46 merged cc88ceb, all eight jobs PASS, including repeated Activity preview and independent APK comparison. Initial Maven 429 retained in RESUME; physical GPU acceptance remains open.

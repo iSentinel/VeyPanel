@@ -402,3 +402,8 @@
 - Base d6b9d03 PR #45, branch dev/preview-texture-ownership. One-use lease coordinates queued/active/completed worker and framework destroy; worker releases detached texture after Surface/codec cleanup. New TextureView per preview prevents stale view callbacks, actual repeated Activity preview regression plus pure JVM fixture. Native CI not yet run; hold locally until combined PR #45 acceptance. No native codec deadline or hardware proof.
 
 - Integrated accepted main 94a97f7; preserve previous native acceptance and run fresh combined-source CI before merge.
+
+## Verified texture lifecycle checkpoint
+- PR #46 head e1eb3770e46e287d13659182923accf18c31e6cc merged cc88ceb4ccffd5b81d97fdb65cfa40db4de498f4; Windows 45522615825/45522605890, Android 45522615901/45522605822, runtime 45522605967 PASS.
+- Reproduction 45522615996 initial build(b) failed dependency resolution HTTP 429, compare NOT_RUN. One bounded failed-job rerun passed both builds and comparison. Downloaded artifact 14980618698 confirms bytes outside signing block identical; full SHA-256 differs. No signature verification claim from comparator. All eight CI jobs now PASS. Post-PR #45 main jobs also PASS.
+- Next candidates: WSS mailbox and strict CRLF/provenance audit 8373d4a, explicit first-install recovery b885fab. Local 162/162 and 174/174 respectively, native NOT_RUN. Real isolated prior package 836 files recovered metadata-only. Integrate candidates with current main and require fresh combined-source CI; no release or physical acceptance.

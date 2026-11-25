@@ -1,5 +1,9 @@
 # Changelog
 
+## Local preview texture ownership (CI PASS)
+
+- Coordinate framework and decoder release, replace the preview target per generation and verify repeated Activity preview. Native and reproduction CI passed; physical GPU acceptance remains separate.
+
 ## Combined privacy, Android lifecycle and recovery inspection (CI PASS)
 
 - Integrate framework log privacy, experimental WSS lifecycle fencing, local tap gating and read-only package recovery. Combined native, reproduction and offline QA passed; no production transport switch or automatic recovery mutation.
