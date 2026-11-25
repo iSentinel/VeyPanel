@@ -109,3 +109,5 @@ only the directly started smoke owner may be terminated; the observed
 Host is never killed by PID. This tests owner disappearance and stdin EOF
 in an isolated runner, not arbitrary power failure, live user processes,
 a general process ownership proof, or system-wide maintenance exclusion.
+
+Verified PR #58 merged 1d6e454; seven integrated CI jobs PASS. Native owned Host cleanup-required and isolated owner disappearance smoke passed. Actual WPF and exclusive maintenance remain open.

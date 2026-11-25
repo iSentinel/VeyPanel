@@ -525,3 +525,8 @@
 
 ## Managed Host owner-exit fixture candidate
 - On dev/host-cleanup-required after a98759d: existing managed Host Program.cs requests shutdown after stdin EOF. Add isolated real Host owner process smoke, private pipe reports owned identity and awaits supervisor handshake; supervisor retains observed process handle and checks exact expected image/start time before owner exits without Dispose. Require owner and Host zero exit, bounded waits and subsequent process observation. Never kill observed Host by PID; bounded cleanup only directly started fixture owner. Native Windows CI required. No power-loss, actual WPF or production process test. PR #57 native contention/abandonment PASS (five jobs), held while exact integrated #55 runtime 45546707362 executes.
+
+## Verified owned Host lifecycle
+- PR #58 integrated head e8ea05ad2b24dc10e8177394366db78af4673270 merged 1d6e45495495d4fcbe69957b48777685aaa40233. Windows 45547920312/45547927735, Android 45547920375, runtime 45547920292, reproduction 45547927758 (three jobs): seven PASS.
+- Downloaded Windows QA: 220/220, debt 329, exact checkout 21e43ed21dce16e5f5bbbd2a0886a7a0a525e546 tree 829871e0ae13a18fccf38c7afa713cbccb870fdb; independent verifier and manifest PASS. Actual native log confirms cleanup-required refusal and zero-exit Host after isolated owner disappears. No arbitrary crash/power-loss or actual WPF acceptance.
+- Next: integrate PR #59 e1b56f0 (original four jobs PASS; Windows 229/229 and real package inventory verified), then stacked backup #60 ab1d923. New isolated restore candidate must never overwrite an existing root. No production or destructive approval.

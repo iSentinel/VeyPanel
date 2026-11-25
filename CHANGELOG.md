@@ -1,5 +1,9 @@
 # Changelog
 
+## Owned Host lifecycle (CI PASS)
+
+- Preserve explicit cleanup-required state and qualify managed Host exit after isolated owner disappearance.
+
 ## Cooperative Desktop session admission (CI PASS)
 
 - Gate WPF startup with a session-local mutex; qualify isolated competing process refusal, release and abandoned-owner reacquisition.
