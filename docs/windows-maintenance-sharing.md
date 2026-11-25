@@ -109,3 +109,5 @@ the existing Python lease adapter checks the regular leaf before open.
 Three offline scope regressions cover fixed scope, wrong names and
 nested/traversal paths. Native Windows is required. No runtime wiring,
 ACL or production maintenance authorization.
+
+Verified PR #66 merged b048ff7: three integrated jobs PASS, Windows 258/258 independently verified. Both sharing interoperability directions and native identity step passed together. No production admission.

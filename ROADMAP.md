@@ -258,4 +258,6 @@ scoped local acceptance with full policy compliance.
 
 - [x] PR #64 merged d8ee862; six integrated jobs PASS, independently verified Windows 255/255 and native identity/interop steps. No production lease enrollment or maintenance authorization.
 
-- [ ] ENG-10/05: Qualify C#-owned shared/exclusive lease with isolated Python contenders, exact busy/refusal controls, bounded child cleanup and unchanged bytes. Three offline scope regressions (258 required on integrated #63 base). Native Windows CI required.
+- [x] ENG-10/05: Qualify C#-owned shared/exclusive lease with isolated Python contenders, exact busy/refusal controls, bounded child cleanup and unchanged bytes. Three offline scope regressions (258 required on integrated #63 base). Native Windows CI required.
+
+- [x] PR #66 merged b048ff7; three integrated CI jobs PASS, independently verified Windows 258/258 and both native interop directions plus handle identity steps. No production admission.
