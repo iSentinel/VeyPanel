@@ -547,3 +547,6 @@
 
 ## Interop CI failure isolation
 - Original PR #63 3140091: both Windows jobs 45551188139/45551195633 fail at cross-language smoke, C#-only smoke passed, Android both PASS. Generic failure did not identify exact cause. Align child TEMP/TMP with actual Python fixture parent, add uncontended control before ownership tests, fixed stage markers and numeric contender exit codes (invalid scope 6, access 3, I/O 4, argument 5; only exact 2 busy). No relaxation of path/lease rules or assertion. Root cause remains unconfirmed until new native run. Keep blocked until both Windows jobs pass.
+
+## Interop uncontended failure isolation
+- Diagnostic head 60b0432 failed both Windows jobs 45552798598/45552805388 before any Python lease: uncontended shared contender expected 0 returned 1. Therefore not evidence of incompatible Windows sharing. Candidate uses explicitly built VeyPanel.Smoke.exe apphost instead of dotnet DLL dispatch, resolves existing temporary directory to its canonical filesystem path, retains exact fixture-scope validation, distinguishes each initial guard (7–11). No assertion weakening. Exact cause still unconfirmed until native CI. #62 integrated 7e92793 merged 234ba2e after six PASS jobs and independently verified 243/243 Windows evidence. #64 pending.

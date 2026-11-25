@@ -16,7 +16,7 @@ def probe(assembly: Path, path: Path, mode: str, expected: int) -> None:
     # Python and .NET may choose different temporary directories by default.
     environment = dict(os.environ, TEMP=str(path.parent.parent), TMP=str(path.parent.parent))
     result = subprocess.run(
-        ["dotnet", str(assembly), "--maintenance-lease-probe", str(path), mode],
+        [str(assembly), "--maintenance-lease-probe", str(path), mode],
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
         timeout=15, check=False, env=environment,
     )
@@ -55,16 +55,16 @@ def exercise(assembly: Path, path: Path) -> None:
 
 
 def main() -> int:
-    """Run native Windows interop only with a trusted compiled smoke assembly."""
+    """Run native Windows interop only with a trusted compiled smoke apphost."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--assembly", required=True, type=Path)
     args = parser.parse_args()
     try:
         assembly = args.assembly.resolve(strict=True)
-        if sys.platform != "win32" or assembly.name != "VeyPanel.Smoke.dll":
-            raise ValueError("Native Windows smoke assembly required")
+        if sys.platform != "win32" or assembly.name != "VeyPanel.Smoke.exe":
+            raise ValueError("Native Windows smoke apphost required")
         with tempfile.TemporaryDirectory(prefix="veypanel-lease-") as temporary:
-            exercise(assembly, Path(temporary).absolute() / "admission.fixture")
+            exercise(assembly, Path(temporary).resolve(strict=True) / "admission.fixture")
     except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as error:
         # Only fixed exception categories, never raw messages or fixture paths.
         category = ("OS" if isinstance(error, OSError) else

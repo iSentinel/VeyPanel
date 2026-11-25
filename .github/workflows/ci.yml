@@ -55,7 +55,7 @@ jobs:
       - name: Verify isolated cooperative maintenance sharing lease
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --maintenance-lease-smoke
       - name: Verify isolated Python and C# maintenance lease interop
-        run: python scripts/smoke_maintenance_lease_interop.py --assembly tests/VeyPanel.Smoke/bin/Release/net10.0/VeyPanel.Smoke.dll
+        run: python scripts/smoke_maintenance_lease_interop.py --assembly tests/VeyPanel.Smoke/bin/Release/net10.0/VeyPanel.Smoke.exe
       - run: dotnet publish src/VeyPanel.Host -c Release -r win-x64 --self-contained true -p:ContinuousIntegrationBuild=true -o publish
       - name: Apply verified deterministic Host endpoint metadata
         shell: pwsh

@@ -79,10 +79,11 @@ internal static class MaintenanceLeaseSmoke
 
     internal static int Probe(string path, string mode)
     {
-        if (!OperatingSystem.IsWindows()
-            || mode is not ("shared" or "exclusive" or "exclusive-exit")
-            || !Path.IsPathFullyQualified(path) || Path.GetFullPath(path) != path
-            || Path.GetFileName(path) != LeaseName) return 1;
+        if (!OperatingSystem.IsWindows()) return 7;
+        if (mode is not ("shared" or "exclusive" or "exclusive-exit")) return 8;
+        if (!Path.IsPathFullyQualified(path)) return 9;
+        if (Path.GetFullPath(path) != path) return 10;
+        if (Path.GetFileName(path) != LeaseName) return 11;
         var parent = Directory.GetParent(path);
         if (parent is null || !parent.Name.StartsWith(Prefix, StringComparison.Ordinal)
             || !string.Equals(parent.Parent?.FullName,
