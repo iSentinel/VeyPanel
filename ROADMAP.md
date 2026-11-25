@@ -213,3 +213,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-10/05: Conservative read-only Windows fixed-image process observation, safe count-only result and explicit blocked/unavailable exit codes; native fixtures and actual owned Host before/after cleanup CI. No process ownership or maintenance authorization claim. Lifetime fencing and Uninstall remain open.
 
 - [x] PR #56 merged e4fb31f; ten CI jobs PASS, native Windows process observation and verified 220/220 common QA. Observation is not lifetime fencing.
+
+- [ ] ENG-10/05: Cooperative Desktop session-local admission before WPF window construction; retain UI-thread mutex until exit, refuse competing participating instance. Native contention/foreign-release fixture required. Cross-process, interactive WPF, crash/Host and maintenance fencing remain open.
