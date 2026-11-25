@@ -343,3 +343,8 @@
 ### Adoption CI portability regression
 - Initial PR #38 Windows CI 45514689128/45514677681 failed the new shared gate. Downloaded JUnit from 45514689128 (artifact 14975773912) identified test_backslash_path, 123/124 PASS; AST exact gate PASS. Windows zipfile normalizes backslashes on writing/reading. Fixture now writes the raw forbidden byte into local/central ZIP names; verifier checks orig_filename against normalized filename, and rejects NUL truncation. Twelve APK fixtures and the saved actual APK passed locally. Eighteen more exact test-module debt entries removed, 429 remain. New CI required; no assertion weakened.
 - Main Android runtime run 45509804749 bounded rerun completed SUCCESS after initial Maven HTTP 429. No dependency or TLS change.
+
+## Verified engineering policy adoption
+- PR #38 head e8f1acdfb4a2d6b77e8aff308384a2c740825431, merge 3cb4477; all ten jobs passed. Windows 45515007864/45515015460, Android 45515008002/45515015606, Android reproduction 45515015403, Desktop reproduction 45515015433 PASS.
+- Downloaded Windows and Android common QA evidence from 45515007864 and 45515015606 independently checked: 125/125 executed PASS, zero skips, exact debt baseline 429, no new/stale findings, clean actual checkouts e8f1acd and 523b1f2, identical tree 3cec1b97688d439917fcfbbba811a98e038d49d0, Python 3.12.10.
+- Next: manifest integrity hardening; rebase candidate f7fe6a5 and validate before review. PR #37 launcher and local recovery candidate must pass the new debt gate without increasing the baseline.

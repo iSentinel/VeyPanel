@@ -72,3 +72,9 @@ and generates literal raw ZIP backslash/NUL entries portably; 18 exact test
 module findings resolved (429 remaining). Corrected CI pending. The bounded
 rerun of main Android runtime 45509804749 completed successfully; retain
 the first environmental failure in history.
+
+## Verified adoption checkpoint
+PR #38 merged as 3cb4477 after ten CI jobs passed. Downloaded Windows
+and Android common QA reports confirm 125/125, exact debt baseline 429,
+zero new/stale findings and matching source tree. Native and hardware
+qualification remain separately scoped.

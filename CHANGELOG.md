@@ -1,5 +1,9 @@
 # Changelog
 
+## Engineering policy adoption (CI PASS)
+
+- Adopt canonical engineering standards, exact Python debt gate and common Python QA/JUnit reports. Fix cross-platform raw ZIP name rejection. Native and physical qualification remain separate.
+
 ## Fail-closed CI verification (CI PASS)
 
 - Enforce pipeline failure propagation, exact Android permissions and unambiguous APK entry paths. Verify negative gate outcomes in Android CI.

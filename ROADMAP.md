@@ -136,7 +136,7 @@ Gap register: [adoption audit](docs/engineering-adoption-audit.md).
 Priorities P0 safety/verification, P1 engineering migration. Do not confuse
 scoped local acceptance with full policy compliance.
 
-- [ ] ENG-01/02/07/11: Adopt policy, exact Python debt baseline, common Python QA and JUnit; 40 identities resolved (469 -> 429); first Windows common gate exposed APK path fixture portability; corrected candidate CI pending.
+- [x] ENG-01/02/07/11: Adopt policy, exact Python debt baseline and common Python QA/JUnit. PR #38 merged, 10 CI jobs PASS; downloaded Windows/Android reports confirm 125/125, 429 debt entries, no new/stale identities. Native JUnit adapters and wider compliance remain open.
 - [ ] ENG-02: Reduce remaining exact Python debt by focused modules; no new or stale baseline findings. Broader PEP 8 and static type analysis separate.
 - [ ] ENG-03: Native C#/Java/JS/PowerShell quality audit and equivalent reviewed debt gates; preserve compiler/lint/runtime checks.
 - [ ] ENG-04 (P0): Audit logging/privacy and add closed structured event schema, stdout/stderr and secret-canary regressions.
