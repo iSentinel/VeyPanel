@@ -65,3 +65,5 @@ stable file identity, hard-link/reparse races, ACLs, cross-user/session
 scope, actual process admission and global maintenance exclusion remain
 open. This is not an authorization or security boundary. Native Windows
 CI is required before claiming interoperability.
+
+Verified PR #63 merged 581c556, four integrated jobs PASS, actual Python-owned cross-language smoke and Windows 255/255. Combined apphost/path correction passed; exact individual failure cause not established. Reverse ownership remains separate.

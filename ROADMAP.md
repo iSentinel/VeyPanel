@@ -250,4 +250,6 @@ scoped local acceptance with full policy compliance.
 
 - [x] PR #65 merged 6c58953, seven CI jobs PASS, independently verified 251/251 Windows QA against actual synthetic merge Git identity.
 
-- [ ] ENG-10/05: Prototype Python CreateFileW lease interoperability with C# isolated contender, exact busy-only classification and exception-safe close; four offline adapter regressions, mandatory Windows cross-language smoke. No activation/mutation wiring; stable identity, ACL and cross-session qualification separate.
+- [x] ENG-10/05: Prototype Python CreateFileW lease interoperability with C# isolated contender, exact busy-only classification and exception-safe close; four offline adapter regressions, mandatory Windows cross-language smoke. No activation/mutation wiring; stable identity, ACL and cross-session qualification separate.
+
+- [x] PR #63 merged 581c556; four integrated jobs PASS, independently verified Windows 255/255 and actual Python-owned cross-language lease smoke. Production admission remains open.

@@ -1,5 +1,9 @@
 # Changelog
 
+## Python-owned cross-language maintenance lease (CI PASS)
+
+- Qualify Python CreateFileW handles against isolated C# shared and exclusive contenders. No runtime wiring.
+
 ## Strict package metadata (CI PASS)
 
 - Reject ambiguous JSON and oversized portable package metadata with bounded reads and exact source schema validation.

@@ -580,3 +580,7 @@
 
 ## Integrated cross-language lease
 - PR #63 head 903cb0f push 45553406323 native interop passed actual shared/exclusive/release/unchanged bytes, Android 45553405957 PASS. Combined apphost/resolved-path changes fixed the fixture; exact individual cause not established. Integrated main 588911f with explicit union of required cases (255) and Android paths, retarget to main. Require fresh exact-source CI. Reverse C# owner/Python contender remains a separate candidate.
+
+## Verified Python-owned cross-language sharing
+- PR #63 integrated head 68654d3ed47196f5df6caad65ca7557ff8632095 merged 581c55617f2507a162ff03cf319d21f4fcd4485d. Windows 45554656159/45554660146 and Android 45554656186/45554660144 all PASS. Fetched refs/pull/63/merge independently: 3d6e5e668a17679ff7ddf6f83b6469185f3c62a0 tree 4ad6bfbf671ad16b2f57132a3ffa42a26bec9148 parents 588911f and 68654d3. Actual downloaded Windows QA 255/255, debt329, manifest/verifier PASS; native log confirms shared/exclusive and release/unchanged bytes.
+- #64 6f7e40c passed five prior-base CI jobs; integrate new main before acceptance. #66 reverse interop 5e5d5b0 scoped QA 258/258 and CI pending final Windows job. #67 86d0afa strict JUnit candidate: 257/257 local, original real report accepted and tampered resealed report refused; independent CI pending. No runtime/ACL/maintenance wiring or deployment.
