@@ -234,4 +234,12 @@ scoped local acceptance with full policy compliance.
 
 - [x] PR #59 merged 81d65ed; three integrated jobs PASS, verified Windows 229/229 and actual recovered package inventory. No maintenance admission.
 
+- [x] ENG-10/05: Explicit plan-bound package-source backup to fresh private destination, exact selection bytes, original pinned ZIPs, bounded exclusive streaming, source recheck and independent receipt binding/manifest verification. Seven new regressions (236 required), real isolated 291091352-byte ZIP backup PASS, source 838 files unchanged. Native Windows CI required; restore, runtime user-data backup and maintenance exclusion separate.
+
+- [x] PR #60 merged 1c5b8e3; three integrated jobs PASS, verified Windows 236/236 and actual isolated backup. No user-data backup or physical durability guarantee.
+
+- [x] ENG-10/05: Restore verified package-source backup into nonexistent private destination with explicit destination-bound plan, stage all pinned versions, preserve exact selection bytes and verify final inventory; seven new regressions (243 required), actual 838-file single-version restore and Launcher dry-run PASS. Native Windows CI required. No activation, overwrite, deletion or exclusive maintenance.
+
+- [x] PR #61 merged d73d5f0; three integrated jobs PASS, verified Windows 243/243 and actual isolated restore. No activation or replacement.
+
 - [ ] ENG-10/05: Smoke-only cooperative Windows maintenance sharing lease: multiple runtime read handles versus exclusive maintenance handle, exact sharing-violation busy classification, missing/unsafe path refusal, cross-process contention/release/owner-exit regression. Native CI required. Production file provisioning/ACL/identity, Desktop/Host/Launcher integration and exclusive mutation protocol remain separate.
