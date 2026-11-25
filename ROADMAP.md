@@ -215,3 +215,5 @@ scoped local acceptance with full policy compliance.
 - [x] PR #56 merged e4fb31f; ten CI jobs PASS, native Windows process observation and verified 220/220 common QA. Observation is not lifetime fencing.
 
 - [ ] ENG-10/05: Cooperative Desktop session-local admission before WPF window construction; retain UI-thread mutex until exit, refuse competing participating instance. Native contention/foreign-release fixture required. Cross-process, interactive WPF, crash/Host and maintenance fencing remain open.
+
+- [ ] ENG-10/05: Extend cooperative Desktop admission native fixture to separate owned smoke processes, release and abandoned-owner reacquisition, with bounded fixture cleanup and unique test names. No WPF or Host activation; native CI required.

@@ -500,3 +500,6 @@
 
 ## Cooperative Desktop session admission candidate
 - Base main 2780d6f, dev/desktop-session-admission. New shared named mutex Local\VeyPanel.Desktop.Interactive.v1; explicit App startup creates MainWindow only after admission, exits 2 if busy and 1 on startup failure, releases on UI-thread exit. Abandoned mutex ownership is not Host cleanup or recovery proof. Native unique-name thread contention and nonowner release fixture wired into Windows CI. Linux common QA only; no .NET SDK locally, native NOT_RUN. Cross-process, WPF interaction, older versions, other sessions and exclusive maintenance not qualified. Keep separate from PR #55 until its required reproduction and combined-source CI are complete.
+
+## Cross-process Desktop admission candidate
+- On dev/desktop-session-admission after 9b2b0ff: add separate smoke child dispatch, unique GUID fixture names only, blocked child exit 2 while owned, admitted after release, abandoned owner exit and reacquisition with non-owning kernel handle retained, recovered owner excludes another child. Bounded wait/cleanup for owned synthetic child only. No production mutex, Host or WPF activation. Native .NET SDK unavailable on development server; common QA and exact evidence only. PR #55 updated independently to 9b89fa8 with all original eight jobs PASS after HTTP 429 rerun and fresh combined CI pending.

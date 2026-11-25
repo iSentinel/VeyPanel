@@ -57,3 +57,18 @@ behavior. Old binaries and noncooperating programs do not participate.
 The existing process observation remains advisory. Next qualify
 cross-process admission, actual WPF startup/exit and retained Host
 ownership before designing an exclusive maintenance protocol.
+
+### Isolated cross-process and abandonment qualification (candidate)
+
+The native smoke additionally starts only its own smoke executable
+(or the same dotnet host with the smoke assembly) using an argument list.
+The child accepts only a unique fixture GUID name and a fixed mode.
+Require exit 2 while the parent owns the mutex and exit 0 after release.
+A separate fixture retains a non-owning handle, then has the child exit
+without disposing its owned mutex; require acquisition by the parent
+and refusal of another child. The ten-second child exit budget and
+bounded cleanup concern only owned synthetic smoke processes.
+No WPF window, production mutex, Host process or installed package is
+used by this test. Actual CI remains required. Same-thread recursive
+mutex behavior is not a general admission API guarantee; App acquires
+once on its UI thread. No proof of prior Host exit follows from abandonment.
