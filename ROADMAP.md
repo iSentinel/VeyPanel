@@ -253,3 +253,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-10/05: Prototype Python CreateFileW lease interoperability with C# isolated contender, exact busy-only classification and exception-safe close; four offline adapter regressions, mandatory Windows cross-language smoke. No activation/mutation wiring; stable identity, ACL and cross-session qualification separate.
 
 - [x] PR #63 merged 581c556; four integrated jobs PASS, independently verified Windows 255/255 and actual Python-owned cross-language lease smoke. Production admission remains open.
+
+- [ ] ENG-10/05: Smoke-only Windows lease handle identity observation (volume serial/file index, single-link and handle attribute checks); qualify two shared handles, held-name replacement/deletion refusal, hard-link rejection and distinct replacement identity. Native CI required; no persistent identity enrollment, ACL or production wiring.
