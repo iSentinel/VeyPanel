@@ -71,6 +71,7 @@ public final class StoreInstrumentation extends Instrumentation {
             if (fixtureCa != null) {
                 TransportSmoke transport = new TransportSmoke(fixtureCa);
                 transport.run();
+                results.append("PASS: real TLS REST drip body deadline\n");
                 stage = "Bounded TLS prototype";
                 transport.runBounded();
                 results.append("PASS: bounded TLS and persistent stream reject unknown CA and oversized frame; ping/pong, two samples, close, cancellation and drip-feed deadline\n");

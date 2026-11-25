@@ -214,6 +214,10 @@ scoped local acceptance with full policy compliance.
 
 - [x] PR #56 merged e4fb31f; ten CI jobs PASS, native Windows process observation and verified 220/220 common QA. Observation is not lifetime fencing.
 
+- [x] ENG-09: Bound REST body reads before/after every read and EOF, enforce remaining byte budget and interrupt checks; JVM deterministic fixtures and isolated TLS drip-body runtime required. Whole-request absolute deadline and active socket cancellation remain open.
+
+- [x] PR #55 merged 5534f42, exact integrated head 9b89fa8 seven automatic jobs plus manually dispatched Runtime 45546707362 PASS. Actual REST drip deadline and prior runtime gates verified.
+
 - [ ] ENG-10/05: Cooperative Desktop session-local admission before WPF window construction; retain UI-thread mutex until exit, refuse competing participating instance. Native contention/foreign-release fixture required. Cross-process, interactive WPF, crash/Host and maintenance fencing remain open.
 
 - [ ] ENG-10/05: Extend cooperative Desktop admission native fixture to separate owned smoke processes, release and abandoned-owner reacquisition, with bounded fixture cleanup and unique test names. No WPF or Host activation; native CI required.

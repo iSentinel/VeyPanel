@@ -498,6 +498,17 @@
 - PR #55 head d212297 remains open: six jobs PASS, runtime confirms real TLS REST drip deadline; second independent APK build 45544928553 failed dependency acquisition HTTP 429, comparison skipped. Requested one failed-job rerun, no dependency or verification change. Integrate with accepted main and require fresh combined-source CI before merge.
 - Next: cooperative Desktop session admission, then process lifetime and maintenance fencing. No production activation, destructive operation or hardware acceptance.
 
+## REST body budget candidate
+- Base main 64e9d0b, dev/rest-response-budget. Audit found post-read-only deadline/interrupt checks and EOF bypass. BoundedRestBody enforces existing 1 MiB / 5s body limits around each read including EOF, rejects zero progress, preserves interrupt flag; existing HTTPS policy and connect/read timeouts unchanged. Deterministic JVM fixture plus isolated trusted TLS slow body case in TransportSmoke, mandatory runtime marker. Local Python fixture control on ephemeral listener, Bash/Python syntax and AST PASS; native JVM/emulator required. Body deadline does not include headers/connect, and blocking read remains bounded only by existing transport behavior; no immediate cancellation or whole-request deadline claim.
+
+## REST body budget integration
+- PR #55 original d212297 all eight jobs PASS after one bounded rerun of reproduction 45544928553 (initial dependency acquisition HTTP 429, compare skipped; rerun both builds and compare PASS). Current main 2780d6f contains accepted PR #56 and 220 required cases. Integrate current main, resolve only confirmed document conflicts; require fresh combined Windows/Android/runtime/reproduction CI. No dependency or TLS change.
+
+## Verified REST body budget
+- PR #55 integrated head 9b89fa850e31dc1f554f0ea72e7307cd77e9010a merged 5534f42eae4dcbb0ffd06bd9afa6e65be76a614c. Windows 45546202267/45546209527, Android 45546202305/45546209482, reproduction 45546209478 (three jobs), manual exact-head runtime 45546707362 all PASS. Original reproduction HTTP 429 resolved in attempt 2 without dependency changes. Downloaded actual Windows 220/220, exact manifest/verifier, debt 329, checkout 714b9a96ea450086aaa858f4d300877626185142 tree f2d69f64100a30eea2af1f8dbafed90eeda62aa2.
+- Runtime log explicitly confirms real TLS drip body deadline, ordered Activity fencing, terminal TLS/no fallback and negative fixture no request. Body-only budget; active cancellation and whole-request bound remain open.
+- PR #57 original a4e3b5e five jobs PASS and actual 220/220 Windows report, thread/process contention and abandoned owner markers confirmed. Integrate with new main before acceptance. PR #58 stacked c6312d2 pending Windows CI. No hardware or deployment approval.
+
 ## Cooperative Desktop session admission candidate
 - Base main 2780d6f, dev/desktop-session-admission. New shared named mutex Local\VeyPanel.Desktop.Interactive.v1; explicit App startup creates MainWindow only after admission, exits 2 if busy and 1 on startup failure, releases on UI-thread exit. Abandoned mutex ownership is not Host cleanup or recovery proof. Native unique-name thread contention and nonowner release fixture wired into Windows CI. Linux common QA only; no .NET SDK locally, native NOT_RUN. Cross-process, WPF interaction, older versions, other sessions and exclusive maintenance not qualified. Keep separate from PR #55 until its required reproduction and combined-source CI are complete.
 
