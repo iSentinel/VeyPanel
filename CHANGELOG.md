@@ -1,5 +1,9 @@
 # Changelog
 
+## Maintenance inventory (CI PASS)
+
+- Verify retained selection and original pinned archive set without admitting maintenance or mutation.
+
 ## Owned Host lifecycle (CI PASS)
 
 - Preserve explicit cleanup-required state and qualify managed Host exit after isolated owner disappearance.

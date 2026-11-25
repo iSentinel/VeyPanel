@@ -230,4 +230,6 @@ scoped local acceptance with full policy compliance.
 
 - [x] PR #58 merged 1d6e454; seven integrated CI jobs PASS, verified Windows 220/220 and actual owned Host cleanup/owner-exit markers. Actual WPF and exclusive maintenance remain open.
 
-- [ ] ENG-10/05: Read-only maintenance inventory plan for exact active/previous archive set and staged trees, reject unknown roots/orphans/locks/tampering; bind original metadata bytes and root identity. Nine local regressions and real single-version 838-file unchanged PASS. Older two-version fixture correctly refused mismatched previous ZIP. Native Windows CI required. No maintenance admission or removal.
+- [x] ENG-10/05: Read-only maintenance inventory plan for exact active/previous archive set and staged trees, reject unknown roots/orphans/locks/tampering; bind original metadata bytes and root identity. Nine local regressions and real single-version 838-file unchanged PASS. Older two-version fixture correctly refused mismatched previous ZIP. Native Windows CI required. No maintenance admission or removal.
+
+- [x] PR #59 merged 81d65ed; three integrated jobs PASS, verified Windows 229/229 and actual recovered package inventory. No maintenance admission.
