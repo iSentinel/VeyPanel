@@ -248,6 +248,35 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python scripts/inspect_package_recovery.py --root recovery-test
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Verify explicit corrupt selection repair with retained backup
+        shell: pwsh
+        run: |
+          $package = 'portable/VeyPanel-win-x64-portable.zip'
+          $digest = (Get-FileHash $package -Algorithm SHA256).Hash.ToLowerInvariant()
+          $root = 'corrupt-repair-test'
+          New-Item -ItemType Directory -Path $root | Out-Null
+          python scripts/windows_package_selection.py --root $root select $package --sha256 $digest --apply
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $target = "$root/versions/$digest"
+          $before = (Get-FileHash "$target/artifact-files.sha256.json").Hash
+          [IO.File]::WriteAllBytes((Join-Path (Resolve-Path $root).Path 'selection.json'), [Text.Encoding]::UTF8.GetBytes('{"fixture":'))
+          $original = (Get-FileHash "$root/selection.json").Hash
+          $lines = python scripts/recover_corrupt_selection.py --root $root --package $package --sha256 $digest --dry-run
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $plan = ($lines | Where-Object { $_ -notmatch '^PASS:' } | Out-String) | ConvertFrom-Json
+          if ($plan.applied -or $plan.started -or (Test-Path "$root/.selection-corrupt-backup")) { throw 'Unexpected repair plan mutation' }
+          if ((Get-FileHash "$root/selection.json").Hash -ne $original) { throw 'Dry-run changed state' }
+          python scripts/recover_corrupt_selection.py --root $root --package $package --sha256 $digest --apply --plan-sha256 $plan.plan_sha256
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if ((Get-FileHash "$root/.selection-corrupt-backup").Hash -ne $original) { throw 'Backup differs' }
+          $state = Get-Content "$root/selection.json" -Raw | ConvertFrom-Json
+          if ($state.active.package_sha256 -ne $digest -or $null -ne $state.previous) { throw 'Unexpected repaired state' }
+          if ((Get-FileHash "$target/artifact-files.sha256.json").Hash -ne $before) { throw 'Repair modified manifest' }
+          python scripts/artifact_manifest.py verify $target
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/inspect_package_recovery.py --root $root
+          if ($LASTEXITCODE -ne 2) { throw 'Retained backup requires manual review' }
+          exit 0
       - uses: actions/upload-artifact@v4
         with:
           name: veypanel-win-x64-portable-unsigned

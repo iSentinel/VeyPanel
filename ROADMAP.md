@@ -181,3 +181,5 @@ scoped local acceptance with full policy compliance.
 - [ ] ENG-09/12: Capture exact pinned OkHttp JAR and class hashes with static javap evidence in Android CI; no production transport change.
 
 - [x] PR #49 merged 21ae081, four CI jobs PASS, downloaded Windows QA 187/187 and manifest-verified javap. Actual bytecode confirms readFully and optional inflation before application callback. Provenance and pre-allocation limit mitigation remain open.
+
+- [ ] ENG-10/05: Constrained corrupt selection reconciliation: one verified version, bounded malformed metadata, plan binds original bytes, exclusive verified backup before atomic replacement, retain backup/manual review. Twelve local fixtures and actual isolated 836-file package PASS; Windows CI required. Process fencing, backup retention and multi-version reconciliation separate.
