@@ -239,3 +239,18 @@ The exact accepted archive contains bundle/ with four files and a root
 manifest. Exit 0 is unchanged, 2 is review required, 1 is a failed gate.
 A valid manifest cannot substitute for receipt or report verification.
 No signing, publication, automatic updates or schedule is implied.
+
+## Manual CI workflow candidate
+
+The workflow `.github/workflows/upstream-watch.yml` is manual-dispatch only
+and runs only on main. It permits one concurrent watch, does not persist
+checkout credentials, bounds runner time, and uses the public HTTPS collector
+without an API token. Collection and independent reopening must return the
+same allowed exit/status pair. REVIEW is a visible warning and a valid
+review-only report; it is not a passing dependency or release decision.
+ERROR or contradictory results fail the workflow before artifact upload.
+Accepted sealed archives are retained for seven days. The workflow is not
+scheduled until a complete real freshness bundle and actual manual workflow
+execution have been qualified. Proposed schedule: daily at 06:17 UTC,
+subject to quota availability and freshness policy review. Hosted runner
+images and action major tags are mutable, as tracked in engineering debt.

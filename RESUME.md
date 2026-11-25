@@ -682,3 +682,4 @@
 
 ## Upstream watch CI evidence gate candidate
 - Separate dev/upstream-watch-ci based on 4b27102. Exact source preflight, complete/fresh bundle verification before sealing, exact archive membership and SHA-256 manifest readback, preserve REVIEW as distinct exit 2. Eight offline cases (328 required), no network in tests. Scheduled workflow remains disabled; actual positive receipt blocked by public quota.
+- CI gate 01f8c6b: focused 8/8 and common QA 328/328, manifest and independent verifier PASS. Added manual main-only workflow with separate collection/verification exit/status gates and upload only after acceptance. Proposed daily schedule not active; public quota resets at reported 07:51:20 UTC. Actual hosted workflow and full live positive freshness remain unqualified.
