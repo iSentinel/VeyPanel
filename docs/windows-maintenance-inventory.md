@@ -102,3 +102,5 @@ files, with source and backup unchanged and Launcher dry-run PASS.
 Native Windows CI uses the isolated recovered package and separately
 retained backup plan from the previous step. Actual WPF launch,
 real two-version archives, runtime settings and uninstall remain open.
+
+Verified PR #61 merged d73d5f0; three integrated jobs PASS, Windows 243/243 and actual isolated backup/restore. No activation or existing-root replacement.
