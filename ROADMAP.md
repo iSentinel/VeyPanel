@@ -173,3 +173,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-10/05: Explicit plan-bound first-install metadata recovery. Sole staged version, trusted original ZIP, absent selection state, refuse existing locks/temp/extra versions, state readback. Twelve new local tests and isolated real 836-file package PASS; native Windows CI required. Existing corrupt state, process coordination and uninstall remain open.
 
 - [x] PR #47 merged 37a07f5; all eight jobs PASS, actual Windows 174/174, exact debt 395. Experimental strict CRLF accepted; OkHttp provenance and pre-allocation bound remain open.
+
+- [ ] ENG-08/10/02: Bound selection state reads, reject duplicate/nonstandard JSON, hash and parse the same manifest bytes, validate state before writing and use safe CLI failure categories. Six new regressions, 66 exact debt identities removed (395 -> 329); real existing roots and prior artifacts verified locally. Windows CI required; quiescent private root assumption remains.

@@ -10,9 +10,11 @@ import re
 import sys
 import tempfile
 import zipfile
+from collections.abc import Iterator
+from typing import Any
 
-from artifact_manifest import MANIFEST, collect, compare, hash_file
-from portable_zip import MAX_MANIFEST
+from artifact_manifest import (MANIFEST, collect, compare, hash_file, load_manifest,
+                               read_bounded, strict_json)
 from stage_windows_package import stage
 
 STATE = "selection.json"
@@ -21,7 +23,7 @@ MAX_STATE = 8192
 SHA = re.compile(r"[0-9a-f]{64}")
 
 
-def plain(path, directory=False):
+def plain(path: Path, directory: bool = False) -> None:
     """Require a non-reparse regular file or directory."""
     info = path.lstat()
     if (path.is_symlink() or getattr(info, "st_file_attributes", 0) & 0x400
@@ -29,12 +31,12 @@ def plain(path, directory=False):
         raise ValueError("Unsafe selection path: " + str(path))
 
 
-def present(path):
+def present(path: Path) -> bool:
     """Detect even a dangling symbolic link."""
     return path.exists() or path.is_symlink()
 
 
-def root_path(root):
+def root_path(root: Path) -> Path:
     """Use an existing private directory, refusing links and parent traversal."""
     if ".." in root.parts:
         raise ValueError("Parent traversal is not allowed")
@@ -44,7 +46,7 @@ def root_path(root):
     return root
 
 
-def record_valid(record):
+def record_valid(record: object) -> bool:
     """Validate both digest fields before using a version directory."""
     return (isinstance(record, dict)
             and set(record) == {"package_sha256", "manifest_sha256"}
@@ -52,7 +54,7 @@ def record_valid(record):
                     for value in record.values()))
 
 
-def read_state(root):
+def read_state(root: Path) -> dict[str, Any]:
     """Reject malformed state or uninitialized roots containing versions."""
     path = root / STATE
     versions = root / "versions"
@@ -62,10 +64,13 @@ def read_state(root):
         if present(versions) and any(versions.iterdir()):
             raise ValueError("Unreferenced versions require manual inspection")
         return {"schema": 1, "active": None, "previous": None}
-    plain(path)
-    if path.stat().st_size > MAX_STATE:
-        raise ValueError("Selection state exceeds size budget")
-    data = json.loads(path.read_bytes())
+    data = strict_json(read_bounded(path, MAX_STATE))
+    validate_state(data)
+    return data
+
+
+def validate_state(data: object) -> None:
+    """Require exact populated selection schema and distinct version digests."""
     if (not isinstance(data, dict) or set(data) != {"schema", "active", "previous"}
             or type(data["schema"]) is not int or data["schema"] != 1
             or not record_valid(data["active"])
@@ -73,36 +78,30 @@ def read_state(root):
             or (data["previous"] is not None and
                 data["active"]["package_sha256"] == data["previous"]["package_sha256"])):
         raise ValueError("Invalid selection state")
-    return data
 
 
-def version_path(root, package_sha):
+def version_path(root: Path, package_sha: str) -> Path:
     """Resolve a digest-derived path only within the versions directory."""
     if not SHA.fullmatch(package_sha):
         raise ValueError("Expected complete SHA-256")
     return root / "versions" / package_sha
 
 
-def verify_record(root, record):
+def verify_record(root: Path, record: dict[str, str]) -> Path:
     """Verify a selected tree against the manifest hash stored in state."""
     if not record_valid(record):
         raise ValueError("Invalid version record")
     path = version_path(root, record["package_sha256"])
     plain(path.parent, directory=True)
     plain(path, directory=True)
-    manifest = path / MANIFEST
-    plain(manifest)
-    if manifest.stat().st_size > MAX_MANIFEST:
-        raise ValueError("Selected manifest exceeds size budget")
-    if hash_file(manifest) != record["manifest_sha256"]:
-        raise ValueError("Selected manifest digest mismatch")
-    if any(compare(json.loads(manifest.read_bytes()), collect(path)).values()):
+    manifest = load_manifest(path / MANIFEST, record["manifest_sha256"])
+    if any(compare(manifest, collect(path)).values()):
         raise ValueError("Selected package files differ")
     return path
 
 
 @contextmanager
-def selection_lock(root, apply):
+def selection_lock(root: Path, apply: bool) -> Iterator[None]:
     """Serialize cooperating writers; fail closed after abrupt interruption."""
     lock = root / LOCK
     if not apply:
@@ -120,9 +119,12 @@ def selection_lock(root, apply):
         lock.rmdir()
 
 
-def write_state(root, state):
+def write_state(root: Path, state: dict[str, Any]) -> None:
     """Flush a new state file and atomically replace the old selection."""
-    encoded = (json.dumps(state, indent=2, sort_keys=True) + "\n").encode()
+    validate_state(state)
+    encoded = (json.dumps(state, indent=2, sort_keys=True) + "\n").encode("utf-8")
+    if len(encoded) > MAX_STATE:
+        raise ValueError("Selection state exceeds size budget")
     name = None
     try:
         with tempfile.NamedTemporaryFile(dir=root, prefix=".selection-",
@@ -137,7 +139,7 @@ def write_state(root, state):
             name.unlink(missing_ok=True)
 
 
-def select(root, package, expected, apply):
+def select(root: Path, package: Path, expected: str, apply: bool) -> dict[str, Any]:
     """Stage a new package or verify an already selected identical package."""
     root = root_path(root)
     expected = expected.lower()
@@ -170,7 +172,7 @@ def select(root, package, expected, apply):
         return updated
 
 
-def rollback(root, apply):
+def rollback(root: Path, apply: bool) -> dict[str, Any]:
     """Verify the prior version before switching the selection atomically."""
     root = root_path(root)
     with selection_lock(root, apply):
@@ -185,7 +187,7 @@ def rollback(root, apply):
         return updated
 
 
-def status(root):
+def status(root: Path) -> dict[str, Any]:
     """Resolve and verify the selected version without starting it."""
     root = root_path(root)
     with selection_lock(root, False):
@@ -195,7 +197,7 @@ def status(root):
         return state
 
 
-def main():
+def main() -> int:
     """Default to dry-run; explicit apply only changes selection metadata."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", required=True, type=Path)
@@ -219,7 +221,8 @@ def main():
         print(json.dumps(result, indent=2, sort_keys=True))
     except (OSError, ValueError, KeyError, TypeError, RuntimeError,
             AttributeError, zipfile.BadZipFile) as error:
-        print(f"FAIL: package selection: {error}", file=sys.stderr)
+        reason = "FILESYSTEM_ERROR" if isinstance(error, OSError) else "SELECTION_REFUSED"
+        print(f"FAIL: package selection: {reason}", file=sys.stderr)
         return 1
     print("PASS: package selection; no application started")
     return 0
