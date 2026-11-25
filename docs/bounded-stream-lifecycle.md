@@ -24,3 +24,5 @@ production transport switch: MainActivity still uses OkHttp. Its callback
 size check is post-allocation; bounded prototype still requires broader
 trust, lifecycle and freshness qualification before any integration.
 No real hardware or hostile-network robustness claim.
+
+Verified combined acceptance: PR #45 merged 5bb5505, all fourteen CI jobs passed. Native scope only; physical and production acceptance remain separate.

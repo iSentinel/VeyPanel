@@ -16,3 +16,5 @@ Remaining limits: TextureView destruction versus active codec ownership
 requires separate coordination, and reused-texture callbacks do not carry
 a decoder generation. This is not proof of decoded pixel correctness,
 physical input behavior, remote video or Windows input injection.
+
+Verified combined acceptance: PR #45 merged 5bb5505, all fourteen CI jobs passed. Native scope only; physical and production acceptance remain separate.
