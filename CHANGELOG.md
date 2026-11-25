@@ -1,5 +1,9 @@
 # Changelog
 
+## Verified package Launcher (CI PASS)
+
+- Bind selected Desktop launch plan to the trusted archive and exact installed manifest; explicit Windows apply, safe failure diagnostics and dry-run verified. Interactive activation remains separate.
+
 ## Private Host smoke bootstrap capture (CI PASS)
 
 - Use owned anonymous pipes instead of raw temporary logs, preserve assertions, and bound process cleanup. Windows capture fixtures, native integration and independent reproduction passed.

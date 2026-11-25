@@ -378,3 +378,11 @@
 
 ## Launcher integration after private capture
 - PR #37 head cf59419 passed Android 45517140638 and Windows 45517140681/45517148453 against manifest-hardened main. Merge current main bf88748, preserving verified PR #40 and #41 checkpoints. No baseline increase, native CI required on new combined source. Existing ten Launcher regressions include a safe CLI error canary; actual WPF activation remains NOT_RUN.
+
+## Verified Launcher and current review queue
+- PR #37 head c2d16ba2ad97c834f5c2053b77b9370699bf5695 merged 2262808. Previous two HTTP 500 pushes reconciled with remote ref, later ordinary push succeeded. Android 45518966093, Windows 45518965990/45518972862 PASS. Downloaded actual Windows QA/JUnit confirms 151/151, no skips, clean checkout a7d7bff848809f254b96cd3ee95bbc47a861ba40 tree ed829ccb6f717aa7ccc0572728c64884259adec7, exact debt 395. API confirms actual launch-plan step success; no interactive WPF process launch.
+- PR #42 initial head 8ebbc1b eight jobs PASS, request log privacy step confirmed. Integrated head 11fcda1 with accepted private Host capture; seven jobs passed at latest check, final Windows 45519057018 still pending. Main has advanced, verify combined current source before acceptance.
+- PR #43 head e506c6a all eight jobs PASS, including Android runtime 45518421728 and native JVM checks; integration conflict pending. Experimental transport remains separate from production OkHttp.
+- PR #44 d7cd94a, local preview tap lifecycle and queued Surface wrapper cleanup, local Python 141/141; Android native and emulator 45519270817 pending. Texture/codec destruction ownership and reused-texture callback generation still open.
+- Recovery engineering worktree /tmp/veypanel-recovery-adoption, branch dev/recovery-engineering-adoption head 8f456da. Eleven fixtures, clean local Python QA 152/152, exact debt 395. Actual isolated two-version root read-only inspection verified both trees, no lock/temp state. Hold local until review queue clears, then integrate current main and run Windows CI. No automatic recovery mutation.
+- Next: finish PR #42 and #43 integration, then PR #44 and Recovery; do not rebaseline or bypass native checks. No release or physical acceptance.

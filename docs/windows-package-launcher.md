@@ -1,6 +1,6 @@
 # Verified-package Desktop launcher
 
-Status: candidate. Python 3.12 and a trusted source checkout are required.
+Status: PR #37 merged; exact-source Windows and Android CI PASS. Python 3.12 and a trusted source checkout are required.
 Keep the original portable ZIP, its independently trusted digest, and the
 selected version tree in private directories under exclusive owner control.
 
@@ -38,3 +38,5 @@ text. The launch plan contains local paths for the private operator; do not
 share that output or capture it in production evidence. CI uses a synthetic
 isolated root. Exit code 1 continues to denote validation or execution
 failure. Actual interactive activation is not qualified by this change.
+
+Verified PR #37 merged as 2262808. Actual Windows CI 45518972862 includes successful selected Desktop launch-plan dry-run and common QA (151/151). Interactive WPF startup and lifecycle remain unqualified.
