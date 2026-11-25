@@ -1,6 +1,6 @@
 # Scoped offline QA event logging
 
-Status: candidate; local Python tests PASS. This is a first ENG-04
+Status: PR #40 merged; Windows and Android CI PASS. This is a first ENG-04
 increment, not a comprehensive secret-redaction or Host logging solution.
 
     python scripts/run_offline_qa.py --output artifacts/qa-unique --log-events

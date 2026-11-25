@@ -1,5 +1,9 @@
 # Changelog
 
+## Scoped QA stage logging (CI PASS)
+
+- Add closed-schema optional JSONL stage diagnostics, fixed failure reasons and canary fixtures; preserve existing exit and stdout contracts.
+
 ## Manifest integrity hardening (CI PASS)
 
 - Bound traversal and manifest reads, detect observed mutations, reject invalid schema and atomically replace staging manifests; qualify Windows cross-API file identity comparisons. Eight regressions and 34 exact debt identities resolved.
