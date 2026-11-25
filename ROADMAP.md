@@ -195,3 +195,7 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-07/08: Require independent exact Python case registry, fail closed on discovery omissions/duplicates/extra IDs and all non-PASS mandatory outcomes. Initial 199 reviewed Windows IDs plus eight explicit fixtures; actual Windows/Android common QA required. Native report adapters and isolation separate.
 
 - [x] PR #52 merged 35bfe9c; eight CI jobs PASS, actual Windows/Android 207/207 with exact required identities and unchanged debt 329. Activity terminal TLS and independent report verification remain next candidates.
+
+- [ ] ENG-07/08: Independently verify common QA JSON/JUnit against required case identities, exact debt and tested Git checkout; manifest successful evidence before CI upload. Eight explicit negative/positive fixtures added (215 required). Native CI required; native report adapters and authenticity separate.
+
+- [ ] ENG-09: Isolated actual Activity terminal TLS regression using production trust and synthetic loopback session; require one attempt, zero fallback/retry/samples, cleared active session and disabled history; negative server observer retained. Native emulator required; concurrent history and owner-installed CA separate.

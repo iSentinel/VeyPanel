@@ -74,6 +74,7 @@ done
 grep -Fq 'READY: isolated transport fixture' "$fixture/wrong.log"
 adb -s "$serial" shell am instrument -w -r -e isolated true -e fixtureCa "$ca" -e transportPhase wrong-san com.veypanel.client.test/com.veypanel.client.StoreInstrumentation | tee runtime-wrong-san.log
 grep -Fq 'PASS: trusted wrong-SAN rejected by HTTPS, WSS and bounded WSS' runtime-wrong-san.log
+grep -Fq 'PASS: Activity TLS terminal state, no fallback or retry' runtime-wrong-san.log
 grep -Eq '^INSTRUMENTATION_CODE: -1[[:space:]]*$' runtime-wrong-san.log
 if grep -Fq 'FAIL:' runtime-wrong-san.log; then exit 1; fi
 kill -0 "$pid"

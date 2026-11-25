@@ -20,6 +20,13 @@ jobs:
           if ((python --version).Trim() -ne 'Python 3.12.10') { throw 'Unexpected Python version' }
       - name: Run shared Python offline QA
         run: python scripts/run_offline_qa.py --output offline-qa
+      - name: Independently verify and seal offline QA evidence
+        run: |
+          python scripts/verify_offline_qa.py --report offline-qa
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/artifact_manifest.py write offline-qa
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/artifact_manifest.py verify offline-qa
       - uses: actions/upload-artifact@v4
         if: always()
         with:
