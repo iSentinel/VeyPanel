@@ -1,5 +1,9 @@
 # Changelog
 
+## Activity callback fencing and mandatory result privacy (CI PASS)
+
+- Qualify ordered foreground terminal callbacks and preserve reviewed parent identities in Python evidence without exporting subtest parameters.
+
 ## Independent QA evidence and terminal Activity TLS (CI PASS)
 
 - Verify exact common QA reports and their manifest before publication; qualify terminal foreground TLS failure without automatic fallback or polling on an isolated emulator.

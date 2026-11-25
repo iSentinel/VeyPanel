@@ -86,3 +86,5 @@ in summary errors/skips and unattributed_outcomes; they do not fabricate
 a JUnit case. The acceptance gate and verifier require zero unattributed
 outcomes. Four explicit regressions added (219 required cases). This is
 report identity sanitization, not general stdout/stderr isolation.
+
+Verified PR #54 merged 542eb08, all eight CI jobs PASS. Actual common QA each 219/219, zero unattributed outcomes, manifest/independent verifier PASS. Ordered Activity callback fixture passed; actual concurrent network cancellation not yet qualified.

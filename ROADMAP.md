@@ -202,6 +202,8 @@ scoped local acceptance with full policy compliance.
 
 - [x] PR #53 merged f473688; eight CI jobs PASS, actual Windows/Android 215/215 with manifest and independent verification. Runtime confirms terminal Activity TLS, no fallback/retry and no negative fixture HTTP request.
 
-- [ ] ENG-09: Qualify both ordered history/telemetry terminal callback interleavings on actual Activity, including pending future cancellation, feed close, generation invalidation, history clear and same-access subsequent session fencing. Synthetic callbacks only; actual emulator CI required. Live concurrent network cancellation remains separate.
+- [x] ENG-09: Qualify both ordered history/telemetry terminal callback interleavings on actual Activity, including pending future cancellation, feed close, generation invalidation, history clear and same-access subsequent session fencing. Synthetic callbacks only; actual emulator CI required. Live concurrent network cancellation remains separate.
 
-- [ ] ENG-04/08: Prevent subtest parameter and unreviewed identity export in QA JUnit; attribute to admitted parent, preserve nonpassing priority, count unattributed fixture outcomes and fail closed. Four regressions (219 required); native common QA pending.
+- [x] ENG-04/08: Prevent subtest parameter and unreviewed identity export in QA JUnit; attribute to admitted parent, preserve nonpassing priority, count unattributed fixture outcomes and fail closed. Four regressions (219 required); native common QA pending.
+
+- [x] PR #54 merged 542eb08; eight jobs PASS, actual Windows and Android 219/219, manifest and independent verification PASS, zero unattributed outcomes. Ordered Activity callback fencing verified; live network cancellation remains separate.
