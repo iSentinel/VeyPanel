@@ -167,3 +167,7 @@ scoped local acceptance with full policy compliance.
 - [x] Combined PR #45 merged 5bb5505: all fourteen CI jobs PASS, independently downloaded Windows report 162/162, exact debt 395. Scope does not establish physical acceptance or release readiness.
 
 - [x] ENG-06: Fresh per-preview TextureView target and exclusive worker/framework texture lease; JVM ordered interleaving and repeated Activity preview regressions. PR #46 merged; all eight CI jobs PASS. No remote video/input change.
+
+- [ ] ENG-09: Atomically publish the latest production WSS sample, bound its local age, preserve terminal cause and wake cancelled reader. Native JVM, actual TLS instrumentation and APK reproduction mandatory.
+- [ ] ENG-09/12: Resolve OkHttp 4.12.1 source-to-binary provenance and pre-allocation memory bound; candidate source reviewed, repository redirect and unsigned tag unresolved. Strict CRLF in experimental upgrade with four negative fixtures. No dependency update or production transport switch.
+- [ ] ENG-10/05: Explicit plan-bound first-install metadata recovery. Sole staged version, trusted original ZIP, absent selection state, refuse existing locks/temp/extra versions, state readback. Twelve new local tests and isolated real 836-file package PASS; native Windows CI required. Existing corrupt state, process coordination and uninstall remain open.

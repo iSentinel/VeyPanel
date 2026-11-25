@@ -74,6 +74,10 @@ final class BoundedUpgrade {
             int b = in.read();
             if (b < 0) throw new EOFException("Incomplete upgrade");
             if (b != 13 && b != 10 && (b < 32 || b > 126)) throw new IOException("Invalid header byte");
+            // A CRLF pair is the only permitted line separator.
+            int previous = tail & 255;
+            if ((previous == 13 && b != 10) || (b == 10 && previous != 13))
+                throw new IOException("Invalid upgrade line separator");
             bytes.write(b);
             tail = (tail << 8) | b;
             if (tail == 0x0d0a0d0a) {

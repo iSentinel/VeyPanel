@@ -224,6 +224,30 @@ jobs:
           if ((Get-FileHash selection-test/selection.json).Hash -ne $before) { throw 'Recovery inspection modified state' }
           Remove-Item -LiteralPath selection-test/.selection-lock
           exit 0
+      - name: Verify explicit first-install metadata recovery
+        shell: pwsh
+        run: |
+          $package = 'portable/VeyPanel-win-x64-portable.zip'
+          $digest = (Get-FileHash $package -Algorithm SHA256).Hash.ToLowerInvariant()
+          New-Item -ItemType Directory -Path recovery-test | Out-Null
+          New-Item -ItemType Directory -Path recovery-test/versions | Out-Null
+          $target = "recovery-test/versions/$digest"
+          python scripts/stage_windows_package.py $package --sha256 $digest --destination $target --apply
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $before = (Get-FileHash "$target/artifact-files.sha256.json").Hash
+          $lines = python scripts/recover_first_install.py --root recovery-test --package $package --sha256 $digest --dry-run
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $plan = ($lines | Where-Object { $_ -notmatch '^PASS:' } | Out-String) | ConvertFrom-Json
+          if ($plan.applied -or $plan.started -or (Test-Path recovery-test/selection.json)) { throw 'Unexpected dry-run mutation' }
+          python scripts/recover_first_install.py --root recovery-test --package $package --sha256 $digest --apply --plan-sha256 $plan.plan_sha256
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $state = Get-Content recovery-test/selection.json -Raw | ConvertFrom-Json
+          if ($state.active.package_sha256 -ne $digest -or $null -ne $state.previous) { throw 'Unexpected recovered selection' }
+          if ((Get-FileHash "$target/artifact-files.sha256.json").Hash -ne $before) { throw 'Recovery modified staged manifest' }
+          python scripts/artifact_manifest.py verify $target
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/inspect_package_recovery.py --root recovery-test
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - uses: actions/upload-artifact@v4
         with:
           name: veypanel-win-x64-portable-unsigned
