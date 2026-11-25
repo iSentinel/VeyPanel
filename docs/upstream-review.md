@@ -145,3 +145,41 @@ Snapshots are sequential observations, not an atomic remote transaction;
 identity and corroboration checks do not establish freshness or origin
 attestation. No scheduled workflow, network collector or baseline updates
 are implemented by this adapter.
+
+## Bounded public HTTPS collector candidate
+
+Run explicitly, in a new private directory, without a token:
+
+    python scripts/collect_upstream_review.py > observed.json
+    python scripts/check_upstream_review.py --baseline config/upstream-review-baseline.json --observed observed.json
+
+The collector uses fixed api.github.com HTTPS, standard certificate validation,
+no redirects/proxy configuration/credentials/retries, five reviewed repositories,
+up to 25 sequential GETs, 1 MiB response cap, 12-second worker timeout and
+180-second run budget. Process startup/cleanup can add overhead. A worker
+contains blocking DNS, TLS and HTTP reads; the parent enforces a timeout.
+Output contains only normalized rows, no raw response or credentials. Exit 1
+means missing rows or collection failure; classify incomplete observations as
+ERROR, never substitute baseline. Rate limits and annotated tags fail closed.
+This is public unauthenticated collection; GitHub may impose shared-IP limits.
+No freshness attestation, atomic upstream snapshot, scheduled run, automatic
+baseline mutation or dependency adoption is implied.
+
+Actual public HTTPS observation from exact detached collector source
+1f7aeae182c00c77106072cce5585017865ab657 on 2026-11-25 returned five
+UNCHANGED rows; collector/classifier exit 0 and report verifier PASS.
+Normalized observation SHA-256:
+e3f9a8093e568c51718b6e2bd28886cb1ce520757e61d5919b7ffbcc5449e08f.
+Baseline SHA-256:
+081a6064bb23da17307defd61e17fd3ea274c9a529f8125edab5540fd6cb5ac1.
+
+## Next freshness evidence design
+
+Keep the existing classifier schema and exit semantics intact. Introduce a
+separate versioned collection receipt binding the exact normalized bytes,
+reviewed repository membership, collector checkout, start/end UTC, monotonic
+elapsed duration and complete/incomplete result. Use an explicit verification
+clock and reviewed maximum age/future skew; reject incomplete, inconsistent,
+stale or future evidence. Do not equate local timestamps or digests with
+remote authenticity, and do not use the receipt as release authorization.
+Schedule only after offline receipt, actual collection and CI qualification.
