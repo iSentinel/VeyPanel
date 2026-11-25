@@ -266,3 +266,16 @@ manifest verification PASS. Observation SHA-256:
 e3f9a8093e568c51718b6e2bd28886cb1ce520757e61d5919b7ffbcc5449e08f.
 This qualifies actual local positive collection and sealed readback, not
 hosted workflow execution, remote authenticity, or dependency acceptance.
+
+## Offline review action plan candidate
+
+The pure planner recomputes the classifier report from bounded exact input
+bytes and rejects incomplete or modified claims. Every reviewed metadata
+field maps to explicit review categories (source delta, compatibility,
+security, release identity, artifact provenance, license and maintenance
+as applicable). Changed repositories also require regression test planning
+and owner review. Actions are sorted, deduplicated and bound to the exact
+baseline, observation and report SHA-256 digests. UNCHANGED yields no tasks.
+The plan always sets adoption_authorized=false and omits raw metadata values.
+The planner alone does not establish freshness, source identity or origin;
+sealed bundle admission is the next separate integration boundary.
