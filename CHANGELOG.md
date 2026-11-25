@@ -1,5 +1,9 @@
 # Changelog
 
+## Package-source backup (CI PASS)
+
+- Create explicit plan-bound copies of verified original ZIPs and exact selection metadata; independently verify the receipt and archives.
+
 ## Maintenance inventory (CI PASS)
 
 - Verify retained selection and original pinned archive set without admitting maintenance or mutation.

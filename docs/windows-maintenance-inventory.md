@@ -67,3 +67,5 @@ Seven inert fixtures and actual single-version 291091352-byte archive
 copy verified locally, all 838 source inventory files unchanged.
 Native CI uses only the isolated recovered package. Restore into a
 new empty root and real two-version backup remain separate gates.
+
+Verified PR #60 merged 1c5b8e3; three integrated CI jobs PASS, Windows 236/236 and real isolated backup independently verified. No physical durability or user-data backup claim.
