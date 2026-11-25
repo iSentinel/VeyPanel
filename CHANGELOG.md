@@ -1,5 +1,9 @@
 # Changelog
 
+## Strict JUnit evidence (CI PASS)
+
+- Reject unreviewed attributes, inter-element text and unsupported XML processing instructions in independently verified offline QA reports.
+
 ## Bidirectional maintenance lease interoperability (CI PASS)
 
 - Qualify C#-owned shared/exclusive leases against isolated Python contenders alongside the existing reverse ownership and handle identity checks.

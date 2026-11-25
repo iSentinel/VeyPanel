@@ -262,4 +262,6 @@ scoped local acceptance with full policy compliance.
 
 - [x] PR #66 merged b048ff7; three integrated CI jobs PASS, independently verified Windows 258/258 and both native interop directions plus handle identity steps. No production admission.
 
-- [ ] ENG-08: Close JUnit evidence grammar to reviewed suite/case attributes and whitespace-only inter-element content; reject unreviewed XML declarations/instructions. Six new regressions (257 required on main base), real 251-case report accepted, tampered copy refused even after manifest reseal. Native CI required. Hashes and grammar are not evidence authenticity.
+- [x] ENG-08: Close JUnit evidence grammar to reviewed suite/case attributes and whitespace-only inter-element content; reject unreviewed XML declarations/instructions. Six new regressions (257 required on main base), real 251-case report accepted, tampered copy refused even after manifest reseal. Native CI required. Hashes and grammar are not evidence authenticity.
+
+- [x] PR #67 merged 4db1f5b; four integrated CI jobs PASS, independently verified Windows 264/264 against exact synthetic Git merge.
