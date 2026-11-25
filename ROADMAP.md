@@ -242,6 +242,8 @@ scoped local acceptance with full policy compliance.
 
 - [x] PR #61 merged d73d5f0; three integrated jobs PASS, verified Windows 243/243 and actual isolated restore. No activation or replacement.
 
-- [ ] ENG-10/05: Smoke-only cooperative Windows maintenance sharing lease: multiple runtime read handles versus exclusive maintenance handle, exact sharing-violation busy classification, missing/unsafe path refusal, cross-process contention/release/owner-exit regression. Native CI required. Production file provisioning/ACL/identity, Desktop/Host/Launcher integration and exclusive mutation protocol remain separate.
+- [x] ENG-10/05: Smoke-only cooperative Windows maintenance sharing lease: multiple runtime read handles versus exclusive maintenance handle, exact sharing-violation busy classification, missing/unsafe path refusal, cross-process contention/release/owner-exit regression. Native CI required. Production file provisioning/ACL/identity, Desktop/Host/Launcher integration and exclusive mutation protocol remain separate.
+
+- [x] PR #62 merged 234ba2e; six integrated CI jobs PASS, Windows 243/243 and native sharing smoke verified. Production admission remains open.
 
 - [ ] ENG-10/05: Smoke-only Windows lease handle identity observation (volume serial/file index, single-link and handle attribute checks); qualify two shared handles, held-name replacement/deletion refusal, hard-link rejection and distinct replacement identity. Native CI required; no persistent identity enrollment, ACL or production wiring.

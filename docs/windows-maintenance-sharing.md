@@ -36,6 +36,8 @@ No uninstall, removal, activation, privilege change, production install
 or filesystem fault injection is introduced. Native Windows compilation
 and execution are required before claiming even the prototype qualified.
 
+Verified PR #62 merged 234ba2e: six integrated jobs PASS, Windows 243/243 and native sharing fixture PASS. This remains a smoke-only prototype.
+
 ## Handle identity observation candidate
 
 An isolated Windows smoke reads BY_HANDLE_FILE_INFORMATION from an
