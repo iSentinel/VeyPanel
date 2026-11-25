@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Diagnostics;
 using System.Reflection;
 using VeyPanel.Shared;
@@ -79,16 +80,9 @@ internal static class MaintenanceLeaseSmoke
 
     internal static int Probe(string path, string mode)
     {
-        if (!OperatingSystem.IsWindows()) return 7;
         if (mode is not ("shared" or "exclusive" or "exclusive-exit")) return 8;
-        if (!Path.IsPathFullyQualified(path)) return 9;
-        if (Path.GetFullPath(path) != path) return 10;
-        if (Path.GetFileName(path) != LeaseName) return 11;
-        var parent = Directory.GetParent(path);
-        if (parent is null || !parent.Name.StartsWith(Prefix, StringComparison.Ordinal)
-            || !string.Equals(parent.Parent?.FullName,
-                Path.TrimEndingDirectorySeparator(Path.GetFullPath(Path.GetTempPath())),
-                StringComparison.OrdinalIgnoreCase)) return 6;
+        var validation = ValidateFixtureScope(path);
+        if (validation != 0) return validation;
         try
         {
             using var lease = MaintenanceLease.TryOpen(path, mode != "shared");
@@ -99,6 +93,39 @@ internal static class MaintenanceLeaseSmoke
         catch (UnauthorizedAccessException) { return 3; }
         catch (IOException) { return 4; }
         catch (ArgumentException) { return 5; }
+    }
+
+    internal static int ProbeIdentity(string path, string expected)
+    {
+        var validation = ValidateFixtureScope(path);
+        if (validation != 0) return validation;
+        if (expected.Length != 24
+            || !uint.TryParse(expected[..8], NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out var volume)
+            || !ulong.TryParse(expected[8..], NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out var index)
+            || index == 0) return 5;
+        try
+        {
+            using var lease = MaintenanceLease.TryOpen(path, false);
+            if (lease is null) return 2;
+            return MaintenanceLeaseIdentity.Read(lease) == new MaintenanceLeaseIdentity(volume, index) ? 0 : 12;
+        }
+        catch (UnauthorizedAccessException) { return 3; }
+        catch (IOException) { return 4; }
+        catch (ArgumentException) { return 5; }
+    }
+
+    private static int ValidateFixtureScope(string path)
+    {
+        if (!OperatingSystem.IsWindows()) return 7;
+        if (!Path.IsPathFullyQualified(path)) return 9;
+        if (Path.GetFullPath(path) != path) return 10;
+        if (Path.GetFileName(path) != LeaseName) return 11;
+        var parent = Directory.GetParent(path);
+        if (parent is null || !parent.Name.StartsWith(Prefix, StringComparison.Ordinal)
+            || !string.Equals(parent.Parent?.FullName,
+                Path.TrimEndingDirectorySeparator(Path.GetFullPath(Path.GetTempPath())),
+                StringComparison.OrdinalIgnoreCase)) return 6;
+        return 0;
     }
 
     private static int RunChild(string path, string mode)

@@ -4,6 +4,9 @@ using System.Net;
 if (args.Length == 3 && args[0] == "--maintenance-lease-reverse-smoke")
     return MaintenanceLeaseReverseSmoke.Run(args[1], args[2]);
 
+if (args.Length == 3 && args[0] == "--maintenance-identity-probe")
+    return MaintenanceLeaseSmoke.ProbeIdentity(args[1], args[2]);
+
 if (args.Length == 3 && args[0] == "--maintenance-lease-probe")
     return MaintenanceLeaseSmoke.Probe(args[1], args[2]);
 
