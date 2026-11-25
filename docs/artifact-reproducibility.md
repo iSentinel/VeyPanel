@@ -72,3 +72,24 @@ Run 45403501445: both builds and comparison PASS. Actual checkout
 were different, while bytes outside the validated signing blocks at
 [1782490,1786586) matched exactly. Both APK v2 signatures independently
 passed apksigner. Comparison artifact 14924837063.
+
+## Manifest integrity hardening (candidate)
+
+Traversal errors fail closed, directory/file entries and manifest reads are
+bounded, observed file identity/size/timestamps are checked before/after
+hashing, and schema fields must match exactly. Staging manifest replacement
+is atomic and uses UTF-8 LF; accepted evidence remains immutable by policy.
+These checks assume private quiescent staging and cannot prove an atomic
+multi-file snapshot or defeat a hostile same-user writer. Six regression
+fixtures and downloaded prior artifacts passed locally; Windows CI pending.
+
+### Windows metadata comparison
+The first candidate failed Windows CI with File changed before hashing.
+CPython 3.12.10 path stat and handle stat differ in extension-derived mode
+bits and legacy ctime semantics. See reviewed
+[CPython path stat](https://github.com/python/cpython/blob/v3.12.10/Modules/posixmodule.c)
+and [handle stat](https://github.com/python/cpython/blob/v3.12.10/Python/fileutils.c).
+Windows cross-API checks compare device/inode, size, last-write and explicit
+birthtime, and mode excluding extension-derived execute bits. Each API
+retains its full before/after identity comparison. Linux checks are unchanged.
+No hostile writer, physical durability or atomic multi-file snapshot claim.
