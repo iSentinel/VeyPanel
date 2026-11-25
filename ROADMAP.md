@@ -245,3 +245,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-10/05: Smoke-only cooperative Windows maintenance sharing lease: multiple runtime read handles versus exclusive maintenance handle, exact sharing-violation busy classification, missing/unsafe path refusal, cross-process contention/release/owner-exit regression. Native CI required. Production file provisioning/ACL/identity, Desktop/Host/Launcher integration and exclusive mutation protocol remain separate.
 
 - [x] PR #62 merged 234ba2e; six integrated CI jobs PASS, Windows 243/243 and native sharing smoke verified. Production admission remains open.
+
+- [ ] ENG-08/10: Reject ambiguous portable ZIP and nested Host manifests/source evidence using bounded same-byte strict JSON, exact source evidence schema and extracted manifest validation. Reproduced duplicate-schema acceptance before fix; eight new regressions (251 required), real pinned archive/staging dry-run and prior verified backup PASS. Native CI required; archive payload mutation/hostile writers and full ZIP parser resource limits remain separate.

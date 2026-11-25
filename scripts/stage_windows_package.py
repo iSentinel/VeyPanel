@@ -3,15 +3,14 @@
 
 import argparse
 import hashlib
-import json
 from pathlib import Path
 import re
 import shutil
 import sys
 import zipfile
 
-from artifact_manifest import MANIFEST, collect, compare, entries
-from portable_zip import MAX_MANIFEST, validate_members
+from artifact_manifest import MANIFEST, collect, compare, entries, load_manifest, strict_json
+from portable_zip import MAX_MANIFEST, read_zip_metadata, validate_members
 
 REQUIRED = {"VeyPanel.Desktop.exe", "VeyPanel.Desktop.dll",
             "host/VeyPanel.Host.exe", "host/VeyPanel.Host.dll",
@@ -30,22 +29,21 @@ def digest(source):
 
 def checked_manifest(archive, name):
     """Load bounded embedded manifest data."""
-    if archive.getinfo(name).file_size > MAX_MANIFEST:
-        raise ValueError("Oversized embedded manifest")
-    return entries(json.loads(archive.read(name)))
+    return entries(strict_json(read_zip_metadata(archive, name, MAX_MANIFEST)))
 
 
 def verify_source_evidence(archive):
     """Require valid, matching build identity records for both applications."""
     raw = []
     for name in ("build-source.json", "host/build-source.json"):
-        if archive.getinfo(name).file_size > 65536:
-            raise ValueError("Oversized source evidence")
-        raw.append(archive.read(name))
+        raw.append(read_zip_metadata(archive, name, 65536))
     if raw[0] != raw[1]:
         raise ValueError("Host and Desktop source evidence differs")
-    evidence = json.loads(raw[0])
-    if (evidence.get("schema") != 1
+    evidence = strict_json(raw[0])
+    fields = {"schema", "tracked_checkout_clean", "git_commit", "git_tree",
+              "source_commit_epoch_utc"}
+    if (not isinstance(evidence, dict) or set(evidence) != fields
+            or type(evidence["schema"]) is not int or evidence["schema"] != 1
             or evidence.get("tracked_checkout_clean") is not True
             or not all(isinstance(evidence.get(key), str)
                        and re.fullmatch("[0-9a-f]{40}", evidence[key])
@@ -111,7 +109,7 @@ def extract_verified(archive, names, destination):
             with archive.open(name) as source, target.open("xb") as output:
                 shutil.copyfileobj(source, output, 1024 * 1024)
         for root in (destination, destination / "host"):
-            manifest = json.loads((root / MANIFEST).read_bytes())
+            manifest = load_manifest(root / MANIFEST)
             if any(compare(manifest, collect(root)).values()):
                 raise ValueError("Extracted tree does not match manifest")
     except Exception:
