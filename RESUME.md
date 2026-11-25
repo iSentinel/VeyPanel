@@ -375,3 +375,6 @@
 ## Verified Host smoke capture
 - PR #41 head 78bc723a9fc486159705677830019fdff7789a55 merged b3d4ebf. All nine combined-source jobs PASS: Windows 45518031667/45518021242, Android 45518021295, Host reproduction 45518031645, Desktop reproduction 45518031818. GitHub API confirms both private bootstrap fixture and actual published Host smoke steps succeeded.
 - Pending independent candidates: PR #42 8ebbc1b default framework log privacy, PR #43 e506c6a experimental WSS state with JVM/emulator checks. Both clean local Python QA 141/141; native CI required. PR #37 cf59419 passed three jobs against older main; integrate current main before merge. No release or hardware approval.
+
+## Recovery engineering integration candidate
+- Source bf88748, dev/recovery-engineering-adoption. Recover read-only inspection source and fixtures from f907af6 without importing older Launcher commits. Add public annotations, fixture documentation and safe error category/canary. Existing ten fixtures preserved; new canary, no baseline increase. Actual private-root inspection and clean QA required; hold local until current review queue allows integration. No lock clearing, adoption, deletion or activation.

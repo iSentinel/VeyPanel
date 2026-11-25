@@ -156,3 +156,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-04: Add optional closed-schema QA JSONL events, bounded monotonic durations, safe reason codes, stdout/stderr separation and canary/exit regressions; PR #40 merged, all four CI jobs PASS. Audit Host token capture and legacy CLI exception messages next; no general redaction claim.
 
 - [x] ENG-04: Remove raw Host smoke temporary logs; owned pipes, exact bootstrap, bounded cleanup, fixed diagnostics. PR #41 merged; all nine combined-source CI jobs PASS, including PowerShell capture and published Host smoke.
+
+- [ ] ENG-10/05: Bring read-only recovery inspection into current engineering standards, fixed error categories and exact AST gate. Local tests and actual private-root inspection required; Windows CI before merge. Explicit state repair and process fencing remain open.
