@@ -64,3 +64,16 @@ Linux; actual Windows CI stage prepared. The disposable root is retained
 for evidence, not an installed or activated product.
 
 Verified PR #47 merged 37a07f5, eight CI jobs PASS, including actual Windows first-install recovery and Android runtime. Pre-allocation memory, publisher provenance and physical acceptance remain separate.
+
+## Strict selection metadata candidate
+
+Selection metadata reads are bounded to 8192 bytes, require regular files
+and detect observed identity/size/time changes. Manifest reads use the
+existing 8 MiB bound and compare the expected digest against exactly the
+bytes parsed. UTF-8 JSON rejects duplicate keys and nonstandard constants;
+state schema is checked before replacement. Existing select/rollback/status
+exit codes and dry-run contracts are retained; CLI failure diagnostics use
+fixed categories. This is not a snapshot of an entire mutable tree, nor
+does it remove the exclusive owner/private quiescent root requirement.
+Six new fixtures and prior actual roots/artifacts PASS locally; native
+Windows CI required.

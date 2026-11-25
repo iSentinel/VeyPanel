@@ -419,5 +419,12 @@
 - Downloaded Windows common QA/JUnit verified 174/174, zero skips, clean checkout ac79e39bd05fc33d14e4b43888c2f8338f928886 tree 2087f51f0a471a895916ce9e5da075b0252ae952, debt 395, empty exact delta. API confirms explicit first-install recovery, read-only recovery and launch plan steps PASS.
 - Next: bounded strict selection metadata and single-read manifest identity, independent exact OkHttp binary inspection. No production deployment or physical approval.
 
+## Strict selection metadata candidate
+- Base 8e05309, dev/strict-selection-metadata. Reuse bounded metadata reads with Windows cross-API identity checks, strict UTF-8 JSON (duplicate keys, nonstandard constants and parser nesting errors refused), hash and parse one manifest snapshot, validate populated state before atomic write. Safe CLI categories, no raw exception. Six new regressions, 19 selection tests; exactly 66 baseline identities removed from selection module and fixtures, no new debt, remaining 329.
+- Local all Python 180/180 PASS; prior actual Android/Host/Desktop manifests verified, two-version selection status PASS, recovered 836-file root read-only inspection and digest-bound Launcher dry-run PASS. No process started. Native Windows CI required. Private quiescent root assumption, no atomic multi-file snapshot or hostile concurrent writer claim.
+
+## Verified strict selection metadata
+- PR #48 head ad8d573f548af655c6beee6f7d8116eaa9519445 merged; all ten CI jobs PASS. Windows 45526120102/45526112914, Android 45526120152/45526113208, Desktop reproduction 45526120154, Host reproduction 45526120110. Downloaded Windows QA/JUnit artifact 14981299564 confirms 180/180, zero skips, exact debt 329, clean checkout dc3620b5380cc4953b7cdfc1a3058f2fcbd8917f tree 1545e627f4acc9bbe4f9ad23e8774d200ced5fb2.
+- Next: integrate exact OkHttp binary evidence candidate; no production transport switch or physical acceptance.
 ## Exact OkHttp binary evidence candidate
 - Base 8e05309, dev/okhttp-bytecode-evidence. Retrieved exact Maven JAR /tmp/veypanel-okhttp-binary.rvPGKJ/okhttp-4.12.1.jar (791976 bytes), SHA256 matches committed verification metadata; three relevant class hashes recorded in docs/production-stream-mailbox.md. No JDK on Proxmox. Add bounded verified snapshot and fixed javap evidence CLI, seven synthetic fixtures, Android CI separate manifest-verified report using existing Gradle cache. No library execution, dependency changes, publisher/source correspondence or memory-bound claim. Hold for integration after PR #48; actual javap NOT_RUN until native CI.
