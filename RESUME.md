@@ -489,3 +489,6 @@
 
 ## Explicit Launcher image candidate
 - Base main 64e9d0b, dev/launcher-explicit-image. Pass absolute verified Desktop path as explicit subprocess executable and argv[0]; replace second installed-manifest read with bounded identity-checked read. New manifest growth regression; 11/11 Launcher tests and actual isolated package dry-run PASS. Registry expanded explicitly to 220. Hold locally pending #55; native Windows CI required, no live process created.
+
+## Windows process observation candidate
+- On dev/launcher-explicit-image after b3a3a01, add PackageProcessObservation.psm1 and read-only CLI Get-PackageProcessObservation.ps1; system-wide fixed Desktop/Host names, count-only output, exit 0 clear observation/2 blocked/1 unavailable. Fixtures cover empty/matching/private fields/invalid/excessive rows; native CI adds observation during existing owned Host smoke and after cleanup. No process mutation, ownership proof, hard provider deadline or lifetime lock. PowerShell/CIM unavailable locally; native NOT_RUN. Publish independently of Android PR #55 and require fresh CI before merge. Full common registry 220; no new AST debt.
