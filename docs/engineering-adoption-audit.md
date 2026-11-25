@@ -58,3 +58,8 @@ inspection, not exhaustive verification. PR #37 Windows jobs 45509910174 /
 Maven HTTP 429; do not classify as application failure. Keep original failed
 attempt evidence. Next: common Python QA report and exact baseline gate,
 then reduce remaining debt and qualify native and recovery stages.
+
+The adoption change adds the scoped common Python runner, initial suite catalog,
+SECURITY.md and current architecture; ordinary Windows and Android CI invoke
+the shared Python gate before native build. Windows CI timeout is bounded.
+Native JUnit import, all native wrappers and formal doc validation remain open.

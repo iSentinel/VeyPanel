@@ -128,3 +128,23 @@
 - [x] 0.9: Verify side-by-side package selection, idempotence, atomic state replacement, interrupted-write refusal and verified rollback. PR #35 merged; Windows CI 45428020239/45427999735 PASS. Activation/launcher and uninstall remain separate.
 
 - [x] 0.9: Correct fail-closed CI report pipelines, require exact CAMERA/INTERNET declarations and reject ambiguous APK entry names. PR #36 merged; all 14 CI jobs PASS, including negative gate outcome assertions and fresh reproduction experiments.
+
+## Engineering policy adoption and compliance migration (2026-11-25)
+
+Canonical policy: [engineering standards](docs/engineering-standards.md).
+Gap register: [adoption audit](docs/engineering-adoption-audit.md).
+Priorities P0 safety/verification, P1 engineering migration. Do not confuse
+scoped local acceptance with full policy compliance.
+
+- [ ] ENG-01/02/07/11: Adopt policy, exact Python debt baseline, common Python QA and JUnit; first 22 identities resolved (469 -> 447), local PASS; Windows/Android CI pending.
+- [ ] ENG-02: Reduce remaining exact Python debt by focused modules; no new or stale baseline findings. Broader PEP 8 and static type analysis separate.
+- [ ] ENG-03: Native C#/Java/JS/PowerShell quality audit and equivalent reviewed debt gates; preserve compiler/lint/runtime checks.
+- [ ] ENG-04 (P0): Audit logging/privacy and add closed structured event schema, stdout/stderr and secret-canary regressions.
+- [ ] ENG-08/09 (P0): Harden manifest inventory, bounded reads, mutation detection, archive validation and trusted source verification; audit transport cancellation and trust boundaries.
+- [ ] ENG-10/05 (P0): Verify launcher PR #37 under adopted gates; inspect recovery branch, explicit reconciliation, process fencing, safe uninstall/backup/restore and installed readiness; no destructive automation.
+- [ ] ENG-06: Browser/WPF/Android lifecycle, accessibility and rendered layout tests; physical acceptance only with actual approved devices.
+- [ ] ENG-07/11: Expand stable catalog and native JUnit/summary adapters, shared QA prerequisites, doc validation, exact reviewed action SHA pins and CI import; GitLab/TeamCity qualification separate.
+- [ ] ENG-12: Review-only upstream inventory/watch, full build/runtime pack pinning, license redistribution and advisory disposition.
+- [ ] ENG-14: Validate canonical documentation hierarchy; local Confluence manifest if applicable; external publishing disabled.
+- [ ] ENG-13: Candidate-bound release governance, production signing and attestation, actual hardware and update/rollback qualification; separate owner approval.
+- [ ] ENG-15: Main Android runtime run 45509804749 blocked by Maven Central HTTP 429 before instrumentation; bounded rerun requested. Preserve failed attempt; no application FAIL inference or security bypass.

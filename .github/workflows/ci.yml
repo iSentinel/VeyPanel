@@ -5,6 +5,7 @@ permissions:
 jobs:
   build-test:
     runs-on: windows-2025
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
@@ -17,6 +18,14 @@ jobs:
         run: |
           if ((dotnet --version).Trim() -ne '10.0.404') { throw 'Unexpected .NET SDK' }
           if ((python --version).Trim() -ne 'Python 3.12.10') { throw 'Unexpected Python version' }
+      - name: Run shared Python offline QA
+        run: python scripts/run_offline_qa.py --output offline-qa
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-offline-qa
+          path: offline-qa/
+          if-no-files-found: error
       - name: Record actual Git source checkout before build
         run: |
           python -m unittest discover -s scripts -p test_build_source_evidence.py -v
