@@ -165,3 +165,5 @@ scoped local acceptance with full policy compliance.
 - [ ] ENG-06: Fence SurfaceTexture destruction versus active codec ownership; prevent stale generation callbacks, test repeated preview and lifecycle cancellation.
 
 - [x] Combined PR #45 merged 5bb5505: all fourteen CI jobs PASS, independently downloaded Windows report 162/162, exact debt 395. Scope does not establish physical acceptance or release readiness.
+
+- [ ] ENG-06: Fresh per-preview TextureView target and exclusive worker/framework texture lease; JVM ordered interleaving and repeated Activity preview regressions. Local Python QA only; native acceptance required. No remote video/input change.

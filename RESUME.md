@@ -397,3 +397,8 @@
 - Windows 45520009361/45520017767, Android 45520008959/45520017783, Android runtime 45520008901, Android reproduction 45520017761, Host reproduction 45520017812, Desktop reproduction 45520017785. API confirms mandatory private bootstrap, framework privacy, Launcher, recovery inspection and Android runtime steps passed.
 - Downloaded Windows QA/JUnit independently verified: actual checkout 6c0cd97a40ad7350a3f7b6bc5d09a37eb6376298 tree 44dd53c8d86ae40ee60762b6314a53639a2ff729, 162/162, zero skips, debt 395, no new/stale entries.
 - Next: integrate texture ownership candidate 56d5f14, inspect production transport limitations and explicit recovery prerequisites. No physical or release approval.
+
+## Texture ownership candidate
+- Base d6b9d03 PR #45, branch dev/preview-texture-ownership. One-use lease coordinates queued/active/completed worker and framework destroy; worker releases detached texture after Surface/codec cleanup. New TextureView per preview prevents stale view callbacks, actual repeated Activity preview regression plus pure JVM fixture. Native CI not yet run; hold locally until combined PR #45 acceptance. No native codec deadline or hardware proof.
+
+- Integrated accepted main 94a97f7; preserve previous native acceptance and run fresh combined-source CI before merge.

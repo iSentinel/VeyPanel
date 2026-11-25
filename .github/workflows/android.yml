@@ -38,10 +38,11 @@ jobs:
       - name: Native client policy fixtures
         run: |
           mkdir -p /tmp/veypanel-client-tests
-          javac -d /tmp/veypanel-client-tests android/app/src/main/java/com/veypanel/client/{ReaderSession,SampleRules,InvitationLink,SavedReader,ConnectionDiagnostics,BoundedStreamState,BoundedFrameHeader,BoundedMessageReader,BoundedUpgrade,MaskedClientFrame,WssControl,TouchMath,LocalTouchProbe,LocalTapGate}.java android/tests/ClientPolicySmoke.java android/tests/BoundedStreamStateSmoke.java android/tests/FrameHeaderSmoke.java android/tests/MessageReaderSmoke.java android/tests/UpgradeSmoke.java android/tests/TouchMathSmoke.java android/tests/LocalTouchProbeSmoke.java android/tests/LocalTapGateSmoke.java
+          javac -d /tmp/veypanel-client-tests android/app/src/main/java/com/veypanel/client/{ReaderSession,SampleRules,InvitationLink,SavedReader,ConnectionDiagnostics,BoundedStreamState,BoundedFrameHeader,BoundedMessageReader,BoundedUpgrade,MaskedClientFrame,WssControl,TouchMath,LocalTouchProbe,LocalTapGate,LocalPreviewLease}.java android/tests/ClientPolicySmoke.java android/tests/BoundedStreamStateSmoke.java android/tests/FrameHeaderSmoke.java android/tests/MessageReaderSmoke.java android/tests/UpgradeSmoke.java android/tests/TouchMathSmoke.java android/tests/LocalTouchProbeSmoke.java android/tests/LocalTapGateSmoke.java android/tests/LocalPreviewLeaseSmoke.java
           java -cp /tmp/veypanel-client-tests com.veypanel.client.ClientPolicySmoke
           java -cp /tmp/veypanel-client-tests com.veypanel.client.BoundedStreamStateSmoke
           java -cp /tmp/veypanel-client-tests com.veypanel.client.LocalTapGateSmoke
+          java -cp /tmp/veypanel-client-tests com.veypanel.client.LocalPreviewLeaseSmoke
       - name: Verify offline APK integrity policy fixtures
         run: python3 -m unittest discover -s scripts -p 'test_*android*.py' -v
       - name: Dependency inventory fixtures

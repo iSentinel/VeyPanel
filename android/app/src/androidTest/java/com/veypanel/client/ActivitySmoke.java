@@ -42,6 +42,7 @@ final class ActivitySmoke {
             verifyLocalDecoderButton(runner, activity);
             verifyLocalPreview(runner, activity);
             verifyLocalTouch(runner, activity);
+            verifyFreshPreview(runner, activity);
             verifyPreviewReset(runner, activity);
         } finally {
             runner.runOnMainSync(activity::finish);
@@ -119,6 +120,20 @@ final class ActivitySmoke {
                 || !status.getText().toString().contains("not sent to Windows"))
                 throw new IllegalStateException("Local synthetic touch output missing");
         });
+    }
+
+    private static void verifyFreshPreview(Instrumentation runner, Activity activity) {
+        java.util.concurrent.atomic.AtomicReference<TextureView> previous =
+            new java.util.concurrent.atomic.AtomicReference<>();
+        runner.runOnMainSync(() ->
+            previous.set(findTexture(activity.getWindow().getDecorView())));
+        verifyLocalPreview(runner, activity);
+        runner.runOnMainSync(() -> {
+            TextureView current = findTexture(activity.getWindow().getDecorView());
+            if (current == null || current == previous.get() || !current.isAvailable())
+                throw new IllegalStateException("Preview generation reused previous view");
+        });
+        verifyLocalTouch(runner, activity);
     }
 
     private static void verifyPreviewReset(Instrumentation runner, Activity activity) {
