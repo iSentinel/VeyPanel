@@ -295,8 +295,31 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python scripts/backup_windows_selection.py verify --directory recovery-backup --plan-sha256 $plan.plan_sha256
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          "VEYPANEL_FIXTURE_BACKUP_PLAN=$($plan.plan_sha256)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           if ((Get-FileHash recovery-test/selection.json).Hash -ne $before) { throw 'Backup modified selection' }
           python scripts/artifact_manifest.py verify "recovery-test/versions/$digest"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Verify isolated restore of backed up real package
+        shell: pwsh
+        run: |
+          $package = 'portable/VeyPanel-win-x64-portable.zip'
+          $digest = (Get-FileHash $package -Algorithm SHA256).Hash.ToLowerInvariant()
+          $backupPlan = $env:VEYPANEL_FIXTURE_BACKUP_PLAN
+          if ($backupPlan -notmatch '^[0-9a-f]{64}$') { throw 'Missing independent backup plan' }
+          $archive = "recovery-backup/$digest.zip"
+          $before = (Get-FileHash recovery-test/selection.json).Hash
+          $lines = python scripts/restore_windows_selection.py --directory recovery-backup --backup-plan-sha256 $backupPlan --destination restored-test
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $plan = ($lines | Where-Object { $_ -notmatch '^PASS:' } | Out-String) | ConvertFrom-Json
+          if ($plan.restored -or $plan.started -or $plan.maintenance_admitted -or (Test-Path restored-test)) { throw 'Restore dry-run modified destination' }
+          python scripts/restore_windows_selection.py --directory recovery-backup --backup-plan-sha256 $backupPlan --destination restored-test --apply --plan-sha256 $plan.plan_sha256
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if ((Get-FileHash restored-test/selection.json).Hash -ne $before -or (Get-FileHash recovery-test/selection.json).Hash -ne $before) { throw 'Selection bytes differ' }
+          python scripts/artifact_manifest.py verify "restored-test/versions/$digest"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/launch_windows_package.py --root restored-test --package $archive --sha256 $digest --dry-run
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/backup_windows_selection.py verify --directory recovery-backup --plan-sha256 $backupPlan
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Verify explicit corrupt selection repair with retained backup
         shell: pwsh

@@ -69,3 +69,36 @@ Native CI uses only the isolated recovered package. Restore into a
 new empty root and real two-version backup remain separate gates.
 
 Verified PR #60 merged 1c5b8e3; three integrated CI jobs PASS, Windows 236/236 and real isolated backup independently verified. No physical durability or user-data backup claim.
+
+## Restore into a fresh directory candidate
+
+Use the separately retained verified backup plan digest, a private
+existing destination parent and a new, nonexistent target. Dry-run
+verifies the backup and binds the destination and parent identity.
+Apply requires that exact reviewed restore plan.
+
+    python scripts/restore_windows_selection.py --directory C:\backups\new --backup-plan-sha256 BACKUP_PLAN_SHA256 --destination C:\VeyPanel-restored
+    python scripts/restore_windows_selection.py --directory C:\backups\new --backup-plan-sha256 BACKUP_PLAN_SHA256 --destination C:\VeyPanel-restored --apply --plan-sha256 RESTORE_PLAN_SHA256
+
+Only exact backup records and digest-derived ZIP names are accepted.
+Stage each version using the existing package preflight, verify the
+complete extracted tree against the original archive, recheck the
+backup, and create selection metadata exclusively after all versions
+pass. Verify exact metadata readback and the final inventory.
+No activation, overwrite, replacement of existing installation or
+maintenance admission is implemented. On failure preserve the
+incomplete root for manual review; existing staging may remove its
+own failed newly extracted version. An interrupted final metadata
+write can leave incomplete state, and final readback failure is not
+success. Do not automatically retry, activate or clean up a failed root.
+Trusted quiescent private paths and adequate capacity are prerequisites,
+not an atomic hostile-writer snapshot, ACL or power-loss guarantee.
+
+Seven local regression cases include exact two-version inert restoration,
+existing destination refusal, wrong plan, source change and partial
+extraction without published selection. Actual single-version restore
+from the 291091352-byte archived backup matched all 838 source inventory
+files, with source and backup unchanged and Launcher dry-run PASS.
+Native Windows CI uses the isolated recovered package and separately
+retained backup plan from the previous step. Actual WPF launch,
+real two-version archives, runtime settings and uninstall remain open.
