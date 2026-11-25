@@ -487,5 +487,19 @@
 - Independently downloaded both common reports: verified manifest, exact registry and baseline, 219/219, debt 329, zero unattributed outcomes, checkout cb63bb7ded128dd3e9ad01671b1945134b8e53c8 tree 32e6337839aaa221670d60d846a606a27498db9e. Runtime log confirms ordered history/telemetry callback fencing and terminal TLS/no fallback/no HTTP on negative fixture.
 - Next: inspect production REST cancellation, qualify explicit owned request lifecycle without changing trust or transport selection. Physical acceptance and process/uninstall gates remain open.
 
+## Explicit Launcher image candidate
+- Base main 64e9d0b, dev/launcher-explicit-image. Pass absolute verified Desktop path as explicit subprocess executable and argv[0]; replace second installed-manifest read with bounded identity-checked read. New manifest growth regression; 11/11 Launcher tests and actual isolated package dry-run PASS. Registry expanded explicitly to 220. Hold locally pending #55; native Windows CI required, no live process created.
+
+## Windows process observation candidate
+- On dev/launcher-explicit-image after b3a3a01, add PackageProcessObservation.psm1 and read-only CLI Get-PackageProcessObservation.ps1; system-wide fixed Desktop/Host names, count-only output, exit 0 clear observation/2 blocked/1 unavailable. Fixtures cover empty/matching/private fields/invalid/excessive rows; native CI adds observation during existing owned Host smoke and after cleanup. No process mutation, ownership proof, hard provider deadline or lifetime lock. PowerShell/CIM unavailable locally; native NOT_RUN. Publish independently of Android PR #55 and require fresh CI before merge. Full common registry 220; no new AST debt.
+
+## Verified Launcher and Windows process observation
+- PR #56 head 3fe959c60d9f01591ced60f8493abc2bffbdf8ee merged e4fb31f69ee82a792924cd2ee46f487ad248c94a; ten jobs PASS, Windows 45545383687/45545391505, Android 45545383785/45545391484, reproduction 45545391204/45545391272. Independently downloaded Windows QA 220/220, manifest and verifier PASS, tree 343fbca85ddd6da5586bcaefc6f20274e50d521b, debt 329. Windows log confirms BLOCKED during owned Host and CLEAR_OBSERVATION after cleanup.
+- PR #55 head d212297 remains open: six jobs PASS, runtime confirms real TLS REST drip deadline; second independent APK build 45544928553 failed dependency acquisition HTTP 429, comparison skipped. Requested one failed-job rerun, no dependency or verification change. Integrate with accepted main and require fresh combined-source CI before merge.
+- Next: cooperative Desktop session admission, then process lifetime and maintenance fencing. No production activation, destructive operation or hardware acceptance.
+
 ## REST body budget candidate
 - Base main 64e9d0b, dev/rest-response-budget. Audit found post-read-only deadline/interrupt checks and EOF bypass. BoundedRestBody enforces existing 1 MiB / 5s body limits around each read including EOF, rejects zero progress, preserves interrupt flag; existing HTTPS policy and connect/read timeouts unchanged. Deterministic JVM fixture plus isolated trusted TLS slow body case in TransportSmoke, mandatory runtime marker. Local Python fixture control on ephemeral listener, Bash/Python syntax and AST PASS; native JVM/emulator required. Body deadline does not include headers/connect, and blocking read remains bounded only by existing transport behavior; no immediate cancellation or whole-request deadline claim.
+
+## REST body budget integration
+- PR #55 original d212297 all eight jobs PASS after one bounded rerun of reproduction 45544928553 (initial dependency acquisition HTTP 429, compare skipped; rerun both builds and compare PASS). Current main 2780d6f contains accepted PR #56 and 220 required cases. Integrate current main, resolve only confirmed document conflicts; require fresh combined Windows/Android/runtime/reproduction CI. No dependency or TLS change.

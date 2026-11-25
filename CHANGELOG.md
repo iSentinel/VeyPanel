@@ -1,5 +1,9 @@
 # Changelog
 
+## Explicit launch image and maintenance process observation (CI PASS)
+
+- Bind Desktop launch to the verified image, bound installed manifest reads and add conservative count-only Windows process observation. Native Windows CI passed.
+
 ## Activity callback fencing and mandatory result privacy (CI PASS)
 
 - Qualify ordered foreground terminal callbacks and preserve reviewed parent identities in Python evidence without exporting subtest parameters.

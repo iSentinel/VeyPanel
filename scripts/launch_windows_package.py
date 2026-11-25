@@ -8,7 +8,7 @@ import subprocess
 import sys
 import zipfile
 
-from artifact_manifest import MANIFEST
+from artifact_manifest import MANIFEST, MAX_MANIFEST, read_bounded
 from stage_windows_package import digest, preflight
 from windows_package_selection import (
     SHA, plain, read_state, root_path, selection_lock, verify_record,
@@ -36,7 +36,7 @@ def verified_target(root: Path, package: Path, expected: str) -> Path:
             raise ValueError("External SHA-256 mismatch")
         with zipfile.ZipFile(source) as archive:
             preflight(archive)
-            if archive.read(MANIFEST) != (directory / MANIFEST).read_bytes():
+            if archive.read(MANIFEST) != read_bounded(directory / MANIFEST, MAX_MANIFEST):
                 raise ValueError("Selected manifest differs from trusted archive")
             if digest(source) != expected:
                 raise ValueError("Package changed during verification")
@@ -57,7 +57,8 @@ def launch(root: Path, package: Path, expected: str,
                   "executable": str(exe), "working_directory": str(exe.parent),
                   "started": False}
         if apply:
-            process = subprocess.Popen([str(exe)], cwd=str(exe.parent), shell=False)
+            process = subprocess.Popen([str(exe)], executable=str(exe),
+                                       cwd=str(exe.parent), shell=False)
             result.update(started=True, pid=process.pid)
         return result
 

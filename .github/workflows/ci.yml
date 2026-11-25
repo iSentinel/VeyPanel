@@ -97,9 +97,15 @@ jobs:
       - name: Test private Host bootstrap capture
         shell: pwsh
         run: ./scripts/Test-HostSmokeCapture.ps1
+      - name: Test read-only package process observation fixtures
+        shell: pwsh
+        run: ./scripts/Test-PackageProcessObservation.ps1
       - name: Run published Windows host integration smoke
         shell: pwsh
         run: ./scripts/Test-Host.ps1
+      - name: Verify process observation after owned Host cleanup
+        shell: pwsh
+        run: ./scripts/Get-PackageProcessObservation.ps1
       - name: Verify Host request log privacy
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --request-log-smoke publish
       - name: Run HTTPS LAN integration smoke
