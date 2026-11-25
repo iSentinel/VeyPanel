@@ -339,3 +339,7 @@
 - PR #37 head 0df6f83: Windows CI 45509910174/45509902471 PASS; remains open until adoption integration. Recovery worktree /tmp/veypanel-recovery head f907af6 local only. Do not inflate baseline for new launcher/recovery debt; bring them into compliance before merge.
 - Latest main Android runtime 45509804749 failed at dependency resolution (Maven HTTP 429), instrumentation NOT_RUN. One bounded rerun requested; no dependency or TLS change. PR #36 runtime had passed earlier.
 - Next: run clean common QA, publish development review branch and check CI; independently fix high-priority manifest bounds/mutation and launcher/recovery debt. No production deployment, release, signing, visibility or Confluence publication.
+
+### Adoption CI portability regression
+- Initial PR #38 Windows CI 45514689128/45514677681 failed the new shared gate. Downloaded JUnit from 45514689128 (artifact 14975773912) identified test_backslash_path, 123/124 PASS; AST exact gate PASS. Windows zipfile normalizes backslashes on writing/reading. Fixture now writes the raw forbidden byte into local/central ZIP names; verifier checks orig_filename against normalized filename, and rejects NUL truncation. Twelve APK fixtures and the saved actual APK passed locally. Eighteen more exact test-module debt entries removed, 429 remain. New CI required; no assertion weakened.
+- Main Android runtime run 45509804749 bounded rerun completed SUCCESS after initial Maven HTTP 429. No dependency or TLS change.

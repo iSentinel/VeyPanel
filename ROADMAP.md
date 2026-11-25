@@ -136,7 +136,7 @@ Gap register: [adoption audit](docs/engineering-adoption-audit.md).
 Priorities P0 safety/verification, P1 engineering migration. Do not confuse
 scoped local acceptance with full policy compliance.
 
-- [ ] ENG-01/02/07/11: Adopt policy, exact Python debt baseline, common Python QA and JUnit; first 22 identities resolved (469 -> 447), local PASS; Windows/Android CI pending.
+- [ ] ENG-01/02/07/11: Adopt policy, exact Python debt baseline, common Python QA and JUnit; 40 identities resolved (469 -> 429); first Windows common gate exposed APK path fixture portability; corrected candidate CI pending.
 - [ ] ENG-02: Reduce remaining exact Python debt by focused modules; no new or stale baseline findings. Broader PEP 8 and static type analysis separate.
 - [ ] ENG-03: Native C#/Java/JS/PowerShell quality audit and equivalent reviewed debt gates; preserve compiler/lint/runtime checks.
 - [ ] ENG-04 (P0): Audit logging/privacy and add closed structured event schema, stdout/stderr and secret-canary regressions.
@@ -147,4 +147,4 @@ scoped local acceptance with full policy compliance.
 - [ ] ENG-12: Review-only upstream inventory/watch, full build/runtime pack pinning, license redistribution and advisory disposition.
 - [ ] ENG-14: Validate canonical documentation hierarchy; local Confluence manifest if applicable; external publishing disabled.
 - [ ] ENG-13: Candidate-bound release governance, production signing and attestation, actual hardware and update/rollback qualification; separate owner approval.
-- [ ] ENG-15: Main Android runtime run 45509804749 blocked by Maven Central HTTP 429 before instrumentation; bounded rerun requested. Preserve failed attempt; no application FAIL inference or security bypass.
+- [x] ENG-15: Main Android runtime run 45509804749 initial attempt blocked by Maven Central HTTP 429 before instrumentation; one rerun completed PASS. Preserve failed attempt; no dependency or TLS bypass.
