@@ -257,3 +257,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-10/05: Smoke-only Windows lease handle identity observation (volume serial/file index, single-link and handle attribute checks); qualify two shared handles, held-name replacement/deletion refusal, hard-link rejection and distinct replacement identity. Native CI required; no persistent identity enrollment, ACL or production wiring.
 
 - [x] PR #64 merged d8ee862; six integrated jobs PASS, independently verified Windows 255/255 and native identity/interop steps. No production lease enrollment or maintenance authorization.
+
+- [ ] ENG-10/05: Isolated owner-only Windows lease DACL qualification aligned with ProtectedGrantStore policy, exact raw ACE and owner checks on protected directory and held-file descriptor, reject unexpected ACE and unprotected DACL, restore fixture and verify unchanged bytes. Native CI required; no installed ACL changes, cross-user effective access, persistent enrollment or runtime wiring.
