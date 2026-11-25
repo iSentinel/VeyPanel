@@ -195,6 +195,18 @@ jobs:
           python scripts/artifact_manifest.py verify "selection-test/versions/$digest"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python scripts/artifact_manifest.py verify "selection-test/versions/$digest/host"
+      - name: Verify selected Desktop launch plan without executing it
+        shell: pwsh
+        run: |
+          python -m unittest discover -s scripts -p test_launch_windows_package.py -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $package = 'portable/VeyPanel-win-x64-portable.zip'
+          $digest = (Get-FileHash $package -Algorithm SHA256).Hash.ToLowerInvariant()
+          $before = (Get-FileHash selection-test/selection.json).Hash
+          python scripts/launch_windows_package.py --root selection-test --package $package --sha256 $digest --dry-run
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if ((Get-FileHash selection-test/selection.json).Hash -ne $before) { throw 'Launch dry-run modified selection' }
+          if (Test-Path selection-test/.selection-lock) { throw 'Launch dry-run left a lock' }
       - uses: actions/upload-artifact@v4
         with:
           name: veypanel-win-x64-portable-unsigned
