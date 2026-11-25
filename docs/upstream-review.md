@@ -254,3 +254,15 @@ scheduled until a complete real freshness bundle and actual manual workflow
 execution have been qualified. Proposed schedule: daily at 06:17 UTC,
 subject to quota availability and freshness policy review. Hosted runner
 images and action major tags are mutable, as tracked in engineering debt.
+
+## Positive sealed live qualification
+
+On 2026-11-25 at 08:16 UTC, an exact detached checkout of stacked PR #76
+synthetic commit 1e4cec6b4b6932bc7925d6d0e40c2f2662ba4d0c (tree
+0061c921c795344596b8c718ce4c4c1c27579df8) completed public collection.
+All five reviewed repositories were UNCHANGED, receipt complete=true,
+monotonic duration 12556 ms, collection/verification exits 0 and independent
+manifest verification PASS. Observation SHA-256:
+e3f9a8093e568c51718b6e2bd28886cb1ce520757e61d5919b7ffbcc5449e08f.
+This qualifies actual local positive collection and sealed readback, not
+hosted workflow execution, remote authenticity, or dependency acceptance.

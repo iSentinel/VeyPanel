@@ -300,3 +300,6 @@ scoped local acceptance with full policy compliance.
 - [ ] ENG-12: Live negative source-bound receipt run: rate limit exhausted, one observed/four missing, collection and verification ERROR as designed. Stop-on-throttle regression added; complete real bundle remains pending quota recovery and native CI.
 - [ ] ENG-12: CI admission and manifest seal for complete fresh upstream evidence; eight offline regressions (328 required). Incomplete reports never sealed. Manual workflow and actual live positive qualification separate.
 - [ ] ENG-12: Manual main-only upstream watch workflow, bounded concurrency and time, explicit review warning, separate readback and seven-day accepted artifact retention. Scheduled activation requires complete live positive evidence and actual workflow qualification.
+- [x] PR #75 merged 10310df; four integrated CI jobs PASS; independent Windows/Android 320/320, exact main tree match. Freshness and quota stop accepted.
+- [x] ENG-12: Actual full local sealed watch positive qualification, all five UNCHANGED, receipt complete and SHA-256 manifest verification PASS, exact synthetic PR #76 source 1e4cec6b. Hosted workflow execution remains open.
+- [ ] ENG-12: Offline review action plan from verified sealed metadata evidence; explicit changed-field review requirements, no automatic adoption.
