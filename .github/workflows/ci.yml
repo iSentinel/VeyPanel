@@ -281,6 +281,23 @@ jobs:
           if ((Get-FileHash recovery-test/selection.json).Hash -ne $before) { throw 'Maintenance inventory modified selection' }
           python scripts/artifact_manifest.py verify "recovery-test/versions/$digest"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Verify isolated backup of recovered real package
+        shell: pwsh
+        run: |
+          $package = 'portable/VeyPanel-win-x64-portable.zip'
+          $digest = (Get-FileHash $package -Algorithm SHA256).Hash.ToLowerInvariant()
+          $before = (Get-FileHash recovery-test/selection.json).Hash
+          $lines = python scripts/backup_windows_selection.py copy --root recovery-test --destination recovery-backup --archive $digest $package
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $plan = ($lines | Where-Object { $_ -notmatch '^PASS:' } | Out-String) | ConvertFrom-Json
+          if ($plan.created -or (Test-Path recovery-backup)) { throw 'Backup dry-run modified destination' }
+          python scripts/backup_windows_selection.py copy --root recovery-test --destination recovery-backup --archive $digest $package --apply --plan-sha256 $plan.plan_sha256
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/backup_windows_selection.py verify --directory recovery-backup --plan-sha256 $plan.plan_sha256
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if ((Get-FileHash recovery-test/selection.json).Hash -ne $before) { throw 'Backup modified selection' }
+          python scripts/artifact_manifest.py verify "recovery-test/versions/$digest"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Verify explicit corrupt selection repair with retained backup
         shell: pwsh
         run: |

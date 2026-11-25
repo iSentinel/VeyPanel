@@ -233,3 +233,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-10/05: Read-only maintenance inventory plan for exact active/previous archive set and staged trees, reject unknown roots/orphans/locks/tampering; bind original metadata bytes and root identity. Nine local regressions and real single-version 838-file unchanged PASS. Older two-version fixture correctly refused mismatched previous ZIP. Native Windows CI required. No maintenance admission or removal.
 
 - [x] PR #59 merged 81d65ed; three integrated jobs PASS, verified Windows 229/229 and actual recovered package inventory. No maintenance admission.
+
+- [ ] ENG-10/05: Explicit plan-bound package-source backup to fresh private destination, exact selection bytes, original pinned ZIPs, bounded exclusive streaming, source recheck and independent receipt binding/manifest verification. Seven new regressions (236 required), real isolated 291091352-byte ZIP backup PASS, source 838 files unchanged. Native Windows CI required; restore, runtime user-data backup and maintenance exclusion separate.
