@@ -58,6 +58,8 @@ jobs:
         run: python scripts/smoke_maintenance_lease_interop.py --assembly tests/VeyPanel.Smoke/bin/Release/net10.0/VeyPanel.Smoke.exe
       - name: Verify isolated Windows maintenance lease handle identity
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --maintenance-identity-smoke
+      - name: Verify isolated Windows maintenance lease owner-only ACL
+        run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --maintenance-acl-smoke
       - name: Verify isolated C#-owned maintenance lease with Python contenders
         shell: pwsh
         run: |

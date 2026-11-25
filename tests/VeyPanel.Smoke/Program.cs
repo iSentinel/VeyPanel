@@ -10,6 +10,9 @@ if (args.Length == 3 && args[0] == "--maintenance-identity-probe")
 if (args.Length == 3 && args[0] == "--maintenance-lease-probe")
     return MaintenanceLeaseSmoke.Probe(args[1], args[2]);
 
+if (args.Length == 1 && args[0] == "--maintenance-acl-smoke")
+    return MaintenanceLeaseAclSmoke.Run();
+
 if (args.Length == 1 && args[0] == "--maintenance-identity-smoke")
     return MaintenanceLeaseIdentitySmoke.Run();
 

@@ -4,5 +4,6 @@
 <ItemGroup><Compile Include="../../src/Shared/HostController.cs" Link="HostController.cs" />
     <Compile Include="../../src/Shared/DesktopSessionAdmission.cs" Link="DesktopSessionAdmission.cs" />
     <Compile Include="../../src/Shared/MaintenanceLease.cs" Link="MaintenanceLease.cs" />
-    <Compile Include="../../src/Shared/MaintenanceLeaseIdentity.cs" Link="MaintenanceLeaseIdentity.cs" /></ItemGroup>
+    <Compile Include="../../src/Shared/MaintenanceLeaseIdentity.cs" Link="MaintenanceLeaseIdentity.cs" />
+    <Compile Include="../../src/Shared/MaintenanceLeaseAcl.cs" Link="MaintenanceLeaseAcl.cs" /></ItemGroup>
 </Project>

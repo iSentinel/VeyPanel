@@ -277,3 +277,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-10/05: Cross-language expected lease handle identity comparison before admission, with Python fixed-width native structure, strict identity values, failure cleanup and native C# comparison/alias/replacement refusal. Six new offline cases (261 required on current main base); native Windows CI required. Persistent trusted enrollment and ACLs remain open.
 
 - [x] PR #69 merged adcc976; four integrated jobs PASS, independently verified Windows 270/270 and actual expected identity/alias/replacement smoke.
+
+- [ ] ENG-10/05: Isolated owner-only Windows lease DACL qualification aligned with ProtectedGrantStore policy, exact raw ACE and owner checks on protected directory and held-file descriptor, reject unexpected ACE and unprotected DACL, restore fixture and verify unchanged bytes. Native CI required; no installed ACL changes, cross-user effective access, persistent enrollment or runtime wiring.
