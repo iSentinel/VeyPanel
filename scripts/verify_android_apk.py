@@ -33,7 +33,7 @@ def safe_name(name: str) -> bool:
 def inspect_archive(archive: zipfile.ZipFile) -> tuple[int, int]:
     """Validate ZIP metadata before decompression or CRC checks."""
     entries = archive.infolist()
-    names = [item.filename for item in entries]
+    names = [item.orig_filename for item in entries]
     if not entries or len(entries) > MAX_ENTRIES:
         raise ValueError("Invalid APK file count")
     if len({name.casefold() for name in names}) != len(names):
@@ -44,7 +44,8 @@ def inspect_archive(archive: zipfile.ZipFile) -> tuple[int, int]:
         raise ValueError("APK is missing third-party license notices")
     total = 0
     for item in entries:
-        if not safe_name(item.filename.removesuffix("/")):
+        if (item.orig_filename != item.filename
+                or not safe_name(item.orig_filename.removesuffix("/"))):
             raise ValueError("Invalid APK entry name")
         if item.flag_bits & 1:
             raise ValueError("Encrypted APK entry")

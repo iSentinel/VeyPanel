@@ -331,3 +331,15 @@
 - PR #36 head a29feaf, merged e35bf8c; all 14 jobs across eight workflow runs PASS. Android CI 45433922627/45433944680 includes mandatory negative pipeline outcome and archive/identity/signing rejection step; job step conclusions independently checked, raw negative log unavailable on latest query.
 - Runtime 45433922633, Android reproduction 45433945066, Host reproduction 45433944945, Desktop/ZIP reproduction 45433944815 and Windows CI 45433922629/45433944858 PASS.
 - Next: publish locally prepared verified-package launcher, then interrupted-state recovery. Full physical acceptance and signing remain open.
+
+## Engineering policy adoption candidate (2026-11-25)
+- Source baseline 012d49c3628789d00acd0d67d75a4e0180990cd6; user-provided portable policy v1.0 universal sections adopted without unrelated profile/provenance. AGENTS, canonical standards, adoption gap register ENG-01–15, security/architecture, test catalog and roadmap updated. Existing approval boundaries unchanged.
+- Initial AST inventory: 469 findings (345 annotations, 123 docstrings, 1 length). Exact 22 resolved in build_source_evidence and its tests; 447 remain. New auditor and QA runner fixtures introduce no findings. The baseline is a migration inventory, not full compliance.
+- Local Python 3.13.5: 124 unittest cases PASS, common runner summary/JUnit/code audit emitted; native/hardware NOT_RUN in this scope. Initial run was a dirty development checkout, clean committed rerun required.
+- PR #37 head 0df6f83: Windows CI 45509910174/45509902471 PASS; remains open until adoption integration. Recovery worktree /tmp/veypanel-recovery head f907af6 local only. Do not inflate baseline for new launcher/recovery debt; bring them into compliance before merge.
+- Latest main Android runtime 45509804749 failed at dependency resolution (Maven HTTP 429), instrumentation NOT_RUN. One bounded rerun requested; no dependency or TLS change. PR #36 runtime had passed earlier.
+- Next: run clean common QA, publish development review branch and check CI; independently fix high-priority manifest bounds/mutation and launcher/recovery debt. No production deployment, release, signing, visibility or Confluence publication.
+
+### Adoption CI portability regression
+- Initial PR #38 Windows CI 45514689128/45514677681 failed the new shared gate. Downloaded JUnit from 45514689128 (artifact 14975773912) identified test_backslash_path, 123/124 PASS; AST exact gate PASS. Windows zipfile normalizes backslashes on writing/reading. Fixture now writes the raw forbidden byte into local/central ZIP names; verifier checks orig_filename against normalized filename, and rejects NUL truncation. Twelve APK fixtures and the saved actual APK passed locally. Eighteen more exact test-module debt entries removed, 429 remain. New CI required; no assertion weakened.
+- Main Android runtime run 45509804749 bounded rerun completed SUCCESS after initial Maven HTTP 429. No dependency or TLS change.
