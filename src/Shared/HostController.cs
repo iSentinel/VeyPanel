@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.ComponentModel;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -9,6 +10,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace VeyPanel.Shared;
+
+internal enum HostLifecycleState { Stopped, Ready, CleanupRequired }
 
 // All mutations serialized by gate. Only the process started here can be stopped.
 internal sealed class HostController : IAsyncDisposable
@@ -21,7 +24,20 @@ internal sealed class HostController : IAsyncDisposable
 
     internal HostController(string directory) => this.directory = Path.GetFullPath(directory);
 
-    internal bool Running => process is { HasExited: false } && token is not null;
+    private HostLifecycleState State()
+    {
+        if (process is null) return HostLifecycleState.Stopped;
+        try
+        {
+            if (process.HasExited) return HostLifecycleState.Stopped;
+            return token is null ? HostLifecycleState.CleanupRequired : HostLifecycleState.Ready;
+        }
+        catch (Exception error) when (error is InvalidOperationException or Win32Exception)
+        {
+            // A failed observation is not proof that the owned process exited.
+            return HostLifecycleState.CleanupRequired;
+        }
+    }
 
     internal async Task StartAsync()
     {
@@ -29,7 +45,10 @@ internal sealed class HostController : IAsyncDisposable
         try
         {
             ObjectDisposedException.ThrowIf(disposed, this);
-            if (Running) return;
+            var state = State();
+            if (state == HostLifecycleState.Ready) return;
+            if (state == HostLifecycleState.CleanupRequired)
+                throw new InvalidOperationException("Owned Host cleanup required; stop before starting.");
             await StopCoreAsync();
             var exe = Path.Combine(directory, "VeyPanel.Host.exe");
             if (!File.Exists(exe)) throw new FileNotFoundException("Bundled Host is missing.");
@@ -123,23 +142,25 @@ internal sealed class HostController : IAsyncDisposable
         await gate.WaitAsync();
         try
         {
-            if (!Running) throw new InvalidOperationException("Host is not running.");
+            if (State() != HostLifecycleState.Ready) throw new InvalidOperationException("Host is not ready.");
             return $"http://127.0.0.1:47860/#token={token}";
         }
         finally { gate.Release(); }
     }
 
-    internal async Task<bool> IsRunningAsync()
+    internal async Task<HostLifecycleState> GetStateAsync()
     {
         await gate.WaitAsync();
-        try { return Running; }
+        try { return State(); }
         finally { gate.Release(); }
     }
+
+    internal async Task<bool> IsRunningAsync() => await GetStateAsync() == HostLifecycleState.Ready;
 
     public async ValueTask DisposeAsync()
     {
         await gate.WaitAsync();
-        try { disposed = true; await StopCoreAsync(); }
+        try { await StopCoreAsync(); disposed = true; }
         finally { gate.Release(); }
     }
 }

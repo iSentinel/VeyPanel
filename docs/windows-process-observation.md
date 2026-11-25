@@ -72,3 +72,22 @@ No WPF window, production mutex, Host process or installed package is
 used by this test. Actual CI remains required. Same-thread recursive
 mutex behavior is not a general admission API guarantee; App acquires
 once on its UI thread. No proof of prior Host exit follows from abandonment.
+
+## Owned Host cleanup-required state (candidate)
+
+A failed owned Host stop clears its dashboard token before exit is
+confirmed. Previously the ready-state boolean made this appear stopped
+and disabled Stop in Desktop. Distinguish Stopped, Ready and
+CleanupRequired under the existing controller gate. A retained live
+process without readiness, or an unavailable owned-process observation,
+requires explicit Stop; Start and dashboard are denied. Keep the Stop
+button enabled and report the state. Failed Dispose does not finalize
+the controller, so the window can request explicit cleanup again.
+No changes to existing graceful stop/owned-child escalation timeouts.
+
+The existing isolated real Host lifecycle smoke simulates only the
+cleared-token state, using test reflection on its own controller after
+readiness. Verify cleanup status, rejected Start without replacement,
+denied dashboard and existing explicit Stop/restart. This is not an
+injected OS stop failure, actual WPF button acceptance, crash recovery,
+or cross-session/exclusive maintenance qualification.
