@@ -109,3 +109,31 @@ class CollectorTests(unittest.TestCase):
             run.return_value = subprocess.CompletedProcess([], 0, b"{}", b"")
             self.assertEqual(collector.request_json(self.prefix, time.monotonic() + 2), {})
             self.assertLessEqual(run.call_args.kwargs["timeout"], 2)
+
+    def test_rate_limit_stops_all(self) -> None:
+        """Stop the entire run after a worker reports a rate limit."""
+        with patch.object(collector.subprocess, "run") as run:
+            run.return_value = subprocess.CompletedProcess([], 3, b"", b"")
+            with self.assertRaises(collector.RateLimited):
+                collector.request_json(self.prefix, time.monotonic() + 2)
+        get = MagicMock(side_effect=collector.RateLimited("private canary"))
+        with contextlib.redirect_stderr(io.StringIO()) as stderr:
+            document, complete = collector.collect(get)
+        self.assertFalse(complete)
+        self.assertEqual(document["repositories"], {})
+        self.assertEqual(get.call_count, 1)
+        self.assertNotIn("private canary", stderr.getvalue())
+
+    def test_rate_limit_http_classification(self) -> None:
+        """Classify explicit quota and secondary throttling without reading bodies."""
+        for status, headers in ((429, {}), (403, {"X-RateLimit-Remaining": "0"}),
+                                (403, {"Retry-After": "30"})):
+            with patch.object(collector.http.client, "HTTPSConnection") as factory:
+                connection = factory.return_value
+                response = connection.getresponse.return_value.__enter__.return_value
+                response.status = status
+                response.getheader.side_effect = lambda key, default=None: headers.get(key, default)
+                with self.assertRaises(collector.RateLimited):
+                    collector.fetch_bytes(self.prefix)
+                response.read.assert_not_called()
+                connection.close.assert_called_once()

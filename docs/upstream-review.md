@@ -183,3 +183,44 @@ clock and reviewed maximum age/future skew; reject incomplete, inconsistent,
 stale or future evidence. Do not equate local timestamps or digests with
 remote authenticity, and do not use the receipt as release authorization.
 Schedule only after offline receipt, actual collection and CI qualification.
+
+## Local freshness receipt candidate
+
+Schema 1 binds exact normalized observation SHA-256, full Git commit/tree,
+canonical start/end UTC, monotonic duration in integer milliseconds and
+complete membership. All five rows must validate. Verification takes an
+explicit clock and expected source IDs, permits five seconds of future
+skew and local UTC/monotonic discrepancy, and rejects observations older
+than 24 hours measured from collection start. Duration cap is 185 seconds
+(including five seconds of overhead beyond the collector budget). These
+are provisional review-monitoring policy bounds, not product authorization.
+Incomplete observations can be recorded but never pass freshness validation.
+No remote attestation or trusted time source is implied; a party able to
+rewrite observations and receipts can recompute hashes. The pure schema
+and verifier precede CLI collection integration and scheduling.
+
+## Source-bound watch CLI candidate
+
+From the intended clean tracked Git checkout, create a new private bundle:
+
+    python scripts/run_upstream_watch.py collect --output NEW_DIRECTORY --expected-commit FULL_COMMIT
+    python scripts/run_upstream_watch.py verify --directory NEW_DIRECTORY --expected-commit FULL_COMMIT --expected-tree FULL_TREE
+
+The CLI reads the approved baseline and checks actual source identity before
+and after collection. It writes four exclusive files (baseline, observation,
+report, receipt), refuses existing output directories, and verifies readback
+against the current approved baseline and expected source. Exit 0 unchanged,
+2 review, 1 error/incomplete. Verification refuses incomplete, stale, extra,
+or mismatched evidence. Failed runs can leave a partial directory; do not
+reuse it. Use a private owner-controlled parent. Windows directory mode is
+not an ACL guarantee. No atomic directory publication, authenticity or remote
+clock attestation is implied. Scheduled workflow remains separate.
+
+The first actual source-bound run at 2026-11-25 07:01 UTC completed one
+repository, omitted four, returned ERROR and wrote an incomplete receipt;
+verification correctly refused it. A separate unauthenticated rate-limit
+query returned core remaining 0 of 60. This is a live negative-path
+qualification, not a complete freshness PASS. Do not retry until quota
+recovers. The collector now terminates the remaining run on HTTP 429 or
+403 with explicit quota exhaustion or Retry-After. Other failures retain
+existing incomplete-row behavior. No authentication or automatic retries.

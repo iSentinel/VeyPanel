@@ -23,6 +23,10 @@ ORIGIN = "api.github.com"
 SUFFIX = re.compile(r"/(?:commits/|git/ref/tags/)((?:[A-Za-z0-9._~+-]|%[0-9A-F]{2}){1,384})")
 
 
+class RateLimited(ValueError):
+    """Signal that the entire public observation must stop without retries."""
+
+
 def allowed_path(path: str) -> bool:
     """Admit only fixed repository metadata and reviewed GET endpoint shapes."""
     for repo in REPOSITORIES:
@@ -57,6 +61,10 @@ def fetch_bytes(path: str) -> bytes:
                            "User-Agent": "VeyPanel-upstream-review",
                            "X-GitHub-Api-Version": "2022-11-28"})
         with connection.getresponse() as response:
+            if response.status == 429 or (response.status == 403 and (
+                    response.getheader("X-RateLimit-Remaining") == "0"
+                    or response.getheader("Retry-After") is not None)):
+                raise RateLimited("Upstream rate limit")
             if response.status != 200:
                 raise ValueError("Upstream HTTP request refused")
             encoding = response.getheader("Content-Encoding", "identity")
@@ -78,6 +86,8 @@ def request_json(path: str, deadline: float) -> Any:
     child = subprocess.run([sys.executable, str(Path(__file__).resolve()),
                             "--worker-path", path], capture_output=True,
                            timeout=min(REQUEST_SECONDS, remaining), check=False)
+    if child.returncode == 3:
+        raise RateLimited("Upstream rate limit")
     if child.returncode or len(child.stdout) > MAX_RESPONSE or time.monotonic() > deadline:
         raise ValueError("Upstream request failed")
     return strict_json(child.stdout)
@@ -107,6 +117,9 @@ def collect(get: Callable[[str], Any]) -> tuple[dict[str, Any], bool]:
     for repo in sorted(REPOSITORIES):
         try:
             rows[repo] = collect_row(repo, get)
+        except RateLimited:
+            print("ERROR: upstream rate limit; observation stopped", file=sys.stderr)
+            break
         except (OSError, ValueError, http.client.HTTPException, subprocess.TimeoutExpired):
             print("ERROR: incomplete observation for " + repo, file=sys.stderr)
     return {"schema": 1, "repositories": rows}, set(rows) == REPOSITORIES
@@ -120,6 +133,8 @@ def main() -> int:
     if args.worker_path is not None:
         try:
             sys.stdout.buffer.write(fetch_bytes(args.worker_path))
+        except RateLimited:
+            return 3
         except (OSError, ValueError, http.client.HTTPException):
             return 1
         return 0
