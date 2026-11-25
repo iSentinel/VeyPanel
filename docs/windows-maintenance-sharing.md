@@ -38,6 +38,36 @@ and execution are required before claiming even the prototype qualified.
 
 Verified PR #62 merged 234ba2e: six integrated jobs PASS, Windows 243/243 and native sharing fixture PASS. This remains a smoke-only prototype.
 
+## Python/C# sharing interoperability candidate
+
+The Python standard-library adapter uses CreateFileW with OPEN_EXISTING,
+GENERIC_READ/FileShare.Read for a runtime participant and
+GENERIC_READ|GENERIC_WRITE/no sharing for maintenance. Only Win32
+ERROR_SHARING_VIOLATION (32) yields a busy result; access denied, missing
+files and all other errors fail closed. The context manager closes an
+acquired handle even if its caller raises; a failed close is an error.
+It does not write, create or truncate the lease file.
+
+Four offline regression fixtures mock the native API to check access and
+share flags, busy-only classification, exception cleanup and refusal of
+missing or directory paths. Native Windows CI starts the trusted C#
+smoke assembly as a bounded child of the Python fixture. The Python
+parent holds a shared lease while a C# runtime contender succeeds and
+maintenance is refused, then an exclusive lease while both contenders
+are refused. After release both contenders succeed and fixture bytes
+must remain unchanged. This complements the already qualified C#-only
+fixture; it does not exercise production Desktop/Host or reverse
+ownership by a C# parent with a Python child.
+
+The adapter is not connected to any mutation or activation operation.
+Path checks are advisory under the private, quiescent fixture assumption;
+stable file identity, hard-link/reparse races, ACLs, cross-user/session
+scope, actual process admission and global maintenance exclusion remain
+open. This is not an authorization or security boundary. Native Windows
+CI is required before claiming interoperability.
+
+Verified PR #63 merged 581c556, four integrated jobs PASS, actual Python-owned cross-language smoke and Windows 255/255. Combined apphost/path correction passed; exact individual failure cause not established. Reverse ownership remains separate.
+
 ## Handle identity observation candidate
 
 An isolated Windows smoke reads BY_HANDLE_FILE_INFORMATION from an

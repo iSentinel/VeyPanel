@@ -79,19 +79,26 @@ internal static class MaintenanceLeaseSmoke
 
     internal static int Probe(string path, string mode)
     {
-        if (!OperatingSystem.IsWindows()
-            || mode is not ("shared" or "exclusive" or "exclusive-exit")
-            || !Path.IsPathFullyQualified(path) || Path.GetFullPath(path) != path
-            || Path.GetFileName(path) != LeaseName) return 1;
+        if (!OperatingSystem.IsWindows()) return 7;
+        if (mode is not ("shared" or "exclusive" or "exclusive-exit")) return 8;
+        if (!Path.IsPathFullyQualified(path)) return 9;
+        if (Path.GetFullPath(path) != path) return 10;
+        if (Path.GetFileName(path) != LeaseName) return 11;
         var parent = Directory.GetParent(path);
         if (parent is null || !parent.Name.StartsWith(Prefix, StringComparison.Ordinal)
             || !string.Equals(parent.Parent?.FullName,
                 Path.TrimEndingDirectorySeparator(Path.GetFullPath(Path.GetTempPath())),
-                StringComparison.OrdinalIgnoreCase)) return 1;
-        using var lease = MaintenanceLease.TryOpen(path, mode != "shared");
-        if (lease is null) return 2;
-        if (mode == "exclusive-exit") Environment.Exit(0);
-        return 0;
+                StringComparison.OrdinalIgnoreCase)) return 6;
+        try
+        {
+            using var lease = MaintenanceLease.TryOpen(path, mode != "shared");
+            if (lease is null) return 2;
+            if (mode == "exclusive-exit") Environment.Exit(0);
+            return 0;
+        }
+        catch (UnauthorizedAccessException) { return 3; }
+        catch (IOException) { return 4; }
+        catch (ArgumentException) { return 5; }
     }
 
     private static int RunChild(string path, string mode)

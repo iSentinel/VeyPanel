@@ -246,4 +246,12 @@ scoped local acceptance with full policy compliance.
 
 - [x] PR #62 merged 234ba2e; six integrated CI jobs PASS, Windows 243/243 and native sharing smoke verified. Production admission remains open.
 
+- [x] ENG-08/10: Reject ambiguous portable ZIP and nested Host manifests/source evidence using bounded same-byte strict JSON, exact source evidence schema and extracted manifest validation. Reproduced duplicate-schema acceptance before fix; eight new regressions (251 required), real pinned archive/staging dry-run and prior verified backup PASS. Native CI required; archive payload mutation/hostile writers and full ZIP parser resource limits remain separate.
+
+- [x] PR #65 merged 6c58953, seven CI jobs PASS, independently verified 251/251 Windows QA against actual synthetic merge Git identity.
+
+- [x] ENG-10/05: Prototype Python CreateFileW lease interoperability with C# isolated contender, exact busy-only classification and exception-safe close; four offline adapter regressions, mandatory Windows cross-language smoke. No activation/mutation wiring; stable identity, ACL and cross-session qualification separate.
+
+- [x] PR #63 merged 581c556; four integrated jobs PASS, independently verified Windows 255/255 and actual Python-owned cross-language lease smoke. Production admission remains open.
+
 - [ ] ENG-10/05: Smoke-only Windows lease handle identity observation (volume serial/file index, single-link and handle attribute checks); qualify two shared handles, held-name replacement/deletion refusal, hard-link rejection and distinct replacement identity. Native CI required; no persistent identity enrollment, ACL or production wiring.

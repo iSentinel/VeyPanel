@@ -3,7 +3,6 @@
 
 import argparse
 import hashlib
-import json
 from pathlib import Path
 import re
 import shutil
@@ -11,10 +10,12 @@ import stat
 import sys
 import zipfile
 
-from artifact_manifest import MANIFEST, MAX_BYTES, MAX_FILES, collect, compare, entries, hash_file, safe_entry
+from artifact_manifest import (
+    MANIFEST, MAX_BYTES, MAX_FILES, MAX_MANIFEST, collect, compare, entries,
+    hash_file, read_bounded, safe_entry, strict_json,
+)
 
 STAMP = (1980, 1, 1, 0, 0, 0)
-MAX_MANIFEST = 8 * 1024 * 1024
 RESERVED = re.compile(r"^(CON|PRN|AUX|NUL|COM[1-9¹²³]|LPT[1-9¹²³])$", re.I)
 
 
@@ -27,11 +28,8 @@ def windows_path(name):
 
 def read_manifest(root):
     """Read and validate the complete source artifact inventory."""
-    path = root / MANIFEST
-    if path.stat().st_size > MAX_MANIFEST:
-        raise ValueError("Manifest exceeds size budget")
-    raw = path.read_bytes()
-    manifest = json.loads(raw)
+    raw = read_bounded(root / MANIFEST, MAX_MANIFEST)
+    manifest = strict_json(raw)
     if any(compare(manifest, collect(root)).values()):
         raise ValueError("Source artifact manifest mismatch")
     return manifest, raw
@@ -104,11 +102,23 @@ def validate_members(archive):
     return names
 
 
+def read_zip_metadata(archive: zipfile.ZipFile, name: str, limit: int) -> bytes:
+    """Read a bounded embedded metadata member and require its declared length."""
+    info = archive.getinfo(name)
+    if not 0 <= info.file_size <= limit:
+        raise ValueError("Oversized embedded metadata")
+    with archive.open(info) as source:
+        raw = source.read(limit + 1)
+    if len(raw) > limit or len(raw) != info.file_size:
+        raise ValueError("Embedded metadata size mismatch")
+    return raw
+
+
 def verify_zip(path):
     """Verify every archived file against its embedded SHA-256 manifest."""
     with zipfile.ZipFile(path) as archive:
         names = validate_members(archive)
-        rows = entries(json.loads(archive.read(MANIFEST)))
+        rows = entries(strict_json(read_zip_metadata(archive, MANIFEST, MAX_MANIFEST)))
         if set(names) != set(rows) | {MANIFEST}:
             raise ValueError("ZIP membership differs from manifest")
         for name, row in rows.items():
