@@ -34,3 +34,5 @@ protocol, account for crashes and concurrent launches, and qualify
 safe shutdown and update/uninstall. Do not add destructive operations
 until ownership, exclusive maintenance, recovery and approval gates
 are separately reviewed.
+
+Verified PR #56 merged e4fb31f; ten jobs PASS. Windows run 45545383687 confirms fixtures, BLOCKED while owned Host runs and CLEAR_OBSERVATION after cleanup. No lifetime lock claim.

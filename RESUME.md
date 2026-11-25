@@ -492,3 +492,8 @@
 
 ## Windows process observation candidate
 - On dev/launcher-explicit-image after b3a3a01, add PackageProcessObservation.psm1 and read-only CLI Get-PackageProcessObservation.ps1; system-wide fixed Desktop/Host names, count-only output, exit 0 clear observation/2 blocked/1 unavailable. Fixtures cover empty/matching/private fields/invalid/excessive rows; native CI adds observation during existing owned Host smoke and after cleanup. No process mutation, ownership proof, hard provider deadline or lifetime lock. PowerShell/CIM unavailable locally; native NOT_RUN. Publish independently of Android PR #55 and require fresh CI before merge. Full common registry 220; no new AST debt.
+
+## Verified Launcher and Windows process observation
+- PR #56 head 3fe959c60d9f01591ced60f8493abc2bffbdf8ee merged e4fb31f69ee82a792924cd2ee46f487ad248c94a; ten jobs PASS, Windows 45545383687/45545391505, Android 45545383785/45545391484, reproduction 45545391204/45545391272. Independently downloaded Windows QA 220/220, manifest and verifier PASS, tree 343fbca85ddd6da5586bcaefc6f20274e50d521b, debt 329. Windows log confirms BLOCKED during owned Host and CLEAR_OBSERVATION after cleanup.
+- PR #55 head d212297 remains open: six jobs PASS, runtime confirms real TLS REST drip deadline; second independent APK build 45544928553 failed dependency acquisition HTTP 429, comparison skipped. Requested one failed-job rerun, no dependency or verification change. Integrate with accepted main and require fresh combined-source CI before merge.
+- Next: cooperative Desktop session admission, then process lifetime and maintenance fencing. No production activation, destructive operation or hardware acceptance.

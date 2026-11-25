@@ -208,6 +208,8 @@ scoped local acceptance with full policy compliance.
 
 - [x] PR #54 merged 542eb08; eight jobs PASS, actual Windows and Android 219/219, manifest and independent verification PASS, zero unattributed outcomes. Ordered Activity callback fencing verified; live network cancellation remains separate.
 
-- [ ] ENG-10/05: Explicit verified Desktop executable in native process creation; bound the second installed manifest read and reject growth after tree verification. Eleven Launcher fixtures and actual package dry-run PASS locally; full common QA and native Windows CI required. Lifetime fencing remains separate.
+- [x] ENG-10/05: Explicit verified Desktop executable in native process creation; bound the second installed manifest read and reject growth after tree verification. Eleven Launcher fixtures and actual package dry-run PASS locally; full common QA and native Windows CI required. Lifetime fencing remains separate.
 
-- [ ] ENG-10/05: Conservative read-only Windows fixed-image process observation, safe count-only result and explicit blocked/unavailable exit codes; native fixtures and actual owned Host before/after cleanup CI. No process ownership or maintenance authorization claim. Lifetime fencing and Uninstall remain open.
+- [x] ENG-10/05: Conservative read-only Windows fixed-image process observation, safe count-only result and explicit blocked/unavailable exit codes; native fixtures and actual owned Host before/after cleanup CI. No process ownership or maintenance authorization claim. Lifetime fencing and Uninstall remain open.
+
+- [x] PR #56 merged e4fb31f; ten CI jobs PASS, native Windows process observation and verified 220/220 common QA. Observation is not lifetime fencing.

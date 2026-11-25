@@ -53,3 +53,5 @@ image selection; actual package dry-run and full offline QA are required.
 The private quiescent root assumption and process lifetime limitations
 remain unchanged. This does not fence unrelated processes, authenticate
 an executable publisher, or qualify interactive launch or shutdown.
+
+Verified explicit image and bounded manifest: PR #56 merged e4fb31f, native CI and 220/220 offline QA PASS; actual WPF activation remains open.
