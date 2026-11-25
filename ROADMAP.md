@@ -277,3 +277,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-10/05: Cross-language expected lease handle identity comparison before admission, with Python fixed-width native structure, strict identity values, failure cleanup and native C# comparison/alias/replacement refusal. Six new offline cases (261 required on current main base); native Windows CI required. Persistent trusted enrollment and ACLs remain open.
 
 - [x] PR #69 merged adcc976; four integrated jobs PASS, independently verified Windows 270/270 and actual expected identity/alias/replacement smoke.
+
+- [ ] ENG-12: Offline structured upstream evidence classifier with exact reviewed membership and metadata schema, bounded strict JSON, REVIEW/UNCHANGED/ERROR precedence and input digests. Eight new regressions (278 required), separate actual four-repository observation all UNCHANGED. Artemis repository identified and exact metadata recorded separately. Native CI required; live collector, freshness verification, fifth-repository integration and scheduling remain open.

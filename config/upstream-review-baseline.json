@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "repositories": {
+    "ClassicOldSong/Apollo": {
+      "branch": "master",
+      "head": "adc5c5a0bd80831ce495434bb16aee2cd4175fb8",
+      "release_id": 232074361,
+      "tag": "v0.4.6",
+      "release_commit": "0cd32abaaa141d262477d039ac447b38fe99c394",
+      "license": "GPL-3.0",
+      "archived": false
+    },
+    "moonlight-stream/moonlight-android": {
+      "branch": "master",
+      "head": "b48494cb96bff23d8886c4775cc4f39a1075495d",
+      "release_id": 387680237,
+      "tag": "v12.2",
+      "release_commit": "b48494cb96bff23d8886c4775cc4f39a1075495d",
+      "license": "GPL-3.0",
+      "archived": false
+    },
+    "itkawa/screen-spawner": {
+      "branch": "main",
+      "head": "5951f8090858c226e70ab22c3d615ff91db0f619",
+      "release_id": 454820983,
+      "tag": "v0.3.2",
+      "release_commit": "5951f8090858c226e70ab22c3d615ff91db0f619",
+      "license": "GPL-3.0",
+      "archived": false
+    },
+    "LibreHardwareMonitor/LibreHardwareMonitor": {
+      "branch": "master",
+      "head": "9e2d677cefff5c614ecc38da88fbc447eb478e2a",
+      "release_id": 286366766,
+      "tag": "v0.9.6",
+      "release_commit": "3d331e3370efb858411f19511373eff65a218701",
+      "license": "MPL-2.0",
+      "archived": false
+    }
+  }
+}
