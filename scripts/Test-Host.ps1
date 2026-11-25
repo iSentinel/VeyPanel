@@ -2,30 +2,46 @@
 param([string]$PublishDirectory = "publish")
 $ErrorActionPreference = 'Stop'
 $root = (Resolve-Path $PublishDirectory).Path
-$stdout = Join-Path ([IO.Path]::GetTempPath()) ("veypanel-" + [guid]::NewGuid() + ".out")
-$stderr = "$stdout.err"
+Import-Module (Join-Path $PSScriptRoot 'HostSmokeCapture.psm1') -Force
 $process = $null
+$started = $false
+$stdoutDrain = $null
+$stderrDrain = $null
 function Assert-Check([bool]$Condition, [string]$Name) {
-    if (-not $Condition) { throw "FAIL: $Name" }
+    if (-not $Condition) {
+        Write-Host "FAIL: $Name"
+        throw 'Host smoke assertion failed'
+    }
     Write-Host "PASS: $Name"
 }
 try {
-    Remove-Item Env:VEYPANEL_LAN_IP, Env:VEYPANEL_PFX, Env:VEYPANEL_PFX_PASSWORD -ErrorAction SilentlyContinue
-    $process = Start-Process -FilePath (Join-Path $root 'VeyPanel.Host.exe') -WorkingDirectory $root -PassThru -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+    $info = [Diagnostics.ProcessStartInfo]::new((Join-Path $root 'VeyPanel.Host.exe'))
+    $info.WorkingDirectory = $root
+    $info.UseShellExecute = $false
+    $info.CreateNoWindow = $true
+    $info.RedirectStandardOutput = $true
+    $info.RedirectStandardError = $true
+    foreach ($key in @('VEYPANEL_LAN_IP','VEYPANEL_PFX','VEYPANEL_PFX_PASSWORD','VEYPANEL_PERSIST_GRANTS')) {
+        $null = $info.Environment.Remove($key)
+    }
+    $process = [Diagnostics.Process]::new()
+    $process.StartInfo = $info
+    $started = $process.Start()
+    if (-not $started) { throw 'Host start failed' }
+    $stderrDrain = $process.StandardError.BaseStream.CopyToAsync([IO.Stream]::Null)
+    $token = Read-HostAccessToken -Reader $process.StandardOutput
+    $stdoutDrain = $process.StandardOutput.BaseStream.CopyToAsync([IO.Stream]::Null)
     $base = 'http://127.0.0.1:47860'
-    $token = $null
+    $ready = $false
     for ($i = 0; $i -lt 30; $i++) {
         if ($process.HasExited) { throw 'Host exited before readiness' }
-        $log = Get-Content $stdout -Raw -ErrorAction SilentlyContinue
-        if ($log -match 'http://127\.0\.0\.1:47860/#token=([A-F0-9]{64})') {
-            $token = $Matches[1]
-            try {
-                $response = Invoke-WebRequest "$base/" -TimeoutSec 2
-                if ($response.StatusCode -eq 200) { break }
-            } catch { }
-        }
+        try {
+            $response = Invoke-WebRequest "$base/" -TimeoutSec 2
+            if ($response.StatusCode -eq 200) { $ready = $true; break }
+        } catch { }
         Start-Sleep -Seconds 1
     }
+    Assert-Check $ready 'Owned Host readiness'
     Assert-Check ([bool]$token) 'Ephemeral access token'
     $page = Invoke-WebRequest "$base/" -TimeoutSec 5
     Assert-Check ($page.StatusCode -eq 200 -and $page.Content -match 'VeyPanel') 'Dashboard served'
@@ -98,7 +114,20 @@ try {
     Assert-Check ([Math]::Abs(([DateTimeOffset]::UtcNow - [DateTimeOffset]::Parse($next.timestampUtc.ToString())).TotalSeconds) -lt 5) 'Telemetry remains fresh during provider attempt'
     Write-Host "Storage provider capability: $($next.storageHealth.status); rows: $(@($next.storageHealth.disks).Count)"
     Write-Host 'PASS: Host integration smoke'
+} catch {
+    # HTTP/child exceptions may include private values; never print raw records.
+    throw 'FAIL: Host integration smoke; see fixed assertion labels'
 } finally {
-    if ($process -and -not $process.HasExited) { Stop-Process -Id $process.Id -Force; $process.WaitForExit() }
-    Remove-Item $stdout, $stderr -Force -ErrorAction SilentlyContinue
+    try {
+        if ($started -and -not $process.HasExited) {
+            $process.Kill($true)
+            if (-not $process.WaitForExit(10000)) { throw 'Host cleanup timeout' }
+        }
+        foreach ($drain in @($stdoutDrain, $stderrDrain)) {
+            if ($null -ne $drain) {
+                $null = $drain.WaitAsync([TimeSpan]::FromSeconds(5)).GetAwaiter().GetResult()
+            }
+        }
+    } catch { throw 'FAIL: owned Host cleanup or stream drain failed' }
+    finally { if ($null -ne $process) { $process.Dispose() } }
 }

@@ -153,4 +153,8 @@ scoped local acceptance with full policy compliance.
 
 - [x] ENG-08: Resolve PR #39 Windows cross-API stat regression without dropping mutation detection. Exact source reviewed, two new regression fixtures PASS locally; Windows and reproduction CI PASS, PR #39 merged.
 
-- [ ] ENG-10/05: Verify digest-bound Launcher PR #37 against current manifest-hardened main; exact AST gate and safe diagnostic canary, original three CI jobs PASS; combined-source CI required. Actual WPF readiness remains open.
+- [x] ENG-04: Add optional closed-schema QA JSONL events, bounded monotonic durations, safe reason codes, stdout/stderr separation and canary/exit regressions; PR #40 merged, all four CI jobs PASS. Audit Host token capture and legacy CLI exception messages next; no general redaction claim.
+
+- [x] ENG-04: Remove raw Host smoke temporary logs; owned pipes, exact bootstrap, bounded cleanup, fixed diagnostics. PR #41 merged; all nine combined-source CI jobs PASS, including PowerShell capture and published Host smoke.
+
+- [ ] ENG-10/05: Verify Launcher PR #37 with current main including verified private Host capture and safe QA events; prior combined-source CI PASS; fresh exact-source CI required. WPF readiness remains open.
