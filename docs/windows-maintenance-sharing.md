@@ -95,3 +95,32 @@ Native Windows CI must qualify the exact fixture; unsupported
 filesystems fail the test rather than silently passing.
 
 Verified PR #64 merged d8ee862: six integrated CI jobs PASS, Windows 255/255, actual identity and interop native steps passed together. No persistent identity enrollment or runtime wiring.
+
+## Expected handle identity interoperability candidate
+
+The Python adapter now optionally observes an identity while holding
+its native handle, or compares it with an explicitly supplied identity
+before yielding admission. The existing sharing-only prototype API is
+unchanged. The native structure uses thirteen fixed-width uint32 fields
+(52 bytes), matching the C# BY_HANDLE_FILE_INFORMATION representation.
+Reject unsafe attributes, non-single-link files, zero indices, invalid
+expected values and identity mismatch. A native query failure is not
+contention. Always close the acquired handle, including failed identity
+validation. Only a sharing violation returns the busy sentinel.
+
+The extended isolated Python-owned smoke compares the observed volume
+and file index against a separate C# shared handle; deliberately incorrect
+identity must be refused by both adapters. After release, create an alias
+and require rejection by both handle readers, remove the alias, then
+replace the original with a pre-created distinct file and require
+rejection of the old identity. Re-observe the replacement and compare
+again across both languages. Identifiers remain private fixture arguments,
+not shared log output. Exact refusal categories and unchanged file bytes
+are required. Only uniquely created inert temporary files are affected.
+
+Six new offline tests exercise layout, 64-bit decoding, mismatch,
+unsafe handle attributes/link count/index, native query failure, invalid
+expected values and busy handling. Windows CI must qualify real handles.
+The expected identity is supplied by the fixture only. There is no
+persistent trusted enrollment, ACL policy, protection against ID reuse,
+hostile pathname races, production activation or maintenance operation.

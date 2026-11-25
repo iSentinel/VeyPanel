@@ -257,3 +257,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-10/05: Smoke-only Windows lease handle identity observation (volume serial/file index, single-link and handle attribute checks); qualify two shared handles, held-name replacement/deletion refusal, hard-link rejection and distinct replacement identity. Native CI required; no persistent identity enrollment, ACL or production wiring.
 
 - [x] PR #64 merged d8ee862; six integrated jobs PASS, independently verified Windows 255/255 and native identity/interop steps. No production lease enrollment or maintenance authorization.
+
+- [ ] ENG-10/05: Cross-language expected lease handle identity comparison before admission, with Python fixed-width native structure, strict identity values, failure cleanup and native C# comparison/alias/replacement refusal. Six new offline cases (261 required on current main base); native Windows CI required. Persistent trusted enrollment and ACLs remain open.
