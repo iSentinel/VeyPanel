@@ -185,3 +185,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-10/05: Constrained corrupt selection reconciliation: one verified version, bounded malformed metadata, plan binds original bytes, exclusive verified backup before atomic replacement, retain backup/manual review. Twelve local fixtures and actual isolated 836-file package PASS; Windows CI required. Process fencing, backup retention and multi-version reconciliation separate.
 
 - [x] PR #50 merged 788d7a6; both Windows jobs PASS, actual 199/199 common QA, retained-backup recovery step PASS. Multi-version reconciliation and process fencing remain open.
+
+- [ ] ENG-09: Share bounded TLS failure classification across WSS construction/read, REST polling and Host history. Wrapped recognized TLS errors terminal, existing network retry/fallback preserved; JVM fixture and native Android checks required. End-to-end Activity fallback acceptance and owner-installed CA remain open.

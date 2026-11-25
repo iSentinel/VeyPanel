@@ -441,3 +441,6 @@
 - PR #50 head da9af7872e7f8a01936e783f4dbdb04a74d43ddf merged 788d7a64337a919053767d02e23a7640988a7733. Windows 45541941069/45541947941 PASS, API confirms mandatory explicit corrupt-selection backup, first-install recovery, read-only recovery and Launcher checks.
 - Independently downloaded Windows QA/JUnit: 199/199, no skips, exact debt 329, clean checkout 07dced31742028ac981ca7e05b61c7a29c5e7f95 tree 5ed892bdf1d35764d1d8a88a0a216b3c74f150df, no new/stale identities.
 - Next: isolated trusted-CA/wrong-SAN qualification of all three client transports; production bounded transport still not selected. User CA on hardware and process fencing remain open.
+
+## Shared TLS failure classification candidate
+- Base 0feac5e, dev/transport-tls-classification. Audit found direct-only SSLException catches in REST/history and unconditional fallback on synchronous WSS constructor RuntimeException. Share existing eight-cause classifier; recognized TLS errors terminal in all four paths, existing denial and ordinary network retry behavior retained. JVM fixture covers wrapped/direct and non-TLS/null/cyclic/depth cases; no message inspection. Hold locally pending PR #51 integration. No native acceptance yet, no production transport switch. Deeper causes and end-to-end Activity fallback/user CA remain open.

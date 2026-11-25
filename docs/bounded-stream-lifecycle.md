@@ -26,3 +26,19 @@ trust, lifecycle and freshness qualification before any integration.
 No real hardware or hostile-network robustness claim.
 
 Verified combined acceptance: PR #45 merged 5bb5505, all fourteen CI jobs passed. Native scope only; physical and production acceptance remain separate.
+
+## Shared TLS failure classification candidate
+
+Activity WSS handling recognized wrapped TLS failures but REST polling
+and Host history handled only direct SSLException; synchronous WSS
+construction errors also fell back unconditionally. Share the existing
+eight-cause classification across these paths. Recognized TLS or
+certificate failures stop the foreground session; ordinary network
+failures retain existing retry/HTTPS fallback behavior. No exception
+message is inspected or displayed. Existing denial behavior is unchanged.
+A bounded JVM fixture checks direct/wrapped errors, normal network errors,
+message-only canaries, null, cycles and the existing depth limit.
+A TLS cause beyond eight entries is not recognized by this classifier;
+this is not comprehensive arbitrary exception graph classification.
+Native and Activity-level acceptance remain separate. No trust or
+production transport selection change.

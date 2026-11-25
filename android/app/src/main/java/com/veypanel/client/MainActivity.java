@@ -16,7 +16,6 @@ import android.widget.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import javax.net.ssl.SSLException;
 
 public final class MainActivity extends Activity {
     private static final int SCAN_REQUEST = 4091;
@@ -521,6 +520,10 @@ public final class MainActivity extends Activity {
             diagnostics.attempt(); renderDiagnostics();
             try { stream = new TelemetryStream(chosen); }
             catch (RuntimeException ex) {
+                if (TransportFailure.isTls(ex)) {
+                    complete(current, null, "TLS trust failed. Verify the PC certificate.", true);
+                    return;
+                }
                 diagnostics.fallback(); renderDiagnostics();
                 nextStreamAttempt = android.os.SystemClock.elapsedRealtime() + 15000;
             }
@@ -536,10 +539,11 @@ public final class MainActivity extends Activity {
                 main.post(() -> complete(current, sample, null, false));
             } catch (TelemetryClient.Denied ex) {
                 main.post(() -> complete(current, null, "Access expired or revoked", true));
-            } catch (SSLException ex) {
-                main.post(() -> complete(current, null, "TLS trust failed. Verify the PC certificate.", true));
             } catch (Exception ex) {
-                main.post(() -> complete(current, null, "Unavailable / stale sample; retrying", false));
+                boolean tls = TransportFailure.isTls(ex);
+                String message = tls ? "TLS trust failed. Verify the PC certificate."
+                    : "Unavailable / stale sample; retrying";
+                main.post(() -> complete(current, null, message, tls));
             }
         });
     }
@@ -549,7 +553,7 @@ public final class MainActivity extends Activity {
             TelemetrySample sample = active.next();
             main.post(() -> complete(current, sample, null, false));
         } catch (Exception ex) {
-            boolean tls = TelemetryStream.isTlsError(ex);
+            boolean tls = TransportFailure.isTls(ex);
             main.post(() -> streamFailed(current, active, tls));
         }
     }
@@ -681,10 +685,11 @@ public final class MainActivity extends Activity {
                 main.post(() -> finishHistory(current, chosen, points, null, false));
             } catch (TelemetryClient.Denied ex) {
                 main.post(() -> finishHistory(current, chosen, null, "Access expired or revoked", true));
-            } catch (SSLException ex) {
-                main.post(() -> finishHistory(current, chosen, null, "TLS trust failed. Verify the PC certificate.", true));
             } catch (Exception ex) {
-                main.post(() -> finishHistory(current, chosen, null, "Host history unavailable; local data retained", false));
+                boolean tls = TransportFailure.isTls(ex);
+                String message = tls ? "TLS trust failed. Verify the PC certificate."
+                    : "Host history unavailable; local data retained";
+                main.post(() -> finishHistory(current, chosen, null, message, tls));
             }
         });
     }
