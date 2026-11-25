@@ -65,3 +65,17 @@ stable file identity, hard-link/reparse races, ACLs, cross-user/session
 scope, actual process admission and global maintenance exclusion remain
 open. This is not an authorization or security boundary. Native Windows
 CI is required before claiming interoperability.
+
+## Reverse ownership interoperability candidate
+
+The new native smoke keeps the C# shared or exclusive FileStream open
+while directly starting a trusted Python interpreter with a fixed
+contender script. Uncontended controls, shared admission, exclusive
+refusal, release and unchanged bytes are required. Only exact exit 2
+is busy; unavailable or invalid is a failure. Bounded child cleanup
+only affects directly started inert fixtures. TEMP/TMP are aligned,
+and the Python scope check resolves the parent, not the held leaf;
+the existing Python lease adapter checks the regular leaf before open.
+Three offline scope regressions cover fixed scope, wrong names and
+nested/traversal paths. Native Windows is required. No runtime wiring,
+ACL or production maintenance authorization.

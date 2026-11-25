@@ -580,3 +580,6 @@
 
 ## Integrated cross-language lease
 - PR #63 head 903cb0f push 45553406323 native interop passed actual shared/exclusive/release/unchanged bytes, Android 45553405957 PASS. Combined apphost/resolved-path changes fixed the fixture; exact individual cause not established. Integrated main 588911f with explicit union of required cases (255) and Android paths, retarget to main. Require fresh exact-source CI. Reverse C# owner/Python contender remains a separate candidate.
+
+## Reverse lease interoperability candidate
+- Base integrated #63 68654d3, dev/maintenance-lease-reverse. Add MaintenanceLeaseReverseSmoke.cs and Python probe_maintenance_lease.py, exact trusted interpreter/script paths, fixed direct private temp child scope, parent-only resolution, exact 0/2 outcomes with bounded owned child cleanup. C# shared allows Python shared/blocks exclusive; C# exclusive blocks both; controls before/after and unchanged bytes. Three new offline scope cases, registry 258. Native Windows CI mandatory; no runtime/ACL/maintenance wiring. Main 588911f (#65 merged), #63 integrated 68654d3 pending new CI, #64 6f7e40c five integrated jobs PASS on prior main; require fresh integration after #63. No deployment approval.
