@@ -1,5 +1,21 @@
 # Changelog
 
+## Strict package metadata (CI PASS)
+
+- Reject ambiguous JSON and oversized portable package metadata with bounded reads and exact source schema validation.
+
+## Cooperative maintenance sharing prototype (CI PASS)
+
+- Qualify Windows shared and exclusive file handles across isolated processes. No production maintenance or startup admission yet.
+
+## Fresh-root package restore (CI PASS)
+
+- Restore exact verified package backups into a new directory using a reviewed plan; verify both archive and staged tree before selection publication.
+
+## Package-source backup (CI PASS)
+
+- Create explicit plan-bound copies of verified original ZIPs and exact selection metadata; independently verify the receipt and archives.
+
 ## Maintenance inventory (CI PASS)
 
 - Verify retained selection and original pinned archive set without admitting maintenance or mutation.

@@ -7,7 +7,7 @@ import zipfile
 from pathlib import Path
 
 from artifact_manifest import MANIFEST, collect
-from portable_zip import verify_zip, windows_path, write_zip, zip_info
+from portable_zip import MAX_MANIFEST, read_zip_metadata, verify_zip, windows_path, write_zip, zip_info
 
 
 class PortableZipTests(unittest.TestCase):
@@ -73,6 +73,39 @@ class PortableZipTests(unittest.TestCase):
                 archive.writestr(zip_info(name, 1), b"x")
         with self.assertRaisesRegex(ValueError, "membership"):
             verify_zip(self.archive)
+
+    def test_duplicate_source_schema(self) -> None:
+        """Reject ambiguous source manifest before creating a ZIP."""
+        raw = self.manifest.read_text().replace('"schema": 1', '"schema": 2, "schema": 1')
+        self.manifest.write_text(raw)
+        with self.assertRaisesRegex(ValueError, "Duplicate JSON key"):
+            write_zip(self.source, self.archive)
+        self.assertFalse(self.archive.exists())
+
+    def test_duplicate_archive_schema(self) -> None:
+        """Reject ambiguous embedded manifests even when payload hash matches."""
+        raw = self.manifest.read_bytes().replace(b'"schema": 1', b'"schema": 2, "schema": 1')
+        with zipfile.ZipFile(self.archive, "w") as archive:
+            archive.writestr(zip_info(MANIFEST, len(raw)), raw)
+            archive.writestr(zip_info("binary.exe", 11), b"test binary")
+        with self.assertRaisesRegex(ValueError, "Duplicate JSON key"):
+            verify_zip(self.archive)
+
+    def test_oversized_source_manifest(self) -> None:
+        """Refuse source metadata exceeding the shared bounded read budget."""
+        self.manifest.write_bytes(b"x" * (MAX_MANIFEST + 1))
+        with self.assertRaisesRegex(ValueError, "oversized"):
+            write_zip(self.source, self.archive)
+        self.assertFalse(self.archive.exists())
+
+    def test_embedded_metadata_limit(self) -> None:
+        """Refuse a declared member beyond the supplied metadata budget."""
+        with zipfile.ZipFile(self.archive, "w") as archive:
+            archive.writestr("fixture", b"12345")
+        with zipfile.ZipFile(self.archive) as archive:
+            with self.assertRaisesRegex(ValueError, "Oversized"):
+                read_zip_metadata(archive, "fixture", 4)
+            self.assertEqual(read_zip_metadata(archive, "fixture", 5), b"12345")
 
 
 if __name__ == "__main__":

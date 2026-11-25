@@ -93,6 +93,52 @@ class StagingTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Nested Host manifest mismatch"):
             stage(self.package, hash_file(self.package), self.dest, False)
 
+    def test_duplicate_nested_schema(self) -> None:
+        """Refuse ambiguous nested Host metadata with valid outer file hashes."""
+        path = self.host / MANIFEST
+        path.write_text(path.read_text().replace('"schema": 1', '"schema": 2, "schema": 1'))
+        manifest(self.source)
+        self.package.unlink()
+        write_zip(self.source, self.package)
+        with self.assertRaisesRegex(ValueError, "Duplicate JSON key"):
+            stage(self.package, hash_file(self.package), self.dest, False)
+        self.assertFalse(self.dest.exists())
+
+    def test_duplicate_source_evidence(self) -> None:
+        """Reject duplicate source identities despite matching Host/Desktop bytes."""
+        path = self.host / "build-source.json"
+        raw = path.read_text().replace('"schema": 1', '"schema": 2, "schema": 1')
+        for directory in (self.host, self.source):
+            (directory / "build-source.json").write_text(raw)
+        self.pack()
+        with self.assertRaisesRegex(ValueError, "Duplicate JSON key"):
+            stage(self.package, self.sha, self.dest, False)
+        self.assertFalse(self.dest.exists())
+
+    def test_boolean_source_schema(self) -> None:
+        """A JSON boolean is not schema version one."""
+        for directory in (self.host, self.source):
+            path = directory / "build-source.json"
+            data = json.loads(path.read_text())
+            data["schema"] = True
+            path.write_text(json.dumps(data))
+        self.pack()
+        with self.assertRaisesRegex(ValueError, "Invalid package source"):
+            stage(self.package, self.sha, self.dest, False)
+        self.assertFalse(self.dest.exists())
+
+    def test_unknown_source_field(self) -> None:
+        """Reject unreviewed fields rather than accepting ambiguous evidence."""
+        for directory in (self.host, self.source):
+            path = directory / "build-source.json"
+            data = json.loads(path.read_text())
+            data["unexpected"] = "fixture"
+            path.write_text(json.dumps(data))
+        self.pack()
+        with self.assertRaisesRegex(ValueError, "Invalid package source"):
+            stage(self.package, self.sha, self.dest, False)
+        self.assertFalse(self.dest.exists())
+
 
 if __name__ == "__main__":
     unittest.main()
