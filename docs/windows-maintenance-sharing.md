@@ -93,3 +93,5 @@ not authentication or proof of protection against hostile writers.
 The earlier pathname precheck remains susceptible to path races.
 Native Windows CI must qualify the exact fixture; unsupported
 filesystems fail the test rather than silently passing.
+
+Verified PR #64 merged d8ee862: six integrated CI jobs PASS, Windows 255/255, actual identity and interop native steps passed together. No persistent identity enrollment or runtime wiring.

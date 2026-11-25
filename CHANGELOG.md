@@ -1,5 +1,9 @@
 # Changelog
 
+## Windows lease handle identity (CI PASS)
+
+- Qualify isolated same-handle identity, held-file replacement and deletion refusal, hard-link rejection and changed replacement identity.
+
 ## Python-owned cross-language maintenance lease (CI PASS)
 
 - Qualify Python CreateFileW handles against isolated C# shared and exclusive contenders. No runtime wiring.

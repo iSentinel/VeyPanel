@@ -593,3 +593,8 @@
 
 ## Identity and interop integration
 - #64 previous integrated 6f7e40c five CI jobs PASS, Windows 45553790257/45553797016 and Desktop reproduction 45553796498. Integrate current main 629c2e0 after #63 acceptance, retain both interop and identity mandatory smoke steps and 255 reviewed Python cases. Fresh native CI mandatory. #66 and #67 remain independent candidates pending integration. No production maintenance admission.
+
+## Verified maintenance lease handle identity
+- PR #64 integrated b8b58c90608c4df6d433cffa6b18a58055fb1823 merged d8ee862da4095f86fe82afe3fd961ab7ac439e3f. Windows 45555387274/45555394029, Android 45555387233, Desktop reproduction 45555394032 (three jobs), all PASS. Independently fetched refs/pull/64/merge d40b8466fc5dba6d98d48c52e472286dbf4d3f70 tree 5f5fb1e9552086b309d512f89f99c0dd43c1c261 parents 629c2e0 and b8b58c9. Downloaded Windows 255/255, debt329; manifest and independent verifier PASS. Actual identity and interop steps successful.
+- #66 original 5e5d5b0 four jobs PASS, downloaded Windows 258/258 independently checked against fetched synthetic commit 3b2de05d652d91e39b03d87e836aa0c1e3476ede tree 0f8d5f171c00db75cc182238f7760200a3828e26; reverse smoke step success, individual native log lines not recovered. Integrate current main before acceptance.
+- #67 original 86d0afa four jobs PASS, Windows 257/257 independently verified tree 2580d00243961e90850b9f3f9f0014cead89cddd; report commit 9eb356c1819c76a3021dcb118562e8a44cf027d4 not independently recovered after base change. Fresh integration required. #68 ff8d1c6 readiness header-only resource budget and managed environment cleanup local 255/255, native CI pending. No activation, destructive operation or deployment.
