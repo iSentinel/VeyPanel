@@ -462,3 +462,6 @@
 
 ## Independent offline QA verification candidate
 - Base PR #52 d31eaf8, dev/qa-report-verification. Read-only bounded verifier cross-checks summary, inventory, audit and JUnit with current clean tracked Git commit/tree, reviewed cases and exact baseline. Reject missing/nonpassing/duplicate cases, wrong source, boolean counts, mismatched debt and XML DTD. Eight new explicit fixtures, registry 215. Both Windows/Android common gates verify then write/reopen artifact manifest before successful upload; failed gate evidence remains diagnostic. No native evidence or publisher authentication claim. Hold local pending #52; actual CI required after integration.
+
+## Activity terminal TLS candidate
+- On dev/qa-report-verification after 7c0d90d, add androidTest-only reflection admission of synthetic loopback session to actual MainActivity polling. No production changes. Negative phase uses production trust (unknown CA or wrong identity), require terminal UI, one WSS attempt, no fallback/REST errors/samples, cleared session/stream, disabled history, and stable state after 3.5s. Existing trusted wrong-SAN and server no-request checks remain mandatory. Native emulator NOT_RUN locally; no owner CA or concurrent history qualification.

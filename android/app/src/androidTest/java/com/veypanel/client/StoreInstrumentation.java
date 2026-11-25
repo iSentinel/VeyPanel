@@ -30,7 +30,10 @@ public final class StoreInstrumentation extends Instrumentation {
                 stage = "Trusted wrong-SAN TLS";
                 if (fixtureCa == null) throw new IllegalStateException("Fixture CA required");
                 new TransportSmoke(fixtureCa).runWrongSan();
-                report.putString("stream", "\nPASS: trusted wrong-SAN rejected by HTTPS, WSS and bounded WSS\n");
+                stage = "Activity terminal TLS";
+                ActivityTlsSmoke.run(this);
+                report.putString("stream", "\nPASS: trusted wrong-SAN rejected by HTTPS, WSS and bounded WSS\n"
+                    + "PASS: Activity TLS terminal state, no fallback or retry\n");
                 finish(Activity.RESULT_OK, report);
                 return;
             }

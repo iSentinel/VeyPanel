@@ -63,3 +63,18 @@ A TLS cause beyond eight entries is not recognized by this classifier;
 this is not comprehensive arbitrary exception graph classification.
 Native and Activity-level acceptance remain separate. No trust or
 production transport selection change.
+
+## Activity terminal TLS candidate
+
+In the isolated negative TLS phase, exercise MainActivity's actual
+production WSS constructor and asynchronous reader, using a synthetic
+loopback ReaderSession inserted by androidTest reflection only. No
+production admission, transport, trust or link parser change. The default
+production trust store is used, not the injected fixture CA, so failure
+may be unknown CA rather than SAN mismatch; the three separately
+trusted-SAN transport checks remain mandatory. Require terminal TLS UI,
+one WSS attempt, zero fallbacks/REST errors/fresh samples, disabled
+history and cleared session/stream. Recheck after 3.5 seconds to detect
+normal poll retries. The negative server request observer remains required.
+This is not a test of all possible delayed callbacks, concurrent history
+completion or owner-installed CA behavior. Emulator CI required.
