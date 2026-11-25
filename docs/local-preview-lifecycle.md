@@ -16,3 +16,16 @@ Remaining limits: TextureView destruction versus active codec ownership
 requires separate coordination, and reused-texture callbacks do not carry
 a decoder generation. This is not proof of decoded pixel correctness,
 physical input behavior, remote video or Windows input injection.
+
+## Texture ownership candidate
+
+Each new preview replaces the TextureView and binds callbacks to its own
+target. The worker acquires a one-use lease before creating the Surface;
+a texture destroyed before acquisition is not used. During active decode,
+the destruction callback returns false and transfers release responsibility
+to the worker, which releases the Surface after codec cleanup and posts
+texture release to the UI queue. If decode already finished, the framework
+retains release responsibility. Stale view callbacks cannot affect the
+new target. JVM ordered-interleaving fixtures and repeated Activity
+preview test added. Native CI remains mandatory. This is not proof of
+codec native call deadlines, pixel correctness, or physical GPU lifecycle.

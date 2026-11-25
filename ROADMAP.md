@@ -163,3 +163,5 @@ scoped local acceptance with full policy compliance.
 - [ ] ENG-09: Integrate reviewed PR #43 bounded WSS lifecycle with PR #44 local preview tap gating; require both JVM fixtures, actual Android emulator and APK reproduction on combined source. Production OkHttp unchanged.
 - [ ] ENG-10/05: Integrate read-only Recovery candidate 8f456da with Launcher; require real package inspection and manual-review exit/unchanged state in Windows CI. Explicit recovery, process fencing and uninstall remain separate.
 - [ ] ENG-06: Fence SurfaceTexture destruction versus active codec ownership; prevent stale generation callbacks, test repeated preview and lifecycle cancellation.
+
+- [ ] ENG-06: Fresh per-preview TextureView target and exclusive worker/framework texture lease; JVM ordered interleaving and repeated Activity preview regressions. Local Python QA only; native acceptance required. No remote video/input change.

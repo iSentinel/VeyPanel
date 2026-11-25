@@ -54,6 +54,7 @@ public final class MainActivity extends Activity {
     private Button videoDecodeButton;
     private Button videoPreviewButton;
     private TextureView videoPreview;
+    private PreviewTarget previewTarget;
     private TextView localTouchStatus;
     private final LocalTapGate tapGate = new LocalTapGate();
     private boolean previewReady;
@@ -152,16 +153,8 @@ public final class MainActivity extends Activity {
         videoPreviewButton.setText("Preview local AVC frame");
         videoPreviewButton.setOnClickListener(v -> runLocalPreview());
         column.addView(videoPreviewButton);
-        videoPreview = new TextureView(this);
-        int previewSize = (int)(160 * getResources().getDisplayMetrics().density);
-        videoPreview.setLayoutParams(new LinearLayout.LayoutParams(previewSize, previewSize));
-        videoPreview.setVisibility(android.view.View.GONE);
-        videoPreview.setSurfaceTextureListener(previewListener());
-        videoPreview.setContentDescription("Local AVC touch diagnostics only");
-        videoPreview.setOnTouchListener((view, event) -> probeLocalTouch(view, event));
-        videoPreview.setOnClickListener(v -> {
-            localTouchStatus.setText("Local preview touch: tap one point · not sent to Windows");
-        });
+        previewTarget = createPreviewTarget();
+        videoPreview = previewTarget.view;
         column.addView(videoPreview);
         localTouchStatus = new TextView(this);
         localTouchStatus.setText("Local preview touch: N/A · not sent to Windows");
@@ -173,7 +166,7 @@ public final class MainActivity extends Activity {
     }
 
     private boolean probeLocalTouch(android.view.View view, MotionEvent event) {
-        if (!resumed || !previewReady || !videoPreview.isAvailable()
+        if (view != videoPreview || !resumed || !previewReady || !videoPreview.isAvailable()
                 || videoPreview.getVisibility() != android.view.View.VISIBLE) {
             tapGate.reset();
             return false;
@@ -220,20 +213,62 @@ public final class MainActivity extends Activity {
         runVideoJob(true);
     }
 
-    private TextureView.SurfaceTextureListener previewListener() {
+    /** One view per preview generation; callbacks retain their original target. */
+    private static final class PreviewTarget {
+        final TextureView view;
+        SurfaceTexture texture;
+        LocalPreviewLease lease;
+
+        PreviewTarget(TextureView view) { this.view = view; }
+    }
+
+    private PreviewTarget createPreviewTarget() {
+        TextureView view = new TextureView(this);
+        PreviewTarget target = new PreviewTarget(view);
+        int size = (int)(160 * getResources().getDisplayMetrics().density);
+        view.setLayoutParams(new LinearLayout.LayoutParams(size, size));
+        view.setVisibility(android.view.View.GONE);
+        view.setSurfaceTextureListener(previewListener(target));
+        view.setContentDescription("Local AVC touch diagnostics only");
+        view.setOnTouchListener((v, event) -> probeLocalTouch(v, event));
+        view.setOnClickListener(v -> {
+            if (v == videoPreview && previewReady)
+                localTouchStatus.setText("Local preview touch: tap one point · not sent to Windows");
+        });
+        return target;
+    }
+
+    private void replacePreviewTarget() {
+        LinearLayout parent = (LinearLayout)videoPreview.getParent();
+        int index = parent.indexOfChild(videoPreview);
+        TextureView previous = videoPreview;
+        previewTarget = createPreviewTarget();
+        videoPreview = previewTarget.view;
+        parent.removeView(previous);
+        parent.addView(videoPreview, index);
+    }
+
+    private TextureView.SurfaceTextureListener previewListener(PreviewTarget target) {
         return new TextureView.SurfaceTextureListener() {
             @Override public void onSurfaceTextureAvailable(SurfaceTexture texture, int w, int h) {
-                startLocalPreview(texture, videoRevision);
+                target.texture = texture;
+                target.lease = new LocalPreviewLease();
+                if (target == previewTarget) startLocalPreview(target, videoRevision);
             }
             @Override public void onSurfaceTextureSizeChanged(SurfaceTexture texture, int w, int h) { }
             @Override public void onSurfaceTextureUpdated(SurfaceTexture texture) {
-                if (!previewRequested || !previewStarted || texture != videoPreview.getSurfaceTexture()) return;
+                if (target != previewTarget || !previewRequested || !previewStarted
+                    || texture != target.texture || target.lease == null || !target.lease.started()) return;
                 previewUpdatedFrames++;
                 completeLocalPreview(videoRevision);
             }
             @Override public boolean onSurfaceTextureDestroyed(SurfaceTexture texture) {
-                cancelLostPreview();
-                return true;
+                if (texture != target.texture || target.lease == null) return true;
+                boolean frameworkReleases = target.lease.destroy();
+                target.texture = null;
+                target.lease = null;
+                if (target == previewTarget) cancelLostPreview();
+                return frameworkReleases;
             }
         };
     }
@@ -249,32 +284,44 @@ public final class MainActivity extends Activity {
         previewDecodedFrames = 0;
         int revision = ++videoRevision;
         videoStatus.setText("Decoding original local AVC into a visible Surface…");
+        replacePreviewTarget();
         videoPreview.setVisibility(android.view.View.VISIBLE);
-        if (videoPreview.isAvailable()) startLocalPreview(videoPreview.getSurfaceTexture(), revision);
+        if (videoPreview.isAvailable()) startLocalPreview(previewTarget, revision);
         main.postDelayed(() -> {
             if (resumed && revision == videoRevision && previewRequested && !previewStarted)
                 finishVideoJob(revision, "Local AVC preview FAILED: Surface unavailable.");
         }, 3000);
     }
 
-    private void startLocalPreview(SurfaceTexture texture, int revision) {
-        if (!resumed || !previewRequested || previewStarted
-            || revision != videoRevision || texture == null) return;
+    private void startLocalPreview(PreviewTarget target, int revision) {
+        if (!resumed || !previewRequested || previewStarted || target != previewTarget
+            || revision != videoRevision || target.texture == null || target.lease == null) return;
         previewStarted = true;
-        videoRequest = videoWorker.submit(() -> {
-            Surface surface = null;
-            try {
-                if (Thread.currentThread().isInterrupted()) return;
-                surface = new Surface(texture);
-                int rendered = LocalAvcSurfacePreview.run(getApplicationContext(), surface);
-                main.post(() -> previewDecoded(revision, rendered));
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            } catch (Exception ex) {
-                main.post(() -> finishVideoJob(revision,
-                    "Local AVC preview FAILED: Decoder or Surface unavailable."));
-            } finally { if (surface != null) surface.release(); }
-        });
+        SurfaceTexture texture = target.texture;
+        LocalPreviewLease lease = target.lease;
+        videoRequest = videoWorker.submit(() -> decodePreview(texture, lease, revision));
+    }
+
+    private void decodePreview(SurfaceTexture texture, LocalPreviewLease lease, int revision) {
+        if (Thread.currentThread().isInterrupted() || !lease.acquire()) return;
+        Surface surface = null;
+        try {
+            surface = new Surface(texture);
+            int rendered = LocalAvcSurfacePreview.run(getApplicationContext(), surface);
+            main.post(() -> previewDecoded(revision, rendered));
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        } catch (Exception ex) {
+            main.post(() -> finishVideoJob(revision,
+                "Local AVC preview FAILED: Decoder or Surface unavailable."));
+        } finally {
+            try { if (surface != null) surface.release(); }
+            finally {
+                // Post after onSurfaceTextureDestroyed returns false, never
+                // release on the UI thread while the decoder owns the texture.
+                if (lease.finish()) main.post(texture::release);
+            }
+        }
     }
 
     private void previewDecoded(int revision, int decoded) {
