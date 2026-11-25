@@ -126,3 +126,22 @@ separate modified copy with one missing row was rejected. Eight new
 offline regressions cover mandatory Artemis membership and report
 recomputation. Automated live collection, freshness and scheduling
 remain separate. No dependency or installation changes.
+
+## Public API observation adapter candidate
+
+The offline API normalization boundary accepts five snapshots for one
+reviewed repository: repository metadata, default-branch commit, latest
+stable release, exact tag reference and resolved release commit. It checks
+repository identity, explicit stable-release flags, exact direct tag ref,
+corroborating commit SHA and the existing strict seven-field row schema.
+An annotated tag is refused until bounded dereferencing is qualified.
+The collector must omit failed rows so classification reports ERROR;
+it must never substitute baseline values or silently accept a missing release.
+
+The future transport is explicit read-only HTTPS to the fixed GitHub API
+origin, with bounded responses, request and run budgets, no redirects,
+no automatic retries, sanitized diagnostics and offline transport fixtures.
+Snapshots are sequential observations, not an atomic remote transaction;
+identity and corroboration checks do not establish freshness or origin
+attestation. No scheduled workflow, network collector or baseline updates
+are implemented by this adapter.

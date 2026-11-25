@@ -665,3 +665,6 @@
 ## Accepted upstream classifier and Artemis integration gate
 - PR #71 merged e2b53b715a11065e011d0fbd6b9cedc4903636a0 after Windows 45562094570/45562087580 and Android 45562094670 PASS. Downloaded PR Windows and Android QA 278/278 each, exact synthetic f7f9c2869aa589cda3d6952484cb0b48596157e3 tree 7e244f12c9ccf55ead9706f76d0384bf2cae5dd3, manifest and independent verifier PASS; actual main tree identical.
 - #72 original stacked head 7a30fbc: Windows 45562358027/45562349648 and Android 45562358069/45562349519 PASS. Both downloaded PR reports independently verified 286/286, synthetic 03222e5a2ffa0d008461bd70c36cb701fa817e07 tree 8bd6ac5758f30d9c269f6bf2cf7e92891194f25b, debt329. Retargeted #72 to main after #71 merge; fresh integrated CI required, no release or dependency update. Next independent candidate: bounded public metadata collector, no automatic baseline changes.
+
+## Upstream API normalization candidate
+- Base Artemis checkpoint 18dc191, separate dev/upstream-live-collector. Pure extraction of reviewed GitHub API snapshots to existing row schema, stable release and exact repository/direct-tag/commit corroboration; eight offline cases, expected registry 294. No network transport, scheduler, dependency mutation or release. Native integrated CI required after local gates.
