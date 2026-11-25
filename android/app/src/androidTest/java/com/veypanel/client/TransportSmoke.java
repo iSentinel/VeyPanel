@@ -27,6 +27,31 @@ final class TransportSmoke {
         context.init(null,new javax.net.ssl.TrustManager[]{manager},null);
     }
 
+    /** All transports must reject a trusted chain with the wrong IP SAN. */
+    void runWrongSan() throws Exception {
+        ReaderSession session = ReaderSession.fixture('A');
+        expectIdentityFailure(() -> TelemetryClient.fetch(session, context.getSocketFactory()));
+        try (TelemetryStream stream = open(session)) {
+            expectIdentityFailure(stream::next);
+        }
+        try (BoundedTelemetryStream stream =
+                 BoundedTelemetryStream.fixture(session, context.getSocketFactory())) {
+            expectIdentityFailure(stream::next);
+        }
+    }
+
+    private interface Request { Object run() throws Exception; }
+
+    private static void expectIdentityFailure(Request request) throws Exception {
+        try {
+            request.run();
+        } catch (Exception failure) {
+            if (TelemetryStream.isTlsError(failure)) return;
+            throw new IllegalStateException("Wrong-SAN failure was not classified as TLS");
+        }
+        throw new IllegalStateException("Wrong-SAN certificate accepted");
+    }
+
     void runBounded() throws Exception {
         BoundedTlsSmoke.run(context.getSocketFactory());
         BoundedStreamSmoke.run(context.getSocketFactory());

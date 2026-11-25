@@ -26,3 +26,22 @@ trust, lifecycle and freshness qualification before any integration.
 No real hardware or hostile-network robustness claim.
 
 Verified combined acceptance: PR #45 merged 5bb5505, all fourteen CI jobs passed. Native scope only; physical and production acceptance remain separate.
+
+## Trusted wrong-IP SAN acceptance candidate
+
+The existing emulator fixture tests an unknown CA and a valid explicitly
+trusted certificate. A second phase uses the same isolated CA and a new
+leaf with CN 127.0.0.1 but IP SAN 127.0.0.2, while the client connects to
+127.0.0.1. OpenSSL verifies the chain and intended SAN and rejects the
+actual target IP. The first-phase checks remain mandatory. HTTPS REST,
+production OkHttp WSS and experimental bounded WSS must each reject the
+wrong-SAN peer with a TLS-classified failure. The negative server flags
+any parsed HTTP request without recording its contents, and the runtime
+script requires no such request. This guards against sending the
+synthetic Authorization header or WebSocket token to the wrong identity.
+
+Local certificate and observer controls PASS; Android API 33 emulator
+acceptance remains required. Fixture CA injection is test-only and does
+not establish Android owner-installed user CA behavior, physical device
+trust, or end-to-end Activity fallback behavior. Production code, pins,
+network binding, trust policy and transport selection are unchanged.

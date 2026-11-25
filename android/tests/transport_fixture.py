@@ -144,8 +144,20 @@ class Fixture(BaseHTTPRequestHandler):
         self.wfile.flush()
 
 
+class WrongSanFixture(Fixture):
+    """Observe any parsed request without printing its contents."""
+
+    def parse_request(self) -> bool:
+        """Flag receipt of application HTTP traffic in the negative phase."""
+        print("FAIL: unexpected application request on wrong-SAN fixture", flush=True)
+        return super().parse_request()
+
+
 if __name__ == "__main__":
-    server = ThreadingHTTPServer(("127.0.0.1",47861),Fixture)
+    if len(sys.argv) not in (3, 4) or (len(sys.argv) == 4 and sys.argv[3] != "wrong-san"):
+        raise SystemExit("Usage: transport_fixture.py CERT KEY [wrong-san]")
+    handler = WrongSanFixture if len(sys.argv) == 4 else Fixture
+    server = ThreadingHTTPServer(("127.0.0.1",47861), handler)
     context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     context.load_cert_chain(sys.argv[1],sys.argv[2])
     server.socket = context.wrap_socket(server.socket,server_side=True)

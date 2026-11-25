@@ -49,4 +49,37 @@ grep -Fq 'PASS: bounded TLS and persistent stream reject unknown CA and oversize
 grep -Fq 'PASS: isolated HTTPS/WSS transport, TLS denial, fallback and revocation' runtime-smoke.log
 grep -Eq '^INSTRUMENTATION_CODE: -1[[:space:]]*$' runtime-smoke.log
 if grep -Fq 'FAIL:' runtime-smoke.log; then exit 1; fi
+# Second phase: same trusted test CA, matching CN but deliberately wrong IP SAN.
+# Stop only the owned positive fixture; preserve all first-phase result gates.
+kill "$pid"
+wait "$pid" || true
+pid=""
+openssl req -new -newkey rsa:2048 -nodes -subj '/CN=127.0.0.1' \
+  -keyout "$fixture/wrong.key" -out "$fixture/wrong.csr" >/dev/null 2>&1
+printf '%s\n' 'subjectAltName=IP:127.0.0.2' 'extendedKeyUsage=serverAuth' 'basicConstraints=critical,CA:FALSE' > "$fixture/wrong.extensions"
+openssl x509 -req -in "$fixture/wrong.csr" -CA "$fixture/ca.pem" -CAkey "$fixture/ca.key" \
+  -CAserial "$fixture/ca.srl" -days 1 -extfile "$fixture/wrong.extensions" -out "$fixture/wrong.pem" >/dev/null 2>&1
+openssl verify -CAfile "$fixture/ca.pem" -purpose sslserver -verify_ip 127.0.0.2 "$fixture/wrong.pem" >/dev/null
+if openssl verify -CAfile "$fixture/ca.pem" -purpose sslserver -verify_ip 127.0.0.1 "$fixture/wrong.pem" >/dev/null 2>&1; then
+  echo 'FAIL: wrong-SAN fixture unexpectedly matches target'
+  exit 1
+fi
+python3 android/tests/transport_fixture.py "$fixture/wrong.pem" "$fixture/wrong.key" wrong-san > "$fixture/wrong.log" 2>&1 &
+pid=$!
+for attempt in {1..30}; do
+  if grep -Fq 'READY: isolated transport fixture' "$fixture/wrong.log"; then break; fi
+  kill -0 "$pid"
+  sleep 1
+done
+grep -Fq 'READY: isolated transport fixture' "$fixture/wrong.log"
+adb -s "$serial" shell am instrument -w -r -e isolated true -e fixtureCa "$ca" -e transportPhase wrong-san com.veypanel.client.test/com.veypanel.client.StoreInstrumentation | tee runtime-wrong-san.log
+grep -Fq 'PASS: trusted wrong-SAN rejected by HTTPS, WSS and bounded WSS' runtime-wrong-san.log
+grep -Eq '^INSTRUMENTATION_CODE: -1[[:space:]]*$' runtime-wrong-san.log
+if grep -Fq 'FAIL:' runtime-wrong-san.log; then exit 1; fi
+kill -0 "$pid"
+if grep -Fq 'FAIL:' "$fixture/wrong.log"; then
+  echo 'FAIL: application request reached wrong-SAN fixture'
+  exit 1
+fi
+echo 'PASS: no application request reached wrong-SAN fixture'
 echo 'PASS: runtime result gate'

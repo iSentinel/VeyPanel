@@ -12,10 +12,12 @@ import java.util.Arrays;
 public final class StoreInstrumentation extends Instrumentation {
     private boolean isolated;
     private String fixtureCa;
+    private boolean wrongSan;
     @Override public void onCreate(Bundle args) {
         super.onCreate(args);
         isolated = "true".equals(args.getString("isolated"));
         fixtureCa = args.getString("fixtureCa");
+        wrongSan = "wrong-san".equals(args.getString("transportPhase"));
         start();
     }
     @Override public void onStart() {
@@ -24,6 +26,14 @@ public final class StoreInstrumentation extends Instrumentation {
         StringBuilder results = new StringBuilder("\n");
         try {
             if (!isolated) throw new IllegalStateException("Explicit isolated test required");
+            if (wrongSan) {
+                stage = "Trusted wrong-SAN TLS";
+                if (fixtureCa == null) throw new IllegalStateException("Fixture CA required");
+                new TransportSmoke(fixtureCa).runWrongSan();
+                report.putString("stream", "\nPASS: trusted wrong-SAN rejected by HTTPS, WSS and bounded WSS\n");
+                finish(Activity.RESULT_OK, report);
+                return;
+            }
             stage = "AndroidKeyStore";
             runStore();
             results.append("PASS: AndroidKeyStore actual encryption, reopen, fresh ciphertext, corruption, key removal and Forget\n");
