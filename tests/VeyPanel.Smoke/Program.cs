@@ -1,8 +1,14 @@
 using VeyPanel.Host;
 using System.Net;
 
+if (args.Length == 3 && args[0] == "--maintenance-lease-reverse-smoke")
+    return MaintenanceLeaseReverseSmoke.Run(args[1], args[2]);
+
 if (args.Length == 3 && args[0] == "--maintenance-lease-probe")
     return MaintenanceLeaseSmoke.Probe(args[1], args[2]);
+
+if (args.Length == 1 && args[0] == "--maintenance-identity-smoke")
+    return MaintenanceLeaseIdentitySmoke.Run();
 
 if (args.Length == 1 && args[0] == "--maintenance-lease-smoke")
     return MaintenanceLeaseSmoke.Run();
