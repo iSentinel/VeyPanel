@@ -53,13 +53,7 @@ internal sealed class HostController : IAsyncDisposable
             var exe = Path.Combine(directory, "VeyPanel.Host.exe");
             if (!File.Exists(exe)) throw new FileNotFoundException("Bundled Host is missing.");
             var ready = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
-            var info = new ProcessStartInfo(exe) {
-                WorkingDirectory = directory, UseShellExecute = false, CreateNoWindow = true,
-                RedirectStandardInput = true, RedirectStandardOutput = true, RedirectStandardError = true
-            };
-            info.ArgumentList.Add("--managed-local");
-            foreach (var key in new[] { "VEYPANEL_LAN_IP", "VEYPANEL_PFX", "VEYPANEL_PFX_PASSWORD" })
-                info.Environment.Remove(key);
+            var info = ManagedStartInfo(exe, directory);
             var child = new Process { StartInfo = info, EnableRaisingEvents = true };
             child.OutputDataReceived += (_, args) =>
             {
@@ -88,9 +82,32 @@ internal sealed class HostController : IAsyncDisposable
         finally { gate.Release(); }
     }
 
+    internal static ProcessStartInfo ManagedStartInfo(string exe, string directory)
+    {
+        var info = new ProcessStartInfo(exe) {
+            WorkingDirectory = directory, UseShellExecute = false, CreateNoWindow = true,
+            RedirectStandardInput = true, RedirectStandardOutput = true, RedirectStandardError = true
+        };
+        info.ArgumentList.Add("--managed-local");
+        foreach (var key in new[] { "VEYPANEL_LAN_IP", "VEYPANEL_PFX", "VEYPANEL_PFX_PASSWORD",
+                                   "VEYPANEL_PERSIST_GRANTS" })
+            info.Environment.Remove(key);
+        return info;
+    }
+
+    // Readiness depends on the authenticated status, not the telemetry body.
+    internal static async Task<bool> ReadReadyStatusAsync(HttpClient http, Uri endpoint,
+                                                           CancellationToken cancellation)
+    {
+        using var response = await http.GetAsync(endpoint, HttpCompletionOption.ResponseHeadersRead,
+                                                 cancellation);
+        return response.StatusCode == HttpStatusCode.OK;
+    }
+
     private static async Task CheckReadyAsync(Process child, string candidate)
     {
-        using var http = new HttpClient(new HttpClientHandler { UseProxy = false, AllowAutoRedirect = false })
+        using var http = new HttpClient(new SocketsHttpHandler { UseProxy = false, AllowAutoRedirect = false,
+                                                MaxResponseHeadersLength = 16, MaxResponseDrainSize = 0 })
             { Timeout = TimeSpan.FromSeconds(1) };
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", candidate);
         using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(10));
@@ -98,8 +115,8 @@ internal sealed class HostController : IAsyncDisposable
         {
             try
             {
-                using var response = await http.GetAsync("http://127.0.0.1:47860/api/v1/telemetry", deadline.Token);
-                if (response.StatusCode == HttpStatusCode.OK && !child.HasExited) return;
+                if (await ReadReadyStatusAsync(http, new Uri("http://127.0.0.1:47860/api/v1/telemetry"),
+                                               deadline.Token) && !child.HasExited) return;
             }
             catch (HttpRequestException) { }
             catch (OperationCanceledException) when (!deadline.IsCancellationRequested) { }

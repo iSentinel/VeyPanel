@@ -1,6 +1,9 @@
 using VeyPanel.Host;
 using System.Net;
 
+if (args.Length == 3 && args[0] == "--maintenance-lease-reverse-smoke")
+    return MaintenanceLeaseReverseSmoke.Run(args[1], args[2]);
+
 if (args.Length == 3 && args[0] == "--maintenance-identity-probe")
     return MaintenanceLeaseSmoke.ProbeIdentity(args[1], args[2]);
 
@@ -36,6 +39,9 @@ if (args.Length == 2 && args[0] == "--host-owner-exit-probe")
 
 if (args.Length == 2 && args[0] == "--host-owner-exit-smoke")
     return await HostOwnerExitSmoke.RunAsync(args[1]);
+
+if (args.Length == 1 && args[0] == "--host-readiness-smoke")
+    return await HostReadinessSmoke.RunAsync();
 
 if (args.Length == 2 && args[0] == "--lifecycle-smoke")
     return await LifecycleSmoke.RunAsync(args[1]);

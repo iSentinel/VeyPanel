@@ -58,6 +58,13 @@ jobs:
         run: python scripts/smoke_maintenance_lease_interop.py --assembly tests/VeyPanel.Smoke/bin/Release/net10.0/VeyPanel.Smoke.exe
       - name: Verify isolated Windows maintenance lease handle identity
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --maintenance-identity-smoke
+      - name: Verify isolated C#-owned maintenance lease with Python contenders
+        shell: pwsh
+        run: |
+          $python = (Get-Command python -CommandType Application).Source
+          $script = (Resolve-Path scripts/probe_maintenance_lease.py).Path
+          dotnet run --project tests/VeyPanel.Smoke -c Release -- --maintenance-lease-reverse-smoke $python $script
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - run: dotnet publish src/VeyPanel.Host -c Release -r win-x64 --self-contained true -p:ContinuousIntegrationBuild=true -o publish
       - name: Apply verified deterministic Host endpoint metadata
         shell: pwsh
@@ -126,6 +133,8 @@ jobs:
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --persistent-smoke publish
       - name: Test managed Host lifecycle
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --lifecycle-smoke publish
+      - name: Verify bounded Host readiness status and managed environment
+        run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --host-readiness-smoke
       - name: Verify managed Host exit after isolated owner process exits
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --host-owner-exit-smoke publish
       - name: Verify process observation after managed owner exit

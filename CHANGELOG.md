@@ -1,5 +1,17 @@
 # Changelog
 
+## Managed Host readiness budget (CI PASS)
+
+- Read authenticated status headers without draining response bodies; remove inherited managed persistence configuration.
+
+## Strict JUnit evidence (CI PASS)
+
+- Reject unreviewed attributes, inter-element text and unsupported XML processing instructions in independently verified offline QA reports.
+
+## Bidirectional maintenance lease interoperability (CI PASS)
+
+- Qualify C#-owned shared/exclusive leases against isolated Python contenders alongside the existing reverse ownership and handle identity checks.
+
 ## Windows lease handle identity (CI PASS)
 
 - Qualify isolated same-handle identity, held-file replacement and deletion refusal, hard-link rejection and changed replacement identity.

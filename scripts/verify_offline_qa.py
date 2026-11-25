@@ -42,17 +42,23 @@ def verify_junit(path: Path, expected: tuple[str, ...]) -> None:
     raw = read_bounded(path, MAX_REPORT)
     # Only UTF-8 writer output is supported; no DTD or entity declarations.
     source = raw.decode("utf-8")
-    if "<!" in source or "\x00" in source:
+    declaration = "<?xml version='1.0' encoding='utf-8'?>"
+    content = source[len(declaration):] if source.startswith(declaration) else source
+    if "<!" in content or "<?" in content or "\x00" in content:
         raise ValueError("Unsupported XML declaration")
     suite = ET.fromstring(source)
-    if suite.tag != "testsuite" or suite.attrib.get("name") != "veypanel.python.offline":
+    if (suite.tag != "testsuite" or suite.attrib.get("name") != "veypanel.python.offline"
+            or set(suite.attrib) != {"name", "tests", "failures", "errors", "skipped", "time"}
+            or (suite.text or "").strip() or (suite.tail or "").strip()):
         raise ValueError("Unexpected JUnit suite")
     require_fields(suite.attrib, {"tests": str(len(expected)), "failures": "0",
                                   "errors": "0", "skipped": "0"})
     duration(float(suite.attrib["time"]))
     identities = []
     for case in suite:
-        if case.tag != "testcase" or len(case) or (case.text or "").strip():
+        if (case.tag != "testcase" or len(case) or (case.text or "").strip()
+                or (case.tail or "").strip()
+                or set(case.attrib) != {"classname", "name", "time"}):
             raise ValueError("Nonpassing or invalid JUnit case")
         identities.append(case.attrib["classname"] + "." + case.attrib["name"])
         duration(float(case.attrib["time"]))
