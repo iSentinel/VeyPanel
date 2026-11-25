@@ -80,3 +80,5 @@ history and cleared session/stream. Recheck after 3.5 seconds to detect
 normal poll retries. The negative server request observer remains required.
 This is not a test of all possible delayed callbacks, concurrent history
 completion or owner-installed CA behavior. Emulator CI required.
+
+Verified PR #53 merged f473688, all eight CI jobs PASS. Downloaded Windows/Android reports each 215/215 with independent validator and manifest verification. Runtime 45543711027 confirmed actual Activity terminal TLS with no fallback/retry and negative fixture no-request gate. Physical trust and concurrent network cancellation remain separate.
