@@ -514,3 +514,8 @@
 
 ## Cross-process Desktop admission candidate
 - On dev/desktop-session-admission after 9b2b0ff: add separate smoke child dispatch, unique GUID fixture names only, blocked child exit 2 while owned, admitted after release, abandoned owner exit and reacquisition with non-owning kernel handle retained, recovered owner excludes another child. Bounded wait/cleanup for owned synthetic child only. No production mutex, Host or WPF activation. Native .NET SDK unavailable on development server; common QA and exact evidence only. PR #55 updated independently to 9b89fa8 with all original eight jobs PASS after HTTP 429 rerun and fresh combined CI pending.
+
+## Verified cooperative Desktop session admission
+- PR #57 integrated head b60ded58f7fe9786597807e40dce253ec538bd29 merged b6b772d0b63d892b2562f62f72cfe480ef528b2f. Windows 45547357452/45547364906, Android 45547357403, runtime 45547357427, reproduction 45547364888 (three jobs): seven PASS.
+- Downloaded Windows QA verified against exact checkout 664f00cc9eb308bc54dc4f02ab7f4da49686c7ac tree d68b2f3a6b4981c093ac3cb04e2427d8ee2eed2b, 220/220, debt 329. Native log confirms process contention, release and abandoned owner reacquisition. No actual WPF or global maintenance admission claim.
+- PR #58 c6312d2 original five CI jobs PASS, actual cleanup-required and owner-exit markers confirmed in 45546922097. Integrate accepted main and retarget PR to main for fresh gates. PR #59 read-only inventory pending; no destructive operation or deployment approval.
