@@ -111,3 +111,24 @@ in an isolated runner, not arbitrary power failure, live user processes,
 a general process ownership proof, or system-wide maintenance exclusion.
 
 Verified PR #58 merged 1d6e454; seven integrated CI jobs PASS. Native owned Host cleanup-required and isolated owner disappearance smoke passed. Actual WPF and exclusive maintenance remain open.
+
+## Managed Host readiness resource budget candidate
+
+Readiness checks only the status of the authenticated local telemetry
+endpoint. Request response headers only, cap response headers at 16 KiB,
+disable response draining, retain existing no-proxy/no-redirect policy
+and the one-second per-request and ten-second outer cancellation budgets.
+Continue checking the owned process before reporting ready. This no
+longer requires a complete telemetry response body; telemetry correctness
+is covered by separate native smoke tests, not this status check.
+
+Use a shared start-info builder to remove inherited LAN, PFX, password
+and persistence variables before starting the managed local Host.
+Managed Host previously ignored the persistence flag; removal is
+defense in depth. The native fixture checks synthetic environment values
+without printing them and isolated loopback 200/403 responses with a
+declared but withheld body. Require status decision before the server
+releases its response; bounded request header and fixture deadline.
+No production endpoint, external service or real user credential used.
+The status check is not process authentication, a total process-start
+deadline, or a bound on child stdout/stderr line allocation.
