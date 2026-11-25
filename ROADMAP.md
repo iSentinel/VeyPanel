@@ -253,3 +253,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-10/05: Prototype Python CreateFileW lease interoperability with C# isolated contender, exact busy-only classification and exception-safe close; four offline adapter regressions, mandatory Windows cross-language smoke. No activation/mutation wiring; stable identity, ACL and cross-session qualification separate.
 
 - [x] PR #63 merged 581c556; four integrated jobs PASS, independently verified Windows 255/255 and actual Python-owned cross-language lease smoke. Production admission remains open.
+
+- [ ] ENG-09/10: Limit managed Host readiness to authenticated response headers (16 KiB, no response drain) and strip inherited persistence alongside LAN/TLS settings. Native isolated withheld-body 200/403 and synthetic environment smoke required. No production endpoint or user process used by the new fixture.

@@ -124,6 +124,8 @@ jobs:
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --persistent-smoke publish
       - name: Test managed Host lifecycle
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --lifecycle-smoke publish
+      - name: Verify bounded Host readiness status and managed environment
+        run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --host-readiness-smoke
       - name: Verify managed Host exit after isolated owner process exits
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --host-owner-exit-smoke publish
       - name: Verify process observation after managed owner exit
