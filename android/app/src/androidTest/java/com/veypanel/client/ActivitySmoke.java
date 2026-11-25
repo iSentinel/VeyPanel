@@ -42,6 +42,7 @@ final class ActivitySmoke {
             verifyLocalDecoderButton(runner, activity);
             verifyLocalPreview(runner, activity);
             verifyLocalTouch(runner, activity);
+            verifyPreviewReset(runner, activity);
         } finally {
             runner.runOnMainSync(activity::finish);
             runner.waitForIdleSync();
@@ -117,6 +118,20 @@ final class ActivitySmoke {
             if (status == null || !status.getText().toString().contains("(32, 32)")
                 || !status.getText().toString().contains("not sent to Windows"))
                 throw new IllegalStateException("Local synthetic touch output missing");
+        });
+    }
+
+    private static void verifyPreviewReset(Instrumentation runner, Activity activity) {
+        runner.runOnMainSync(() -> {
+            View root = activity.getWindow().getDecorView();
+            TextureView preview = findTexture(root);
+            TextView button = find(root, "Inspect video decoders", true);
+            if (button == null || !button.performClick() || preview == null
+                    || preview.getVisibility() != View.GONE)
+                throw new IllegalStateException("Previous preview not cleared");
+            TextView status = find(root, "Local preview touch:", false);
+            if (status == null || !status.getText().toString().contains("N/A"))
+                throw new IllegalStateException("Previous touch state not cleared");
         });
     }
 

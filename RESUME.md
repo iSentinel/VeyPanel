@@ -375,3 +375,6 @@
 ## Verified Host smoke capture
 - PR #41 head 78bc723a9fc486159705677830019fdff7789a55 merged b3d4ebf. All nine combined-source jobs PASS: Windows 45518031667/45518021242, Android 45518021295, Host reproduction 45518031645, Desktop reproduction 45518031818. GitHub API confirms both private bootstrap fixture and actual published Host smoke steps succeeded.
 - Pending independent candidates: PR #42 8ebbc1b default framework log privacy, PR #43 e506c6a experimental WSS state with JVM/emulator checks. Both clean local Python QA 141/141; native CI required. PR #37 cf59419 passed three jobs against older main; integrate current main before merge. No release or hardware approval.
+
+## Local preview touch lifecycle candidate
+- Source bf88748, dev/local-touch-gesture-gate. Prior Activity accepted unpaired UP, drags and touches before preview completion. Add pure LocalTapGate and reset on pause/loss/other jobs, hide failed/old preview, allocate Surface only in worker. JVM fixture and Activity reset regression added. Local Python scope only; native Android CI required. Remaining texture destruction/codec ownership and stale callbacks on reused texture are separate work; no remote touch or physical device claim.

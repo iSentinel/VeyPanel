@@ -156,3 +156,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-04: Add optional closed-schema QA JSONL events, bounded monotonic durations, safe reason codes, stdout/stderr separation and canary/exit regressions; PR #40 merged, all four CI jobs PASS. Audit Host token capture and legacy CLI exception messages next; no general redaction claim.
 
 - [x] ENG-04: Remove raw Host smoke temporary logs; owned pipes, exact bootstrap, bounded cleanup, fixed diagnostics. PR #41 merged; all nine combined-source CI jobs PASS, including PowerShell capture and published Host smoke.
+
+- [ ] ENG-06/09: Admit only completed-preview single-pointer tap sequences, reject missing DOWN, drag and cancellation, reset on preview loss and other video diagnostics. Create Surface in worker to avoid queued cancellation leak. JVM and Activity emulator regression required; texture/codec destruction ownership and stale same-texture callbacks remain open.
