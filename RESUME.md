@@ -367,3 +367,6 @@
 ## Verified QA event checkpoint
 - PR #40 head 34c05a868b62b8c258cd66cba0b9b12f9ab23f3c merged e0c1c3b. Windows 45516846055/45516854427 and Android 45516846052/45516854500 PASS. Downloaded Windows report confirms 141/141, zero skips, clean checkout a9ed009de2fc1c7fc38e8e66c3a358b1a81eb21a, tree 4b723ed640bb65715950a6142f3c5c3203a8d066, debt 395, exact delta empty.
 - PR #41 77dc4ce and PR #37 cf59419 previously passed all eight/three jobs respectively; integrate current main and recheck before merge. Next independent P0: framework request logging and synthetic credential canary.
+
+## Framework request logging candidate
+- Source 2f4b7a9, dev/host-framework-log-privacy. Clear default ASP.NET Core providers to avoid free-form request/exception text; intentional loss of framework startup/request log output, explicit private bootstrap unchanged. New actual-process smoke observes synthetic canary and owner token after bootstrap, checks rejection and authenticated telemetry, verifies shutdown and never prints raw child output. Local Python gate only; no .NET on Proxmox. Native CI required; no historic leak or comprehensive logging claim.
