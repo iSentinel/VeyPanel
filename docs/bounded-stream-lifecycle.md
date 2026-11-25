@@ -101,3 +101,26 @@ mandatory. This is ordered interleaving coverage, not concurrent network
 cancellation latency or actual socket closure qualification.
 
 Verified PR #54 merged 542eb08, all eight CI jobs PASS. Actual common QA each 219/219, zero unattributed outcomes, manifest/independent verifier PASS. Ordered Activity callback fixture passed; actual concurrent network cancellation not yet qualified.
+
+## REST response body budget candidate
+
+The previous REST reader checked elapsed time and interruption only after
+a successful non-EOF read. A new bounded body reader checks the monotonic
+five-second body budget and interrupt flag before and after each read,
+including EOF, requests no more than the remaining byte budget plus one,
+and rejects zero-progress reads. The existing 1 MiB decoded body limit,
+three-second connect/read timeouts, HTTPS trust, redirect/proxy policy,
+credentials and REST/WSS selection remain unchanged. JVM fixtures cover
+the exact size boundary, excessive body, late data and EOF, cancellation
+before reading and at EOF, and zero progress. An isolated TLS emulator
+fixture drips bytes more frequently than the socket idle timeout; require
+the body-deadline error rather than JSON acceptance or idle timeout.
+
+Local Python and fixture controls are not native acceptance. This budget
+starts at entry to the body reader, not at DNS, connect or response header
+acquisition. A blocking read can run until the existing socket read
+timeout, and interruption is observed only at read boundaries. This does
+not guarantee prompt socket closure, bound decompressor internals or
+qualify concurrent live REST/history cancellation. Native CI required.
+
+Verified PR #55 merged 5534f42; exact integrated revision 9b89fa8 all eight jobs PASS including manually dispatched runtime 45546707362 with real TLS REST drip deadline. Whole-request deadline and active socket cancellation remain open.

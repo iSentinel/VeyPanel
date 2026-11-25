@@ -73,6 +73,8 @@ used by this test. Actual CI remains required. Same-thread recursive
 mutex behavior is not a general admission API guarantee; App acquires
 once on its UI thread. No proof of prior Host exit follows from abandonment.
 
+Verified PR #57 merged b6b772d, seven integrated CI jobs PASS, native thread/process contention and abandonment fixture PASS. Actual WPF activation and maintenance exclusion remain unqualified.
+
 ## Owned Host cleanup-required state (candidate)
 
 A failed owned Host stop clears its dashboard token before exit is
