@@ -95,3 +95,17 @@ Native Windows CI must qualify the exact fixture; unsupported
 filesystems fail the test rather than silently passing.
 
 Verified PR #64 merged d8ee862: six integrated CI jobs PASS, Windows 255/255, actual identity and interop native steps passed together. No persistent identity enrollment or runtime wiring.
+
+## Reverse ownership interoperability candidate
+
+The new native smoke keeps the C# shared or exclusive FileStream open
+while directly starting a trusted Python interpreter with a fixed
+contender script. Uncontended controls, shared admission, exclusive
+refusal, release and unchanged bytes are required. Only exact exit 2
+is busy; unavailable or invalid is a failure. Bounded child cleanup
+only affects directly started inert fixtures. TEMP/TMP are aligned,
+and the Python scope check resolves the parent, not the held leaf;
+the existing Python lease adapter checks the regular leaf before open.
+Three offline scope regressions cover fixed scope, wrong names and
+nested/traversal paths. Native Windows is required. No runtime wiring,
+ACL or production maintenance authorization.
