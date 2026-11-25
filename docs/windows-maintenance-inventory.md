@@ -31,6 +31,8 @@ Do not rewrite that selection or treat the missing archive as verified.
 Two-version positive coverage currently uses inert fixture archives.
 Native CI requires a real single-version recovered package inventory.
 
+Verified PR #59 merged 81d65ed, three integrated CI jobs PASS; Windows 229/229 and real recovered package inventory independently checked. No maintenance exclusion claim.
+
 ## Verified package-source backup candidate
 
 Use only a private, pre-existing destination parent with suitable ACLs
@@ -65,6 +67,8 @@ Seven inert fixtures and actual single-version 291091352-byte archive
 copy verified locally, all 838 source inventory files unchanged.
 Native CI uses only the isolated recovered package. Restore into a
 new empty root and real two-version backup remain separate gates.
+
+Verified PR #60 merged 1c5b8e3; three integrated CI jobs PASS, Windows 236/236 and real isolated backup independently verified. No physical durability or user-data backup claim.
 
 ## Restore into a fresh directory candidate
 
