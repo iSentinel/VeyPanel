@@ -455,3 +455,7 @@
 
 ## Required Python case inventory candidate
 - Base 0feac5e, dev/required-python-case-inventory. Previous gate accepted any nonempty successful discovered subset. Reconcile initial 199 identities with accepted PR #50 Windows JUnit, explicitly add eight registry fixtures (207 required). Strict bounded registry, exact discovery before execution, exact executed PASS verdict, no auto regeneration. case-inventory.json and additive summary fields; missing suite not executed, skip fails. Android workflow triggers updated. Native common QA required; no new AST debt expected. Hold independent candidate while PR #51 runs.
+
+## Combined TLS classification and required QA candidate
+- Base main be41a44, integrate 248360911acdb741fa904e4775fdd4005f85e125 and 43e624b79f4746ff94cffd09c87d85edd0d5b44d with merge ancestry. Resolve only documentation conflicts, preserve mandatory TLS SAN and runtime gates, all prior JVM fixtures and new inventory workflow triggers. Combined 207 required cases; fresh native Windows, Android, emulator and APK reproduction CI mandatory.
+- Next: verify exact combined CI/JUnit inventory and shared TLS JVM fixture. User CA, Activity-level fallback, pre-allocation WSS memory bound, process fencing and safe uninstall remain open. No deployment, release or physical approval.
