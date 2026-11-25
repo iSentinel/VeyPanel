@@ -1,5 +1,13 @@
 # Changelog
 
+## Owned Host lifecycle (CI PASS)
+
+- Preserve explicit cleanup-required state and qualify managed Host exit after isolated owner disappearance.
+
+## Cooperative Desktop session admission (CI PASS)
+
+- Gate WPF startup with a session-local mutex; qualify isolated competing process refusal, release and abandoned-owner reacquisition.
+
 ## REST body budget (CI PASS)
 
 - Check monotonic deadline and interrupt before and after reads including EOF; qualify actual TLS drip response refusal on Android emulator.

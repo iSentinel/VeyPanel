@@ -74,11 +74,17 @@ public partial class MainWindow : Window
     private async Task UpdateHostAsync()
     {
         if (hostBusy || closing) return;
-        var running = await host.IsRunningAsync();
+        var state = await host.GetStateAsync();
         if (hostBusy || closing) return;
-        StartHostButton.IsEnabled = !running;
-        StopHostButton.IsEnabled = DashboardButton.IsEnabled = running;
-        HostStatus.Text = running ? "Running • 127.0.0.1:47860" : "Stopped";
+        StartHostButton.IsEnabled = state == HostLifecycleState.Stopped;
+        StopHostButton.IsEnabled = state != HostLifecycleState.Stopped;
+        DashboardButton.IsEnabled = state == HostLifecycleState.Ready;
+        HostStatus.Text = state switch
+        {
+            HostLifecycleState.Ready => "Running • 127.0.0.1:47860",
+            HostLifecycleState.CleanupRequired => "Owned Host cleanup required • Stop Host",
+            _ => "Stopped"
+        };
     }
 
     private async void CloseAsync(object? sender, CancelEventArgs e)
@@ -96,6 +102,7 @@ public partial class MainWindow : Window
         catch (Exception ex)
         {
             closing = false;
+            await UpdateHostAsync();
             HostStatus.Text = $"Shutdown failed ({ex.GetType().Name}); retry Stop Host.";
             hostTimer.Start();
             return;
