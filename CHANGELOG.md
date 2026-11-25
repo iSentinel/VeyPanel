@@ -1,5 +1,9 @@
 # Changelog
 
+## Corrupt selection reconciliation (CI PASS)
+
+- Require an explicit plan and verified sole staged package; preserve exact corrupt metadata in an exclusive backup before state replacement. Native Windows integration passed.
+
 ## Exact OkHttp static evidence (CI PASS)
 
 - Verify and capture static disassembly of pinned WSS classes; confirm the application text limit runs after assembly and optional decompression. Mitigation and provenance remain open.

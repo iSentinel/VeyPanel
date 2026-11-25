@@ -436,3 +436,8 @@
 
 ## Corrupt selection reconciliation candidate
 - Base 7d97566, dev/corrupt-selection-recovery. Require one trusted staged version, bounded malformed existing state, no prior backup/extra entries/lock; bind original digest and root to dry-run plan. Explicit apply exclusively creates and verifies .selection-corrupt-backup before atomic replacement, verifies readback and payload; no backup deletion or activation. Twelve regressions PASS. Actual isolated root /tmp/veypanel-real-corrupt-repair-owgkzd19 recovered metadata, exact backup retained and full 836-file inventory unchanged. Manual-review exit intentionally retained for backup; never export corrupt bytes. Windows CI prepared, no real user installation modified, private quiescent root assumption. Multi-version, process fencing, physical durability and retention remain open.
+
+## Verified corrupt selection reconciliation
+- PR #50 head da9af7872e7f8a01936e783f4dbdb04a74d43ddf merged 788d7a64337a919053767d02e23a7640988a7733. Windows 45541941069/45541947941 PASS, API confirms mandatory explicit corrupt-selection backup, first-install recovery, read-only recovery and Launcher checks.
+- Independently downloaded Windows QA/JUnit: 199/199, no skips, exact debt 329, clean checkout 07dced31742028ac981ca7e05b61c7a29c5e7f95 tree 5ed892bdf1d35764d1d8a88a0a216b3c74f150df, no new/stale identities.
+- Next: isolated trusted-CA/wrong-SAN qualification of all three client transports; production bounded transport still not selected. User CA on hardware and process fencing remain open.
