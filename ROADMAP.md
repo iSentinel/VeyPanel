@@ -288,3 +288,5 @@ scoped local acceptance with full policy compliance.
 
 - [x] PR #71 merged e2b53b7; three integrated jobs PASS; independently verified Windows/Android QA 278/278, exact main tree matches tested merge tree. Offline classifier accepted; collection/freshness separate.
 - [ ] PR #72 retargeted to main after initial four jobs PASS and independently verified Windows/Android QA 286/286 on stacked base. Fresh integrated CI required before acceptance.
+
+- [ ] ENG-12: Offline GitHub API snapshot normalization boundary (repository identity, latest stable release, direct tag ref and corroborating commit); eight regression cases. Live bounded transport, freshness, scheduling and native CI remain separate.
