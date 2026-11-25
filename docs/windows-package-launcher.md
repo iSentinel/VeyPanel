@@ -40,3 +40,16 @@ isolated root. Exit code 1 continues to denote validation or execution
 failure. Actual interactive activation is not qualified by this change.
 
 Verified PR #37 merged as 2262808. Actual Windows CI 45518972862 includes successful selected Desktop launch-plan dry-run and common QA (151/151). Interactive WPF startup and lifecycle remain unqualified.
+
+## Explicit executable and bounded manifest candidate
+
+The native launch call supplies the verified absolute Desktop image as
+both argv[0] and the explicit executable, without shell resolution.
+The second installed-manifest comparison uses the existing bounded,
+identity-checked read helper instead of an unbounded read. A regression
+injects manifest growth after tree verification and requires refusal
+without process creation. The inert mocked launch fixture checks explicit
+image selection; actual package dry-run and full offline QA are required.
+The private quiescent root assumption and process lifetime limitations
+remain unchanged. This does not fence unrelated processes, authenticate
+an executable publisher, or qualify interactive launch or shutdown.

@@ -486,3 +486,6 @@
 - PR #54 head e41e4cb938d2f5b170a4d28b0132002811be1fad merged 542eb08fd9c2209e1697188e17dcd1ab6b4ad82b. Windows 45544210874/45544219151, Android 45544210886/45544218728, runtime 45544210785, reproduction 45544218746: all eight jobs PASS.
 - Independently downloaded both common reports: verified manifest, exact registry and baseline, 219/219, debt 329, zero unattributed outcomes, checkout cb63bb7ded128dd3e9ad01671b1945134b8e53c8 tree 32e6337839aaa221670d60d846a606a27498db9e. Runtime log confirms ordered history/telemetry callback fencing and terminal TLS/no fallback/no HTTP on negative fixture.
 - Next: inspect production REST cancellation, qualify explicit owned request lifecycle without changing trust or transport selection. Physical acceptance and process/uninstall gates remain open.
+
+## Explicit Launcher image candidate
+- Base main 64e9d0b, dev/launcher-explicit-image. Pass absolute verified Desktop path as explicit subprocess executable and argv[0]; replace second installed-manifest read with bounded identity-checked read. New manifest growth regression; 11/11 Launcher tests and actual isolated package dry-run PASS. Registry expanded explicitly to 220. Hold locally pending #55; native Windows CI required, no live process created.

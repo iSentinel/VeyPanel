@@ -207,3 +207,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-04/08: Prevent subtest parameter and unreviewed identity export in QA JUnit; attribute to admitted parent, preserve nonpassing priority, count unattributed fixture outcomes and fail closed. Four regressions (219 required); native common QA pending.
 
 - [x] PR #54 merged 542eb08; eight jobs PASS, actual Windows and Android 219/219, manifest and independent verification PASS, zero unattributed outcomes. Ordered Activity callback fencing verified; live network cancellation remains separate.
+
+- [ ] ENG-10/05: Explicit verified Desktop executable in native process creation; bound the second installed manifest read and reject growth after tree verification. Eleven Launcher fixtures and actual package dry-run PASS locally; full common QA and native Windows CI required. Lifetime fencing remains separate.
