@@ -413,3 +413,8 @@
 - Mailbox preserves first terminal cause, bounded 5.5s wait and 5s receipt age, immediate cancellation notification and single-reader admission. Experimental upgrade rejects bare CR/LF. Candidate upstream reader reviewed; exact artifact mapping unverified, pinned JAR unchanged, no claim of compromise or pre-allocation memory protection.
 - First-install recovery requires externally trusted ZIP, sole verified staged version and absent selection state, explicit plan-bound apply; no lock clearing or payload mutation. Twelve offline regressions and real isolated root /tmp/veypanel-real-recovery-taa3omny with 836 files PASS, full inventory unchanged. Actual Windows CI step required.
 - Combined offline QA must PASS, exact debt remains 395. Android JVM/runtime/reproduction and Windows package integration mandatory before merge. No real activation, deployment, signing or hardware approval.
+
+## Verified production mailbox and first-install recovery
+- PR #47 head 9d0efcd87076af98459a42ab691fc78afe3860ed merged 37a07f54288d2a109debecf6c796eb368c02fbac; all eight jobs PASS. Windows 45524079522/45524086257, Android 45524079599/45524086341, runtime 45524079540, APK reproduction 45524086309.
+- Downloaded Windows common QA/JUnit verified 174/174, zero skips, clean checkout ac79e39bd05fc33d14e4b43888c2f8338f928886 tree 2087f51f0a471a895916ce9e5da075b0252ae952, debt 395, empty exact delta. API confirms explicit first-install recovery, read-only recovery and launch plan steps PASS.
+- Next: bounded strict selection metadata and single-read manifest identity, independent exact OkHttp binary inspection. No production deployment or physical approval.

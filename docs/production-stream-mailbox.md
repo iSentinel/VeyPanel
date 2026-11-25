@@ -48,3 +48,5 @@ or independently authenticated source before transport replacement.
 Experimental BoundedUpgrade now rejects bare CR/LF before parsing header
 fields (four additional negative fixtures). This hardening is separate
 from production OkHttp, and native CI remains required.
+
+Verified PR #47 merged 37a07f5, eight CI jobs PASS, including actual Windows first-install recovery and Android runtime. Pre-allocation memory, publisher provenance and physical acceptance remain separate.

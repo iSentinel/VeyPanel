@@ -1,5 +1,9 @@
 # Changelog
 
+## Production WSS mailbox and first-install recovery (CI PASS)
+
+- Serialize latest-sample publication/cancellation, reject ambiguous experimental upgrade separators, and restore absent selection metadata from a verified sole staged package using an explicit root-bound plan. Native and reproduction CI passed.
+
 ## Local preview texture ownership (CI PASS)
 
 - Coordinate framework and decoder release, replace the preview target per generation and verify repeated Activity preview. Native and reproduction CI passed; physical GPU acceptance remains separate.

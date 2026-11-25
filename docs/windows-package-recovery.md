@@ -62,3 +62,5 @@ publisher, hostile-writer resistance or power-loss durability claim.
 Twelve offline tests and an isolated real 836-file ZIP recovery passed on
 Linux; actual Windows CI stage prepared. The disposable root is retained
 for evidence, not an installed or activated product.
+
+Verified PR #47 merged 37a07f5, eight CI jobs PASS, including actual Windows first-install recovery and Android runtime. Pre-allocation memory, publisher provenance and physical acceptance remain separate.
