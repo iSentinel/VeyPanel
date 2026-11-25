@@ -153,4 +153,6 @@ scoped local acceptance with full policy compliance.
 
 - [x] ENG-08: Resolve PR #39 Windows cross-API stat regression without dropping mutation detection. Exact source reviewed, two new regression fixtures PASS locally; Windows and reproduction CI PASS, PR #39 merged.
 
-- [ ] ENG-04: Remove raw Host smoke temporary logs; extract exact private bootstrap from owned pipe, discard residual output, bound cleanup and preserve existing telemetry assertions. Synthetic PowerShell fixtures and actual Windows CI required. Framework request logging review separate.
+- [x] ENG-04: Add optional closed-schema QA JSONL events, bounded monotonic durations, safe reason codes, stdout/stderr separation and canary/exit regressions; PR #40 merged, all four CI jobs PASS. Audit Host token capture and legacy CLI exception messages next; no general redaction claim.
+
+- [ ] ENG-04: Remove raw Host smoke temporary logs; owned pipes, exact bootstrap, bounded cleanup, fixed diagnostics. PR #41 initial eight CI jobs PASS; combined-source CI with PR #40 required.

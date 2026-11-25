@@ -361,5 +361,13 @@
 - Independently downloaded Windows QA artifact 14978715316: 133/133, zero skips, exact debt 395, no new/stale findings, clean checkout 684ccdf389c025c89393419dde47231bbb96ca8d tree 6900ee7c0a91d622f30714d3a4492da2100df2f4. Normalized Host comparison downloaded and verified. First failing attempt and CPython cross-API correction retained above.
 - Next: safe QA event branch, then Host smoke secret capture and request logging review. Launcher PR #37 must be verified against current main; no physical activation or release approval.
 
-## Host smoke private capture candidate
-- Source a864dc9, branch dev/host-smoke-private-capture. Targeted inspection identified Test-Host.ps1 persisted raw child stdout containing owner URL to temporary file. Replace with owned anonymous pipes, exact bootstrap extraction, fixed error categories, child-only env changes and bounded cleanup. Preserve telemetry tests; add explicit readiness and synthetic exact/malformed bootstrap fixtures. Local Python QA only; PowerShell and .NET unavailable on Proxmox. Windows CI required; no actual historic public token leak established. Framework request/path logging remains open.
+## Scoped safe QA event candidate
+- Branch dev/safe-qa-events based on manifest PR #39. Optional --log-events produces allowlisted audit/tests/report/run JSONL on stderr, no arbitrary text/path fields, existing exit contracts preserved. Eight new regressions cover invalid fields/duration, secret canaries, failure/error exit semantics. Full local Python QA pending clean committed rerun; no new AST debt. Targeted logging audit recorded in docs/qa-event-logging.md. No general secret redaction or Host logging acceptance.
+
+## Verified QA event checkpoint
+- PR #40 head 34c05a868b62b8c258cd66cba0b9b12f9ab23f3c merged e0c1c3b. Windows 45516846055/45516854427 and Android 45516846052/45516854500 PASS. Downloaded Windows report confirms 141/141, zero skips, clean checkout a9ed009de2fc1c7fc38e8e66c3a358b1a81eb21a, tree 4b723ed640bb65715950a6142f3c5c3203a8d066, debt 395, exact delta empty.
+- PR #41 77dc4ce and PR #37 cf59419 previously passed all eight/three jobs respectively; integrate current main and recheck before merge. Next independent P0: framework request logging and synthetic credential canary.
+
+## Host smoke capture integration
+- PR #41 head 77dc4ce: Windows 45517055826/45517062834, Host reproduction 45517062962, Desktop reproduction 45517063056, all eight jobs PASS. Merge current main 2f4b7a9 with QA events, preserve documentation checkpoints. Combined-source CI required.
+- No raw temporary logs, owned pipe capture and fixed errors; all telemetry assertions retained. Synthetic fixture and actual Windows smoke ran in prior CI. No historical public leak established.
