@@ -15,6 +15,7 @@ from typing import TextIO
 
 from code_audit import differences, load_baseline, scan
 from qa_events import emit
+from qa_case_inventory import compare_cases, discovered_cases, execution_passed, load_cases
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -108,6 +109,23 @@ def write_json(path: Path, data: dict) -> None:
         output.write("\n")
 
 
+def run_required_tests(output: Path) -> tuple[EvidenceResult, dict[str, object], bool]:
+    """Fail closed on missing, duplicate or skipped mandatory cases."""
+    expected = load_cases(ROOT / "config/python-qa-cases.json")
+    suite = unittest.defaultTestLoader.discover(str(ROOT / "scripts"), pattern="test_*.py")
+    inventory = compare_cases(expected, discovered_cases(suite))
+    result = EvidenceResult()
+    start = time.monotonic()
+    if inventory["status"] == "PASS":
+        suite.run(result)
+    write_junit(output / "python-results.xml", result, time.monotonic() - start)
+    ok = inventory["status"] == "PASS" and execution_passed(
+        expected, result.rows, result.testsRun, result.wasSuccessful())
+    write_json(output / "case-inventory.json", {"schema": 1, **inventory,
+               "execution_status": "PASS" if ok else "FAIL"})
+    return result, inventory, ok
+
+
 def run(output: Path, events: TextIO | None = None) -> bool:
     """Run source gate and tests, preserving both independent results."""
     output.mkdir(mode=0o700, exist_ok=False)
@@ -120,14 +138,9 @@ def run(output: Path, events: TextIO | None = None) -> bool:
     write_json(output / "code-audit.json", {"schema": 1, "findings": rows,
                                           **delta, "status": "PASS" if audit_ok else "FAIL"})
     emit(events, "audit", "PASS" if audit_ok else "FAIL", time.monotonic() - audit_start)
-    suite = unittest.defaultTestLoader.discover(str(ROOT / "scripts"), pattern="test_*.py")
-    result = EvidenceResult()
     test_start = time.monotonic()
-    suite.run(result)
-    write_junit(output / "python-results.xml", result, time.monotonic() - test_start)
+    result, inventory, tests_ok = run_required_tests(output)
     passed = sum(status == "PASS" for status, _ in result.rows.values())
-    tests_ok = (result.wasSuccessful() and passed > 0
-                and len(result.rows) == result.testsRun)
     emit(events, "tests", "PASS" if tests_ok else "FAIL", time.monotonic() - test_start)
     ok = audit_ok and tests_ok
     report_start = time.monotonic()
@@ -138,6 +151,7 @@ def run(output: Path, events: TextIO | None = None) -> bool:
         "tracked_checkout_clean": not git_value("status", "--porcelain", "--untracked-files=no"),
         "python": platform.python_version(), "platform": platform.system(),
         "audit_status": "PASS" if audit_ok else "FAIL", "debt_count": len(rows),
+        "required_cases": inventory["expected_count"], "inventory_status": inventory["status"],
         "tests_run": result.testsRun, "passed": passed, "failures": len(result.failures),
         "errors": len(result.errors), "skipped": len(result.skipped),
         "expected_failures": len(result.expectedFailures), "unexpected_successes": len(result.unexpectedSuccesses),
