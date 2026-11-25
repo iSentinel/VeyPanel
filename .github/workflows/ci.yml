@@ -87,6 +87,9 @@ jobs:
       - name: Test storage provider diagnostic fixtures
         shell: pwsh
         run: ./scripts/Test-StorageHealth.ps1
+      - name: Test private Host bootstrap capture
+        shell: pwsh
+        run: ./scripts/Test-HostSmokeCapture.ps1
       - name: Run published Windows host integration smoke
         shell: pwsh
         run: ./scripts/Test-Host.ps1

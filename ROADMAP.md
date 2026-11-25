@@ -152,3 +152,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-08/02: Fail closed on unreadable artifact subtrees, bound file/directory and manifest reads, detect observed same-size changes, require exact schema and atomically replace staging manifests. Six new regressions; 34 exact debt identities removed (429 -> 395). Actual prior artifacts verified; PR #39 merged, all ten CI jobs PASS. Trusted quiescent tree assumption remains.
 
 - [x] ENG-08: Resolve PR #39 Windows cross-API stat regression without dropping mutation detection. Exact source reviewed, two new regression fixtures PASS locally; Windows and reproduction CI PASS, PR #39 merged.
+
+- [ ] ENG-04: Remove raw Host smoke temporary logs; extract exact private bootstrap from owned pipe, discard residual output, bound cleanup and preserve existing telemetry assertions. Synthetic PowerShell fixtures and actual Windows CI required. Framework request logging review separate.
