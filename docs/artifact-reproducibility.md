@@ -72,3 +72,13 @@ Run 45403501445: both builds and comparison PASS. Actual checkout
 were different, while bytes outside the validated signing blocks at
 [1782490,1786586) matched exactly. Both APK v2 signatures independently
 passed apksigner. Comparison artifact 14924837063.
+
+## Manifest integrity hardening (candidate)
+
+Traversal errors fail closed, directory/file entries and manifest reads are
+bounded, observed file identity/size/timestamps are checked before/after
+hashing, and schema fields must match exactly. Staging manifest replacement
+is atomic and uses UTF-8 LF; accepted evidence remains immutable by policy.
+These checks assume private quiescent staging and cannot prove an atomic
+multi-file snapshot or defeat a hostile same-user writer. Six regression
+fixtures and downloaded prior artifacts passed locally; Windows CI pending.

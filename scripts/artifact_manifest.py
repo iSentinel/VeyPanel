@@ -9,22 +9,57 @@ import re
 from pathlib import Path
 import stat
 import sys
+import tempfile
+from typing import Any
 
 MANIFEST = "artifact-files.sha256.json"
 MAX_FILES = 20000
 MAX_BYTES = 4 * 1024**3
+MAX_ENTRIES = 40000
+MAX_MANIFEST = 8 * 1024 * 1024
+MAX_HASH_BYTES = MAX_BYTES + 64 * 1024 * 1024
 
 
-def hash_file(path):
-    """Hash a regular file in bounded chunks."""
+def file_identity(info: os.stat_result) -> tuple[int, ...]:
+    """Compare available file identity, size and modification metadata."""
+    return (info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns,
+            info.st_ctime_ns, info.st_mode)
+
+
+def regular(info: os.stat_result) -> bool:
+    """Refuse nonregular files and Windows reparse points."""
+    return stat.S_ISREG(info.st_mode) and not getattr(info, "st_file_attributes", 0) & 0x400
+
+
+def hash_file(path: Path) -> str:
+    """Hash a bounded regular file and detect observed mutation or replacement."""
+    initial = path.lstat()
+    if not regular(initial) or initial.st_size > MAX_HASH_BYTES:
+        raise ValueError("Unsafe or oversized hash input")
     digest = hashlib.sha256()
     with path.open("rb") as source:
-        for block in iter(lambda: source.read(1024 * 1024), b""):
+        if file_identity(os.fstat(source.fileno())) != file_identity(initial):
+            raise ValueError("File changed before hashing")
+        remaining = initial.st_size
+        while remaining:
+            block = source.read(min(1024 * 1024, remaining))
+            if not block:
+                raise ValueError("File truncated during hashing")
             digest.update(block)
+            remaining -= len(block)
+        if source.read(1) or file_identity(os.fstat(source.fileno())) != file_identity(initial):
+            raise ValueError("File changed while hashing")
+    if file_identity(path.lstat()) != file_identity(initial):
+        raise ValueError("File replaced or changed while hashing")
     return digest.hexdigest()
 
 
-def safe_entry(path):
+def walk_error(error: OSError) -> None:
+    """Never silently omit an unreadable subtree."""
+    raise error
+
+
+def safe_entry(path: str) -> bool:
     """Refuse ambiguous cross-platform paths, links and control characters."""
     return all(part not in ("", ".", "..") and not part.startswith(".")
                and not part.endswith((".", " "))
@@ -32,13 +67,13 @@ def safe_entry(path):
                for part in path.split("/"))
 
 
-def collect(root):
+def collect(root: Path) -> dict[str, Any]:
     """Inventory regular files only; do not follow symlinks/reparse points."""
     if (not root.is_dir() or root.is_symlink()
             or getattr(root.lstat(), "st_file_attributes", 0) & 0x400):
         raise ValueError("Expected regular artifact directory")
     rows, names, total = [], set(), 0
-    for directory, dirs, files in os.walk(root, followlinks=False):
+    for directory, dirs, files in os.walk(root, followlinks=False, onerror=walk_error):
         for name in sorted(dirs + files):
             path = Path(directory) / name
             relative = path.relative_to(root).as_posix()
@@ -50,6 +85,8 @@ def collect(root):
             if folded in names:
                 raise ValueError("Duplicate case-insensitive path: " + relative)
             names.add(folded)
+            if len(names) > MAX_ENTRIES:
+                raise ValueError("Artifact entry-count budget exceeded")
             if stat.S_ISDIR(info.st_mode):
                 continue
             if not stat.S_ISREG(info.st_mode):
@@ -60,7 +97,7 @@ def collect(root):
             if total > MAX_BYTES or len(rows) >= MAX_FILES:
                 raise ValueError("Artifact size or file-count budget exceeded")
             digest = hash_file(path)
-            if path.stat().st_size != info.st_size:
+            if file_identity(path.lstat()) != file_identity(info):
                 raise ValueError("Artifact changed while hashing: " + relative)
             rows.append({"path": relative, "bytes": info.st_size, "sha256": digest})
     if not rows:
@@ -69,9 +106,11 @@ def collect(root):
             "files": sorted(rows, key=lambda row: row["path"])}
 
 
-def entries(manifest):
+def entries(manifest: dict[str, Any]) -> dict[str, dict[str, Any]]:
     """Validate a manifest before accepting or comparing its declarations."""
-    if manifest.get("schema") != 1 or manifest.get("algorithm") != "SHA-256":
+    if (not isinstance(manifest, dict) or set(manifest) != {"schema", "algorithm", "files"}
+            or type(manifest.get("schema")) is not int or manifest["schema"] != 1
+            or manifest.get("algorithm") != "SHA-256"):
         raise ValueError("Unknown manifest schema or hash algorithm")
     rows = manifest["files"]
     if not isinstance(rows, list) or not 0 < len(rows) <= MAX_FILES:
@@ -79,6 +118,8 @@ def entries(manifest):
     result, names = {}, set()
     total = 0
     for row in rows:
+        if not isinstance(row, dict) or set(row) != {"path", "bytes", "sha256"}:
+            raise ValueError("Invalid manifest entry fields")
         path, size, digest = row["path"], row["bytes"], row["sha256"]
         if (not isinstance(path, str) or not safe_entry(path)
                 or path == MANIFEST or path.casefold() in names
@@ -93,7 +134,7 @@ def entries(manifest):
     return result
 
 
-def compare(first, second):
+def compare(first: dict[str, Any], second: dict[str, Any]) -> dict[str, list[str]]:
     """Compare exact file membership, sizes and hashes."""
     a, b = entries(first), entries(second)
     return {"added": sorted(b.keys() - a.keys()),
@@ -101,7 +142,49 @@ def compare(first, second):
             "changed": sorted(key for key in a.keys() & b.keys() if a[key] != b[key])}
 
 
-def main():
+def load_manifest(path: Path) -> dict[str, Any]:
+    """Read a bounded regular manifest without following a final symlink."""
+    info = path.lstat()
+    if not regular(info) or info.st_size > MAX_MANIFEST:
+        raise ValueError("Unsafe or oversized manifest")
+    with path.open("rb") as source:
+        if file_identity(os.fstat(source.fileno())) != file_identity(info):
+            raise ValueError("Manifest changed before reading")
+        raw = source.read(MAX_MANIFEST + 1)
+        if (len(raw) != info.st_size
+                or file_identity(os.fstat(source.fileno())) != file_identity(info)):
+            raise ValueError("Manifest changed while reading")
+    if file_identity(path.lstat()) != file_identity(info):
+        raise ValueError("Manifest changed after reading")
+    result = json.loads(raw)
+    entries(result)
+    return result
+
+
+def write_manifest(root: Path, report: dict[str, Any]) -> None:
+    """Atomically replace a staging manifest; accepted artifacts stay immutable."""
+    target = root / MANIFEST
+    entries(report)
+    raw = (json.dumps(report, indent=2, sort_keys=True) + "\n").encode("utf-8")
+    if len(raw) > MAX_MANIFEST:
+        raise ValueError("Manifest exceeds size budget")
+    if target.exists() or target.is_symlink():
+        if not regular(target.lstat()):
+            raise ValueError("Unsafe existing manifest")
+    temp = None
+    try:
+        with tempfile.NamedTemporaryFile(dir=root, prefix=".manifest-", delete=False) as output:
+            temp = Path(output.name)
+            output.write(raw)
+            output.flush()
+            os.fsync(output.fileno())
+        os.replace(temp, target)
+    finally:
+        if temp is not None:
+            temp.unlink(missing_ok=True)
+
+
+def main() -> int:
     """Generate, verify or compare file manifests with explicit exit codes."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("mode", choices=("write", "verify", "compare"))
@@ -111,18 +194,17 @@ def main():
     try:
         if args.mode == "write":
             report = collect(args.path)
-            (args.path / MANIFEST).write_text(
-                json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+            write_manifest(args.path, report)
             print(f"PASS: recorded {len(report['files'])} artifact file hashes")
             return 0
         if args.mode == "verify":
-            expected = json.loads((args.path / MANIFEST).read_text(encoding="utf-8"))
+            expected = load_manifest(args.path / MANIFEST)
             actual = collect(args.path)
         else:
             if args.other is None:
                 raise ValueError("Two manifests required for comparison")
-            expected = json.loads(args.path.read_text(encoding="utf-8"))
-            actual = json.loads(args.other.read_text(encoding="utf-8"))
+            expected = load_manifest(args.path)
+            actual = load_manifest(args.other)
         difference = compare(expected, actual)
         print(json.dumps(difference, indent=2))
         if any(difference.values()):
