@@ -93,3 +93,5 @@ Windows cross-API checks compare device/inode, size, last-write and explicit
 birthtime, and mode excluding extension-derived execute bits. Each API
 retains its full before/after identity comparison. Linux checks are unchanged.
 No hostile writer, physical durability or atomic multi-file snapshot claim.
+
+Verified: PR #39 merged 3565f75; ten CI jobs PASS including both Windows runs and independent Host/Desktop reproduction. Actual Windows common QA artifact 14978715316 confirms 133/133 and exact debt 395. The initial failed Windows attempt is retained in RESUME.

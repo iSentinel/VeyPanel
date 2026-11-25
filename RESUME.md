@@ -355,3 +355,8 @@
 ### Manifest Windows portability correction
 - PR #39 initial Windows 45515644679/45515652582 failed, 31 errors in common QA; downloaded JUnit confirms 100/131 PASS and no new/stale AST findings. Windows/ Desktop reproduction 45515652447/45515652277 logs explicitly report File changed before hashing, comparisons NOT_RUN.
 - CPython v3.12.10 source Modules/posixmodule.c (win32_xstat/update_st_mode_from_path) and Python/fileutils.c (_Py_fstat_noraise) reviewed: path stat adds executable extension mode bits and aliases deprecated ctime to birthtime. Cross-API Windows comparison uses exact device/file identity, size, mtime, birthtime, common mode bits; full before/after comparisons remain within each API. No timestamp tolerance or blanket fallback. New cross-API and actual executable/manifest reopen fixtures. Local QA PASS; corrected Windows CI required.
+
+## Verified manifest hardening checkpoint
+- PR #39 head 2065821abd160d4684a0afd970ba3045b6c4bc5c merged 3565f75. All ten CI jobs PASS; Windows 45516193643/45516181304, Android 45516193786/45516181388, Host reproduction 45516194018, Desktop/ZIP reproduction 45516193647.
+- Independently downloaded Windows QA artifact 14978715316: 133/133, zero skips, exact debt 395, no new/stale findings, clean checkout 684ccdf389c025c89393419dde47231bbb96ca8d tree 6900ee7c0a91d622f30714d3a4492da2100df2f4. Normalized Host comparison downloaded and verified. First failing attempt and CPython cross-API correction retained above.
+- Next: safe QA event branch, then Host smoke secret capture and request logging review. Launcher PR #37 must be verified against current main; no physical activation or release approval.
