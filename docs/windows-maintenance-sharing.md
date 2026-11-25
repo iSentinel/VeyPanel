@@ -35,3 +35,29 @@ not an atomic defense against hostile concurrent path mutation.
 No uninstall, removal, activation, privilege change, production install
 or filesystem fault injection is introduced. Native Windows compilation
 and execution are required before claiming even the prototype qualified.
+
+## Handle identity observation candidate
+
+An isolated Windows smoke reads BY_HANDLE_FILE_INFORMATION from an
+already opened FileStream. The volume serial and 64-bit file index
+identify the held file for the qualified local filesystem scenario.
+Reject directories, reparse attributes, unavailable/zero file index
+and link counts other than one. This is an observation of the opened
+handle, not a canonical path or ACL verification.
+
+The native fixture opens two shared handles and requires matching
+identities. Replacement and deletion of the held inert fixture name
+must fail; both fixture names and the original handle identity remain
+intact. A deliberately created hard-link alias must fail the identity
+check; after alias removal the single-link check succeeds. A distinct
+replacement file, created while the original still exists, must have
+a different observed identity after release and replacement.
+Only fresh temporary fixture files are involved.
+
+No persistent identity enrollment, production lease integration or
+cross-language identity comparison is implemented. The identifier is
+filesystem/volume dependent and may be reused after deletion; it is
+not authentication or proof of protection against hostile writers.
+The earlier pathname precheck remains susceptible to path races.
+Native Windows CI must qualify the exact fixture; unsupported
+filesystems fail the test rather than silently passing.

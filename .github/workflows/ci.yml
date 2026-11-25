@@ -54,6 +54,8 @@ jobs:
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --desktop-admission-smoke
       - name: Verify isolated cooperative maintenance sharing lease
         run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --maintenance-lease-smoke
+      - name: Verify isolated Windows maintenance lease handle identity
+        run: dotnet run --project tests/VeyPanel.Smoke -c Release -- --maintenance-identity-smoke
       - run: dotnet publish src/VeyPanel.Host -c Release -r win-x64 --self-contained true -p:ContinuousIntegrationBuild=true -o publish
       - name: Apply verified deterministic Host endpoint metadata
         shell: pwsh
