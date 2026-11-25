@@ -229,6 +229,7 @@ jobs:
         run: |
           $package = 'portable/VeyPanel-win-x64-portable.zip'
           $digest = (Get-FileHash $package -Algorithm SHA256).Hash.ToLowerInvariant()
+          New-Item -ItemType Directory -Path recovery-test | Out-Null
           New-Item -ItemType Directory -Path recovery-test/versions | Out-Null
           $target = "recovery-test/versions/$digest"
           python scripts/stage_windows_package.py $package --sha256 $digest --destination $target --apply
