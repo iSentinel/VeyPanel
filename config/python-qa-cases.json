@@ -99,6 +99,7 @@
     "test_launch_windows_package.LaunchTests.test_dry_run",
     "test_launch_windows_package.LaunchTests.test_explicit_apply",
     "test_launch_windows_package.LaunchTests.test_locked",
+    "test_launch_windows_package.LaunchTests.test_manifest_growth_after_verification",
     "test_launch_windows_package.LaunchTests.test_modified_executable",
     "test_launch_windows_package.LaunchTests.test_non_windows_apply_refused",
     "test_launch_windows_package.LaunchTests.test_rewritten_manifest_and_state",

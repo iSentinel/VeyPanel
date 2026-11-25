@@ -8,7 +8,7 @@ from contextlib import redirect_stderr
 from io import StringIO
 from unittest.mock import patch
 
-from artifact_manifest import MANIFEST, collect, hash_file
+from artifact_manifest import MANIFEST, MAX_MANIFEST, collect, hash_file
 from launch_windows_package import launch, main
 from test_windows_package_selection import fixture
 from windows_package_selection import LOCK, STATE, select, version_path
@@ -43,8 +43,8 @@ class LaunchTests(unittest.TestCase):
             with patch("launch_windows_package.subprocess.Popen") as spawn:
                 spawn.return_value.pid = 123
                 result = launch(self.root, self.package, self.sha, True)
-                spawn.assert_called_once_with([str(self.exe)], cwd=str(self.exe.parent),
-                                              shell=False)
+                spawn.assert_called_once_with([str(self.exe)], executable=str(self.exe),
+                                              cwd=str(self.exe.parent), shell=False)
         self.assertEqual(result["pid"], 123)
         self.assertFalse((self.root / LOCK).exists())
 
@@ -106,6 +106,23 @@ class LaunchTests(unittest.TestCase):
                 self.assertEqual(main(), 1)
         self.assertIn("FILESYSTEM_OR_PROCESS_ERROR", err.getvalue())
         self.assertNotIn("secret-canary", err.getvalue())
+
+    def test_manifest_growth_after_verification(self) -> None:
+        """A manifest changed after tree verification must not be read without limit."""
+        from windows_package_selection import verify_record
+
+        def changed(root, record):
+            directory = verify_record(root, record)
+            (directory / MANIFEST).write_bytes(b"x" * (MAX_MANIFEST + 1))
+            return directory
+
+        with patch("launch_windows_package.verify_record", side_effect=changed), patch(
+                "launch_windows_package.subprocess.Popen") as spawn, patch(
+                "launch_windows_package.windows_runtime", return_value=True):
+            with self.assertRaisesRegex(ValueError, "oversized"):
+                launch(self.root, self.package, self.sha, True)
+            spawn.assert_not_called()
+        self.assertFalse((self.root / LOCK).exists())
 
 
 if __name__ == "__main__":

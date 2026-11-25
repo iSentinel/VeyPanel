@@ -42,6 +42,9 @@ try {
         Start-Sleep -Seconds 1
     }
     Assert-Check $ready 'Owned Host readiness'
+    Import-Module (Join-Path $PSScriptRoot 'PackageProcessObservation.psm1') -Force
+    $observation = Get-PackageProcessObservation
+    Assert-Check ($observation.status -eq 'BLOCKED' -and $observation.host_count -ge 1) 'Read-only process observation blocks running Host'
     Assert-Check ([bool]$token) 'Ephemeral access token'
     $page = Invoke-WebRequest "$base/" -TimeoutSec 5
     Assert-Check ($page.StatusCode -eq 200 -and $page.Content -match 'VeyPanel') 'Dashboard served'
