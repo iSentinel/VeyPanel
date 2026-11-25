@@ -106,6 +106,47 @@ class VerifyEvidenceTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.check()
 
+    def test_extra_suite_attribute(self) -> None:
+        """Reject unreviewed suite fields even with passing test counts."""
+        self.suite.set("unreviewed", "synthetic-canary")
+        self.save_xml()
+        with self.assertRaises(ValueError):
+            self.check()
+
+    def test_extra_case_attribute(self) -> None:
+        """Reject arbitrary testcase attributes."""
+        self.suite[0].set("unreviewed", "synthetic-canary")
+        self.save_xml()
+        with self.assertRaises(ValueError):
+            self.check()
+
+    def test_suite_text(self) -> None:
+        """Reject non-whitespace content outside the reviewed cases."""
+        self.suite.text = "synthetic-canary"
+        self.save_xml()
+        with self.assertRaises(ValueError):
+            self.check()
+
+    def test_case_tail(self) -> None:
+        """Reject unexpected content between otherwise passing cases."""
+        self.suite[0].tail = "synthetic-canary"
+        self.save_xml()
+        with self.assertRaises(ValueError):
+            self.check()
+
+    def test_processing_instruction(self) -> None:
+        """Reject processing instructions that the XML parser may ignore."""
+        path = self.root / "python-results.xml"
+        path.write_bytes(b"<?fixture synthetic-canary?>" + path.read_bytes())
+        with self.assertRaises(ValueError):
+            self.check()
+
+    def test_writer_declaration(self) -> None:
+        """Accept the actual UTF-8 declaration used by the evidence writer."""
+        ET.ElementTree(self.suite).write(
+            self.root / "python-results.xml", encoding="utf-8", xml_declaration=True)
+        self.check()
+
 
 if __name__ == "__main__":
     unittest.main()

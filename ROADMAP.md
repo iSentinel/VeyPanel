@@ -261,3 +261,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-10/05: Qualify C#-owned shared/exclusive lease with isolated Python contenders, exact busy/refusal controls, bounded child cleanup and unchanged bytes. Three offline scope regressions (258 required on integrated #63 base). Native Windows CI required.
 
 - [x] PR #66 merged b048ff7; three integrated CI jobs PASS, independently verified Windows 258/258 and both native interop directions plus handle identity steps. No production admission.
+
+- [ ] ENG-08: Close JUnit evidence grammar to reviewed suite/case attributes and whitespace-only inter-element content; reject unreviewed XML declarations/instructions. Six new regressions (257 required on main base), real 251-case report accepted, tampered copy refused even after manifest reseal. Native CI required. Hashes and grammar are not evidence authenticity.
