@@ -1,5 +1,9 @@
 # Changelog
 
+## Exact OkHttp static evidence (CI PASS)
+
+- Verify and capture static disassembly of pinned WSS classes; confirm the application text limit runs after assembly and optional decompression. Mitigation and provenance remain open.
+
 ## Production WSS mailbox and first-install recovery (CI PASS)
 
 - Serialize latest-sample publication/cancellation, reject ambiguous experimental upgrade separators, and restore absent selection metadata from a verified sole staged package using an explicit root-bound plan. Native and reproduction CI passed.

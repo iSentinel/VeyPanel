@@ -76,3 +76,20 @@ Requires trusted JDK javap on PATH, fresh private output directory and
 reviewed metadata. No JDK available on the development server; the exact
 JAR/class identity and synthetic invocation fixtures passed locally,
 actual disassembly is NOT_RUN until CI. No dependency upgrade or TLS bypass.
+
+## Verified binary review
+
+PR #49 merged 21ae081 after four CI jobs passed. Downloaded
+manifest-verified evidence from Android run 45538600268 matches the pinned
+JAR and three independently observed class hashes. Actual javap digest:
+466678aea09667809a9967670f6df217b0a75fa8c2f78c4e40885a0c0a2845be.
+
+Manual instruction review: WebSocketReader.readMessage at offset 39 calls
+readFully with frameLength and messageFrameBuffer; continuation frames loop
+before callback. readMessageFrame calls readMessage (47), optionally inflate
+(97), readUtf8 (113), then FrameCallback.onReadMessage (116).
+RealWebSocket.onReadMessage forwards to WebSocketListener at offset 16.
+MessageInflater.inflate calls readOrInflate with Long.MAX_VALUE (101) and
+loops until compressed input is consumed. This confirms assembly and
+optional decompression precede the application size gate. Static evidence
+is not an adversarial memory benchmark or provenance authentication.
