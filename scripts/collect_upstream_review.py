@@ -10,7 +10,7 @@ import subprocess
 import sys
 import time
 from typing import Any, Callable
-from urllib.parse import quote
+from urllib.parse import quote, unquote
 
 from artifact_manifest import strict_json
 from check_upstream_review import LABEL, REPOSITORIES
@@ -20,7 +20,7 @@ MAX_RESPONSE = 1024 * 1024
 REQUEST_SECONDS = 12
 RUN_SECONDS = 180
 ORIGIN = "api.github.com"
-SUFFIX = re.compile(r"/(?:commits/|git/ref/tags/)(?:[A-Za-z0-9._~+-]|%[0-9A-F]{2}){1,384}")
+SUFFIX = re.compile(r"/(?:commits/|git/ref/tags/)((?:[A-Za-z0-9._~+-]|%[0-9A-F]{2}){1,384})")
 
 
 def allowed_path(path: str) -> bool:
@@ -29,8 +29,12 @@ def allowed_path(path: str) -> bool:
         prefix = "/repos/" + repo
         if path == prefix or path == prefix + "/releases/latest":
             return True
-        if path.startswith(prefix) and SUFFIX.fullmatch(path[len(prefix):]):
-            return True
+        match = SUFFIX.fullmatch(path[len(prefix):]) if path.startswith(prefix) else None
+        if match:
+            try:
+                return segment(unquote(match[1], errors="strict")) == match[1]
+            except (ValueError, UnicodeError):
+                return False
     return False
 
 
@@ -38,7 +42,7 @@ def segment(value: Any) -> str:
     """Encode one bounded branch or tag reference, rejecting dot segments."""
     if not isinstance(value, str) or not LABEL.fullmatch(value):
         raise ValueError("Invalid upstream reference")
-    if value in (".", ".."):
+    if any(part in ("", ".", "..") for part in value.split("/")):
         raise ValueError("Invalid upstream reference")
     return quote(value, safe="")
 

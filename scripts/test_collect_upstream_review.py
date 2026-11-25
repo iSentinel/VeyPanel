@@ -28,13 +28,15 @@ class CollectorTests(unittest.TestCase):
         """Reject arbitrary hosts, extra query and unreviewed repositories."""
         self.assertTrue(collector.allowed_path(self.prefix + "/commits/a%2Fb"))
         for path in ("https://evil.invalid/", self.prefix + "?x=1", "/repos/x/y",
-                     self.prefix + "/commits/a/b", self.prefix + "/releases"):
+                     self.prefix + "/commits/a/b", self.prefix + "/releases",
+                     self.prefix + "/commits/%2E%2E", self.prefix + "/commits/a%2F..",
+                     self.prefix + "/commits/%3F", self.prefix + "/commits/%FF"):
             self.assertFalse(collector.allowed_path(path))
 
     def test_reference_encoding(self) -> None:
         """Encode valid slash refs and reject ambiguous or invalid segments."""
         self.assertEqual(collector.segment("a/b"), "a%2Fb")
-        for value in ("..", "?x", "", None, "a" * 129):
+        for value in ("..", "?x", "", None, "a" * 129, "a/../b", "/a", "a//b"):
             with self.assertRaises(ValueError):
                 collector.segment(value)
 
