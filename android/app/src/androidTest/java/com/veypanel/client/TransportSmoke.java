@@ -39,6 +39,10 @@ final class TransportSmoke {
         try (TelemetryStream stream = open(valid)) {
             check(stream.next().cpu == 42,"Trusted WSS");
         }
+        try (TelemetryStream cancelled = open(valid)) {
+            cancelled.close();
+            expectEnded(cancelled);
+        }
         expectDenied(denied);
         MonitorHistory.Point[] history = TelemetryClient.fetchHistory(valid,context.getSocketFactory());
         check(history.length == 1 && history[0].series(0) == 42, "Trusted HTTPS history");

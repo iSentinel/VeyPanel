@@ -1,10 +1,7 @@
 package com.veypanel.client;
 
-import java.io.IOException;
 import java.net.Proxy;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import javax.net.ssl.SSLException;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -22,9 +19,7 @@ final class TelemetryStream implements TelemetryFeed {
         .readTimeout(3, TimeUnit.SECONDS).writeTimeout(3, TimeUnit.SECONDS)
         .pingInterval(10, TimeUnit.SECONDS).build();
 
-    private final ArrayBlockingQueue<TelemetrySample> latest = new ArrayBlockingQueue<>(1);
-    private final AtomicBoolean ended = new AtomicBoolean();
-    private volatile boolean tlsFailed;
+    private final LatestTelemetryMailbox<TelemetrySample> mailbox = new LatestTelemetryMailbox<>();
     private final WebSocket socket;
 
     TelemetryStream(ReaderSession session) { this(session, CLIENT); }
@@ -39,38 +34,33 @@ final class TelemetryStream implements TelemetryFeed {
         Request request = new Request.Builder().url(session.websocketUrl()).build();
         socket = client.newWebSocket(request, new WebSocketListener() {
             @Override public void onOpen(WebSocket ws, Response response) {
-                if (ended.get() || !ws.send(session.token)) { ended.set(true); ws.cancel(); }
+                if (mailbox.isClosed() || !ws.send(session.token)) end(ws);
             }
             @Override public void onMessage(WebSocket ws, String text) {
-                if (ended.get()) return;
+                if (mailbox.isClosed()) return;
+                long received = System.nanoTime();
+                // OkHttp has already assembled the text; this is a parser limit.
                 if (text.length() > MAX_TEXT) { end(ws); return; }
                 try {
                     TelemetrySample sample = TelemetrySample.parse(text);
-                    latest.poll(); latest.offer(sample);
+                    mailbox.offer(sample, received);
                 } catch (Exception ex) { end(ws); }
             }
             @Override public void onMessage(WebSocket ws, ByteString bytes) { end(ws); }
             @Override public void onClosing(WebSocket ws, int code, String reason) { end(ws); }
-            @Override public void onClosed(WebSocket ws, int code, String reason) { ended.set(true); latest.clear(); }
+            @Override public void onClosed(WebSocket ws, int code, String reason) { mailbox.close(false); }
             @Override public void onFailure(WebSocket ws, Throwable error, Response response) {
-                tlsFailed = isTlsError(error);
-                ended.set(true); latest.clear();
+                mailbox.close(isTlsError(error));
                 if (response != null) response.close();
             }
         });
     }
 
     @Override public TelemetrySample next() throws Exception {
-        long until = android.os.SystemClock.elapsedRealtime() + 5500;
-        while (!ended.get() && android.os.SystemClock.elapsedRealtime() < until) {
-            TelemetrySample sample = latest.poll(250, TimeUnit.MILLISECONDS);
-            if (sample != null && !ended.get()) return sample;
-        }
-        if (tlsFailed) throw new SSLException("WSS TLS rejected");
-        throw new IOException("WSS unavailable");
+        return mailbox.take(5500, 5000);
     }
 
-    private void end(WebSocket ws) { ended.set(true); latest.clear(); ws.cancel(); }
+    private void end(WebSocket ws) { mailbox.close(false); ws.cancel(); }
 
     static boolean isTlsError(Throwable value) {
         for (int i = 0; value != null && i < 8; i++, value = value.getCause())

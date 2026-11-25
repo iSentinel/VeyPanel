@@ -397,3 +397,6 @@
 - Windows 45520009361/45520017767, Android 45520008959/45520017783, Android runtime 45520008901, Android reproduction 45520017761, Host reproduction 45520017812, Desktop reproduction 45520017785. API confirms mandatory private bootstrap, framework privacy, Launcher, recovery inspection and Android runtime steps passed.
 - Downloaded Windows QA/JUnit independently verified: actual checkout 6c0cd97a40ad7350a3f7b6bc5d09a37eb6376298 tree 44dd53c8d86ae40ee60762b6314a53639a2ff729, 162/162, zero skips, debt 395, no new/stale entries.
 - Next: integrate texture ownership candidate 56d5f14, inspect production transport limitations and explicit recovery prerequisites. No physical or release approval.
+
+## Production WSS mailbox candidate
+- Base main 94a97f7, dev/production-stream-mailbox. Audit of TelemetryStream found post-close publication race. One-slot synchronized mailbox preserves first terminal cause, local 5s receipt-age and 5.5s wait, immediate cancellation notification and single-reader admission. JVM fixture and actual closed-stream instrumentation added; native CI required. Existing text limit remains post-OkHttp-allocation, production transport unchanged; no memory-bound or physical acceptance claim. Hold locally while PR #46 runs.
