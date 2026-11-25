@@ -17,12 +17,12 @@ from windows_package_selection import (
 DESKTOP = "VeyPanel.Desktop.exe"
 
 
-def windows_runtime():
+def windows_runtime() -> bool:
     """Only a native Windows interpreter can activate the package."""
     return sys.platform == "win32"
 
 
-def verified_target(root, package, expected):
+def verified_target(root: Path, package: Path, expected: str) -> Path:
     """Bind selected files to the externally digest-pinned source archive."""
     if not SHA.fullmatch(expected):
         raise ValueError("Expected complete SHA-256")
@@ -45,7 +45,8 @@ def verified_target(root, package, expected):
     return exe
 
 
-def launch(root, package, expected, apply=False):
+def launch(root: Path, package: Path, expected: str,
+           apply: bool = False) -> dict[str, str | bool | int]:
     """Reverify and launch only the fixed Desktop executable, without a shell."""
     root = root_path(root)
     if apply and not windows_runtime():
@@ -61,7 +62,7 @@ def launch(root, package, expected, apply=False):
         return result
 
 
-def main():
+def main() -> int:
     """Default to a read-only launch plan; apply explicitly starts Desktop."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", required=True, type=Path)
@@ -75,7 +76,9 @@ def main():
         result = launch(args.root, args.package, args.sha256, args.apply)
     except (OSError, ValueError, KeyError, TypeError, RuntimeError,
             AttributeError, zipfile.BadZipFile) as error:
-        print(f"FAIL: package launcher: {error}", file=sys.stderr)
+        reason = "FILESYSTEM_OR_PROCESS_ERROR" if isinstance(error, OSError) else "PACKAGE_VALIDATION_FAILED"
+        print(f"FAIL: package launcher: {reason}; check the private root and trusted archive",
+              file=sys.stderr)
         return 1
     print(json.dumps(result, indent=2, sort_keys=True))
     print("PASS: process created; readiness not established" if result["started"]

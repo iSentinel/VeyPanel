@@ -29,3 +29,12 @@ payloads. CI runs only a real package dry-run, not interactive WPF activation.
 An actual process creation report is not proof of application readiness.
 Physical acceptance, process coordination and interrupted-state recovery
 remain open.
+
+## Engineering policy integration
+
+Public Python APIs and fixtures comply with the new exact source audit.
+CLI failure diagnostics use fixed reason codes instead of raw exception
+text. The launch plan contains local paths for the private operator; do not
+share that output or capture it in production evidence. CI uses a synthetic
+isolated root. Exit code 1 continues to denote validation or execution
+failure. Actual interactive activation is not qualified by this change.

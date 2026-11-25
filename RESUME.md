@@ -332,5 +332,23 @@
 - Runtime 45433922633, Android reproduction 45433945066, Host reproduction 45433944945, Desktop/ZIP reproduction 45433944815 and Windows CI 45433922629/45433944858 PASS.
 - Next: publish locally prepared verified-package launcher, then interrupted-state recovery. Full physical acceptance and signing remain open.
 
-## Verified-package launcher candidate
-- Nine new local fixtures (125 total PASS), real selected package dry-run PASS. Launcher verifies the external archive SHA-256, full package preflight, exact selected tree and byte-identical embedded manifest before planning/launching a fixed Desktop EXE. Explicit --apply only on Windows; mock process boundary tested, no executable launched. Windows CI integration prepared; prerequisite PR #36 accepted. Recovery/uninstall and actual interactive launch pending.
+## Engineering policy adoption candidate (2026-11-25)
+- Source baseline 012d49c3628789d00acd0d67d75a4e0180990cd6; user-provided portable policy v1.0 universal sections adopted without unrelated profile/provenance. AGENTS, canonical standards, adoption gap register ENG-01–15, security/architecture, test catalog and roadmap updated. Existing approval boundaries unchanged.
+- Initial AST inventory: 469 findings (345 annotations, 123 docstrings, 1 length). Exact 22 resolved in build_source_evidence and its tests; 447 remain. New auditor and QA runner fixtures introduce no findings. The baseline is a migration inventory, not full compliance.
+- Local Python 3.13.5: 124 unittest cases PASS, common runner summary/JUnit/code audit emitted; native/hardware NOT_RUN in this scope. Initial run was a dirty development checkout, clean committed rerun required.
+- PR #37 head 0df6f83: Windows CI 45509910174/45509902471 PASS; remains open until adoption integration. Recovery worktree /tmp/veypanel-recovery head f907af6 local only. Do not inflate baseline for new launcher/recovery debt; bring them into compliance before merge.
+- Latest main Android runtime 45509804749 failed at dependency resolution (Maven HTTP 429), instrumentation NOT_RUN. One bounded rerun requested; no dependency or TLS change. PR #36 runtime had passed earlier.
+- Next: run clean common QA, publish development review branch and check CI; independently fix high-priority manifest bounds/mutation and launcher/recovery debt. No production deployment, release, signing, visibility or Confluence publication.
+
+### Adoption CI portability regression
+- Initial PR #38 Windows CI 45514689128/45514677681 failed the new shared gate. Downloaded JUnit from 45514689128 (artifact 14975773912) identified test_backslash_path, 123/124 PASS; AST exact gate PASS. Windows zipfile normalizes backslashes on writing/reading. Fixture now writes the raw forbidden byte into local/central ZIP names; verifier checks orig_filename against normalized filename, and rejects NUL truncation. Twelve APK fixtures and the saved actual APK passed locally. Eighteen more exact test-module debt entries removed, 429 remain. New CI required; no assertion weakened.
+- Main Android runtime run 45509804749 bounded rerun completed SUCCESS after initial Maven HTTP 429. No dependency or TLS change.
+
+## Verified engineering policy adoption
+- PR #38 head e8f1acdfb4a2d6b77e8aff308384a2c740825431, merge 3cb4477; all ten jobs passed. Windows 45515007864/45515015460, Android 45515008002/45515015606, Android reproduction 45515015403, Desktop reproduction 45515015433 PASS.
+- Downloaded Windows and Android common QA evidence from 45515007864 and 45515015606 independently checked: 125/125 executed PASS, zero skips, exact debt baseline 429, no new/stale findings, clean actual checkouts e8f1acd and 523b1f2, identical tree 3cec1b97688d439917fcfbbba811a98e038d49d0, Python 3.12.10.
+- Next: manifest integrity hardening; rebase candidate f7fe6a5 and validate before review. PR #37 launcher and local recovery candidate must pass the new debt gate without increasing the baseline.
+
+## Launcher adoption integration candidate
+- PR #37 previous head 0df6f83 had both Windows CI PASS, but predates the mandatory engineering gate. Merge current main 62d079e into the development branch without rewriting published history. Add typed public signatures, test docstrings and safe CLI exception category. No baseline increase.
+- Existing nine launch policy fixtures plus a safe CLI failure canary; actual dry-run remains separate from mock process creation. No actual interactive WPF launch or process readiness acceptance. Publish after verifying current branch against the adopted gate.
