@@ -173,3 +173,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-10/05: Explicit plan-bound first-install metadata recovery. Sole staged version, trusted original ZIP, absent selection state, refuse existing locks/temp/extra versions, state readback. Twelve new local tests and isolated real 836-file package PASS; native Windows CI required. Existing corrupt state, process coordination and uninstall remain open.
 
 - [x] PR #47 merged 37a07f5; all eight jobs PASS, actual Windows 174/174, exact debt 395. Experimental strict CRLF accepted; OkHttp provenance and pre-allocation bound remain open.
+
+- [ ] ENG-09/12: Exact pinned OkHttp JAR and three WSS class hashes verified from Maven retrieval. Capture bounded static javap evidence on existing Android CI JDK and review bytecode; seven local evidence fixtures PASS. Source-to-binary provenance and pre-allocation limits remain open.

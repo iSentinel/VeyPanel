@@ -1,9 +1,9 @@
 name: Android CI
 on:
   push:
-    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/test_apk_failure_gates.sh', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json', 'scripts/check_gradle_verification.py', 'scripts/test_check_gradle_verification.py', 'scripts/test_gradle_checksum_gate.sh', 'scripts/dependency_license_evidence.py', 'scripts/test_dependency_license_evidence.py', 'scripts/artifact_manifest.py', 'scripts/test_artifact_manifest.py', 'scripts/build_source_evidence.py', 'scripts/test_build_source_evidence.py', 'scripts/code_audit.py', 'scripts/test_code_audit.py', 'scripts/run_offline_qa.py', 'scripts/test_run_offline_qa.py', 'config/code-audit-baseline.json']
+    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/test_apk_failure_gates.sh', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json', 'scripts/check_gradle_verification.py', 'scripts/test_check_gradle_verification.py', 'scripts/test_gradle_checksum_gate.sh', 'scripts/dependency_license_evidence.py', 'scripts/test_dependency_license_evidence.py', 'scripts/artifact_manifest.py', 'scripts/test_artifact_manifest.py', 'scripts/build_source_evidence.py', 'scripts/test_build_source_evidence.py', 'scripts/code_audit.py', 'scripts/test_code_audit.py', 'scripts/run_offline_qa.py', 'scripts/test_run_offline_qa.py', 'scripts/record_okhttp_bytecode.py', 'scripts/test_record_okhttp_bytecode.py', 'config/code-audit-baseline.json']
   pull_request:
-    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/test_apk_failure_gates.sh', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json', 'scripts/check_gradle_verification.py', 'scripts/test_check_gradle_verification.py', 'scripts/test_gradle_checksum_gate.sh', 'scripts/dependency_license_evidence.py', 'scripts/test_dependency_license_evidence.py', 'scripts/artifact_manifest.py', 'scripts/test_artifact_manifest.py', 'scripts/build_source_evidence.py', 'scripts/test_build_source_evidence.py', 'scripts/code_audit.py', 'scripts/test_code_audit.py', 'scripts/run_offline_qa.py', 'scripts/test_run_offline_qa.py', 'config/code-audit-baseline.json']
+    paths: ['android/**', '.github/workflows/android.yml', 'scripts/verify_android_apk.py', 'scripts/test_verify_android_apk.py', 'scripts/test_apk_failure_gates.sh', 'scripts/check_android_badging.py', 'scripts/test_check_android_badging.py', 'scripts/dependency_inventory.py', 'scripts/test_dependency_inventory.py', 'scripts/check_dependency_baseline.py', 'scripts/test_check_dependency_baseline.py', 'third-party/baselines/android-debug.cdx.json', 'scripts/check_gradle_verification.py', 'scripts/test_check_gradle_verification.py', 'scripts/test_gradle_checksum_gate.sh', 'scripts/dependency_license_evidence.py', 'scripts/test_dependency_license_evidence.py', 'scripts/artifact_manifest.py', 'scripts/test_artifact_manifest.py', 'scripts/build_source_evidence.py', 'scripts/test_build_source_evidence.py', 'scripts/code_audit.py', 'scripts/test_code_audit.py', 'scripts/run_offline_qa.py', 'scripts/test_run_offline_qa.py', 'scripts/record_okhttp_bytecode.py', 'scripts/test_record_okhttp_bytecode.py', 'config/code-audit-baseline.json']
   workflow_dispatch:
 permissions:
   contents: read
@@ -95,6 +95,17 @@ jobs:
         run: |
           python3 -m unittest discover -s scripts -p test_dependency_license_evidence.py -v
           python3 scripts/dependency_license_evidence.py maven third-party/baselines/android-debug.cdx.json android/gradle/verification-metadata.xml android/app/build/outputs/apk/debug/dependency-license-evidence.json
+      - name: Capture pinned OkHttp static bytecode evidence
+        run: |
+          python3 scripts/record_okhttp_bytecode.py --metadata android/gradle/verification-metadata.xml --output okhttp-bytecode-evidence
+          cp build-source.json okhttp-bytecode-evidence/
+          python3 scripts/artifact_manifest.py write okhttp-bytecode-evidence
+          python3 scripts/artifact_manifest.py verify okhttp-bytecode-evidence
+      - uses: actions/upload-artifact@v4
+        with:
+          name: okhttp-wss-static-evidence
+          path: okhttp-bytecode-evidence/
+          if-no-files-found: error
       - name: Record build toolchain evidence
         run: |
           out=android/app/build/outputs/apk/debug/build-toolchain.txt

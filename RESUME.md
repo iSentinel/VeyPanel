@@ -418,3 +418,6 @@
 - PR #47 head 9d0efcd87076af98459a42ab691fc78afe3860ed merged 37a07f54288d2a109debecf6c796eb368c02fbac; all eight jobs PASS. Windows 45524079522/45524086257, Android 45524079599/45524086341, runtime 45524079540, APK reproduction 45524086309.
 - Downloaded Windows common QA/JUnit verified 174/174, zero skips, clean checkout ac79e39bd05fc33d14e4b43888c2f8338f928886 tree 2087f51f0a471a895916ce9e5da075b0252ae952, debt 395, empty exact delta. API confirms explicit first-install recovery, read-only recovery and launch plan steps PASS.
 - Next: bounded strict selection metadata and single-read manifest identity, independent exact OkHttp binary inspection. No production deployment or physical approval.
+
+## Exact OkHttp binary evidence candidate
+- Base 8e05309, dev/okhttp-bytecode-evidence. Retrieved exact Maven JAR /tmp/veypanel-okhttp-binary.rvPGKJ/okhttp-4.12.1.jar (791976 bytes), SHA256 matches committed verification metadata; three relevant class hashes recorded in docs/production-stream-mailbox.md. No JDK on Proxmox. Add bounded verified snapshot and fixed javap evidence CLI, seven synthetic fixtures, Android CI separate manifest-verified report using existing Gradle cache. No library execution, dependency changes, publisher/source correspondence or memory-bound claim. Hold for integration after PR #48; actual javap NOT_RUN until native CI.

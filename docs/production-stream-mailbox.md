@@ -50,3 +50,29 @@ fields (four additional negative fixtures). This hardening is separate
 from production OkHttp, and native CI remains required.
 
 Verified PR #47 merged 37a07f5, eight CI jobs PASS, including actual Windows first-install recovery and Android runtime. Pre-allocation memory, publisher provenance and physical acceptance remain separate.
+
+## Exact binary evidence candidate
+
+A separate HTTPS retrieval from Maven Central verified the pinned JAR
+SHA-256 exactly against committed Gradle metadata (791976 bytes). Observed
+classes and SHA-256:
+
+- WebSocketReader, 8338 bytes: 4556e63fbc1463ab98b3610ba1cd33bc7a8d8d8672eea27d87aeb7cd18e768cc
+- RealWebSocket, 24078 bytes: 22a63c1acfb9b675f5194e72ee5b66b08b67e947132e616db4d2859b2206d57d
+- MessageInflater, 2268 bytes: 39e0fc75a518ea6a92e3b069d4cc90497bdd7ca56c60fa93b46850a30d564393
+
+The new offline evidence utility checks the exact bounded JAR snapshot
+against committed metadata, identifies the three classes and invokes
+trusted JDK javap with fixed class names on a private copy, without executing
+the library. CI uses its existing strictly resolved Gradle cache and pinned
+JDK, records the actual checkout, and publishes a separate manifest-verified
+static evidence artifact. No product APK or dependency change. The report
+requires manual semantic review and explicitly does not establish publisher
+provenance, source-to-binary correspondence or a pre-allocation bound.
+
+    python scripts/record_okhttp_bytecode.py --jar PATH_TO_VERIFIED_JAR --metadata android/gradle/verification-metadata.xml --output okhttp-bytecode-evidence
+
+Requires trusted JDK javap on PATH, fresh private output directory and
+reviewed metadata. No JDK available on the development server; the exact
+JAR/class identity and synthetic invocation fixtures passed locally,
+actual disassembly is NOT_RUN until CI. No dependency upgrade or TLS bypass.
