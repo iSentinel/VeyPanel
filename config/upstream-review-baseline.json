@@ -36,6 +36,15 @@
       "release_commit": "3d331e3370efb858411f19511373eff65a218701",
       "license": "MPL-2.0",
       "archived": false
+    },
+    "ClassicOldSong/moonlight-android": {
+      "branch": "moonlight-noir",
+      "head": "c5cf27f4dc822db0e863c4691e7a70c74bea977a",
+      "release_id": 238650766,
+      "tag": "v20.2.6",
+      "release_commit": "4de0227fb6ae5c9ad9f7cc486aed7c3571f5f62f",
+      "license": "GPL-3.0",
+      "archived": false
     }
   }
 }

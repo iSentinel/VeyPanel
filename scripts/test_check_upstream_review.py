@@ -24,10 +24,10 @@ class UpstreamReviewTests(unittest.TestCase):
         return report(json.dumps(self.base).encode(), json.dumps(self.current).encode())
 
     def test_unchanged(self) -> None:
-        """All four complete matching observations are unchanged."""
+        """All five complete matching observations are unchanged."""
         result = self.result()
         self.assertEqual(result["status"], "UNCHANGED")
-        self.assertEqual(len(result["rows"]), 4)
+        self.assertEqual(len(result["rows"]), 5)
         self.assertTrue(all(row["status"] == "UNCHANGED" for row in result["rows"]))
 
     def test_changed_fields(self) -> None:
@@ -77,6 +77,15 @@ class UpstreamReviewTests(unittest.TestCase):
         self.assertEqual(report(raw, raw)["observed_sha256"], hashlib.sha256(raw).hexdigest())
         with self.assertRaises(ValueError):
             report(raw, b'{"schema":1,"schema":1,"repositories":{}}')
+
+    def test_artemis_required(self) -> None:
+        """Require the distinct Artemis repository rather than Moonlight alone."""
+        del self.current["repositories"]["ClassicOldSong/moonlight-android"]
+        result = self.result()
+        self.assertEqual(result["status"], "ERROR")
+        row = next(item for item in result["rows"]
+                   if item["repository"] == "ClassicOldSong/moonlight-android")
+        self.assertEqual(row["status"], "ERROR")
 
 
 if __name__ == "__main__":
