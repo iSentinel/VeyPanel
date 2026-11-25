@@ -229,3 +229,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-10/05: Qualify actual managed Host graceful exit after isolated owning smoke process exits without Dispose, using private fixture handshake, retained observed handle and bounded waits. No termination by observed PID; subsequent read-only process observation required. Native Windows CI only; general crash and maintenance qualification separate.
 
 - [x] PR #58 merged 1d6e454; seven integrated CI jobs PASS, verified Windows 220/220 and actual owned Host cleanup/owner-exit markers. Actual WPF and exclusive maintenance remain open.
+
+- [ ] ENG-10/05: Read-only maintenance inventory plan for exact active/previous archive set and staged trees, reject unknown roots/orphans/locks/tampering; bind original metadata bytes and root identity. Nine local regressions and real single-version 838-file unchanged PASS. Older two-version fixture correctly refused mismatched previous ZIP. Native Windows CI required. No maintenance admission or removal.
