@@ -72,3 +72,15 @@ truthfully. The validator expects the exact tested checkout (including a
 synthetic PR merge checkout when used by CI). Trusted quiescent report
 directory and reviewed repository remain prerequisites. Native JUnit
 adapters, test isolation and external evidence authentication are separate.
+
+## Mandatory result identity privacy (candidate)
+
+A skipped unittest subTest previously exposed its parameter repr through
+the JUnit case identity. Attribute results to the admitted parent test
+object and its reviewed ID, never to an arbitrary subtest or fixture
+holder ID. Keep the strongest nonpassing outcome and clear admission at
+stopTest. Fixture-level failures without an admitted case remain counted
+in summary errors/skips and unattributed_outcomes; they do not fabricate
+a JUnit case. The acceptance gate and verifier require zero unattributed
+outcomes. Four explicit regressions added (219 required cases). This is
+report identity sanitization, not general stdout/stderr isolation.

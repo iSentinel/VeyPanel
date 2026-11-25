@@ -68,6 +68,59 @@ class EvidenceTests(unittest.TestCase):
         self.assertEqual(out.getvalue(), "FAIL: scoped Python offline QA\n")
         self.assertEqual(json.loads(err.getvalue())["reason"], "RUN_FAILED")
 
+    def test_subtest_skip_privacy(self) -> None:
+        """Export the parent identity rather than arbitrary subtest parameters."""
+        class Fixture(unittest.TestCase):
+            def test_case(self):
+                with self.subTest(private="secret-canary"):
+                    self.skipTest("private skip reason")
+        case = Fixture("test_case")
+        result = EvidenceResult((case.id(),))
+        unittest.TestSuite([case]).run(result)
+        self.assertEqual(set(result.rows), {case.id()})
+        self.assertEqual(result.rows[case.id()][0], "SKIPPED")
+        self.assertEqual(result.unattributed, 0)
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "result.xml"
+            write_junit(path, result, 1.0)
+            self.assertNotIn("secret-canary", path.read_text())
+            self.assertNotIn("private skip reason", path.read_text())
+
+    def test_unattributed_fixture_failure(self) -> None:
+        """Keep setup failure counts without inventing a case or exposing its ID."""
+        class Fixture(unittest.TestCase):
+            @classmethod
+            def setUpClass(cls):
+                raise RuntimeError("secret-canary")
+            def test_case(self):
+                pass
+        case = Fixture("test_case")
+        result = EvidenceResult((case.id(),))
+        unittest.TestSuite([case]).run(result)
+        self.assertEqual(result.testsRun, 0)
+        self.assertEqual(len(result.errors), 1)
+        self.assertEqual(result.unattributed, 1)
+        self.assertEqual(result.rows, {})
+
+    def test_failure_priority(self) -> None:
+        """A later success cannot overwrite an already nonpassing case."""
+        case = unittest.FunctionTestCase(lambda: None)
+        result = EvidenceResult((case.id(),))
+        result.startTest(case)
+        result.record(case, "ERROR")
+        result.record(case, "SKIPPED")
+        result.record(case, "PASS")
+        result.stopTest(case)
+        self.assertEqual(result.rows[case.id()][0], "ERROR")
+
+    def test_unreviewed_identity(self) -> None:
+        """Refuse a changed runtime identity instead of publishing it."""
+        case = unittest.FunctionTestCase(lambda: None)
+        result = EvidenceResult(("reviewed.case",))
+        unittest.TestSuite([case]).run(result)
+        self.assertEqual(result.rows, {})
+        self.assertEqual(result.unattributed, 1)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -473,3 +473,6 @@
 
 ## Activity history terminal fencing candidate
 - Base PR #53 ef0495c, dev/activity-history-terminal-fence. Add androidTest-only deterministic ordered callbacks on actual Activity, two fresh instances, positive history delivery, terminal history vs terminal telemetry with both FutureTask fixtures pending, close/cancel and old-generation refusal after same-access synthetic session. Mandatory runtime PASS marker. No production change or network use by this fixture; no live cancellation latency, physical or user CA claim. Native CI pending integration after PR #53.
+
+## QA outcome identity privacy candidate
+- On dev/activity-history-terminal-fence after 5d84192, reproduced skipped subTest synthetic canary in EvidenceResult.rows key. Restrict runtime records to admitted parent and reviewed IDs, preserve strongest nonpassing status, count unadmitted fixture outcomes without synthetic JUnit records, require zero unattributed outcomes in gate/verifier. Four explicit new fixtures; registry 219, AST unchanged. General test stdout/stderr isolation remains open. Hold for integration after #53.

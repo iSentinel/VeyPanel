@@ -71,7 +71,7 @@ def verify(directory: Path, expected: tuple[str, ...], baseline: list[dict],
         "tracked_checkout_clean": True, "debt_count": len(baseline),
         "required_cases": count, "tests_run": count, "passed": count,
         "errors": 0, "failures": 0, "skipped": 0, "expected_failures": 0,
-        "unexpected_successes": 0, "native_windows": "NOT_RUN",
+        "unexpected_successes": 0, "unattributed_outcomes": 0, "native_windows": "NOT_RUN",
         "native_android": "NOT_RUN", "hardware": "NOT_RUN"})
     duration(summary["duration_seconds"])
     inventory = read_report(directory / "case-inventory.json")
