@@ -35,3 +35,30 @@ fixed reason categories, not exception text. This stage is independent of
 Launcher execution and retains the private, quiescent root assumption.
 
 Verified combined acceptance: PR #45 merged 5bb5505, all fourteen CI jobs passed. Native scope only; physical and production acceptance remain separate.
+
+## Explicit first-install recovery (candidate)
+
+Only a missing selection.json and exactly one digest-named staged version
+in a private, quiescent root are eligible. The original ZIP must be outside
+the root, with an independently trusted SHA-256. Preflight verifies every
+archive file, the nested Host manifest and matching source evidence, then
+binds the staged tree to the original manifest. No existing state, lock,
+temporary file, additional version or unexpected root entry is accepted.
+
+    python scripts/recover_first_install.py --root C:\VeyPanel-test --package VeyPanel-win-x64-portable.zip --sha256 EXPECTED_SHA256 --dry-run
+    python scripts/recover_first_install.py --root C:\VeyPanel-test --package VeyPanel-win-x64-portable.zip --sha256 EXPECTED_SHA256 --apply --plan-sha256 REVIEWED_PLAN_SHA256
+
+Dry-run writes nothing. The explicit apply re-verifies under the cooperating
+lock and checks the root-bound plan digest before atomically writing only
+selection.json. It checks readback and tree integrity, does not execute any
+binary, delete or adopt other versions, modify payloads or clear old locks.
+The plan is not authorization; use only in an explicitly approved private
+maintenance window with exclusive owner control. Exit 1 means refusal or
+uncertain execution: inspect current state before any retry. Existing or
+corrupt metadata, stale locks, multiple retained versions, process fencing
+and physical interruption remain separate prerequisites. No authenticated
+publisher, hostile-writer resistance or power-loss durability claim.
+
+Twelve offline tests and an isolated real 836-file ZIP recovery passed on
+Linux; actual Windows CI stage prepared. The disposable root is retained
+for evidence, not an installed or activated product.

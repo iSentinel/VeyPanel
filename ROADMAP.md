@@ -165,3 +165,5 @@ scoped local acceptance with full policy compliance.
 - [ ] ENG-06: Fence SurfaceTexture destruction versus active codec ownership; prevent stale generation callbacks, test repeated preview and lifecycle cancellation.
 
 - [x] Combined PR #45 merged 5bb5505: all fourteen CI jobs PASS, independently downloaded Windows report 162/162, exact debt 395. Scope does not establish physical acceptance or release readiness.
+
+- [ ] ENG-10/05: Restore only absent first-install selection metadata from a sole explicitly trusted staged package. Root-bound dry-run plan, explicit apply, cooperating lock and readback; refuse existing state/locks/temp files/multiple versions. Twelve local fixtures and actual 836-file package PASS; Windows CI required. Corrupt state reconciliation and process fencing remain separate.
