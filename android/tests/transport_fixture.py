@@ -44,6 +44,9 @@ class Fixture(BaseHTTPRequestHandler):
             self.reply(404)
             return
         token = self.headers.get("Authorization", "")
+        if token == "Bearer " + "E" * 64 and self.path == "/api/v1/telemetry":
+            self.drip_rest()
+            return
         if token in ("Bearer " + "A" * 64, "Bearer " + "C" * 64) or (
                 token == "Bearer " + "D" * 64 and not REVOKED.is_set()):
             if self.path == "/api/v1/history":
@@ -55,6 +58,23 @@ class Fixture(BaseHTTPRequestHandler):
                 self.reply(200, self.sample())
         else:
             self.reply(401)
+
+    def drip_rest(self) -> None:
+        """Send a bounded slow body with reads more frequent than idle timeout."""
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", "12")
+        self.send_header("Connection", "close")
+        self.end_headers()
+        self.close_connection = True
+        print("READY: isolated REST drip body", flush=True)
+        try:
+            for _ in range(12):
+                self.wfile.write(b"x")
+                self.wfile.flush()
+                time.sleep(0.75)
+        except OSError:
+            return
 
     def websocket(self):
         key = self.headers.get("Sec-WebSocket-Key")

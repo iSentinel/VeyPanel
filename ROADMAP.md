@@ -213,3 +213,5 @@ scoped local acceptance with full policy compliance.
 - [x] ENG-10/05: Conservative read-only Windows fixed-image process observation, safe count-only result and explicit blocked/unavailable exit codes; native fixtures and actual owned Host before/after cleanup CI. No process ownership or maintenance authorization claim. Lifetime fencing and Uninstall remain open.
 
 - [x] PR #56 merged e4fb31f; ten CI jobs PASS, native Windows process observation and verified 220/220 common QA. Observation is not lifetime fencing.
+
+- [ ] ENG-09: Bound REST body reads before/after every read and EOF, enforce remaining byte budget and interrupt checks; JVM deterministic fixtures and isolated TLS drip-body runtime required. Whole-request absolute deadline and active socket cancellation remain open.
