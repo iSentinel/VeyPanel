@@ -163,22 +163,50 @@ def compare(first: dict[str, Any], second: dict[str, Any]) -> dict[str, list[str
             "changed": sorted(key for key in a.keys() & b.keys() if a[key] != b[key])}
 
 
-def load_manifest(path: Path) -> dict[str, Any]:
-    """Read a bounded regular manifest without following a final symlink."""
+def read_bounded(path: Path, limit: int) -> bytes:
+    """Read one bounded regular file snapshot and reject observed mutations."""
     info = path.lstat()
-    if not regular(info) or info.st_size > MAX_MANIFEST:
-        raise ValueError("Unsafe or oversized manifest")
+    if not regular(info) or info.st_size > limit:
+        raise ValueError("Unsafe or oversized metadata")
     with path.open("rb") as source:
         opened = os.fstat(source.fileno())
         if not same_open_file(info, opened):
-            raise ValueError("Manifest changed before reading")
-        raw = source.read(MAX_MANIFEST + 1)
-        if (len(raw) != info.st_size
+            raise ValueError("Metadata changed before reading")
+        raw = source.read(limit + 1)
+        if (len(raw) > limit or len(raw) != info.st_size
                 or file_identity(os.fstat(source.fileno())) != file_identity(opened)):
-            raise ValueError("Manifest changed while reading")
+            raise ValueError("Metadata changed while reading")
     if file_identity(path.lstat()) != file_identity(info):
-        raise ValueError("Manifest changed after reading")
-    result = json.loads(raw)
+        raise ValueError("Metadata changed after reading")
+    return raw
+
+
+def strict_json(raw: bytes) -> Any:
+    """Decode UTF-8 JSON, rejecting duplicate keys and nonstandard constants."""
+    def unique(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError("Duplicate JSON key")
+            result[key] = value
+        return result
+
+    def invalid_constant(value):
+        raise ValueError("Invalid JSON constant")
+
+    try:
+        return json.loads(raw.decode("utf-8"), object_pairs_hook=unique,
+                          parse_constant=invalid_constant)
+    except RecursionError as error:
+        raise ValueError("JSON nesting exceeds parser budget") from error
+
+
+def load_manifest(path: Path, expected_sha256: str | None = None) -> dict[str, Any]:
+    """Validate and optionally hash the exact same bounded manifest bytes."""
+    raw = read_bounded(path, MAX_MANIFEST)
+    if expected_sha256 is not None and hashlib.sha256(raw).hexdigest() != expected_sha256:
+        raise ValueError("Selected manifest digest mismatch")
+    result = strict_json(raw)
     entries(result)
     return result
 
