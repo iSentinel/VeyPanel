@@ -254,4 +254,16 @@ scoped local acceptance with full policy compliance.
 
 - [x] PR #63 merged 581c556; four integrated jobs PASS, independently verified Windows 255/255 and actual Python-owned cross-language lease smoke. Production admission remains open.
 
+- [x] ENG-10/05: Smoke-only Windows lease handle identity observation (volume serial/file index, single-link and handle attribute checks); qualify two shared handles, held-name replacement/deletion refusal, hard-link rejection and distinct replacement identity. Native CI required; no persistent identity enrollment, ACL or production wiring.
+
+- [x] PR #64 merged d8ee862; six integrated jobs PASS, independently verified Windows 255/255 and native identity/interop steps. No production lease enrollment or maintenance authorization.
+
+- [x] ENG-10/05: Qualify C#-owned shared/exclusive lease with isolated Python contenders, exact busy/refusal controls, bounded child cleanup and unchanged bytes. Three offline scope regressions (258 required on integrated #63 base). Native Windows CI required.
+
+- [x] PR #66 merged b048ff7; three integrated CI jobs PASS, independently verified Windows 258/258 and both native interop directions plus handle identity steps. No production admission.
+
+- [x] ENG-08: Close JUnit evidence grammar to reviewed suite/case attributes and whitespace-only inter-element content; reject unreviewed XML declarations/instructions. Six new regressions (257 required on main base), real 251-case report accepted, tampered copy refused even after manifest reseal. Native CI required. Hashes and grammar are not evidence authenticity.
+
+- [x] PR #67 merged 4db1f5b; four integrated CI jobs PASS, independently verified Windows 264/264 against exact synthetic Git merge.
+
 - [ ] ENG-09/10: Limit managed Host readiness to authenticated response headers (16 KiB, no response drain) and strip inherited persistence alongside LAN/TLS settings. Native isolated withheld-body 200/403 and synthetic environment smoke required. No production endpoint or user process used by the new fixture.

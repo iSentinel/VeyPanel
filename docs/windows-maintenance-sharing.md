@@ -67,3 +67,47 @@ open. This is not an authorization or security boundary. Native Windows
 CI is required before claiming interoperability.
 
 Verified PR #63 merged 581c556, four integrated jobs PASS, actual Python-owned cross-language smoke and Windows 255/255. Combined apphost/path correction passed; exact individual failure cause not established. Reverse ownership remains separate.
+
+## Handle identity observation candidate
+
+An isolated Windows smoke reads BY_HANDLE_FILE_INFORMATION from an
+already opened FileStream. The volume serial and 64-bit file index
+identify the held file for the qualified local filesystem scenario.
+Reject directories, reparse attributes, unavailable/zero file index
+and link counts other than one. This is an observation of the opened
+handle, not a canonical path or ACL verification.
+
+The native fixture opens two shared handles and requires matching
+identities. Replacement and deletion of the held inert fixture name
+must fail; both fixture names and the original handle identity remain
+intact. A deliberately created hard-link alias must fail the identity
+check; after alias removal the single-link check succeeds. A distinct
+replacement file, created while the original still exists, must have
+a different observed identity after release and replacement.
+Only fresh temporary fixture files are involved.
+
+No persistent identity enrollment, production lease integration or
+cross-language identity comparison is implemented. The identifier is
+filesystem/volume dependent and may be reused after deletion; it is
+not authentication or proof of protection against hostile writers.
+The earlier pathname precheck remains susceptible to path races.
+Native Windows CI must qualify the exact fixture; unsupported
+filesystems fail the test rather than silently passing.
+
+Verified PR #64 merged d8ee862: six integrated CI jobs PASS, Windows 255/255, actual identity and interop native steps passed together. No persistent identity enrollment or runtime wiring.
+
+## Reverse ownership interoperability candidate
+
+The new native smoke keeps the C# shared or exclusive FileStream open
+while directly starting a trusted Python interpreter with a fixed
+contender script. Uncontended controls, shared admission, exclusive
+refusal, release and unchanged bytes are required. Only exact exit 2
+is busy; unavailable or invalid is a failure. Bounded child cleanup
+only affects directly started inert fixtures. TEMP/TMP are aligned,
+and the Python scope check resolves the parent, not the held leaf;
+the existing Python lease adapter checks the regular leaf before open.
+Three offline scope regressions cover fixed scope, wrong names and
+nested/traversal paths. Native Windows is required. No runtime wiring,
+ACL or production maintenance authorization.
+
+Verified PR #66 merged b048ff7: three integrated jobs PASS, Windows 258/258 independently verified. Both sharing interoperability directions and native identity step passed together. No production admission.
