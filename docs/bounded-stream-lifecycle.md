@@ -122,3 +122,5 @@ acquisition. A blocking read can run until the existing socket read
 timeout, and interruption is observed only at read boundaries. This does
 not guarantee prompt socket closure, bound decompressor internals or
 qualify concurrent live REST/history cancellation. Native CI required.
+
+Verified PR #55 merged 5534f42; exact integrated revision 9b89fa8 all eight jobs PASS including manually dispatched runtime 45546707362 with real TLS REST drip deadline. Whole-request deadline and active socket cancellation remain open.

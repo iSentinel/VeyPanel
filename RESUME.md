@@ -503,3 +503,8 @@
 
 ## REST body budget integration
 - PR #55 original d212297 all eight jobs PASS after one bounded rerun of reproduction 45544928553 (initial dependency acquisition HTTP 429, compare skipped; rerun both builds and compare PASS). Current main 2780d6f contains accepted PR #56 and 220 required cases. Integrate current main, resolve only confirmed document conflicts; require fresh combined Windows/Android/runtime/reproduction CI. No dependency or TLS change.
+
+## Verified REST body budget
+- PR #55 integrated head 9b89fa850e31dc1f554f0ea72e7307cd77e9010a merged 5534f42eae4dcbb0ffd06bd9afa6e65be76a614c. Windows 45546202267/45546209527, Android 45546202305/45546209482, reproduction 45546209478 (three jobs), manual exact-head runtime 45546707362 all PASS. Original reproduction HTTP 429 resolved in attempt 2 without dependency changes. Downloaded actual Windows 220/220, exact manifest/verifier, debt 329, checkout 714b9a96ea450086aaa858f4d300877626185142 tree f2d69f64100a30eea2af1f8dbafed90eeda62aa2.
+- Runtime log explicitly confirms real TLS drip body deadline, ordered Activity fencing, terminal TLS/no fallback and negative fixture no request. Body-only budget; active cancellation and whole-request bound remain open.
+- PR #57 original a4e3b5e five jobs PASS and actual 220/220 Windows report, thread/process contention and abandoned owner markers confirmed. Integrate with new main before acceptance. PR #58 stacked c6312d2 pending Windows CI. No hardware or deployment approval.

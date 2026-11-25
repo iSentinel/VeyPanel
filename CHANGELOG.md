@@ -1,5 +1,9 @@
 # Changelog
 
+## REST body budget (CI PASS)
+
+- Check monotonic deadline and interrupt before and after reads including EOF; qualify actual TLS drip response refusal on Android emulator.
+
 ## Explicit launch image and maintenance process observation (CI PASS)
 
 - Bind Desktop launch to the verified image, bound installed manifest reads and add conservative count-only Windows process observation. Native Windows CI passed.
