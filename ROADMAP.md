@@ -303,3 +303,6 @@ scoped local acceptance with full policy compliance.
 - [x] PR #75 merged 10310df; four integrated CI jobs PASS; independent Windows/Android 320/320, exact main tree match. Freshness and quota stop accepted.
 - [x] ENG-12: Actual full local sealed watch positive qualification, all five UNCHANGED, receipt complete and SHA-256 manifest verification PASS, exact synthetic PR #76 source 1e4cec6b. Hosted workflow execution remains open.
 - [ ] ENG-12: Offline review action plan from verified sealed metadata evidence; explicit changed-field review requirements, no automatic adoption.
+- [ ] ENG-12: Pure deterministic upstream action planner, all seven changed-field mappings, exact classifier recomputation and eight offline cases (336 required). Sealed source/freshness admission remains separate.
+- [x] PR #76 merged 8339dc2; four integrated CI jobs PASS, independently verified Windows/Android QA 328/328; main tree matches. Manual hosted workflow dispatched; actual result pending.
+- [ ] PR #77 original stacked CI 4/4 PASS and independently verified Windows/Android 336/336; retargeted to main. Fresh integrated CI required before merge.
