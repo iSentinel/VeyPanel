@@ -694,3 +694,8 @@
 
 ## Upstream action plan candidate
 - Base updated PR #76 249a055, dev/upstream-review-plan. Pure bounded exact-input report recomputation; review categories for all seven metadata fields, sorted deduplicated requirements, no raw values and adoption_authorized=false. Eight offline tests (336 required). Freshness/source admission and CLI integration separate; no upstream code adoption or schedule activation.
+
+## Recovered workspace and accepted watch CI
+- 2026-11-26: previous temporary workspace and private evidence directories unavailable. Recovered published source and downloaded native CI evidence in a new persistent owner-controlled workspace. Prior live evidence remains documented but not locally recoverable from those temporary paths.
+- PR #76 merged 8339dc2323059a7afd66e0994775f69e11b4fd50 after Windows 45574935560/45574927878 and Android 45574935552/45574927898 PASS. Both PR QA artifacts independently verified 328/328 against synthetic fa5a6df5584df420b2398cb12d34469691f6bf3b tree c3cbac59529bf21d961b57bb509cf99ee8a60a2c; actual main tree identical. Manual main-only hosted upstream-watch dispatch submitted; result pending.
+- PR #77 original head e291689, Windows 45575179228/45575169496 and Android 45575179234/45575169511 all PASS. Independently verified both PR QA reports 336/336 against synthetic cc0dd290f7894779d483d1d0a5d42172ecd2b00e tree a2fedecca2cc5cdb3a414750aece86827d992adc. Retargeted to main. Prior CLI integration blocked by tool; no partial edits observed. Schedule activation requires hosted result and independent artifact verification.
