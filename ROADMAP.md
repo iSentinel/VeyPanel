@@ -306,3 +306,4 @@ scoped local acceptance with full policy compliance.
 - [ ] ENG-12: Pure deterministic upstream action planner, all seven changed-field mappings, exact classifier recomputation and eight offline cases (336 required). Sealed source/freshness admission remains separate.
 - [x] PR #76 merged 8339dc2; four integrated CI jobs PASS, independently verified Windows/Android QA 328/328; main tree matches. Manual hosted workflow dispatched; actual result pending.
 - [ ] PR #77 original stacked CI 4/4 PASS and independently verified Windows/Android 336/336; retargeted to main. Fresh integrated CI required before merge.
+- [ ] ENG-12: Hosted manual run 45740358322 failed on public rate limit; no accepted archive published. Add one-shot quota preflight before collection (eight offline cases, 344 required). Hosted positive qualification and schedule remain blocked.
