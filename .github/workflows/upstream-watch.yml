@@ -1,0 +1,56 @@
+name: Upstream review watch
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: veypanel-upstream-watch
+  cancel-in-progress: false
+jobs:
+  watch:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.10'
+      - name: Collect and seal complete evidence
+        id: collect
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/veypanel-upstream-watch-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          tree=$(git rev-parse 'HEAD^{tree}')
+          rc=0
+          result=$(python3 scripts/run_upstream_watch_ci.py collect --output "$archive" --expected-commit "$GITHUB_SHA" --expected-tree "$tree") || rc=$?
+          case "$rc:$result" in
+            0:UNCHANGED|2:REVIEW) ;;
+            *) echo '::error::Upstream evidence collection failed'; exit 1 ;;
+          esac
+          printf 'status=%s\n' "$result" >> "$GITHUB_OUTPUT"
+      - name: Independently reopen sealed evidence
+        shell: bash
+        env:
+          COLLECT_STATUS: ${{ steps.collect.outputs.status }}
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/veypanel-upstream-watch-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          tree=$(git rev-parse 'HEAD^{tree}')
+          rc=0
+          result=$(python3 scripts/run_upstream_watch_ci.py verify --output "$archive" --expected-commit "$GITHUB_SHA" --expected-tree "$tree") || rc=$?
+          case "$rc:$result:$COLLECT_STATUS" in
+            0:UNCHANGED:UNCHANGED) ;;
+            2:REVIEW:REVIEW) echo '::warning::Upstream changes require review' ;;
+            *) echo '::error::Upstream evidence verification failed'; exit 1 ;;
+          esac
+          printf 'Upstream observation: **%s**\n' "$result" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: veypanel-upstream-watch-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/veypanel-upstream-watch-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          retention-days: 7

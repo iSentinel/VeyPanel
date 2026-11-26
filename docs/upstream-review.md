@@ -224,3 +224,45 @@ qualification, not a complete freshness PASS. Do not retry until quota
 recovers. The collector now terminates the remaining run on HTTP 429 or
 403 with explicit quota exhaustion or Retry-After. Other failures retain
 existing incomplete-row behavior. No authentication or automatic retries.
+
+## CI evidence admission candidate
+
+    python scripts/run_upstream_watch_ci.py collect --output NEW_ARCHIVE --expected-commit FULL_COMMIT --expected-tree FULL_TREE
+    python scripts/run_upstream_watch_ci.py verify --output NEW_ARCHIVE --expected-commit FULL_COMMIT --expected-tree FULL_TREE
+
+The CI wrapper requires the intended source tree before any collection,
+creates a unique private root, and verifies the complete bundle before
+writing a separate root-level file manifest. It verifies the manifest and
+bundle again on readback. An incomplete or inconsistent run is not sealed;
+failed directories may contain partial evidence and must not be reused.
+The exact accepted archive contains bundle/ with four files and a root
+manifest. Exit 0 is unchanged, 2 is review required, 1 is a failed gate.
+A valid manifest cannot substitute for receipt or report verification.
+No signing, publication, automatic updates or schedule is implied.
+
+## Manual CI workflow candidate
+
+The workflow `.github/workflows/upstream-watch.yml` is manual-dispatch only
+and runs only on main. It permits one concurrent watch, does not persist
+checkout credentials, bounds runner time, and uses the public HTTPS collector
+without an API token. Collection and independent reopening must return the
+same allowed exit/status pair. REVIEW is a visible warning and a valid
+review-only report; it is not a passing dependency or release decision.
+ERROR or contradictory results fail the workflow before artifact upload.
+Accepted sealed archives are retained for seven days. The workflow is not
+scheduled until a complete real freshness bundle and actual manual workflow
+execution have been qualified. Proposed schedule: daily at 06:17 UTC,
+subject to quota availability and freshness policy review. Hosted runner
+images and action major tags are mutable, as tracked in engineering debt.
+
+## Positive sealed live qualification
+
+On 2026-11-25 at 08:16 UTC, an exact detached checkout of stacked PR #76
+synthetic commit 1e4cec6b4b6932bc7925d6d0e40c2f2662ba4d0c (tree
+0061c921c795344596b8c718ce4c4c1c27579df8) completed public collection.
+All five reviewed repositories were UNCHANGED, receipt complete=true,
+monotonic duration 12556 ms, collection/verification exits 0 and independent
+manifest verification PASS. Observation SHA-256:
+e3f9a8093e568c51718b6e2bd28886cb1ce520757e61d5919b7ffbcc5449e08f.
+This qualifies actual local positive collection and sealed readback, not
+hosted workflow execution, remote authenticity, or dependency acceptance.
