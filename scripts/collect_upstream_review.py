@@ -29,6 +29,8 @@ class RateLimited(ValueError):
 
 def allowed_path(path: str) -> bool:
     """Admit only fixed repository metadata and reviewed GET endpoint shapes."""
+    if path == "/rate_limit":
+        return True
     for repo in REPOSITORIES:
         prefix = "/repos/" + repo
         if path == prefix or path == prefix + "/releases/latest":

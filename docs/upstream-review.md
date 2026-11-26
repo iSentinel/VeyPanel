@@ -279,3 +279,15 @@ baseline, observation and report SHA-256 digests. UNCHANGED yields no tasks.
 The plan always sets adoption_authorized=false and omits raw metadata values.
 The planner alone does not establish freshness, source identity or origin;
 sealed bundle admission is the next separate integration boundary.
+
+## Hosted quota admission candidate
+
+First main-only manual hosted run 45740358322 on 2026-11-26 failed at
+collection: public API rate limit, no accepted artifact uploaded. This is
+correct fail-closed behavior, not hosted positive qualification. The candidate
+adds one bounded unauthenticated GET to the fixed /rate_limit endpoint before
+collection. The required observed core quota is 25 (five requests per reviewed
+repository); insufficient or malformed quota fails before collection starts.
+Preflight is only a snapshot, not a reservation; shared-IP contention and
+secondary rate limits can still interrupt collection. Existing stop-on-limit
+behavior remains mandatory. No token, automatic retry or schedule activation.
